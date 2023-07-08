@@ -5,7 +5,14 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div id="controller_action">
+    {% if authenticatedPerson is null %}
+        <div class="page-header">
+            <h1>{{ translate('Flesserke') }}</h1>
+        </div>
+
+        <div>{{ translate('Please login to view Flesserke.') }}</div>
+    {% else %}
+        <div id="controller_action">
 
         <div id="article_search" style="display:none;">
             <div style="padding:4px;text-align:right">
@@ -48,7 +55,7 @@
                 </tr>
                 </thead>
                 {% for article in paginator %}
-{#                    {% if article.getExpiryDate() <= date('d/m/y')  %}#}
+                    {# {% if article.getExpiryDate() <= date('d/m/y')  %}#}
                         <tr class="item item-{{ article.getId() }}">
                             <td>{{ article.getName() }}</td>
                             <td>{{ article.getBrand() }}</td>
@@ -74,31 +81,32 @@
         </div>
 
         {% include 'admin/partials/paginationControl.twig' %}
-    </div>
+        </div>
 
-    <div class="modal fade" id="removeArticle" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Litus Admin</span>
-                    /Delete Article
-                </div>
-                <div class="modal-body">
-                    <p>
-                        You are about to delete the following article: <b class="articleName"></b>!
-                        Please note that this operation cannot be undone!
-                    </p>
-                    <p>
-                        Are you sure you want to continue?
-                    </p>
-                    <div class="footer">
-                        <button class="delete">Yes</button>
-                        <button class="cancel" data-dismiss="modal">No</button>
+        <div class="modal fade" id="removeArticle" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span>Litus Admin</span>
+                        /Delete Article
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You are about to delete the following article: <b class="articleName"></b>!
+                            Please note that this operation cannot be undone!
+                        </p>
+                        <p>
+                            Are you sure you want to continue?
+                        </p>
+                        <div class="footer">
+                            <button class="delete">Yes</button>
+                            <button class="cancel" data-dismiss="modal">No</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {%  endif %}
 {% endblock %}
 
 {% block content_script %}

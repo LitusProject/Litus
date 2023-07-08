@@ -34,7 +34,7 @@
 
 
     {% if authenticatedPerson is null %}
-        {{ translate('Please login to view your orders.') }}
+        <div>{{ translate('Please login to view your orders.') }}</div>
     {% else %}
 
         {% if enableExtraText %}
