@@ -39,7 +39,9 @@ class IndexController extends \LogisticsBundle\Component\Controller\LogisticsCon
             array(
                 'form'  => $form,
                 'date'  => $this->getParam('date'),
-                'token' => $token,
+                'token' => $token,                                  // Token is used to generate dropdown for export
+                                                                    // (download) button so car drivers have the choice
+                                                                    // to download a personal or general calendar
             )
         );
     }
