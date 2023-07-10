@@ -2,8 +2,6 @@
 
 namespace PageBundle\Form\Admin\CategoryPage;
 
-use PageBundle\Entity\Category;
-use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\CategoryPage as CategoryPageEntity;
 use RuntimeException;
 
