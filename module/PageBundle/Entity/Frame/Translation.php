@@ -51,7 +51,7 @@ class Translation
      * @param Language $language
      * @param string $description
      */
-    public function __construct(Frame $frame, Language $language, $description)
+    public function __construct(Frame $frame, Language $language, string $description)
     {
         $this->frame = $frame;
         $this->language = $language;
