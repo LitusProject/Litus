@@ -65,13 +65,28 @@ return array(
         'page_admin_categorypage' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/site/categorypage[/:action[/:id]][/]',
+                'route'       => '/admin/site/page/categorypage[/:action[/:id]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'page_admin_categorypage',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'page_admin_categorypage_frame' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/site/page/categorypage/:category_page_id/frame[/:action[/:frame_id]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'category_page_id'     => '[0-9]*',
+                    'frame_id'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'page_admin_categorypage_frame',
                     'action'     => 'manage',
                 ),
             ),
@@ -139,6 +154,7 @@ return array(
         'page_admin_category' => 'PageBundle\Controller\Admin\CategoryController',
         'page_admin_link'     => 'PageBundle\Controller\Admin\LinkController',
         'page_admin_categorypage' => 'PageBundle\Controller\Admin\CategoryPageController',
+        'page_admin_categorypage_frame' => 'PageBundle\Controller\Admin\FrameController',
 
         'page_link'           => 'PageBundle\Controller\LinkController',
         'page'                => 'PageBundle\Controller\PageController',
