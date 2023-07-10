@@ -2,6 +2,8 @@
 
 namespace PageBundle\Repository;
 
+use PageBundle\Entity\Node\CategoryPage;
+
 /**
  * Frame
  *
@@ -10,4 +12,12 @@ namespace PageBundle\Repository;
  */
 class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllByCategoryPage(CategoryPage $page){
+        return $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Frame')
+            ->findBy(array('categoryPage' => $page, 'active' => true));
+    }
 }

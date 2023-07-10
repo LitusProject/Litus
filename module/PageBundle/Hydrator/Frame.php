@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Hydrator\Frame;
+namespace PageBundle\Hydrator;
 
 use Locale;
 use PageBundle\Entity\Frame as FrameEntity;

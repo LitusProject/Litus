@@ -34,14 +34,14 @@
                 {% for frame in paginator %}
                     <tr class="item item-{{ frame.getId() }}">
                         <td>{{ frame.getCategoryPage().getCategory().getName(language) }}</td>
-                        {% if frame instanceof Page %}
-                            <td>{{ frame.getLinkTo().getTitle(language) }} (Page)</td>
-                        {% else %}
-                            <td>{{ frame.getLinkTo().getName(language) }} (Link)</td>
-                        {% endif %}
+                        {#                        {% if frame instanceof Page %} #}
+                        <td>{{ frame.getLinkTo().getTitle(language) }} (Page)</td>
+                        {#                        {% else %} #}
+                        {#                            <td>{{ frame.getLinkTo().getName(language) }} (Link)</td> #}
+                        {#                        {% endif %} #}
                         <td class="actions">
                             {% if hasAccess('page_admin_categorypage_frame', 'edit') %}
-                                <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "id": frame.getId()}) }}"
+                                <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
                                    class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('page_admin_categorypage_frame', 'delete') %}
@@ -113,7 +113,7 @@
             });
             var id = $this.data('id');
             removeFrame.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('page_admin_categorypage_frame', {"action": "delete"}) }}' + id, function (data) {
+                $.post('{{ url('page_admin_categorypage_frame', {"action": "delete", "category_page_id": category_page_id}) }}' + 'frame/' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.frame_removed_success').removeClass('hide');

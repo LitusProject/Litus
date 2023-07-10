@@ -43,6 +43,9 @@
                                     <a href="#" data-id="{{ category_page.getId() }}"
                                        data-name="{{ category_page.getCategory().getName(language) }}" class="delete">Delete</a>
                                 {% endif %}
+                                {% if hasAccess('page_admin_categorypage_frame', 'manage') %}
+                                    <a href="{{ url('page_admin_categorypage_frame', {"action": "manage", "category_page_id": category_page.getId()}) }}"  class="frame_manage">Manage Frames</a>
+                                {% endif %}
                             {% endif %}
                         </td>
                     </tr>
