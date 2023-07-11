@@ -19,6 +19,8 @@ class Edit extends \LogisticsBundle\Form\Inventory\Inventory
         $nameField = $this->get('name');
         $nameField->setRequired();
 
+//        $this->remove('unit')->remove('perUnit');
+
         $this->remove('submit')
             ->addSubmit('Save', 'inventory_edit');
     }

@@ -5,18 +5,20 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    {# Page header + button to add page #}
     <div class="page-header"  style="overflow: hidden;">
         <div style="float:left; width: 80%;">
             <h1>{{ translate('Flesserke') }}</h1>
         </div>
+        {% if authenticatedPerson is not null %}
         <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
             <a href="{{ url('logistics_inventory', {"action": "add"})}}">
                 <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
             </a>
         </div>
+        {% endif %}
     </div>
 
-    {# Checken of authenticated #}
     {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view Flesserke.') }}</div>
     {% else %}
@@ -52,11 +54,12 @@
                 <thead>
                 <tr>
                     <th style="width: 20%">Name</th>
-                    <th style="width: 12.5%">Brand</th>
                     <th style="width: 12.5%">Category</th>
-                    <th style="width: 15%">Barcode</th>
+                    <th style="width: 12.5%">Brand</th>
+                    <th style="width: 9%">Unit</th>
+                    <th style="width: 11%">Barcode</th>
                     <th style="width: 10%">Res. / Avail.</th>
-                    <th style="width: 15%">Expiry Date</th>
+                    <th style="width: 10%">Expiry Date</th>
                     {% if hasAccess('logistics_inventory', 'reserve') %}
                         <th style="width: 15%">Actions</th>
                     {% endif %}
@@ -66,8 +69,9 @@
                     {# {% if article.getExpiryDate() <= date('d/m/y')  %}#}
                         <tr class="item item-{{ article.getId() }}">
                             <td>{{ article.getName() }}</td>
-                            <td>{{ article.getBrand() }}</td>
                             <td>{{ article.getCategory() }}</td>
+                            <td>{{ article.getBrand() }}</td>
+                            <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
                             <td>{{ article.getBarcode() }}</td>
                             <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
                             <td>{{ article.getExpiryDate() }}</td>
