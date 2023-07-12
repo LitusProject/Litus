@@ -3,10 +3,6 @@
 namespace PageBundle\Entity;
 
 
-use CommonBundle\Entity\General\Language;
-use Doctrine\Common\Collections\ArrayCollection;
-use Locale;
-use PageBundle\Entity\Frame\Translation;
 use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,9 +11,16 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents a frame in a CategoryPage.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame")
- * @ORM\Table(name="frame")
+ * @ORM\Table(name="frames_frames")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "bigframe"="PageBundle\Entity\Frame\BigFrame",
+ *      "smallframedescription"="PageBundle\Entity\Frame\SmallFrameDescription",
+ *      "smallframeposter"="PageBundle\Entity\Frame\SmallFramePoster"
+ * })
  */
-class Frame
+abstract class Frame
 {
     /**
      * @var integer The ID of this frame
@@ -44,13 +47,6 @@ class Frame
     private $linkTo;
 
     /**
-     * @var ArrayCollection The translations of this frame
-     *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Frame\Translation", mappedBy="frame", cascade={"remove"})
-     */
-    private $translations;
-
-    /**
      * @var boolean reflects if the frame is active.
      *
      * @ORM\Column(name="active", type="boolean", options={"default" = true})
@@ -59,7 +55,6 @@ class Frame
 
     public function __construct()
     {
-        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -106,48 +101,6 @@ class Frame
         $this->linkTo = $linkTo;
 
         return $this;
-    }
-
-    /**
-     * @param Language|null $language
-     * @param boolean $allowFallback
-     * @return Translation|null
-     */
-    public function getTranslation(Language $language = null, $allowFallback = true)
-    {
-        $fallbackTranslation = null;
-
-        foreach ($this->translations as $translation) {
-            if ($language !== null && $translation->getLanguage() == $language) {
-                return $translation;
-            }
-
-            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
-                $fallbackTranslation = $translation;
-            }
-        }
-
-        if ($allowFallback) {
-            return $fallbackTranslation;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param Language|null $language
-     * @param boolean $allowFallback
-     * @return string
-     */
-    public function getDescription(Language $language = null, $allowFallback = true)
-    {
-        $translation = $this->getTranslation($language, $allowFallback);
-
-        if ($translation !== null) {
-            return $translation->getDescription();
-        }
-
-        return '';
     }
 
     /**

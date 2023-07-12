@@ -2,9 +2,8 @@
 
 namespace PageBundle\Hydrator;
 
-use Locale;
 use PageBundle\Entity\Frame as FrameEntity;
-use PageBundle\Entity\Frame\Translation as TranslationEntity;
+use PageBundle\Entity\Frame\SmallFrameDescription\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts frame data.

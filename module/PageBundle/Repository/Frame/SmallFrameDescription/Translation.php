@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Repository\Frame;
+namespace PageBundle\Repository\Frame\SmallFrameDescription;
 
 /**
  * Translation

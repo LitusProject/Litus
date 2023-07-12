@@ -11,4 +11,9 @@ return array(
         'value'       => 'data/page/posters',
         'description' => 'The path to the page posters',
     ),
+    array(
+        'key'         => 'frame.poster_path',
+        'value'       => 'data/frame/posters',
+        'description' => 'The path to the frame posters',
+    ),
 );

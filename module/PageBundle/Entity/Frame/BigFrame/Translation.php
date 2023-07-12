@@ -1,21 +1,21 @@
 <?php
 
-namespace PageBundle\Entity\Frame;
+namespace PageBundle\Entity\Frame\BigFrame;
 
 use CommonBundle\Entity\General\Language;
+use PageBundle\Entity\Frame\BigFrame;
 use Doctrine\ORM\Mapping as ORM;
-use PageBundle\Entity\Frame;
 
 /**
- * This entity stores the translations of a frame item.
+ * This entity stores the translations of a big frame item.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame\Translation")
- * @ORM\Table(name="frames_translations")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame\BigFrame\Translation")
+ * @ORM\Table(name="frames_big_translations")
  */
 class Translation
 {
     /**
-     * @var integer The ID of this tanslation
+     * @var integer The ID of this translation
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,9 +24,9 @@ class Translation
     private $id;
 
     /**
-     * @var Frame The frame of this translation
+     * @var BigFrame The frame of this translation
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Frame", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Frame\SmallFrameDescription", inversedBy="translations")
      * @ORM\JoinColumn(name="frame", referencedColumnName="id")
      */
     private $frame;
@@ -47,11 +47,11 @@ class Translation
     private $description;
 
     /**
-     * @param Frame $frame
+     * @param BigFrame $frame
      * @param Language $language
      * @param string $description
      */
-    public function __construct(Frame $frame, Language $language, string $description)
+    public function __construct(BigFrame $frame, Language $language, string $description)
     {
         $this->frame = $frame;
         $this->language = $language;
@@ -67,7 +67,7 @@ class Translation
     }
 
     /**
-     * @return Frame
+     * @return BigFrame
      */
     public function getFrame()
     {
