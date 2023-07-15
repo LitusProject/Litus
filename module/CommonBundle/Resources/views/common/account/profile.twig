@@ -197,7 +197,7 @@
 
             <div class="buttonHolder">
                 <button id="editProfile" class="myVtkButton">{{ translate('Edit Profile Image') }}</button>
-                {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
+                {% if (authenticatedPerson.isPraesidium(organizationYear) and signatureEnabled) %}
                     <button id="signaturePopup" class="myVtkButton" href="{{ url('common_account', {'action': 'studies'}) }}">
                         {{ 'Signature' }}</button>
                 {% endif %}
@@ -259,7 +259,7 @@
     </div> #}
 
 
-    {% if (authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled) %}
+    {% if (authenticatedPerson.isPraesidium(organizationYear) and signatureEnabled) %}
 
         {# <div id="signatureButton" class="hidden-sm hidden-xs" style="text-align: center;">
             <button id="signaturePopup" class="btn btn-default btn-sm hidden-xs hidden-sm"
@@ -313,7 +313,7 @@
                 $(this).closest('.flashmessage').removeClass('in');
             });
 
-            {% if authenticatedPerson.isPraesidium(currentAcademicYear) and signatureEnabled %}
+            {% if authenticatedPerson.isPraesidium(organizationYear) and signatureEnabled %}
             $('#signaturePopup').click(function () {
                 $('#modalSignature').modal().off('shown.bs.modal').on('shown.bs.modal', function () {
                 });

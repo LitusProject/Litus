@@ -47,7 +47,7 @@ RUN \
       --optimize; \
   fi
 
-FROM php:8.2.7-cli-alpine AS php-cli
+FROM php:8.2.8-cli-alpine AS php-cli
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
@@ -99,7 +99,7 @@ COPY docker/php-cli/entrypoint.sh /
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-FROM php:8.2.7-fpm-alpine AS php-fpm
+FROM php:8.2.8-fpm-alpine AS php-fpm
 
 ARG APPLICATION_ENV=development
 ENV APPLICATION_ENV=${APPLICATION_ENV}
