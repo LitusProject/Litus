@@ -188,12 +188,7 @@ class CatalogController extends \CommonBundle\Component\Controller\ActionControl
                 $this->getEntityManager()->flush();
 
                 $this->redirect()->toRoute(
-                    'logistics_catalog',
-                    array(
-                        'action' => 'catalog',
-                        'order'  => $order->getId(),
-                    )
-                );
+                    'logistics_catalog', array('action' => 'catalog', 'order'  => $order->getId(),));
 
                 return new ViewModel();
             }
