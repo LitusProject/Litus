@@ -70,7 +70,7 @@ class Order
     private $location;
 
     /**
-     * @var string The contact used in this order
+     * @var string The contact name used in this order
      *
      * @ORM\Column(name="contact", type="text", nullable=true)
      */
@@ -85,7 +85,7 @@ class Order
     private $creator;
 
     /**
-     * @var Unit The unit of the order
+     * @var Unit The unit of the order: gives access to the whole unit to view the order
      *
      * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
      * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
@@ -135,7 +135,7 @@ class Order
     private $rejected;
 
     /**
-     * @var boolean If this order needs a van ride (een kar-rit).
+     * @var boolean If this order needs a ride (een kar-rit, auto-rit of dergelijke).
      *
      * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
      */
