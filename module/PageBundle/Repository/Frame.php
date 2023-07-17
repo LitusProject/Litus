@@ -18,6 +18,15 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllByCategoryPage(CategoryPage $page){
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
+            ->findBy(array('categoryPage' => $page));
+    }
+
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllActiveByCategoryPage(CategoryPage $page){
+        return $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Frame')
             ->findBy(array('categoryPage' => $page, 'active' => true));
     }
 }

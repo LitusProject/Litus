@@ -26,9 +26,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
      */
     protected $frame;
 
-    public function init()
+    protected function initBeforeTabs()
     {
-        parent::init();
+        $this->add(
+            array(
+                'type'       => 'radio',
+                'name'       => 'frame_type',
+                'label'      => 'Frame Type',
+                'required'   => true,
+                'value'      => 'big',
+                'attributes' => array(
+                    'options' => array(
+                        'big'      => 'Big Frame',
+                        'smalldescription' => 'Small Frame with Description',
+                        'smallposter' => 'Small Frame with Poster',
+                    ),
+                ),
+            )
+        );
 
         $this->add(
             array(
@@ -49,8 +64,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'value' => true,
             )
         );
-
-        $this->addSubmit('Add', 'frame_add');
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)
@@ -70,6 +83,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 ),
             )
         );
+    }
+
+    protected function initAfterTabs()
+    {
+        $this->addSubmit('Add', 'frame_add');
     }
 
     protected function createPagesAndLinksArray(CategoryPageEntity $categoryPage)

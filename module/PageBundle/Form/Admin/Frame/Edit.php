@@ -3,7 +3,7 @@
 namespace PageBundle\Form\Admin\Frame;
 
 /**
- * Edit a CategoryPage.
+ * Edit a Frame.
  */
 class Edit extends \PageBundle\Form\Admin\Frame\Add
 {

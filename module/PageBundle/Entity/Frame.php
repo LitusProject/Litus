@@ -40,11 +40,20 @@ abstract class Frame
     private $categoryPage;
 
     /**
-     * @var Page|Link The frame's page or link to refer to
+     * @var Page The frame's page to refer to
      *
-     * @ORM\JoinColumn(name="link_to", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\Page")
+     * @ORM\JoinColumn(name="link_to_page", referencedColumnName="id", nullable=true)
      */
-    private $linkTo;
+    private $linkToPage;
+
+    /**
+     * @var Link The frame's link to refer to
+     *
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Link")
+     * @ORM\JoinColumn(name="link_to_link", referencedColumnName="id", nullable=true)
+     */
+    private $linkToLink;
 
     /**
      * @var boolean reflects if the frame is active.
@@ -89,7 +98,7 @@ abstract class Frame
      */
     public function getLinkTo()
     {
-        return $this->linkTo;
+        return !is_null($this->linkToPage) ? $this->linkToPage : $this->linkToLink;
     }
 
     /**
@@ -98,7 +107,13 @@ abstract class Frame
      */
     public function setLinkTo($linkTo)
     {
-        $this->linkTo = $linkTo;
+        if ($linkTo instanceof Page) {
+            $this->linkToPage = $linkTo;
+            $this->linkToLink = null;
+        } else {
+            $this->linkToPage = null;
+            $this->linkToLink = $linkTo;
+        }
 
         return $this;
     }

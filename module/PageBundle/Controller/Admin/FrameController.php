@@ -4,6 +4,7 @@ namespace PageBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Frame;
+use PageBundle\Entity\Link;
 use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 
@@ -28,10 +29,23 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
 
         $result = array();
         foreach ($frames as $frame) {
-            $result['frame'] = $frame;
-            $result['type'] = $frame->getLinkTo() instanceof Page ? 'page' : 'link';
-        }
+            $frame_data = array();
+            $frame_data['frame'] = $frame;
+            if ($frame instanceof Frame\BigFrame) {
+                $frame_data['frame_type'] = 'Big Frame';
+            } else if ($frame instanceof Frame\SmallFrameDescription) {
+                $frame_data['frame_type'] = 'Small Frame with Description';
+            } else if ($frame instanceof Frame\SmallFramePoster) {
+                $frame_data['frame_type'] = 'Small Frame with Poster';
+            }
+            if ($frame->getLinkTo() instanceof Page) {
+                $frame_data['linkto_type'] = 'page';
+            } else if ($frame->getLinkTo() instanceof Link) {
+                $frame_data['linkto_type'] = 'link';
+            }
 
+            $result[] = $frame_data;
+        }
         $paginator = $this->paginator()->createFromArray(
             $result,
             $this->getParam('page')

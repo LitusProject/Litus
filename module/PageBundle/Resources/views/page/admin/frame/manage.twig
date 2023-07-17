@@ -22,12 +22,12 @@
             <table class="manage">
                 <thead>
                 <tr>
-                    <th>Category</th>
-                    <th width="120px">Title</th>
-                    <th width="120px">Link To (type)</th>
-                    <th width="120px">Frame type</th>
-                    <th width="70px">Active</th>
-                    <th width="70px">Actions</th>
+                    <th style="width:100px">Category</th>
+                    <th>Link To (type)</th>
+                    <th style="width:160px">Frame type</th>
+                    <th>Description (if available)</th>
+                    <th style="width:70px">Active</th>
+                    <th style="width:70px">Actions</th>
                 </tr>
                 </thead>
 
@@ -36,18 +36,31 @@
                     {% set frame = result.frame %}
                     <tr class="item item-{{ frame.getId() }}">
                         <td>{{ frame.getCategoryPage().getCategory().getName(language) }}</td>
-                        {% if result.type == "page" %}
-                            <td>{{ frame.getLinkTo().getTitle(language) }} (Page)</td>
-                        {% else %}
-                            <td>{{ frame.getLinkTo().getName(language) }} (Link)</td>
-                        {% endif %}
+                        <td>{% if result.linkto_type == "page" %}
+                                {{ frame.getLinkTo().getTitle(language) }} (Page)
+                            {% elseif result.linkto_type == "link" %}
+                                {{ frame.getLinkTo().getName(language) }} (Link)
+                            {% endif %}
+                        </td>
+                        <td>{{ result.frame_type }}</td>
+                        <td>{% if result.frame_type == "Big Frame" or result.frame_type == "Small Frame with Description" %}
+                                {{ frame.getDescription(language) }}
+                            {% endif %}
+                        </td>
+                        <td>{% if frame.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('page_admin_categorypage_frame', 'edit') %}
                                 <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
                                    class="edit">Edit</a>
                             {% endif %}
                             {% if hasAccess('page_admin_categorypage_frame', 'delete') %}
-                                <a href="#" data-id="{{ frame.getId() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ frame.getId() }}" data-type="{{ result.frame_type }}"
+                                    {% if result.linkto_type == "page" %}
+                                        data-name="{{ frame.getLinkTo().getTitle(language) }}"
+                                    {% elseif result.linkto_type == "link" %}
+                                        data-name="{{ frame.getLinkTo().getName(language) }}"
+                                    {% endif %}
+                                    class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -75,16 +88,16 @@
         {% endif %}
     </aside>
 
-    <div class="modal fade" id="removeCategoryPage" tabindex="-1">
+    <div class="modal fade" id="removeFrame" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Delete CategoryPage
+                    /Delete Frame
                 </div>
                 <div class="modal-body">
                     <p>
-                        You are about to delete the following CategoryPage: <b class="name"></b>?
+                        You are about to delete the following Frame: <b class="name"></b>?
                         Please note that this operation cannot be undone!
                     </p>
                     <p>
@@ -110,12 +123,13 @@
             var $this = $(this);
             e.preventDefault();
             var removeFrame = $('#removeFrame');
+            removeFrame.find('.name').html($(this).data('name'));
             removeFrame.find('.cancel').one('click', function () {
                 removeFrame.modal('hide');
             });
             var id = $this.data('id');
             removeFrame.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('page_admin_categorypage_frame', {"action": "delete", "category_page_id": category_page_id}) }}' + 'frame/' + id, function (data) {
+                $.post('{{ url('page_admin_categorypage_frame', {"action": "delete", "category_page_id": category_page_id}) }}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.frame_removed_success').removeClass('hide');
