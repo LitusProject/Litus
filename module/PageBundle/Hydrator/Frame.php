@@ -2,7 +2,7 @@
 
 namespace PageBundle\Hydrator;
 
-use PageBundle\Entity\Frame as FrameEntity;
+use PageBundle\Entity\Frame\SmallFrameDescription as SmallFrameDescriptionEntity;
 use PageBundle\Entity\Frame\SmallFrameDescription\Translation as TranslationEntity;
 
 /**
@@ -15,7 +15,7 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new FrameEntity();
+            $object = new SmallFrameDescriptionEntity();
         }
 
         if($data['active'] !== null){

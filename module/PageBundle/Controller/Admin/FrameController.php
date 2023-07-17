@@ -5,6 +5,7 @@ namespace PageBundle\Controller\Admin;
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Frame;
 use PageBundle\Entity\Node\CategoryPage;
+use PageBundle\Entity\Node\Page;
 
 /**
  * FrameController
@@ -25,8 +26,14 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('PageBundle\Entity\Frame')
             ->findAllByCategoryPage($category_page);
 
+        $result = array();
+        foreach ($frames as $frame) {
+            $result['frame'] = $frame;
+            $result['type'] = $frame->getLinkTo() instanceof Page ? 'page' : 'link';
+        }
+
         $paginator = $this->paginator()->createFromArray(
-            $frames,
+            $result,
             $this->getParam('page')
         );
 
@@ -42,7 +49,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $category_page = $this->getCategoryPageEntity();
-        $form = $this->getForm('page_frame_add');
+        $form = $this->getForm('page_frame_add', array('categoryPage' => $category_page));
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -58,7 +65,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                     'Succes',
                     'The frame was successfully added!'
                 );
-                die(var_dump($category_page));
+
                 $this->redirect()->toRoute(
                     'page_admin_categorypage_frame',
                     array(

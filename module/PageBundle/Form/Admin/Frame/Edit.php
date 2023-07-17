@@ -12,6 +12,6 @@ class Edit extends \PageBundle\Form\Admin\Frame\Add
         parent::init();
 
         $this->remove('submit')
-            ->addSubmit('Save', 'page_edit');
+            ->addSubmit('Save', 'frame_edit');
     }
 }

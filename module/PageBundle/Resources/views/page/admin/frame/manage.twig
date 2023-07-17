@@ -25,20 +25,22 @@
                     <th>Category</th>
                     <th width="120px">Title</th>
                     <th width="120px">Link To (type)</th>
+                    <th width="120px">Frame type</th>
                     <th width="70px">Active</th>
                     <th width="70px">Actions</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {% for frame in paginator %}
+                {% for result in paginator %}
+                    {% set frame = result.frame %}
                     <tr class="item item-{{ frame.getId() }}">
                         <td>{{ frame.getCategoryPage().getCategory().getName(language) }}</td>
-                        {#                        {% if frame instanceof Page %} #}
-                        <td>{{ frame.getLinkTo().getTitle(language) }} (Page)</td>
-                        {#                        {% else %} #}
-                        {#                            <td>{{ frame.getLinkTo().getName(language) }} (Link)</td> #}
-                        {#                        {% endif %} #}
+                        {% if result.type == "page" %}
+                            <td>{{ frame.getLinkTo().getTitle(language) }} (Page)</td>
+                        {% else %}
+                            <td>{{ frame.getLinkTo().getName(language) }} (Link)</td>
+                        {% endif %}
                         <td class="actions">
                             {% if hasAccess('page_admin_categorypage_frame', 'edit') %}
                                 <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
