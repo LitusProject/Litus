@@ -50,7 +50,7 @@
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.4",
         "widmogrod/zf2-assetic-module": "^2.4",
-        "twitter/bootstrap": "^3.3",
+        "twitter/bootstrap": "^5.1",
         "ext-curl": "*",
         "ext-json": "*"
     },
