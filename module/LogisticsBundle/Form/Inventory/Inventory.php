@@ -176,7 +176,7 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Add/Subtract', 'inventory_add');
+        $this->addSubmit('Add', 'inventory_add');
 
         if ($this->inventory !== null) {
             $this->bind($this->inventory);
