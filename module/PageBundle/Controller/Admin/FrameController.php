@@ -31,11 +31,11 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
         foreach ($frames as $frame) {
             $frame_data = array();
             $frame_data['frame'] = $frame;
-            if ($frame instanceof Frame\BigFrame) {
+            if ($frame->isBig()) {
                 $frame_data['frame_type'] = 'Big Frame';
-            } else if ($frame instanceof Frame\SmallFrameDescription) {
+            } else if ($frame->hasDescription()) {
                 $frame_data['frame_type'] = 'Small Frame with Description';
-            } else if ($frame instanceof Frame\SmallFramePoster) {
+            } else if ($frame->hasPoster()) {
                 $frame_data['frame_type'] = 'Small Frame with Poster';
             }
             if ($frame->getLinkTo() instanceof Page) {

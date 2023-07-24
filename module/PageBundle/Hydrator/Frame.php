@@ -2,11 +2,8 @@
 
 namespace PageBundle\Hydrator;
 
-use PageBundle\Entity\Frame\BigFrame as BigFrameEntity;
-use PageBundle\Entity\Frame\SmallFrameDescription as SmallFrameDescriptionEntity;
-use PageBundle\Entity\Frame\SmallFramePoster as SmallFramePosterEntity;
-use PageBundle\Entity\Frame\BigFrame\Translation as BigFrameTranslationEntity;
-use PageBundle\Entity\Frame\SmallFrameDescription\Translation as SmallFrameDescriptionTranslationEntity;
+use PageBundle\Entity\Frame as FrameEntity;
+use PageBundle\Entity\Frame\Translation as TranslationEntity;
 
 /**
  * This hydrator hydrates/extracts frame data.
@@ -18,23 +15,25 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         $isbig = false;
-        $hasdescription = false;
         $hasposter = false;
 
         if ($object === null) {
+            $object = new FrameEntity();
             switch ($data['frame_type']) {
                 case 'big':
-                    $object = new BigFrameEntity();
-                    $isbig = true;
-                    $hasdescription = true;
+                    $object->setBig(true);
+                    $object->setHasDescription(true);
+                    $object->setHasPoster(true);
                     break;
                 case'smallposter':
-                    $object = new SmallFramePosterEntity();
-                    $hasposter = true;
+                    $object->setBig(false);
+                    $object->setHasDescription(false);
+                    $object->setHasPoster(true);
                     break;
                 case'smalldescription':
-                    $object = new SmallFrameDescriptionEntity();
-                    $hasdescription = true;
+                    $object->setBig(false);
+                    $object->setHasDescription(true);
+                    $object->setHasPoster(false);
                     break;
             }
         }
@@ -44,22 +43,21 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         if ($data['link_to'] !== null) {
-            $type = substr($data['link_to'],0,4);
-            if($type == "page"){
+            $type = substr($data['link_to'], 0, 4);
+            if ($type == "page") {
                 $page = $this->getEntityManager()->getRepository("PageBundle\Entity\Node\Page")
-                        ->findById(substr($data['link_to'],5))[0];
+                    ->findById(substr($data['link_to'], 5))[0];
                 $object->setLinkTo($page);
             } else if ($type == "link") {
                 $link = $this->getEntityManager()->getRepository("PageBundle\Entity\Link")
-                    ->findById(substr($data['link_to'],5))[0];
+                    ->findById(substr($data['link_to'], 5))[0];
                 $object->setLinkTo($link);
-            }
-            else {
+            } else {
                 die("Invalid type");
             }
         }
 
-        if ($hasdescription) {
+        if ($object->hasDescription()) {
             foreach ($this->getLanguages() as $language) {
                 $translation = $object->getTranslation($language, false);
 
@@ -69,20 +67,11 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
                     $translation->setDescription($translationData['description']);
                 } else {
                     if ($translationData['description'] != '') {
-                        if ($isbig) {
-                            $translation = new BigFrameTranslationEntity(
-                                $object,
-                                $language,
-                                $translationData['description']
-                            );
-                        } else {
-                            $translation = new SmallFrameDescriptionTranslationEntity(
-                                $object,
-                                $language,
-                                $translationData['description']
-                            );
-                        }
-
+                        $translation = new TranslationEntity(
+                            $object,
+                            $language,
+                            $translationData['description']
+                        );
                         // this persists the translations even if the returned
                         // object is never persisted.
                         // This should never happen though.
@@ -102,17 +91,20 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = array();
 
-        foreach ($this->getLanguages() as $language) {
-            $data['tab_content']['tab_' . $language->getAbbrev()]['description'] = $object->getDescription($language, false);
+        if($object->hasDescription()){
+            foreach ($this->getLanguages() as $language) {
+                $data['tab_content']['tab_' . $language->getAbbrev()]['description'] = $object->getDescription($language, false);
+            }
         }
+
 
         $data['active'] = $object->isActive();
 
-        if($object instanceof BigFrameEntity){
+        if($object->isBig()){
             $data['frame_type'] = 'big';
-        } else if($object instanceof SmallFrameDescriptionEntity){
+        } else if($object->hasDescription()){
             $data['frame_type'] = 'smalldescription';
-        } else if($object instanceof SmallFramePosterEntity){
+        } else{
             $data['frame_type'] = 'smallposter';
         }
 

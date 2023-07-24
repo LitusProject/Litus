@@ -3,6 +3,11 @@
 namespace PageBundle\Entity;
 
 
+use CommonBundle\Entity\General\Language;
+use Doctrine\Common\Collections\ArrayCollection;
+use http\Exception\InvalidArgumentException;
+use Locale;
+use PageBundle\Entity\Frame\Translation;
 use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,16 +16,9 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents a frame in a CategoryPage.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame")
- * @ORM\Table(name="frames_frames")
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
- * @ORM\DiscriminatorMap({
- *      "bigframe"="PageBundle\Entity\Frame\BigFrame",
- *      "smallframedescription"="PageBundle\Entity\Frame\SmallFrameDescription",
- *      "smallframeposter"="PageBundle\Entity\Frame\SmallFramePoster"
- * })
+ * @ORM\Table(name="frames")
  */
-abstract class Frame
+class Frame
 {
     /**
      * @var integer The ID of this frame
@@ -62,8 +60,44 @@ abstract class Frame
      */
     private $active;
 
+    /**
+     * @var boolean reflects if the frame is big.
+     *
+     * @ORM\Column(name="big", type="boolean", options={"default" = true})
+     */
+    private $big;
+
+    /**
+     * @var boolean reflects if the frame has a description.
+     *
+     * @ORM\Column(name="has_description", type="boolean", options={"default" = true})
+     */
+    private $has_description;
+
+    /**
+     * @var boolean reflects if the frame has a poster.
+     *
+     * @ORM\Column(name="has_poster", type="boolean", options={"default" = true})
+     */
+    private $has_poster;
+
+    /**
+     * @var ArrayCollection The translations of this frame
+     *
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Frame\Translation", mappedBy="frame", cascade={"remove"})
+     */
+    private $translations;
+
+    /**
+     * @var string The poster of this frame
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $poster;
+
     public function __construct()
     {
+        $this->translations = new ArrayCollection();
     }
 
     /**
@@ -133,6 +167,122 @@ abstract class Frame
     public function setActive(bool $active)
     {
         $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBig()
+    {
+        return $this->big;
+    }
+
+    /**
+     * @param boolean $big
+     * @return self
+     */
+    public function setBig(bool $big)
+    {
+        $this->big = $big;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasDescription()
+    {
+        return $this->has_description;
+    }
+
+    /**
+     * @param boolean $has_description
+     * @return self
+     */
+    public function setHasDescription(bool $has_description)
+    {
+        $this->has_description = $has_description;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasPoster()
+    {
+        return $this->has_poster;
+    }
+
+    /**
+     * @param boolean $has_poster
+     * @return self
+     */
+    public function setHasPoster(bool $has_poster)
+    {
+        $this->has_poster = $has_poster;
+        return $this;
+    }
+
+    /**
+     * @param Language|null $language
+     * @param boolean $allowFallback
+     * @return Translation|null
+     */
+    public function getTranslation(Language $language = null, $allowFallback = true)
+    {
+        $fallbackTranslation = null;
+
+        foreach ($this->translations as $translation) {
+            if ($language !== null && $translation->getLanguage() == $language) {
+                return $translation;
+            }
+
+            if ($translation->getLanguage()->getAbbrev() == Locale::getDefault()) {
+                $fallbackTranslation = $translation;
+            }
+        }
+
+        if ($allowFallback) {
+            return $fallbackTranslation;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Language|null $language
+     * @param boolean $allowFallback
+     * @return string
+     */
+    public function getDescription(Language $language = null, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if ($translation !== null) {
+            return $translation->getDescription();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * @param string $poster
+     *
+     * @return self
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = trim($poster, '/');
+
         return $this;
     }
 }
