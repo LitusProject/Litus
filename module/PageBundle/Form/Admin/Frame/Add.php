@@ -25,6 +25,16 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $this->add(
             array(
+                'type' => 'hidden',
+                'name' => 'category_page_id',
+                'attributes' => array(
+                    'id' => 'category_page_id',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type' => 'radio',
                 'name' => 'frame_type',
                 'label' => 'Frame Type',

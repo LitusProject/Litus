@@ -15,6 +15,8 @@
         $(document).ready(function () {
             $('#languages a:first').click();
 
+            $('#category_page_id').val({{ category_page_id }});
+
             $('select.link_to').closest('.row').hide();
             $('select#link_to_' + {{ category_page_id }}).closest('.row').show();
 

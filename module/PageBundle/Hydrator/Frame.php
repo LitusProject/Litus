@@ -4,6 +4,8 @@ namespace PageBundle\Hydrator;
 
 use PageBundle\Entity\Frame as FrameEntity;
 use PageBundle\Entity\Frame\Translation as TranslationEntity;
+use PageBundle\Entity\Node\Page;
+use PageBundle\Entity\Link;
 
 /**
  * This hydrator hydrates/extracts frame data.
@@ -19,38 +21,40 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
 
         if ($object === null) {
             $object = new FrameEntity();
-            switch ($data['frame_type']) {
-                case 'big':
-                    $object->setBig(true);
-                    $object->setHasDescription(true);
-                    $object->setHasPoster(true);
-                    break;
-                case'smallposter':
-                    $object->setBig(false);
-                    $object->setHasDescription(false);
-                    $object->setHasPoster(true);
-                    break;
-                case'smalldescription':
-                    $object->setBig(false);
-                    $object->setHasDescription(true);
-                    $object->setHasPoster(false);
-                    break;
-            }
+        }
+
+        switch ($data['frame_type']) {
+            case 'big':
+                $object->setBig(true);
+                $object->setHasDescription(true);
+                $object->setHasPoster(true);
+                break;
+            case'smallposter':
+                $object->setBig(false);
+                $object->setHasDescription(false);
+                $object->setHasPoster(true);
+                break;
+            case'smalldescription':
+                $object->setBig(false);
+                $object->setHasDescription(true);
+                $object->setHasPoster(false);
+                break;
         }
 
         if ($data['active'] !== null) {
             $object->setActive($data['active']);
         }
 
-        if ($data['link_to'] !== null) {
-            $type = substr($data['link_to'], 0, 4);
+        $link_to_id = $data['link_to_' . $data['category_page_id']];
+        if ($link_to_id !== null) {
+            $type = substr($link_to_id, 0, 4);
             if ($type == "page") {
                 $page = $this->getEntityManager()->getRepository("PageBundle\Entity\Node\Page")
-                    ->findById(substr($data['link_to'], 5))[0];
+                    ->findById(substr($link_to_id, 5))[0];
                 $object->setLinkTo($page);
             } else if ($type == "link") {
                 $link = $this->getEntityManager()->getRepository("PageBundle\Entity\Link")
-                    ->findById(substr($data['link_to'], 5))[0];
+                    ->findById(substr($link_to_id, 5))[0];
                 $object->setLinkTo($link);
             } else {
                 die("Invalid type");
@@ -108,7 +112,12 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
             $data['frame_type'] = 'smallposter';
         }
 
-        $data['link_to'] = $object->getLinkTo();
+        $linkto = $object->getLinkTo();
+        if($linkto instanceof Page){
+            $data['link_to_' . $object->getCategoryPage()->getId()] = 'page_' . $linkto->getId();
+        } elseif ($linkto instanceof Link){
+            $data['link_to_' . $object->getCategoryPage()->getId()] = 'link_' . $linkto->getId();
+        }
 
         return $data;
     }
