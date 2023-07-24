@@ -37,7 +37,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'smallposter' => 'Small Frame with Poster',
                     ),
                     'class' => 'frame_type',
-                    'name' => 'frame_type',
                 ),
             )
         );

@@ -17,6 +17,22 @@
 
             $('select.link_to').closest('.row').hide();
             $('select#link_to_' + {{ category_page_id }}).closest('.row').show();
+
+            $('.frame_type').change(function () {
+                let type = $('input[name=frame_type]:checked', '#edit').val();
+                console.log(type);
+                switch (type) {
+                    case 'big':
+                        $('.description').closest('.row').show();
+                        break;
+                    case 'smalldescription':
+                        $('.description').closest('.row').show();
+                        break;
+                    case 'smallposter':
+                        $('.description').closest('.row').hide();
+                        break;
+                }
+            })
         });
     </script>
 {% endblock %}
