@@ -36,6 +36,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                         'smalldescription' => 'Small Frame with Description',
                         'smallposter' => 'Small Frame with Poster',
                     ),
+                    'class' => 'frame_type',
+                    'name' => 'frame_type',
                 ),
             )
         );
@@ -79,6 +81,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'name' => 'description',
                 'label' => 'Description',
                 'required' => $isDefault,
+                'attributes' => array(
+                    'class' => 'description'
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
