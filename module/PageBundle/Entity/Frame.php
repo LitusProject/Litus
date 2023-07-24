@@ -84,7 +84,7 @@ class Frame
     /**
      * @var ArrayCollection The translations of this frame
      *
-     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Frame\Translation", mappedBy="frame", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="PageBundle\Entity\Frame\Translation", mappedBy="frame")
      */
     private $translations;
 

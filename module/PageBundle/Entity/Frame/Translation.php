@@ -27,7 +27,7 @@ class Translation
      * @var Frame The frame of this translation
      *
      * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Frame", inversedBy="translations")
-     * @ORM\JoinColumn(name="frame", referencedColumnName="id")
+     * @ORM\JoinColumn(name="frame", referencedColumnName="id", onDelete="CASCADE")
      */
     private $frame;
 

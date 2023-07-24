@@ -30,8 +30,8 @@ class CategoryPage extends \CommonBundle\Entity\Node
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
      *      name="nodes_categorypages_roles_map",
-     *      joinColumns={@ORM\JoinColumn(name="category_page", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")},
+     *      joinColumns={@ORM\JoinColumn(name="category_page", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name", onDelete="CASCADE")},
      * )
      */
     private $editRoles;
