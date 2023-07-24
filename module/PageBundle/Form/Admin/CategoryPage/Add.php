@@ -17,7 +17,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * @var CategoryPageEntity
      */
-    private $categoryPage;
+    private $categorypage;
 
     public function init()
     {
@@ -99,12 +99,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param CategoryPageEntity
+     * @param CategoryPageEntity $categorypage
      * @return self
      */
-    public function setCategoryPage(CategoryPageEntity $page)
+    public function setCategoryPage(CategoryPageEntity $categorypage)
     {
-        $this->categoryPage = $page;
+        $this->categorypage = $categorypage;
 
         return $this;
     }
@@ -114,6 +114,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
      */
     public function getCategoryPage()
     {
-        return $this->categoryPage;
+        return $this->categorypage;
     }
 }

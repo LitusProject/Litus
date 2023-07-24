@@ -15,6 +15,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
+
+            $('select.link_to').closest('.row').hide();
+            $('select#link_to_' + {{ category_page_id }}).closest('.row').show();
+
         });
     </script>
 {% endblock %}

@@ -81,7 +81,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             return new ViewModel();
         }
 
-        $form = $this->getForm('page_category-page_edit', array('page' => $page));
+        $form = $this->getForm('page_category-page_edit', array('categorypage' => $page));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -109,7 +109,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'form' => $form,
-                'page' => $page,
+                'categorypage' => $page,
             )
         );
     }

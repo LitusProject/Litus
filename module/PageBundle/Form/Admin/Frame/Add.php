@@ -17,12 +17,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     protected $hydrator = 'PageBundle\Hydrator\Frame';
 
     /**
-     * @var CategoryPageEntity $categoryPage
-     */
-    protected $categoryPage;
-
-    /**
-     * @var FrameEntity|Null $frame
+     * @var FrameEntity $frame
      */
     protected $frame;
 
@@ -30,14 +25,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $this->add(
             array(
-                'type'       => 'radio',
-                'name'       => 'frame_type',
-                'label'      => 'Frame Type',
-                'required'   => true,
-                'value'      => 'big',
+                'type' => 'radio',
+                'name' => 'frame_type',
+                'label' => 'Frame Type',
+                'required' => true,
+                'value' => 'big',
                 'attributes' => array(
                     'options' => array(
-                        'big'      => 'Big Frame',
+                        'big' => 'Big Frame',
                         'smalldescription' => 'Small Frame with Description',
                         'smallposter' => 'Small Frame with Poster',
                     ),
@@ -45,16 +40,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
-        $this->add(
-            array(
-                'type' => 'select',
-                'name' => 'link_to',
-                'label' => 'Link To',
-                'options' => array(
-                    'options' => $this->createPagesAndLinksArray($this->categoryPage),
-                ),
-            )
-        );
+        $category_pages = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Node\CategoryPage')
+            ->findAll();
+
+        foreach ($category_pages as $category_page) {
+            $this->add(
+                array(
+                    'type' => 'select',
+                    'name' => 'link_to_' . $category_page->getId(),
+                    'label' => 'Link To',
+                    'attributes' => array(
+                        'class' => 'link_to',
+                        'id' => 'link_to_' . $category_page->getId(),
+                    ),
+                    'options' => array(
+                        'options' => $this->createPagesAndLinksArray($category_page),
+                    ),
+                )
+            );
+        }
 
         $this->add(
             array(
@@ -104,10 +109,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             '' => '',
         );
         foreach ($pages as $page) {
-            $pageOptions["page_".$page->getId()] = $page->getTitle();
+            $pageOptions["page_" . $page->getId()] = $page->getTitle();
         }
         foreach ($links as $link) {
-            $pageOptions["link_".$link->getId()] = $link->getName();
+            $pageOptions["link_" . $link->getId()] = $link->getName();
         }
 
         return $pageOptions;
@@ -125,13 +130,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     }
 
     /**
-     * @param CategoryPageEntity $page
-     * @return self
+     * @return FrameEntity
      */
-    public function setCategoryPage(CategoryPageEntity $page)
+    public function getFrame()
     {
-        $this->categoryPage = $page;
-
-        return $this;
+        return $this->frame;
     }
 }

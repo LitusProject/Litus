@@ -13,7 +13,6 @@ class CategoryPage extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-//        die(var_dump($data['category']));
         if ($object === null) {
             $object = new CategoryPageEntity($this->getPersonEntity());
         }

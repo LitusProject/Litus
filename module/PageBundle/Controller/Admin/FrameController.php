@@ -63,7 +63,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
     public function addAction()
     {
         $category_page = $this->getCategoryPageEntity();
-        $form = $this->getForm('page_frame_add', array('categoryPage' => $category_page));
+        $form = $this->getForm('page_frame_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -108,7 +108,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $form = $this->getForm('page_frame_edit', array('category_page' => $category_page));
+        $form = $this->getForm('page_frame_edit', $frame);
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();

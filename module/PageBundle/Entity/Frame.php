@@ -32,8 +32,8 @@ class Frame
     /**
      * @var CategoryPage The frame's categoryPage
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\CategoryPage")
-     * @ORM\JoinColumn(name="categoryPage", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\CategoryPage", )
+     * @ORM\JoinColumn(name="categoryPage", referencedColumnName="id", onDelete="CASCADE")
      */
     private $categoryPage;
 

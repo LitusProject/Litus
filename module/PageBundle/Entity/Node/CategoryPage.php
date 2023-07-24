@@ -31,7 +31,7 @@ class CategoryPage extends \CommonBundle\Entity\Node
      * @ORM\JoinTable(
      *      name="nodes_categorypages_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="category_page", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name")},
      * )
      */
     private $editRoles;
