@@ -70,7 +70,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $categoryOptions = array();
         foreach ($categories as $category) {
-            $categoryOptions[$category->getId()] = $category->getName();
+            $categorypage = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Node\CategoryPage')
+                ->findOneByCategory($category);
+            if(!$categorypage) {
+                $categoryOptions[$category->getId()] = $category->getName();
+            }
         }
 
         asort($categoryOptions);

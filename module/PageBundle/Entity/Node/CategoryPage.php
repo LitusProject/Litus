@@ -19,7 +19,7 @@ class CategoryPage extends \CommonBundle\Entity\Node
     /**
      * @var Category The page's category
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Category")
+     * @ORM\OneToOne(targetEntity="PageBundle\Entity\Category")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     private $category;
