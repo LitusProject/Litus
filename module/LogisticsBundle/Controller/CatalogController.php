@@ -14,7 +14,7 @@ use LogisticsBundle\Entity\Request;
  * CatalogController
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
  */
-class CatalogController extends \CommonBundle\Component\Controller\ActionController\SiteController
+class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
     public function overviewAction()
     {

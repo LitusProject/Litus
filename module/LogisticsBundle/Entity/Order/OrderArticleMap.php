@@ -25,7 +25,7 @@ class OrderArticleMap
      * @var Order The Order of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id", onDelete="CASCADE")
      */
     private $referencedOrder;
 
@@ -33,7 +33,7 @@ class OrderArticleMap
      * @var Article The Article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Article")
-     * @ORM\JoinColumn(name="referenced_article", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_article", referencedColumnName="id", onDelete="CASCADE")
      */
     private $referencedArticle;
 

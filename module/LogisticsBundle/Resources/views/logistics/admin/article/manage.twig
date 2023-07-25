@@ -171,10 +171,9 @@
 
         function openModal(e) {
             var $this = $(this);
-
             e.preventDefault();
             var removeArticle = $('#removeArticle');
-            removeArticle.find('.driverName').html($(this).data('name'));
+            removeArticle.find('.articleName').html($(this).data('name'));
             var id = $this.data('id');
             removeArticle.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_article', {"action": "delete"})}}' + id, function (data) {

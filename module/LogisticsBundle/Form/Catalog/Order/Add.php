@@ -179,7 +179,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 //            )
 //        );
 
-        $this->addSubmit('Submit', 'btn btn-primary', 'submit');
+        $this->addSubmit('Next', 'btn btn-primary', 'submit');
     }
 
     /**

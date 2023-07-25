@@ -5,7 +5,6 @@
 {% block content %}
     <div class="page-header">
         <h1>{{ translate('Catalog') }}</h1>
-        <a class="btn btn-default pull-right" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a><br>
     </div>
 
     <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
@@ -20,6 +19,9 @@
     {% else %}
         {% if hasAccess('logistics_catalog', 'search')%}
             <div style="height: 60px" class="hidden-xs hidden-sm">
+                <div>
+                    <a class="btn btn-default pull-left" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a>
+                </div>
                 <div class="pull-right">
                     {% if hasAccess('logistics_catalog', 'search') %}
                         <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
@@ -102,7 +104,9 @@
                                             {% set name = 'article-' ~ map['article'].getId() %}
                                             {% set element = form.get(name) %}
                                             {{ formElement(element) }}
-                                            <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a><b>{{ map['mapped']??0 }}</b><a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                            <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
+                                            <b>{{ map['mapped']??0 }}</b>
+                                            <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
                                         </td>
                                     </tr>
                                 {% endif %}

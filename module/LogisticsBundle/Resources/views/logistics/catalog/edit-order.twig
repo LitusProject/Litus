@@ -3,9 +3,10 @@
 
 {% block content %}
     <h1>{{ translate('Edit Order') }}</h1>
-    {{ translate("If you don't see your location as a possible option, put in in the description (be as complete as possible). ") }}
+    <div>{{ translate("If you don't see your location as a possible option, put in in the description (be as complete as possible). ") }}</div>
     <br>
-    <h4>{{ translate('Name') }}: <b>{{ order.getName() }}</b></h4><br>
+    <h4>{{ translate('Name') }}: <b>{{ order.getName() }}</b></h4>
+    <br>
 
     {{ forms.renderForm(form) }}
 {% endblock %}
