@@ -108,23 +108,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'start_date',
-                'label'    => 'Start Date',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
+                'type'       => 'datetime',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'options'    => array(
+                    'input'  => array(
                         'validators' => array(
                             array(
                                 'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'now',
                                     'format'     => 'd/m/Y H:i',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
+                                )
+                            )
+                        )
+                    )
+                )
             )
         );
 

@@ -69,7 +69,7 @@
                             <th class="hidden-xs">{{ translate('Status') }}</th>
                             <th class="hidden-xs">{{ translate('Amount') }}</th>
                             <th style="min-width: 100px"></th>
-                            <th style="width: 100px"></th>
+                            <th style="width: 12%; min-width: 140px"></th>
                         </tr>
                         </thead>
 
@@ -103,9 +103,9 @@
                                         <td style="text-align: center;">
                                             {% set name = 'article-' ~ map['article'].getId() %}
                                             {% set element = form.get(name) %}
-                                            {{ formElement(element) }}
+                                            <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>
                                             <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
-                                            <b>{{ map['mapped']??0 }}</b>
+                                            <a>{{ formElement(element) }}</a>
                                             <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
                                         </td>
                                     </tr>
@@ -174,10 +174,11 @@
             });
             // Set all the values correctly... TODO: why were they wrong before??
             let articles = $(":input[name^='article-']").get();
+            console.log(articles)
             articles.forEach((article)=>{
                 document.getElementById(article.id).value = $(article).closest('td').find('b').html();
             })
-
+            console.log(articles)
             $('.flashmessage .close').click(function (e) {
                 $(this).closest('.flashmessage').removeClass('in');
             });
