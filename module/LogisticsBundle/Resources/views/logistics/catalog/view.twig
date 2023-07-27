@@ -1,93 +1,146 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    {% include 'admin/partials/flashMessenger.twig' %}
+    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Request') }}: {{ order.getName() }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if order.getExternalComment() %}
+                <a rel="popover" style="float: right; background-color: #ed1a1a; padding: 10px"
+                   data-original-title="{{ translate('Logistics remark') }}"
+                   data-content="<span class='badge badge-info'></span> {{ order.getExternalComment() }}<br/>"
+                   data-placement="left" class="label label-warning">{{ translate('Logistics remark') }}</a>
+            {% endif %}
+        </div>
+    </div>
 
     <div id="controller_action">
         <div class="row">
-            <div class="col-md-4">
-                <h1>Order</h1>
+            <div class="col-md-4" style="padding-right: 3%;">
+                <h1 class="pull-left">{{ translate('Info') }}</h1>
+                <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                   href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
+                    Edit
+                </a>
+            </div>
+            <div class="col-md-8" style="padding-left: 50px">
+                <h1 class="pull-left">{{ translate('Articles') }}</h1>
+                <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                   href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
+                    Edit
+                </a>
             </div>
         </div>
+
+        {#     Order info body       #}
         <div class="row">
-            <div class="col-md-4">
-                <p>Name: <b>{{ order.getName() }}</b></p>
-                <p>Location: <b>{{ order.getLocation().getName() }}</b></p>
-                <p>Start Date: <b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
-                <p>End Date: <b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
-                <p>Approved: <b>{{ order.isApproved() ? 'Yes':'No' }}</b></p>
-                <p>Removed: <b>{{ order.isRemoved() ? 'Yes':'No' }}</b></p>
+            <div class="col-md-4" style="padding-right: 3%; padding-top: 10px;">
+                {#     Personal info  #}
+                <div class="info-content">
+                    <p>Contact: &emsp;&ensp;&ensp;<b>{{ order.getContact() }}</b></p>
+                    {% if order.getUnit() %}
+                        <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+                    {% endif %}
+                    <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
+                </div>
+
+                {#       Order info     #}
+                <div class="info-content">
+                    <p>Location:        &emsp;&ensp;&nbsp;<b>{{ order.getLocation().getName() }}</b></p>
+                    <p>Start Date:      &emsp;<b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+                    <p>End Date:        &emsp;&nbsp;<b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+                    <p>Status:          &emsp;&emsp;&ensp;&nbsp;<b>{{ translate(order.getStatus())}}</b></p>
+                    {% if order.getDescription() != '' %}
+                        <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
+                    {% endif %}
+                </div>
+{#       Old edit order block         #}
+{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
+{#                    <div class="title"><b>Edit Order</b></div>#}
+{#                    <div class="content">#}
+{#                        <p>#}
+{#                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>#}
+{#                        </p>#}
+{#                        <p>#}
+{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">#}
+{#                                Edit Order#}
+{#                            </a>#}
+{#                        </p>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
-            <div class="col-md-4">
-                <p>Creator: <b>{{ order.getCreator().getFullName() }}</b></p>
-                <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
-                <p>Contact: <b>{{ order.getContact() }}</b></p>
-                <p>Email:<b>{{ order.getEmail() }}</b></p>
-            </div>
-            <div class="col-md-4 pull-right">
-                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">
-                    <div class="title"><b>Edit Articles</b></div>
-                    <div class="content">
-                        <p>
-                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>
-                        </p>
-                        <p>
-                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
-                                &rarr; Edit Articles
-                            </a>
-                        </p>
+
+            {#     Article body       #}
+            <div class="col-md-8" style="padding-left: 50px">
+                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px">
+                    <div class="table-condensed">
+                        <table class="table mappings">
+                            {#     Table header       #}
+                            <tr>
+                                <th style="width: 25%">{{ Translate('Name') }}</th>
+                                <th style="width: 25%">{{ Translate('Category') }}</th>
+                                <th style="width: 20%">{{ Translate('Status') }}</th>
+                                <th style="width: 20%">{{ Translate('Comments') }}</th>
+                                <th style="width: 10%">{{ Translate('Amount') }}</th>
+                            </tr>
+
+                            {#     Table content       #}
+                            {% for mapping in articles %}
+                                <tr class="item item-{{ mapping.getId() }}">
+                                    <td>{{ mapping.getArticle().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getCategory() }}</td>
+                                    <td>{{ mapping.getStatus() }}</td>
+                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
+                                            <a rel="popover" data-original-title="{{ translate('Comments') }}"
+                                               data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
+                                               data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                        {% endif %}</td>
+                                    <td>{{ mapping.getAmount() }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
                     </div>
                 </div>
-                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">
-                    <div class="title"><b>Edit Order</b></div>
-                    <div class="content">
-                        <p>
-                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>
-                        </p>
-                        <p>
-                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
-                                &rarr; Edit Order
-                            </a>
-                        </p>
-                    </div>
-                </div>
+{#       Old edit article block         #}
+{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
+{#                    <div class="title"><b>Edit Articles</b></div>#}
+{#                    <div class="content">#}
+{#                        <p>#}
+{#                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>#}
+{#                        </p>#}
+{#                        <p>#}
+{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">#}
+{#                                &rarr; Edit Articles#}
+{#                            </a>#}
+{#                        </p>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
+
         </div>
+
+        {#     Order history       #}
         <div class="row">
             <div class="col-md-12">
-                <h4><b>Description:</b></h4>
-                <p>{{ order.getDescription() }}</p>
-                <br style="clear:both">
-                {% if order.getExternalComment() %}
-                    <div style="border: solid red 2px;">
-                        <b style="color: red;">You received a comment from the logistics team!</b>
-                        <h4><b>Comment:</b></h4>
-                        <p>{{ order.getExternalComment() }}</p>
-                    </div>
-                {% endif %}
+                <h1>{{ translate('History') }}</h1>
+
+
             </div>
         </div>
-        <div class="row" style="padding-top: 30px">
-            <div class="table-condensed">
-                <table class="table mappings">
-                    <tr>
-                        <th>{{ Translate('Name') }}</th>
-                        <th>{{ Translate('Amount') }}</th>
-                        <th>{{ Translate('Status') }}</th>
-                        <th style="min-width: 400px">{{ Translate('Comments') }}</th>
-                    </tr>
-                    {% for mapping in articles %}
-                        <tr class="item item-{{ mapping.getId() }}">
-                            <td>{{ mapping.getArticle().getName() }}</td>
-                            <td>{{ mapping.getAmount() }}</td>
-                            <td>{{ mapping.getStatus() }}</td>
-                            <td>{{ mapping.getArticle().getAdditionalInfo() }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-        <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
+
+
     </div>
 
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        {#    Display remarks when hovering    #}
+        $(document).ready(function () {
+            $('[rel=tooltip]').tooltip();
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+        });
+    </script>
 {% endblock %}

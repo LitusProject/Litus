@@ -210,7 +210,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Location')
             ->findAllActive();
 
-        $locationsArray = array();
+        $locationsArray = array(
+            ''  => '',
+        );
         foreach ($locations as $location) {
             $locationsArray[$location->getId()] = $location->getName();
         }

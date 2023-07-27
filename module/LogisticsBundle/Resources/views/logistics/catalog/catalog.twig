@@ -111,7 +111,6 @@
                                     </tr>
                                 {% endif %}
 
-
                                 {% if element.getMessages()|length > 0  and map['bookable'] %}
                                     <tr>
                                         <td colspan="7" style="border-top-width:0px;">
@@ -174,11 +173,9 @@
             });
             // Set all the values correctly... TODO: why were they wrong before??
             let articles = $(":input[name^='article-']").get();
-            console.log(articles)
             articles.forEach((article)=>{
                 document.getElementById(article.id).value = $(article).closest('td').find('b').html();
             })
-            console.log(articles)
             $('.flashmessage .close').click(function (e) {
                 $(this).closest('.flashmessage').removeClass('in');
             });

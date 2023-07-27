@@ -11,11 +11,11 @@
             <h1>{{ translate('Flesserke') }}</h1>
         </div>
         {% if authenticatedPerson is not null %}
-        <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
-            <a href="{{ url('logistics_inventory', {"action": "add"})}}">
-                <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
-            </a>
-        </div>
+            <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
+                <a href="{{ url('logistics_inventory', {"action": "add"})}}">
+                    <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
+                </a>
+            </div>
         {% endif %}
     </div>
 
