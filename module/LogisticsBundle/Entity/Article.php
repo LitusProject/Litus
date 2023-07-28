@@ -189,7 +189,7 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'ok'       => 'In Orde',
+        'ok'       => 'In orde',
         'vermist'  => 'Vermist',
         'weg'      => 'Weg',
         'kapot'    => 'Kapot',
@@ -368,7 +368,7 @@ class Article
     /**
      * @return string
      */
-    public function getStatusCode()
+    public function getStatusKey()
     {
         return $this->status;
     }

@@ -23,25 +23,34 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             return new ViewModel();
         }
 
-        $orders = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order')
-            ->findAllActiveByCreator($academic);
+//        $orders = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Order')
+//            ->findAllActiveByCreator($academic);
 
         $requests = $this->getOpenRequests($academic);
         $unit = $academic->getUnit($this->getCurrentAcademicYear(true));
 
         if ($unit) {
-            $unitOrders = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order')
-                ->findAllActiveByUnit($unit);
+//            $unitOrders = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order')
+//                ->findAllActiveByUnit($unit);
+//            $orders = $this->mergeArraysUnique($orders, $unitOrders);
+
             $unitRequests = $this->getOpenRequestsByUnit($unit);
-            $orders = $this->mergeArraysUnique($orders, $unitOrders);
             $requests = $this->mergeArraysUnique($requests, $unitRequests);
         }
+
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrders[] = $this->getLastOrderByRequest($request);
+        }
+
         return new ViewModel(
             array(
-                'orders'   => $orders,
-                'requests' => $requests,
+//                'orders'        => $orders,
+//                'requests'      => $requests,
+                'lastOrders'    => $lastOrders,
             )
         );
     }
@@ -58,6 +67,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             return $this->notFoundAction();
         }
 
+        $request = $order->getRequest();
+
+        // Check if authenticated to modify order articles
         if ($academic !== $order->getCreator()
             && (!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
             || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
@@ -104,8 +116,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $newOrder = $this->recreateOrder($order);
-                $newOrder->pending();
+                $newOrder = $this->recreateOrder($order, $academic->getFullName());
                 $this->getEntityManager()->persist($newOrder);
 
                 $formData = $form->getData();
@@ -125,9 +136,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     }
                 }
 
-                $req = new Request($academic, $order, 'edit', $newOrder);
-                $this->getEntityManager()->persist($req);
-
                 if ($total == 0) {
                     $this->flashMessenger()->warn(
                         'Warning',
@@ -140,8 +148,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                         'Success',
                         'The articles have been booked!'
                     );
-                    $this->sendAlertMails($req);
-                    $this->sendMailToLogi($req);
+                    $this->sendAlertMails($request);
+                    $this->sendMailToLogi($request);
                 }
                 $this->redirect()->toRoute(
                     'logistics_catalog',
@@ -168,12 +176,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     public function addOrderAction()
     {
-        $person = $this->getAcademicEntity();
-        if ($person === null) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        $form = $this->getForm('logistics_catalog_order_add', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear(true)));
+        $form = $this->getForm('logistics_catalog_order_add', array('academic' => $academic, 'academicYear' => $this->getCurrentAcademicYear(true)));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -181,15 +189,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
             if ($form->isValid()) {
                 $order = $form->hydrateObject(
-                    new Order($person)
+                    new Order($academic, new Request($academic), $academic->getFullName())
                 );
                 $order->approve();
                 $this->getEntityManager()->persist($order);
                 $this->getEntityManager()->flush();
 
-                $this->redirect()->toRoute(
-                    'logistics_catalog', array('action' => 'catalog', 'order'  => $order->getId(),));
-
+                $this->redirect()->toRoute('logistics_catalog', array('action' => 'catalog', 'order'  => $order->getId(),));
                 return new ViewModel();
             }
         }
@@ -203,8 +209,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     public function editOrderAction()
     {
-        $person = $this->getAcademicEntity();
-        if ($person === null) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
@@ -213,27 +219,27 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             return new ViewModel();
         }
 
-        if ($person !== $order->getCreator()
-            &&(!$person->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        if ($academic !== $order->getCreator()
+            &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
+            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
 
-        $requests = $this->getOpenRequests($person);
+//        $requests = $this->getOpenRequests($academic);
 
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
 
-        $unfinishedRequestsOrders = array();
-        foreach ($requests as $request) {
-            if ($request->getRequestType() == 'edit reject' || $request->getRequestType() == 'edit') {
-                $unfinishedRequestsOrders[$request->getEditOrder()->getId()] = $request->getRequestType();
-            } elseif ($request->getRequestType() == 'delete') {
-                $unfinishedRequestsOrders[$request->getOrder()->getId()] = 'delete';
-            }
-        }
+//        $unfinishedRequestsOrders = array();
+//        foreach ($requests as $request) {
+//            if ($request->getRequestType() == 'edit reject' || $request->getRequestType() == 'edit') {
+//                $unfinishedRequestsOrders[$request->getEditOrder()->getId()] = $request->getRequestType();
+//            } elseif ($request->getRequestType() == 'delete') {
+//                $unfinishedRequestsOrders[$request->getOrder()->getId()] = 'delete';
+//            }
+//        }
 
         if (isset($unfinishedRequestsOrders[$order->getId()])) {
             $this->flashMessenger()->error(
@@ -249,22 +255,27 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             );
         }
 
-        $form = $this->getForm('logistics_catalog_order_edit', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear(true), 'order' => $order));
+        $form = $this->getForm('logistics_catalog_order_edit', array('academic' => $academic, 'academicYear' => $this->getCurrentAcademicYear(true), 'order' => $order));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $newOrder = $form->hydrateObject(new Order($person));
+                $newOrder = $form->hydrateObject(
+                    $this->recreateOrder($order, $academic->getFullName())
+                );
                 $newOrder->pending();
+                $this->getEntityManager()->persist($newOrder);
+
                 foreach ($mappings as $map) {
                     $booking = new Map($newOrder, $map->getArticle(), $map->getAmount());
                         $this->getEntityManager()->persist($booking);
                 }
-                $this->getEntityManager()->persist($newOrder);
-                $request = new Request($person, $order, 'edit', $newOrder);
-                $this->getEntityManager()->persist($request);
+
+                $request = $newOrder->getRequest();
+//                $request = new Request($person, $order, 'edit', $newOrder);
+//                $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
                 $this->sendMailToLogi($request);
@@ -274,13 +285,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     'The request has been sent to our administrators for approval.'
                 );
 
-                $this->redirect()->toRoute(
-                    'logistics_catalog',
-                    array(
-                        'action' => 'overview',
-                    )
-                );
-
+                $this->redirect()->toRoute('logistics_catalog', array('action' => 'view', 'order'  => $newOrder->getId()));
                 return new ViewModel();
             }
         }
@@ -316,10 +321,14 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
 
+        // Gets last order for every request
+        $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
+
         return new ViewModel(
             array(
-                'order'    => $order,
-                'articles' => $articles,
+                'order'         => $order,
+                'articles'      => $articles,
+                'lastOrders'    => $lastOrders,
             )
         );
     }
@@ -586,7 +595,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     private function getOrderEntity()
     {
         $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
-
         if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
                 'Error',
@@ -639,11 +647,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     {
         $unhandledRequests = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
-            ->findAllUnhandledByAcademic($academic);
-
+            ->findUnhandledByAcademic($academic);
         $handledRejects = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
-            ->findActiveRejectsByAcademic($academic);
+            ->findHandledByAcademic($academic);
 
         return array_merge($handledRejects, $unhandledRequests);
     }
@@ -665,6 +672,43 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     }
 
     /**
+     * @param Request $request
+     * @return array
+     */
+    private function getAllOrdersByRequest($request)                  // Gets all orders except oldest (dummy order)
+    {
+        $orders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        array_pop($orders);
+        return $orders;
+    }
+
+    /**
+     * @param Request $request
+     * @return Order
+     */
+    private function getLastOrderByRequest($request)                  // Gets the most recent order
+    {
+        $order = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        return current($order);                                       // Gets the first element of an array
+    }
+
+    /**
+     * @param Request $request
+     * @return Order
+     */
+    private function getFirstOrderByRequest($request)                // Gets the oldest order, by default an empty order
+    {
+        $order = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        return end($order);                                    // Gets the last element of an array
+    }
+
+    /**
      * @param array $a1
      * @param array $a2
      * @return array
@@ -683,17 +727,18 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      * @param Order $order
      * @return Order
      */
-    private function recreateOrder(Order $order)
+    private function recreateOrder(Order $order, string $updator)
     {
-        $new = new Order($order->getContact());
+        $new = new Order($order->getContact(), $order->getRequest(), $updator);
         $new->setCreator($order->getCreator());
         $new->setLocation($order->getLocation());
         $new->setDescription($order->getDescription());
         $new->setEmail($order->getEmail());
+        $new->setStartDate($order->getStartDate());
         $new->setEndDate($order->getEndDate());
         $new->setName($order->getName());
-        $new->setStartDate($order->getStartDate());
         $new->setUnit($order->getUnit());
+        $new->pending();
         # In comment: should be fixed later on when adding van system
         # $new->setNeedsRide($order->needsRide());
 
@@ -705,7 +750,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function sendMailToLogi(Request $request) // Mail for Logistiek
     {
-        $order = $request->getRecentOrder();
+        $order = $this->getLastOrderByRequest($request);
+
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.order_mail');
@@ -746,7 +792,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function sendAlertMails(Request $request) // Extra mails for specific items (ex. to Theokot)
     {
-        $order = $request->getRecentOrder();
+        $order = $this->getLastOrderByRequest($request);
+
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
@@ -763,7 +810,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('logistics.order_alert_mail')
-        );
+            );
 
         $message = $mailData['content'];
         $subject = $mailData['subject'];

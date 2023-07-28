@@ -1,8 +1,15 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('My Orders') }}</h1>
+    <div class="page-header" style="overflow: hidden;">
+        <div style="float:left;">
+            <h1>{{ translate('MyRequests') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if authenticatedPerson is not null %}
+                <a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success pull-right">{{ translate('New Reservation') }}</a>
+            {% endif %}
+        </div>
     </div>
 
     <div class="flashmessage alert alert-danger order_canceled_error fade">
@@ -37,88 +44,115 @@
         <div>{{ translate('Please login to view your orders.') }}</div>
     {% else %}
 
-        {% if enableExtraText %}
-            <p>{{ orderText }}</p>
-        {% endif %}
-        <table class="table">
-            <tr>
-                <th>{{ translate('Booking') }}</th>
-                <th class="hidden-xs">{{ translate('Author') }}</th>
-                <th class="hidden-xs">{{ translate('Start Date') }}</th>
-                <th class="hidden-xs">{{ translate('End Date') }}</th>
-                <th class="hidden-xs">{{ translate('Status') }}</th>
-                <th>{{ translate('Actions') }}</th>
-            </tr>
-            {% for order in orders %}
-                <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">
-                    <td>{{ order.getName() }}</td>
-                    <td class="hidden-xs">{{ order.getContact() }}</td>
-                    <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
-                    <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                    <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
-                    <td class="actions">
-                        {% if order.isEditable() %}
-                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-warning btn-sm edit">
-                                {{ translate('Edit') }}
-                            </a>
-                        {% endif %}
-                        <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
-                            {{ translate('Articles') }}
-                        </a>
-                        {% if order.isCancellable() %}
-                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">
-                                {{ translate('Cancel') }}
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+{#        {% if enableExtraText %}#}
+{#            <p>{{ orderText }}</p>#}
+{#        {% endif %}#}
+{#        <table class="table">#}
+{#            <tr>#}
+{#                <th>{{ translate('Booking') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Author') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Start Date') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('End Date') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Status') }}</th>#}
+{#                <th>{{ translate('Actions') }}</th>#}
+{#            </tr>#}
+{#            {% for order in orders %}#}
+{#                <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">#}
+{#                    <td>{{ order.getName() }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getContact() }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>#}
+{#                    <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>#}
+{#                    <td class="actions">#}
+{#                        {% if order.isEditable() %}#}
+{#                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-warning btn-sm edit">#}
+{#                                {{ translate('Edit') }}#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{#                        <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">#}
+{#                            {{ translate('Articles') }}#}
+{#                        </a>#}
+{#                        {% if order.isCancellable() %}#}
+{#                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">#}
+{#                                {{ translate('Cancel') }}#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
 
-        </table>
+{#        </table>#}
 
-        <a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success pull-right">{{ translate('New Reservation') }}</a>
-
-        {% if not requests is empty %}
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>{{ translate('Requests') }}</h1>
-                </div>
-            </div>
+        {% if not lastOrders is empty %}
             <div class="row">
                 {% set onceRejected = false %}
                 {% set oncePending = false %}
+
+                {#        Table with all latest orders        #}
                 <div class="col-md-12">
-                    <table class="table table-hover full-width">
-                        {% for request in requests %}
-                            {% if request.getStatus() == 'rejected' %}{% set onceRejected = true %}{% endif %}
-                            {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}
-                            <tr>
-                                <td width="200">
-                                    Type: <strong>{{ translate(request.getRequestType()) }}</strong>
-                                    <br/><br/>
-                                    Status: <strong>{{ translate(request.getStatus()) }}</strong>
-                                </td>
-                                <td>
-                                    <strong>{{ request.getRecentOrder().getName() }} </strong>
-                                    <br/>
-                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getRecentOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>
-                                    <br/>
-                                    {% if request.getStatus() == 'rejected' %}
-                                        <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>
-                                    {% else %}
-                                        {{ request.getRecentOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
-                                    {% endif %}
-                                </td>
-                                <td width="230" style="vertical-align: middle;">
-                                    {% if request.getRequestType() != 'delete' %}
-                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>
-                                    {% endif %}
-                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getRecentOrder().getId()}) }}">{{ translate('View') }}</a>
-                                    <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>{{ translate('Request') }}</th>
+                            <th class="hidden-xs">{{ translate('Contact') }}</th>
+                            <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                            <th class="hidden-xs">{{ translate('End Date') }}</th>
+                            <th class="hidden-xs">{{ translate('Status') }}</th>
+                            <th>{{ translate('Actions') }}</th>
+                        </tr>
+                        </thead>
+                        {% for order in lastOrders %}
+                            <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">
+                                <td>{{ order.getName() }}</td>
+                                <td class="hidden-xs">{{ order.getContact() }}</td>
+                                <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
+                                <td class="actions">
+                                    <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                        {{ translate('Cancel') }}
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}
                     </table>
+{#                    <table class="table table-hover full-width">#}
+{#                        {% for lastOrder in lastOrders %}#}
+{#                            <div>{{ lastOrder.name }}</div>#}
+{#                        {% endfor %}#}
+{#                        {% for request in requests %}#}
+{#                            {% if request.getStatus() == 'rejected' %}{% set onceRejected = true %}{% endif %}#}
+{#                            {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}#}
+{#                            <tr>#}
+{#                                <td width="200">#}
+{#                                    Type: <strong>{{ translate(request.getRequestType()) }}</strong>#}
+{#                                    <br/><br/>#}
+{#                                    Status: <strong>{{ translate(request.getStatus()) }}</strong>#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <strong>{{ request.getRecentOrder().getName() }} </strong>#}
+{#                                    <br/>#}
+{#                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getRecentOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>#}
+{#                                    <br/>#}
+{#                                    {% if request.getStatus() == 'rejected' %}#}
+{#                                        <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>#}
+{#                                    {% else %}#}
+{#                                        {{ request.getRecentOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                                <td width="230" style="vertical-align: middle;">#}
+{#                                    {% if request.getRequestType() != 'delete' %}#}
+{#                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>#}
+{#                                    {% endif %}#}
+{#                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getRecentOrder().getId()}) }}">{{ translate('View') }}</a>#}
+{#                                    <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                    </table>#}
                 </div>
                 {% if onceRejected == true %}
                     <div class="flashmessage alert alert-warning fade in">
@@ -145,7 +179,7 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        {{ translate('Are you sure you want to cancel the following order:') }} <b class="orderName"></b>?
+                        {{ translate('Are you sure you want to cancel the following request:') }} <b class="orderName"></b>?
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -184,12 +218,14 @@
         });
 
         function openModalCancel(e) {
+            // Gets the object bound to the modal: an order
             var $this = $(this);
 
             e.preventDefault();
             var cancelReservation = $('#cancelReservation');
-            cancelReservation.find('.articleTitle').html($(this).data('title'));
+            cancelReservation.find('.orderName').html($(this).data('name'));
             var id = $this.data('id');
+            console.log($this.data('id'));
             cancelReservation.find('.continue').unbind('click').click(function () {
                 $.post('{{ url('logistics_catalog', {"action": "removeOrder"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {

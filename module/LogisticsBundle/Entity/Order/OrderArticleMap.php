@@ -58,14 +58,18 @@ class OrderArticleMap
     public static $POSSIBLE_STATUSES = array(
         'aangevraagd' => 'Aangevraagd',
         'goedgekeurd' => 'Goedgekeurd',
+        'afgewezen'   => 'Afgewezen',
         'op locatie'  => 'Op Locatie',
-        'vermist'     => 'Vermist',
         'terug'       => 'Terug',
         'klaar'       => 'Klaar',
         'weggezet'    => 'Weggezet',
         'none'        => 'None',
-        'vuil'        => 'Vuil',
-        'kapot'       => 'Kapot'
+        'vuil'          => 'Vuil',
+        'kapot'         => 'Kapot',
+        'vermist'       => 'Vermist',
+        'weg'           => 'Weg',
+        'aankopen'      => 'Aankopen',
+        'nakijken'      => 'Nakijken',
     );
 
     /**
@@ -79,7 +83,11 @@ class OrderArticleMap
         $this->referencedOrder = $order;
         $this->referencedArticle = $article;
         $this->amount = $amount;
-        $this->status = 'none';
+        if ($article->getStatusKey() === 'ok') {
+            $this->status = 'aangevraagd';
+        } else {
+            $this->status = $article->getStatusKey();
+        }
     }
 
     /**
@@ -133,7 +141,7 @@ class OrderArticleMap
     /**
      * @return string
      */
-    public function getStatusCode()
+    public function getStatusKey()
     {
         return $this->status ? $this->status : 'none';
     }

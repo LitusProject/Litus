@@ -166,10 +166,13 @@
                 }
             });
             {% endif %}
+
+            // To delete an article
             $('.item .delete').click(openModal);
         });
 
         function openModal(e) {
+            // Gets the object bound to the modal: an article
             var $this = $(this);
             e.preventDefault();
             var removeArticle = $('#removeArticle');

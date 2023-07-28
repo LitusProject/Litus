@@ -3,8 +3,17 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('Catalog') }}</h1>
+    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a>
+
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Catalog') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if hasAccess('logistics_catalog', 'search')%}
+                <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+            {% endif %}
+        </div>
     </div>
 
     <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
@@ -18,41 +27,28 @@
         {{ translate('Please login to book articles.') }}
     {% else %}
         {% if hasAccess('logistics_catalog', 'search')%}
-            <div style="height: 60px" class="hidden-xs hidden-sm">
-                <div>
-                    <a class="btn btn-default pull-left" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a>
-                </div>
-                <div class="pull-right">
-                    {% if hasAccess('logistics_catalog', 'search') %}
-                        <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
-                    {% endif %}
-                </div>
-            </div>
+            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                {{ forms.renderForm(searchForm) }}
 
-                <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
-                    {{ forms.renderForm(searchForm) }}
-
-                    <table class="table mappings">
-                        <thead>
+                <table class="table mappings">
+                    <thead>
                         <tr>
                             <th>{{ translate('Name') }}</th>
                             <th class="hidden-xs">{{ translate('Status') }}</th>
                             <th class="hidden-xs">{{ translate('Amount') }}</th>
                             <th style="min-width: 100px"></th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <tr class="spacer">
                             <td colspan="7"></td>
                         </tr>
-                        <tr class="category-title">
-                            <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <a class="btn btn-default pull-left" href="{{ url('logistics_catalog', {'action' : 'view', 'order': order.getId()}) }}">{{ translate('Back') }}</a>
-                </div>
+                    <tr class="category-title">
+                        <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         {% endif %}
 
         <div id="viewArticlesPage">
@@ -257,7 +253,7 @@
                                             $('<td>', {'class': 'hidden-xs'}).html(this.status),
                                             $('<td>', {'class': 'hidden-xs'}).html(this.amt),
                                             comments = $('<td>', {'class': 'hidden-xs'}),
-                                            book = $('<td>', {'style': 'text-align: center; width: 100px'})
+                                            book = $('<td>', {'style': 'text-align: center; width: 12%; min-width: 140px'})
                                         )
                                     );
 
@@ -275,9 +271,17 @@
                                         );
                                     }
                                     book.append(
-                                        $('<input>', {'type': 'hidden', 'id': 'search-article-' + this.id, 'placeholder': this.mapped}).data('id', this.id),
+                                        {#<td style="text-align: center;">#}
+                                        {#    {% set name = 'article-' ~ map['article'].getId() %}#}
+                                        {#    {% set element = form.get(name) %}#}
+                                        {#    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>#}
+                                        {#    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>#}
+                                        {#    <a>{{ formElement(element) }}</a>#}
+                                        {#    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>#}
+                                        {#</td>#}
+                                        $('<b>', {'style': 'visibility: hidden'}).html(this.mapped?? 0),
                                         $('<a>', {'href': '#', 'class': 'decrease-value'}).append($('<span>', {'class': 'glyphicon glyphicon-minus-sign pull-left', 'style': 'margin-top: 3px;'})),
-                                        $('<b>').html(this.mapped?? 0),
+                                        $('<a>', {'style': 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',}).append($('<input type="text">', {'id': 'search-article-' + this.id, 'placeholder': this.mapped, 'style': 'max-width: 20px;',}).data('id', this.id)),
                                         $('<a>', {'href': '#', 'class': 'increase-value'}).append($('<span>', {'class': 'glyphicon glyphicon-plus-sign pull-right', 'style': 'margin-top: 3px;'}))
                                     );
 

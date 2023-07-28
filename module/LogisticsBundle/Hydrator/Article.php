@@ -18,7 +18,7 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         $data['warranty'] = $object->getWarranty() / 100;
         $data['rent'] = $object->getRent() / 100;
         $data['visibility'] = $object->getVisibilityCode();
-        $data['status'] = $object->getStatusCode();
+        $data['status'] = $object->getStatusKey();
         $data['category'] = $object->getCategoryCode();
 
         return $data;

@@ -2,6 +2,7 @@
 
 {% block content %}
     <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
+
     <div class="page-header" style="overflow: hidden; margin-top: 10px">
         <div style="float:left;">
             <h1>{{ translate('Request') }}: {{ order.getName() }}</h1>
@@ -22,14 +23,14 @@
                 <h1 class="pull-left">{{ translate('Info') }}</h1>
                 <a class="btn btn-primary pull-right" style="margin-top: 25px;"
                    href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
-                    Edit
+                    Update
                 </a>
             </div>
             <div class="col-md-8" style="padding-left: 50px">
                 <h1 class="pull-left">{{ translate('Articles') }}</h1>
                 <a class="btn btn-primary pull-right" style="margin-top: 25px;"
                    href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
-                    Edit
+                    Update
                 </a>
             </div>
         </div>
@@ -88,7 +89,10 @@
 
                             {#     Table content       #}
                             {% for mapping in articles %}
-                                <tr class="item item-{{ mapping.getId() }}">
+                                <tr class="item item-{{ mapping.getId() }}"
+                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
+                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
+                                    {% else %}style="background-color: #fae3e3"{% endif %}>
                                     <td>{{ mapping.getArticle().getName() }}</td>
                                     <td>{{ mapping.getArticle().getCategory() }}</td>
                                     <td>{{ mapping.getStatus() }}</td>
@@ -118,19 +122,57 @@
 {#                    </div>#}
 {#                </div>#}
             </div>
-
         </div>
 
         {#     Order history       #}
-        <div class="row">
+        <div class="row" style="margin-top: 30px">
             <div class="col-md-12">
                 <h1>{{ translate('History') }}</h1>
-
-
+                <table class="table table-hover" style="margin-top: 15px">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Request') }}</th>
+                        <th class="hidden-xs">{{ translate('Contact') }}</th>
+                        <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                        <th class="hidden-xs">{{ translate('End Date') }}</th>
+                        <th class="hidden-xs">{{ translate('Updated') }}</th>
+                        <th class="hidden-xs">{{ translate('By') }}</th>
+                        <th class="hidden-xs">{{ translate('Status') }}</th>
+                        <th style="width: 160px">{{ translate('Actions') }}</th>
+                    </tr>
+                    </thead>
+                    {% for lastOrder in lastOrders[:5] %}
+                        <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}"
+                            {% if lastOrder.getId() == order.getId() %} style="background-color: #ecebff" {% endif %}>
+                            <td>{{ lastOrder.getName() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getContact() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdateDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdator() }}</td>
+                            <td class="hidden-xs">{{ translate(lastOrder.getStatus()) }}</td>
+                            <td class="actions">
+                                {% if lastOrders[0].getId() != lastOrder.getId() %}
+                                    <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': lastOrder.getId() }) }}" class="btn btn-warning btn-sm edit">
+                                        {{ translate('Revert') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrder.getId() != order.getId() %}
+                                    <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : lastOrder.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrders[0].getId() == lastOrder.getId() %}
+                                    <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ lastOrder.getId() }}" data-title="{{ lastOrder.getName() }}">
+                                        {{ translate('Cancel') }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
-
-
     </div>
 
 {% endblock %}
