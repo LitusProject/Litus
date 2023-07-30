@@ -159,6 +159,13 @@ class Order
     private $reviewed;
 
     /**
+     * @var boolean If this order has been canceled.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $canceled;
+
+    /**
      * @var boolean If this order needs a ride (een kar-rit, auto-rit of dergelijke).
      *
      * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
@@ -179,7 +186,7 @@ class Order
      * @param Request  $request
      * @param string $updator
      */
-    public function __construct($contact, Request $request, string $updator)
+    public function __construct($contact, Request $request, string $updator, string $status='')
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
@@ -187,6 +194,7 @@ class Order
         $this->removed = false;
         $this->rejected = false;
         $this->referencedRequest = $request;
+        $this->setStatus($status);
     }
 
     /**
@@ -214,7 +222,10 @@ class Order
         if ($this->isReviewed()) {
             return 'Reviewed';
         }
-        return 'Pending';
+        if ($this->isCanceled()) {
+            return 'Canceled';
+        }
+        return 'Pending';               // Default is pending
     }
 
     /**
@@ -230,12 +241,12 @@ class Order
             $this->reject();
         } elseif ($status == 'approved') {
             $this->approve();
-        } elseif ($status == 'pending') {
-            $this->pending();
         } elseif ($status == 'reviewed') {
             $this->review();
+        } elseif ($status == 'canceled') {
+            $this->cancel();
         }
-        return $this;
+        return $this->pending();        // Default is pending
     }
 
     /**
@@ -245,7 +256,6 @@ class Order
     {
         $this->approved = true;
         $this->rejected = false;
-        $this->removed = false;
         $this->reviewed = false;
 
         return $this;
@@ -260,18 +270,7 @@ class Order
         $this->rejected = false;
         $this->removed = false;
         $this->reviewed = false;
-
-        return $this;
-    }
-
-    /**
-     * @return self
-     */
-    public function remove()
-    {
-        $this->approved = false;
-        $this->rejected = false;
-        $this->removed = true;
+        $this->canceled = false;
 
         return $this;
     }
@@ -283,7 +282,6 @@ class Order
     {
         $this->approved = false;
         $this->rejected = false;
-        $this->removed = false;
         $this->reviewed = true;
 
         return $this;
@@ -295,9 +293,33 @@ class Order
     public function reject()
     {
         $this->rejected = true;
-        $this->removed = false;
         $this->approved = false;
         $this->reviewed = false;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function cancel()
+    {
+        $this->rejected = false;
+        $this->approved = false;
+        $this->reviewed = false;
+        $this->canceled = true;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function remove()
+    {
+        $this->canceled = false;
+        $this->removed = true;
+
         return $this;
     }
 
@@ -347,10 +369,22 @@ class Order
     public function isReviewed()
     {
         if ($this->reviewed === null) {
-            return true;
+            return false;
         }
 
         return $this->reviewed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCanceled()
+    {
+        if ($this->canceled === null) {
+            return false;
+        }
+
+        return $this->canceled;
     }
 
     /**

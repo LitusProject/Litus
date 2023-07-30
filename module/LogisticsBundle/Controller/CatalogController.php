@@ -23,19 +23,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             return new ViewModel();
         }
 
-//        $orders = $this->getEntityManager()
-//            ->getRepository('LogisticsBundle\Entity\Order')
-//            ->findAllActiveByCreator($academic);
-
-        $requests = $this->getOpenRequests($academic);
+        $requests = $this->getOpenRequestsByAcademic($academic);
         $unit = $academic->getUnit($this->getCurrentAcademicYear(true));
 
         if ($unit) {
-//            $unitOrders = $this->getEntityManager()
-//                ->getRepository('LogisticsBundle\Entity\Order')
-//                ->findAllActiveByUnit($unit);
-//            $orders = $this->mergeArraysUnique($orders, $unitOrders);
-
             $unitRequests = $this->getOpenRequestsByUnit($unit);
             $requests = $this->mergeArraysUnique($requests, $unitRequests);
         }
@@ -48,8 +39,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return new ViewModel(
             array(
-//                'orders'        => $orders,
-//                'requests'      => $requests,
                 'lastOrders'    => $lastOrders,
             )
         );
@@ -71,8 +60,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         // Check if authenticated to modify order articles
         if ($academic !== $order->getCreator()
-            && (!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
         ) {
             return $this->notFoundAction();
         }
@@ -220,26 +208,14 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
         ) {
             return $this->notFoundAction();
         }
 
-//        $requests = $this->getOpenRequests($academic);
-
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
-
-//        $unfinishedRequestsOrders = array();
-//        foreach ($requests as $request) {
-//            if ($request->getRequestType() == 'edit reject' || $request->getRequestType() == 'edit') {
-//                $unfinishedRequestsOrders[$request->getEditOrder()->getId()] = $request->getRequestType();
-//            } elseif ($request->getRequestType() == 'delete') {
-//                $unfinishedRequestsOrders[$request->getOrder()->getId()] = 'delete';
-//            }
-//        }
 
         if (isset($unfinishedRequestsOrders[$order->getId()])) {
             $this->flashMessenger()->error(
@@ -274,8 +250,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 }
 
                 $request = $newOrder->getRequest();
-//                $request = new Request($person, $order, 'edit', $newOrder);
-//                $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
 
                 $this->sendMailToLogi($request);
@@ -333,45 +307,29 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function removeOrderAction()
+    public function cancelRequestAction()
     {
         $this->initAjax();
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         $order = $this->getOrderEntity();
-        if ($order === null) {
+        $request = $order->getRequest();
+        if ($request === null) {
             return $this->notFoundAction();
         }
 
         if ($academic !== $order->getCreator()
-            &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
         ) {
             return $this->notFoundAction();
         }
 
-        if (!$order->isCancellable()) {
-            $this->flashMessenger()->error(
-                'Error',
-                'The given order cannot be removed!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return new ViewModel();
-        }
-
-        $order->remove();
-
+        $request->cancel();
+        $order->cancel();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -381,115 +339,33 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function editRequestAction()
-    {
-        $person = $this->getAcademicEntity();
-        if ($person === null) {
-            return new ViewModel();
-        }
-
-        $request = $this->getRequestEntity();
-        if ($request === null) {
-            return new ViewModel();
-        }
-
-        if ($person !== $request->getContact()) {
-            return $this->notFoundAction();
-        }
-
-        if (!$request->getEditOrder()) {
-            $this->flashMessenger()->error(
-                'Error',
-                'The given request cannot be edited! Edit the order instead!'
-            );
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-        }
-
-        $form = $this->getForm('logistics_catalog_order_edit', array('academic' => $person, 'academicYear' => $this->getCurrentAcademicYear(true), 'order' => $request->getEditOrder()));
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $newOrder = $form->hydrateObject(new Order($person));
-                $newOrder->pending();
-                $this->getEntityManager()->persist($newOrder);
-                $newRequest = new Request($person, $request->getOrder(), 'edit', $newOrder);
-                $this->getEntityManager()->persist($newRequest);
-                $request->rejectRequest('Overwritten by an edit at ' . $newRequest->getCreationTime()->format('d/m/Y H:m'));
-                $request->handled();
-                $this->getEntityManager()->flush();
-
-                $this->sendMailToLogi($newRequest);
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The request has been sent to our administrators for approval.'
-                );
-
-                $this->redirect()->toRoute(
-                    'logistics_catalog',
-                    array(
-                        'action' => 'overview',
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
     public function removeRequestAction()
     {
         $this->initAjax();
 
-        $person = $this->getAcademicEntity();
-        if ($person === null) {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
             return new ViewModel();
         }
 
-        $request = $this->getRequestEntity();
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return $this->notFoundAction();
+        }
+
+        $request = $order->getRequest();
         if ($request === null) {
             return $this->notFoundAction();
         }
 
-        if ($person !== $request->getContact()) {
+        if ($academic !== $order->getCreator()
+            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+        ) {
             return $this->notFoundAction();
         }
 
-        if ($request->getStatus() !== 'pending' && $request->getStatus() !== 'rejected') {
-            $this->flashMessenger()->error(
-                'Error',
-                'The given request cannot be removed!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-
-            return new ViewModel();
-        }
-        $request->setRemoved(true);
-        if ($request->getRequestType() === 'add') {
-            $request->getOrder()->remove();
-        } else {
-            $request->getEditOrder()->remove();
-        }
-
+        $request->remove();
+        $order->remove();
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -514,8 +390,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            &&(!$academic->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
         ) {
             return $this->notFoundAction();
         }
@@ -643,7 +518,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @return array
      */
-    private function getOpenRequests(Academic $academic)
+    private function getOpenRequestsByAcademic(Academic $academic)
     {
         $unhandledRequests = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')

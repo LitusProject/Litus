@@ -170,6 +170,24 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @return ArrayCollection
+     */
+    public function findAllHandled()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param Academic $academic
      * @return ArrayCollection
      */
@@ -186,6 +204,24 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('academic', $academic)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function findAllUnhandled()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
             ->getQuery()
             ->getResult();
     }

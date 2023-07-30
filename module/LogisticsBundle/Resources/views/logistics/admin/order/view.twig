@@ -1,0 +1,149 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <div class="row">
+            <h1 class="pull-left">{{ translate('Info') }}</h1>
+            {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
+                <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                   href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
+                    Update
+                </a>
+            {% endif %}
+        </div>
+
+        {#     Order info body       #}
+        <div class="row">
+
+            {#     Personal info  #}
+            <div class="info-content">
+                <p>Contact: &emsp;&ensp;&ensp;<b>{{ order.getContact() }}</b></p>
+                {% if order.getUnit() %}
+                    <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+                {% endif %}
+                <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
+            </div>
+
+            {#       Order info     #}
+            <div class="info-content">
+                <p>Location:        &emsp;&ensp;&nbsp;<b>{{ order.getLocation().getName() }}</b></p>
+                <p>Start Date:      &emsp;<b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+                <p>End Date:        &emsp;&nbsp;<b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+                <p>Status:          &emsp;&emsp;&ensp;&nbsp;<b id="infoStatus" {% if order.isCanceled() or order.isRemoved() %} style="color: #882a25"{% endif %}>{{ translate(order.getStatus())}}</b></p>
+                {% if order.getDescription() != '' %}
+                    <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <h1 class="pull-left">{{ translate('Articles') }}</h1>
+            {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
+                <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                   href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
+                    Update
+                </a>
+            {% endif %}
+        </div>
+        <div class="row">
+            {#     Article body       #}
+            <div class="row" style="padding-top: 10px;">
+                <div class="table-condensed">
+                    <table class="table mappings">
+                        {#     Table header       #}
+                        <tr>
+                            <th style="width: 25%">{{ Translate('Name') }}</th>
+                            <th style="width: 25%">{{ Translate('Category') }}</th>
+                            <th style="width: 20%">{{ Translate('Status') }}</th>
+                            <th style="width: 20%">{{ Translate('Comments') }}</th>
+                            <th style="width: 10%">{{ Translate('Amount') }}</th>
+                        </tr>
+
+                        {#     Table content       #}
+                        {% for mapping in articles %}
+                            <tr class="item item-{{ mapping.getId() }}"
+                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
+                            {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
+                                {% else %}style="background-color: #fae3e3"{% endif %}>
+                                <td>{{ mapping.getArticle().getName() }}</td>
+                                <td>{{ mapping.getArticle().getCategory() }}</td>
+                                <td>{{ mapping.getStatus() }}</td>
+                                <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
+                                        <a rel="popover" data-original-title="{{ translate('Comments') }}"
+                                           data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
+                                           data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                    {% endif %}</td>
+                                <td>{{ mapping.getAmount() }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {#     Order history       #}
+        <div class="row" style="margin-top: 30px">
+            <div class="col-md-12">
+                <h1>{{ translate('History') }}</h1>
+                <table class="table table-hover" style="margin-top: 15px">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Request') }}</th>
+                        <th class="hidden-xs">{{ translate('Contact') }}</th>
+                        <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                        <th class="hidden-xs">{{ translate('End Date') }}</th>
+                        <th class="hidden-xs">{{ translate('Updated') }}</th>
+                        <th class="hidden-xs">{{ translate('By') }}</th>
+                        <th class="hidden-xs">{{ translate('Status') }}</th>
+                        <th style="width: 160px">{{ translate('Actions') }}</th>
+                    </tr>
+                    </thead>
+                    {% for lastOrder in lastOrders %}
+                        <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}"
+                                {% if lastOrder.getId() == order.getId() %} style="background-color: #ecebff" {% endif %}>
+                            <td>{{ lastOrder.getName() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getContact() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdateDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdator() }}</td>
+                            <td class="hidden-xs item-{{ lastOrder.getId() }}-status">{{ translate(lastOrder.getStatus()) }}</td>
+                            <td class="actions">
+                                {% if lastOrders[0].getId() != lastOrder.getId() and not lastOrders[0].isRemoved() and not lastOrders[0].isCanceled() %}
+                                    <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': lastOrder.getId() }) }}" class="btn btn-warning btn-sm edit">
+                                        {{ translate('Revert') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrder.getId() != order.getId() and not lastOrders[0].isRemoved() %}
+                                    <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : lastOrder.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrders[0].getId() == lastOrder.getId() %}
+                                    {% if not lastOrders[0].isRemoved() %}
+                                        {% if not lastOrders[0].isCanceled() %}
+                                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                                {{ translate('Cancel') }}
+                                            </a>
+                                        {% else %}
+                                            <a href="#" class="btn btn-danger btn-sm delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                                {{ translate('Delete') }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+
+{% endblock %}

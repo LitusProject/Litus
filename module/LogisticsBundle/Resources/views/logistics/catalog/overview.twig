@@ -12,19 +12,6 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-danger order_canceled_error fade">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to cancel the order. Please try again later.</p>
-        </div>
-    </div>
-
-    <div class="flashmessage alert alert-danger order_edited_error fade">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to edit the order. Please try again later.</p>
-        </div>
-    </div>
     <div class="flashmessage alert alert-danger request_canceled_error fade">
         <div class="title">Error</div>
         <div class="content">
@@ -32,12 +19,25 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-danger request_edited_error fade">
+    <div class="flashmessage alert alert-danger request_removed_error fade">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to edit the request. Please try again later.</p>
+            <p>An error occurred while trying to remove the request. Please try again later.</p>
         </div>
     </div>
+
+{#    <div class="flashmessage alert alert-danger order_edited_error fade">#}
+{#        <div class="title">Error</div>#}
+{#        <div class="content">#}
+{#            <p>An error occurred while trying to edit the order. Please try again later.</p>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="flashmessage alert alert-danger request_edited_error fade">#}
+{#        <div class="title">Error</div>#}
+{#        <div class="content">#}
+{#            <p>An error occurred while trying to edit the request. Please try again later.</p>#}
+{#        </div>#}
+{#    </div>#}
 
 
     {% if authenticatedPerson is null %}
@@ -102,19 +102,25 @@
                         </tr>
                         </thead>
                         {% for order in lastOrders %}
-                            <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">
+                            <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %}">
                                 <td>{{ order.getName() }}</td>
                                 <td class="hidden-xs">{{ order.getContact() }}</td>
                                 <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
                                 <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
+                                <td class="hidden-xs item-{{ order.getId() }}-status">{{ translate(order.getStatus()) }}</td>
                                 <td class="actions">
                                     <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
                                         {{ translate('View') }}
                                     </a>
-                                    <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
-                                        {{ translate('Cancel') }}
-                                    </a>
+                                    {%if not order.isCanceled() %}
+                                        <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Cancel') }}
+                                        </a>
+                                    {% else %}
+                                        <a href="#" class="btn btn-danger btn-sm delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Delete') }}
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -171,7 +177,7 @@
 
     {% endif %}
 
-    <div class="modal fade" id="cancelReservation">
+    <div class="modal fade" id="cancelRequest">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -183,21 +189,23 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger continue">Yes</button>
-                    <button class="btn btn-default cancel" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">{{ translate('No') }}</button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modalDeleteRequest" class="modal fade">
+    <div class="modal fade" id="deleteRequest">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Remove request') }}</h4>
+                    <h4>{{ translate('Logistics') }}</h4>
                 </div>
                 <div class="modal-body">
-                    {{ translate('Are you sure you want to remove this request') }}?
+                    <p>
+                    {{ translate('Are you sure you want to remove the following request:') }} <b class="orderName"></b>?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
@@ -212,68 +220,66 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
-            $('.item .cancel').click(openModalCancel);
-            $('.deleteRequest').click(openRemoveRequest);
-
+            $('.item .cancel').click(openCancelRequest);
+            $('.item .delete').click(openRemoveRequest);
         });
 
-        function openModalCancel(e) {
+        function openCancelRequest(e) {
             // Gets the object bound to the modal: an order
             var $this = $(this);
-
             e.preventDefault();
-            var cancelReservation = $('#cancelReservation');
-            cancelReservation.find('.orderName').html($(this).data('name'));
+            var cancelRequest = $('#cancelRequest');
             var id = $this.data('id');
-            console.log($this.data('id'));
-            cancelReservation.find('.continue').unbind('click').click(function () {
-                $.post('{{ url('logistics_catalog', {"action": "removeOrder"})}}' + id, function (data) {
+            cancelRequest.find('.orderName').html($(this).data('name'));
+            cancelRequest.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_catalog', {"action": "cancelRequest"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.item-' + id).remove();
-                        $('#cancelReservation').modal('hide');
+                        $('.item-' + id + '-status').html("Canceled");
+                        $('#cancelRequest').modal('hide');
+                        location.reload();
                     } else {
-                        errorRemove();
+                        errorCancel();
                     }
-                }, 'json').error(errorRemove);
+                }, 'json').error(errorCancel);
             });
-            cancelReservation.modal();
+            cancelRequest.modal();
         }
 
         function openRemoveRequest(e) {
             var $this = $(this);
             e.preventDefault();
 
-            var deleteRequest = $('#modalDeleteRequest');
+            var deleteRequest = $('#deleteRequest');
             var id = $this.data('id');
+            deleteRequest.find('.orderName').html($(this).data('name'));
             deleteRequest.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + 'request/' + id, function (data) {
+                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
+                        $('.item-' + id).remove();
                         deleteRequest.modal('hide');
-                        location.reload();
                     } else {
-                        errorDeleteRequest();
+                        errorRemove();
                     }
-                }, 'json').error(errorDeleteRequest);
+                }, 'json').error(errorRemove);
             });
             deleteRequest.modal();
+        }
+
+        function errorCancel() {
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.request_canceled_error').removeClass('hidden');
+            $('#cancelRequest').modal('hide');
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('in');
             $('.flashmessage').addClass('hidden');
-            $('.order_canceled_error').removeClass('hidden');
-            $('#cancelReservation').modal('hide');
+            $('.request_removed_error').removeClass('hidden');
+            $('#deleteRequest').modal('hide');
         }
-
-        function errorDeleteRequest() {
-            $('.flashmessage').addClass('in');
-            $('.flashmessage').addClass('hidden');
-            $('.request_canceled_error').removeClass('hidden');
-            $('#modalDeleteRequest').modal('hide');
-        }
-
     </script>
 {% endblock %}

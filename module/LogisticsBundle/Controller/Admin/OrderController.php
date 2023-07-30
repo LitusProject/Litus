@@ -6,6 +6,7 @@ use DateTime;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
+use LogisticsBundle\Entity\Request;
 
 /**
  * OrderController
@@ -26,6 +27,28 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+    public function viewAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+
+        $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
+
+        return new ViewModel(
+            array(
+                'order' => $order,
+                'articles' => $articles,
+                'lastOrders' => $lastOrders,
             )
         );
     }
@@ -393,6 +416,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $order;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function getAllOrdersByRequest($request)                  // Gets all orders except oldest (dummy order)
+    {
+        $orders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        array_pop($orders);
+        return $orders;
     }
 
     /**

@@ -35,16 +35,23 @@ class Request
     /**
      * @var boolean True if the request has been handled, false if not.
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" = false})
      */
     private $handled;
 
     /**
      * @var boolean True if the request has been removed, false if not.
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" = false})
      */
     private $removed;
+
+    /**
+     * @var boolean True if the request has been removed, false if not.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $canceled;
 
     /**
      * @var Academic The contact used in this order
@@ -118,6 +125,7 @@ class Request
         $this->creationTime = new DateTime();
         $this->handled = false;
         $this->removed = false;
+        $this->canceled = false;
         $this->contact = $contact;
 //        START
 //        $this->referencedOrder = $order;
@@ -157,7 +165,33 @@ class Request
     {
         $this->handled = true;
 
-        return true;
+        return $this->handled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCanceled()
+    {
+        return $this->canceled;
+    }
+
+    /**
+     * @param boolean $canceled
+     */
+    public function setCanceled(bool $canceled)
+    {
+        $this->removed = $canceled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function cancel()
+    {
+        $this->canceled = true;
+
+        return $this->canceled;
     }
 
     /**
@@ -181,9 +215,10 @@ class Request
      */
     public function remove()
     {
+        $this->canceled = false;
         $this->removed = true;
 
-        return true;
+        return $this->removed;
     }
 
     /**
