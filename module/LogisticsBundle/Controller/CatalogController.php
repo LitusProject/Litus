@@ -118,7 +118,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                             ->getRepository('LogisticsBundle\Entity\Article')
                             ->findOneById($articleId);
 
-                        $booking = new Map($newOrder, $article, $formValue);
+                        $oldAmount = $mapped[$articleId]?: 0;
+                        error_log($oldAmount);
+                        $booking = new Map($newOrder, $article, $formValue, $oldAmount);
 
                         $this->getEntityManager()->persist($booking);
                     }

@@ -45,6 +45,13 @@ class OrderArticleMap
     private $amount;
 
     /**
+     * @var integer amount of this Article in the previous order
+     *
+     * @ORM\Column(type="bigint", options={"default" = 0})
+     */
+    private $oldAmount;
+
+    /**
      * @var string status of this Article-request in this order
      *
      * @ORM\Column(name="status", type="text")
@@ -77,12 +84,14 @@ class OrderArticleMap
      * @param Order   $order
      * @param Article $article
      * @param integer $amount
+     * @param int $oldAmount
      */
-    public function __construct(Order $order, Article $article, $amount)
+    public function __construct(Order $order, Article $article, $amount, $oldAmount=0)
     {
         $this->referencedOrder = $order;
         $this->referencedArticle = $article;
         $this->amount = $amount;
+        $this->oldAmount = $oldAmount;
         if ($article->getStatusKey() === 'ok') {
             $this->status = 'aangevraagd';
         } else {
@@ -120,6 +129,22 @@ class OrderArticleMap
     public function setAmount($amount)
     {
         $this->amount = $amount;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOldAmount()
+    {
+        return $this->oldAmount;
+    }
+
+    /**
+     * @param integer $amount
+     */
+    public function setOldAmount($amount)
+    {
+        $this->oldAmount = $amount;
     }
 
     /**

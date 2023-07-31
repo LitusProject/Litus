@@ -107,8 +107,9 @@ return array(
     'No id or barcode was given to identify the item!'                                                                                                                                                                                          => 'Er is geen id of barcode opgegeven om het item te vinden!',
     'No item with the given id or barcode was found!'                                                                                                                                                                                           => 'Er bestaat geen item met deze id of barcode!',
     'Request'                                                                                                                                                                                                                                   => 'Aanvraag',
-    'Pending'                                                                                                                                                                                                                                   => 'In behandeling',
+    'Pending'                                                                                                                                                                                                                                   => 'Aangevraagd',
     'Creator'                                                                                                                                                                                                                                   => 'Maker',
+    'History'                                                                                                                                                                                                                                   => 'Geschiedenis',
 
 
     'General'                                                                                                                                                                                                                                   => 'Algemeen',

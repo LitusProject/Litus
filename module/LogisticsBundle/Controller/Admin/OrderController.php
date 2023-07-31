@@ -44,11 +44,18 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
 
+        $oldOrder = false;
+        if ($order != end($lastOrders)) {                                // Look if order is not the oldest order
+            $orderIndex = array_search($order, $lastOrders);
+            $oldOrder = $lastOrders[$orderIndex + 1];
+        }
+
         return new ViewModel(
             array(
-                'order' => $order,
-                'articles' => $articles,
-                'lastOrders' => $lastOrders,
+                'order'         => $order,
+                'oldOrder'      => $oldOrder,
+                'articles'      => $articles,
+                'lastOrders'    => $lastOrders,
             )
         );
     }
@@ -456,6 +463,39 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $map;
+    }
+
+    /**
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function mergeArraysUnique(array $a1, array $a2)
+    {
+        foreach ($a2 as $e2) {
+            if (!in_array($e2, $a1)) {
+                array_push($a1, $e2);
+            }
+        }
+        return $a1;
+    }
+
+    /**
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function getAllArticleNames(array $a1, array $a2)
+    {
+        $articleNames = array();
+        $diff = $this->mergeArraysUnique($a1, $a2);          // Gets the union of old and new articles
+        foreach ($diff as $mapping){
+            $name = $mapping->getArticle()->getName();
+            if (!in_array($name, $articleNames)){
+                $articleNames[] = $mapping->getArticle()->getName();
+            }
+        }
+        return $articleNames;
     }
 
     private function findOverlapping(array $array, OrderArticleMap $mapping)

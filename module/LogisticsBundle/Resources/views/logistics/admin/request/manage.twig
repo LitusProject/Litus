@@ -25,7 +25,7 @@
                     <td>{{ request.getUnit().getName() }}</td>
                     <td>{{ request.getStartDate().format('d/m/Y H:i') }}</td>
                     <td>{{ request.getEndDate().format('d/m/Y H:i') }}</td>
-                    <td>{{ request.getStatus() }}</td>
+                    <td class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}">{{ request.getStatus() }}</td>
                     <td class="actions">
                         {% if hasAccess('logistics_admin_request', 'view') %}
                             <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
