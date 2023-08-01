@@ -46,7 +46,7 @@
         "ocramius/package-versions": "^1.3",
         "oxcom/zend-twig": "^1.0",
         "packagelist/yuicompressor-bin": "^2.4",
-        "sentry/sentry": "^1.9",
+        "sentry/sentry": "^3.21",
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.4",
         "widmogrod/zf2-assetic-module": "^2.4",
