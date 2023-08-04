@@ -16,7 +16,9 @@
                             <i>Please hit the link below to review this order!</i>
                         </p>
                         <p>
-                            <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': order.getId()}) }}">&rarr; Review Order</a>
+                            <a href="#" class="review-order" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                &rarr; Review Order
+                            </a>
                         </p>
                     </div>
                 </div>
@@ -105,6 +107,7 @@
                         <th style="width: 20%">Status</th>
                         <th style="width: 10%">Old amount</th>
                         <th style="width: 10%">New amount</th>
+                        <th style="width: 50px">Actions</th>
                     </tr>
 
                     {#     Table content       #}
@@ -120,6 +123,11 @@
                                     <td>{{ mapping.getStatus() }}</td>
                                     <td>{{ mapping.getOldAmount() }}</td>
                                     <td>{{ mapping.getAmount() }}</td>
+                                    <td class="actions">
+                                        <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}">
+                                            <b>Review</b>
+                                        </a>
+                                    </td>
                                 </tr>
                     {% endfor %}
                 </table>
@@ -167,7 +175,99 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="review-order" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Order
+                </div>
+                <div class="modal-body">
+                    <h1>Order: <b class="orderName"></b></h1>
+                    FORM
+                    <div class="footer">
+                        <button class="edit">Review</button>
+                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="review-article" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Article
+                </div>
+                <div class="modal-body">
+                    <h1>Article: <b class="articleName"></b></h1>
+                    FORM
+                    <div class="footer">
+                        <button class="edit">Review</button>
+                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.review-order').click(openReviewOrderModal);
+            $('.item .review-article').click(openReviewArticleModal);
+        });
+
+        function openReviewOrderModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var reviewOrder = $('#review-order');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            reviewOrder.find('.orderName').html(name);
+            reviewOrder.find('.edit').unbind('click').click(function () {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.order_removed_success').removeClass('hide');
+                    $('.item-' + id).remove();
+                    reviewOrder.modal('hide');
+                } else {
+                    errorRemove();
+                }
+            });
+            reviewOrder.modal();
+        }
+
+        function openReviewArticleModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var reviewArticle = $('#review-article');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            reviewArticle.find('.articleName').html(name);
+            reviewArticle.find('.edit').unbind('click').click(function () {
+                if (data && 'success' == data.status) {
+                    $('.flashmessage').addClass('hide');
+                    $('.order_removed_success').removeClass('hide');
+                    $('.item-' + id).remove();
+                    reviewArticle.modal('hide');
+                } else {
+                    errorRemove();
+                }
+            });
+            reviewArticle.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.order_removed_error').removeClass('hide');
+            $('#removeOrder').modal('hide');
+        }
+    </script>
 {% endblock %}

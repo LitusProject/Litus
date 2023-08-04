@@ -60,7 +60,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         // Check if authenticated to modify order articles
         if ($academic !== $order->getCreator()
-            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -77,11 +78,16 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
             $mapped[$map->getArticle()->getId()] += $map->getAmount();
         }
-
         $allArticles = array();
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Article')
-            ->findAllByVisibilityQuery('internal')->getResult();
+        if ($academic->isPraesidium($this->getCurrentAcademicYear())) {
+            $articles = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Article')
+                ->findAllQuery()->getResult();
+        } else {
+            $articles = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Article')
+                ->findAllByVisibilityQuery('external')->getResult();
+        }
 
         foreach ($articles as $art) {
             $articleInfo = array(
@@ -106,6 +112,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             if ($form->isValid()) {
                 $newOrder = $this->recreateOrder($order, $academic->getFullName());
                 $this->getEntityManager()->persist($newOrder);
+
+//                $order->overwrite();
+//                $this->getEntityManager()->flush();
 
                 $formData = $form->getData();
                 $total = 0;
@@ -155,11 +164,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return new ViewModel(
             array(
-                'articles'   => $allArticles,
-                'categories' => Article::$POSSIBLE_CATEGORIES,
-                'form'       => $form,
-                'searchForm' => $searchForm,
-                'order'      => $order,
+                'isPraesidium'  => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'articles'      => $allArticles,
+                'categories'    => Article::$POSSIBLE_CATEGORIES,
+                'form'          => $form,
+                'searchForm'    => $searchForm,
+                'order'         => $order,
             )
         );
     }
@@ -210,7 +220,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -248,7 +259,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
                 foreach ($mappings as $map) {
                     $booking = new Map($newOrder, $map->getArticle(), $map->getAmount());
-                        $this->getEntityManager()->persist($booking);
+                    $this->getEntityManager()->persist($booking);
                 }
 
                 $request = $newOrder->getRequest();
@@ -287,8 +298,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($person !== $order->getCreator()
-            &&(!$person->getOrganizationStatus($this->getCurrentAcademicYear())
-            ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            &&(!$person->isPraesidium($this->getCurrentAcademicYear())
+                ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -325,7 +336,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -361,7 +373,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -392,7 +405,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         if ($academic !== $order->getCreator()
-            && $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -687,7 +701,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('logistics.order_alert_mail')
-            );
+        );
 
         $message = $mailData['content'];
         $subject = $mailData['subject'];

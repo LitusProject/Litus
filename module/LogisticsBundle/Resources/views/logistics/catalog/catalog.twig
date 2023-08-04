@@ -86,7 +86,7 @@
                                     <tr class="{% if map['mapped'] > 0 %}success{% endif %}">
                                         <td>{{ map['article'].getName() }}</td>
                                         <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}</td>
+                                        <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}{% if isPraesidium %}/{{ map['article'].getAmountOwned() }}{% endif %}</td>
                                         <td class="hidden-xs">
                                             {% if map['article'].getAdditionalInfo()|length > 0 %}
                                                 <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="

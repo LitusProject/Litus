@@ -18,83 +18,6 @@
 {#        </div>#}
 {#    </div>#}
 
-{#    <div id="controller_action">#}
-{#        <h1>Request</h1>#}
-{#        <div class="col-md-6">#}
-{#            Name: <b>{{ request.getRecentOrder().getName() }}</b><br>#}
-{#            Creation Time: <b>{{ request.getCreationTime().format('d/m/Y H:i') }}</b><br>#}
-{#            Request Type: <b>{{ request.getRequestType() }}</b>#}
-{#        </div>#}
-{#        <h1 style="padding-top: 30px">Details</h1>#}
-{#        {% if diffs %}#}
-{#        <div class="col-md-3">#}
-{#            {% for item, value in diffs %}#}
-{#                <p>New {{ item }}: <b>{{ value[1] }}</b></p>#}
-{#                <p>Old {{ item }}: <b>{{ value[0] }}</b></p><br>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        {% else %}#}
-{#            <p>{{ translate('No details were changed') }}</p>#}
-{#        {% endif %}#}
-{#        <h1 style="padding-top: 30px">Articles</h1>#}
-{#        {% if mappings %}#}
-{#            <div id="default_page">#}
-{#            <table class="manage">#}
-{#                <tr>#}
-{#                    <th width="200px">Name</th>#}
-{#                    <th width="70px">Old Amount</th>#}
-{#                    <th width="70px">New Amount</th>#}
-{#                </tr>#}
-
-{#                {% for mapping in mappings %}#}
-{#                    <tr>#}
-{#                        <td>{{ mapping['name'] }}</td>#}
-{#                        <td>{{ mapping['old'] }}</td>#}
-{#                        <td>{{ mapping['new'] }}</td>#}
-{#                    </tr>#}
-{#                {% endfor %}#}
-{#            </table>#}
-{#        </div>#}
-{#        {% else %}#}
-{#            <p>{{ translate('No articles were changed') }}</p>#}
-{#        {% endif %}#}
-{#        <div class="row" style="padding-top: 20px">#}
-{#            {% if hasAccess('logistics_admin_request', 'approve') %}#}
-{#                <a class="accept_request" href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" style="padding-right: 15px; text-indent: 4px"><b>Approve</b></a>#}
-{#            {% endif %}#}
-{#            {% if hasAccess('logistics_admin_request', 'reject') %}#}
-{#                <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request" style="padding-right: 15px; text-indent: 4px"><b>Reject</b></a>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#    </div>#}
-{#    <aside>#}
-{#        {% if hasAccess('logistics_admin_order', 'view') %}#}
-
-{#            <div class="sidebox">#}
-{#                <div class="title">Edit old order</div>#}
-{#                <div class="content">#}
-{#                    <p>#}
-{#                        <i>Please hit the link below to edit the old order!</i>#}
-{#                    </p>#}
-{#                    <p>#}
-{#                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': oldOrder.getId()}) }}">&rarr; Edit Old</a>#}
-{#                    </p>#}
-{#                </div>#}
-{#            </div>#}
-
-{#            <div class="sidebox">#}
-{#                <div class="title">Edit new order</div>#}
-{#                <div class="content">#}
-{#                    <p>#}
-{#                        <i>Please hit the link below to edit the new order!</i>#}
-{#                    </p>#}
-{#                    <p>#}
-{#                        <a href="{{ url('logistics_admin_order', {'action': 'edit', 'id': newOrder.getId()}) }}">&rarr; Edit New</a>#}
-{#                    </p>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endif %}#}
-{#    </aside>#}
     <div id="controller_action">
         <div class="row">
             <div class="col-md-4" style="padding-right: 3%;">
@@ -139,20 +62,6 @@
                         <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
                     {% endif %}
                 </div>
-                {#       Old edit order block         #}
-                {#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-                {#                    <div class="title"><b>Edit Order</b></div>#}
-                {#                    <div class="content">#}
-                {#                        <p>#}
-                {#                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>#}
-                {#                        </p>#}
-                {#                        <p>#}
-                {#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">#}
-                {#                                Edit Order#}
-                {#                            </a>#}
-                {#                        </p>#}
-                {#                    </div>#}
-                {#                </div>#}
             </div>
 
             {#     Article body       #}
@@ -189,20 +98,6 @@
                         </table>
                     </div>
                 </div>
-                {#       Old edit article block         #}
-                {#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-                {#                    <div class="title"><b>Edit Articles</b></div>#}
-                {#                    <div class="content">#}
-                {#                        <p>#}
-                {#                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>#}
-                {#                        </p>#}
-                {#                        <p>#}
-                {#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">#}
-                {#                                &rarr; Edit Articles#}
-                {#                            </a>#}
-                {#                        </p>#}
-                {#                    </div>#}
-                {#                </div>#}
             </div>
         </div>
 
@@ -264,8 +159,60 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="review-article" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Article
+                </div>
+                <div class="modal-body">
+
+                    FORM
+                    <div class="footer">
+                        <button class="edit">Review</button>
+                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item #review-article').click(openModal);
+        });
 
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeOrder = $('#review-article');
+            removeOrder.find('.driverName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeOrder.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.order_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeOrder.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeOrder.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.order_removed_error').removeClass('hide');
+            $('#removeOrder').modal('hide');
+        }
+
+    </script>
 {% endblock %}

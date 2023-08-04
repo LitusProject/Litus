@@ -22,6 +22,11 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
+                        {% if hasAccess('logistics_catalog', 'overview') %}
+                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
+                            </li>
+                        {% endif %}
                         {% if hasAccess('logistics_index', 'index') %}
                             <li {% if 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
                                 <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
@@ -37,11 +42,6 @@
 {#                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>#}
 {#                            </li>#}
 {#                        {% endif %}#}
-                        {% if hasAccess('logistics_catalog', 'overview') %}
-                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
-                            </li>
-                        {% endif %}
                         {% if hasAccess('logistics_inventory', 'index') %}
                             <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
                                 <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
