@@ -53,6 +53,10 @@
                                 <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
                                    class="edit">Edit</a>
                             {% endif %}
+                            {% if hasAccess('page_admin_categorypage_frame', 'poster') and result.frame_type == "Small Frame with Poster"%}
+                                <a href="{{ url('page_admin_categorypage_frame', {"action": "editPoster", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
+                                   class="poster_edit">Edit Poster</a>
+                            {% endif %}
                             {% if hasAccess('page_admin_categorypage_frame', 'delete') %}
                                 <a href="#" data-id="{{ frame.getId() }}" data-type="{{ result.frame_type }}"
                                     {% if result.linkto_type == "page" %}

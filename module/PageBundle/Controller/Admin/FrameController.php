@@ -2,6 +2,8 @@
 
 namespace PageBundle\Controller\Admin;
 
+use Imagick;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Frame;
 use PageBundle\Entity\Link;
@@ -164,6 +166,145 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function editPosterAction()
+    {
+        $category_page = $this->getCategoryPageEntity();
+        $frame = $this->getFrameEntity();
+        if ($category_page === null or $frame === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_frame_poster');
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'page_admin_categorypage_frame',
+                array(
+                    'action' => 'upload',
+                    'frame_id'     => $frame->getId(),
+                    'category_page_id' => $category_page->getId(),
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'frame' => $frame,
+                'form'  => $form,
+            )
+        );
+    }
+
+    public function uploadAction()
+    {
+        $frame = $this->getFrameEntity();
+        if ($frame === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_frame_poster');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $this->receive($formData['poster'], $frame);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The frame\'s poster has successfully been updated!'
+                );
+
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info'   => array(
+                            'info' => array(
+                                'name' => $frame->getPoster(),
+                            ),
+                        ),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form'   => array(
+                            'errors' => $form->getMessages(),
+                        ),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'status' => 'error',
+            )
+        );
+    }
+
+    private function receive($file, Frame $frame)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.frame_poster_path');
+
+        $image = new Imagick($file['tmp_name']);
+        $image->thumbnailImage(380, 200, true);
+
+        if ($frame->getPoster() != '' || $frame->getPoster() !== null) {
+            $fileName = '/' . $frame->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+
+        $image->writeImage($filePath . $fileName);
+
+        $frame->setPoster($fileName);
+    }
+
+    public function posterAction()
+    {
+        $frame = $this->getFrameEntityByPoster();
+        if ($frame === null) {
+            return new ViewModel();
+        }
+
+        $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('page.frame_poster_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $frame->getPoster()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $frame->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $frame->getPoster()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     /**
      * @return CategoryPage|null
      */
@@ -212,6 +353,32 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             return;
+        }
+
+        return $frame;
+    }
+
+    /**
+     * @return Frame|null
+     */
+    private function getFrameEntityByPoster()
+    {
+        $frame = $this->getEntityById('PageBundle\Entity\Frame', 'frame_id', 'poster');
+
+        if (!($frame instanceof Frame)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No frame was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'page_admin_categorypage_frame',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return null;
         }
 
         return $frame;

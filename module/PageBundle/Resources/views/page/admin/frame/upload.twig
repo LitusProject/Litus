@@ -1,0 +1,9 @@
+{% if status == 'success' %}
+    {% autoescape false %}
+        {{ info|json_encode }}
+    {% endautoescape %}
+{% else %}
+    {% autoescape false %}
+        {{ form|json_encode }}
+    {% endautoescape %}
+{% endif %}

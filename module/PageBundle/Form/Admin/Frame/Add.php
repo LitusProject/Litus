@@ -89,7 +89,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'type' => 'textarea',
                 'name' => 'description',
                 'label' => 'Description',
-                'required' => $isDefault,
+                'required' => false,
                 'attributes' => array(
                     'class' => 'description'
                 ),
