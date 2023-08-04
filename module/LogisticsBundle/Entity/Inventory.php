@@ -32,15 +32,17 @@ class Inventory
      * @var array The possible types of a category
      */
     public static $possibleCategories = array(
-        'Frisdrank' => 'Frisdrank',
-        'Alcohol' => 'Alcohol',
-        'Koffie & thee' => 'Koffie & thee',
-        'Groenten & fruit' => 'Groenten & fruit',
-        'Snacks' => 'Snacks',
-        'Kruiden' => 'Kruiden',
-        'Saus' => 'Saus',
-        'Conserven' => 'Conserven',
-        'Andere' => 'Andere'
+        ''                  => '',
+        'Frisdrank'         => 'Frisdrank',
+        'Alcohol'           => 'Alcohol',
+        'Koffie & thee'     => 'Koffie & thee',
+        'Voedsel'           => 'Voedsel',
+        'Groenten & fruit'  => 'Groenten & fruit',
+        'Snacks'            => 'Snacks',
+        'Kruiden'           => 'Kruiden',
+        'Saus'              => 'Saus',
+        'Conserven'         => 'Conserven',
+        'Andere'            => 'Andere'
     );
 
     /**
