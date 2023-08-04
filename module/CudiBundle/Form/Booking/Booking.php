@@ -44,6 +44,15 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array(
                                     'name' => 'Digits',
                                 ),
+                                array(
+                                    'name'    => 'Between',
+                                    'options' => array(
+                                        'min' => 0,
+                                        'max' => $this->getEntityManager()
+                                            ->getRepository('CommonBundle\Entity\General\Config')
+                                            ->getConfigValue('cudi.maximum_booking_number'),
+                                    ),
+                                ),
                             ),
                         ),
                     ),
