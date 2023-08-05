@@ -13,13 +13,6 @@ class Section extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setName($array['name']);
-        if (strlen($array['section_group']) > 0) {
-            // group has been selected
-            $group = $this->getEntityManager()
-                ->getRepository('MailBundle\Entity\Section\Group')
-                ->findOneById($array['section_group']);
-            $object->setGroup($group);
-        }
         $object->setDefaultValue(isset($array['default_value']));
         $object->setAttribute($array['attribute']);
 
@@ -33,7 +26,6 @@ class Section extends \CommonBundle\Component\Hydrator\Hydrator
         }
         $data = array();
         $data['name'] = $object->getName();
-        $data['section_group'] = $object->getGroup() !== null ? $object->getGroup()->getId() : -1;
         $data['default_value'] = $object->getDefaultValue();
         $data['attribute'] = $object->getAttribute();
 

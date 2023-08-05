@@ -14,14 +14,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
-        $groups = $this->paginator()->createFromEntity(
-            'MailBundle\Entity\Section\Group',
-            $this->getParam('page'),
-            array(),
-            array(
-                'name' => 'ASC',
-            )
-        );
         $sections = $this->paginator()->createFromEntity(
             'MailBundle\Entity\Section',
             $this->getParam('page'),
@@ -33,7 +25,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 
         return new ViewModel(
             array(
-                'groups'         => $groups,
                 'sections'         => $sections,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
@@ -100,48 +91,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * @return ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function addGroupAction()
-    {
-        $form = $this->getForm('mail_section_addGroup');
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $group = $form->hydrateObject();
-
-                $this->getEntityManager()->persist($group);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The group was succesfully added!'
-                );
-
-                $this->redirect()->toRoute(
-                    'mail_admin_section',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-
-                return new ViewModel();
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form' => $form,
-            )
-        );
-    }
-
-    /**
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws GuzzleException
      * @throws \Doctrine\ORM\ORMException
@@ -173,81 +122,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * @return ViewModel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function deleteGroupAction()
-    {
-        $this->initAjax();
-
-        $group = $this->getGroupEntity();
-
-        if ($group === null) {
-            return new ViewModel();
-        }
-
-        $this->getEntityManager()->remove($group);
-        $this->getEntityManager()->flush();
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
-        );
-    }
-
-    /*
-     * Search is currently not working, could be fixed in the future
-     */
-    public function searchAction()
-    {
-        $this->initAjax();
-
-        $numResults = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('search_max_results');
-
-        $sections = $this->search()
-            ->setMaxResults($numResults)
-            ->getResult();
-
-        $result = array();
-        foreach ($sections as $section) {
-            $item = (object) array();
-            $item->id = $section->getId();
-            $item->section = $section->getName();
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
-
-    /**
-     * @return \Doctrine\ORM\Query|null
-     */
-    private function search()
-    {
-        switch ($this->getParam('field')) {
-            case 'section':
-                return $this->getEntityManager()
-                    ->getRepository('MailBundle\Entity\Section')
-                    ->findAllByNameQuery($this->getParam('string'));
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function editGroupAction()
-    {
-        // TODO
-    }
-
-    /**
      * @return Section|null
      */
     private function getSectionEntity()
@@ -269,27 +143,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
             return;
         }
         return $section;
-    }
-
-    private function getGroupEntity()
-    {
-        $group = $this->getEntityById('MailBundle\Entity\Section\Group');
-
-        if (!($group instanceof Group)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No group was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'mail_admin_section',
-                array(
-                    'action' => 'manage',
-                )
-            );
-            return;
-        }
-        return $group;
     }
 
     /**

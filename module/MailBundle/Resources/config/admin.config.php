@@ -17,10 +17,6 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Newsletter',
                 ),
-                'mail_admin_group' => array(
-                    'action' => 'groups',
-                    'title'  => 'Groups',
-                ),
                 'mail_admin_list' => array(
                     'action' => 'manage',
                     'title'  => 'Lists',

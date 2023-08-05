@@ -47,20 +47,6 @@ return array(
                 ),
             ),
         ),
-        'mail_admin_group' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/mail/groups[/:action[/:type/:group]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'mail_admin_group',
-                    'action'     => 'groups',
-                ),
-            ),
-        ),
         'mail_admin_list' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(

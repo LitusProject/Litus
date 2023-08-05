@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use CommonBundle\Entity\User\Preference;
 use Doctrine\ORM\PersistentCollection;
-use MailBundle\Entity\Section\Group;
 
 /**
  * This is the entity for a newsletter section.
@@ -55,33 +54,13 @@ class Section
     private $preferences;
 
     /**
-     * @var Group|null The group that this section belongs to
-     *
-     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\Section\Group", inversedBy="children")
-     * @ORM\JoinColumn(name="section_group", referencedColumnName="id", nullable=true)
-     */
-    private $group;
-
-    /**
      * Creates a new newsletter section with the given name.
      *
      * @param string $name The name for this newsletter section.
      * @param string $attribute The SendInBlue attribute that corresponds to this newsletter section
      * @param bool $defaultValue The default preference value of this newsletter section for each user
-     * @param Group $group The group that this section belongs to
      */
-    public function __construct($name=null, $attribute=null, $defaultValue=false, $group=null)
-    {
-//        $this->name = $name;
-//        $this->attribute = $attribute;
-//        if ($group == null) {
-//            $this->group = new Group();
-//        }
-//        else {
-//            $this->group = $group;
-//        }
-//        $this->defaultValue = $defaultValue;
-//        $this->preferences = new ArrayCollection();
+    public function __construct($name=null, $attribute=null, $defaultValue=false) {
     }
 
     /**
@@ -125,14 +104,6 @@ class Section
     }
 
     /**
-     * @return Group|null
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
      * @param string $name
      *
      * @return self
@@ -164,17 +135,6 @@ class Section
     {
         $this->defaultValue = $defaultValue;
 
-        return $this;
-    }
-
-    /**
-     * @param Group $group
-     *
-     * @return self
-     */
-    public function setGroup(Group $group)
-    {
-        $this->group = $group;
         return $this;
     }
 

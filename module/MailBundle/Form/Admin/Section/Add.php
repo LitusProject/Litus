@@ -53,39 +53,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'section_group',
-                'label'      => 'Group',
-                'required'   => false,
-                'attributes' => array(
-                    'options' => $this->createGroupsArray(),
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
         $this->addSubmit('Add', 'mail_add');
-    }
-
-    public function createGroupsArray() {
-        $groups = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Section\Group')
-            ->findAllQuery()->getResult();
-
-        $groupsArray = array(
-            '' => '',
-        );
-        foreach ($groups as $group){
-            $groupsArray[$group->getId()] = $group->getName();
-        }
-        return $groupsArray;
     }
 }

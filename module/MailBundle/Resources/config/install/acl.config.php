@@ -9,10 +9,7 @@ return array(
             'send',
         ),
         'mail_admin_section' => array(
-            'manage', 'add', 'delete', 'addGroup', 'deleteGroup'
-        ),
-        'mail_admin_group' => array(
-            'groups', 'send',
+            'manage', 'add', 'delete',
         ),
         'mail_admin_list' => array(
             'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry', 'search',
