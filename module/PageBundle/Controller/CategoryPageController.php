@@ -4,7 +4,9 @@ namespace PageBundle\Controller;
 
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Category;
+use PageBundle\Entity\Link;
 use PageBundle\Entity\Node\CategoryPage;
+use PageBundle\Entity\Node\Page;
 
 /**
  * PageController
@@ -20,9 +22,56 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             return $this->notFoundAction();
         }
 
+        $big_frames = $this->getEntityManager()
+            ->getRepository("PageBundle\Entity\Frame")
+            ->findAllBigFrames($page)
+            ->getResult();
+
+        $small_frames = $this->getEntityManager()
+            ->getRepository("PageBundle\Entity\Frame")
+            ->findAllSmallFrames($page)
+            ->getResult();
+
+        $result_big = array();
+        foreach ($big_frames as $frame) {
+            $frame_data = array();
+            $frame_data['frame'] = $frame;
+            $frame_data['frame_type'] = 'Big Frame';
+
+            if ($frame->getLinkTo() instanceof Page) {
+                $frame_data['linkto_type'] = 'page';
+            } else if ($frame->getLinkTo() instanceof Link) {
+                $frame_data['linkto_type'] = 'link';
+            }
+
+            $result_big[] = $frame_data;
+        }
+
+        $result_small = array();
+        foreach ($small_frames as $frame) {
+            $frame_data = array();
+            $frame_data['frame'] = $frame;
+
+            if ($frame->hasDescription()) {
+                $frame_data['frame_type'] = 'Small Frame with Description';
+            } else if ($frame->hasPoster()) {
+                $frame_data['frame_type'] = 'Small Frame with Poster';
+            }
+
+            if ($frame->getLinkTo() instanceof Page) {
+                $frame_data['linkto_type'] = 'page';
+            } else if ($frame->getLinkTo() instanceof Link) {
+                $frame_data['linkto_type'] = 'link';
+            }
+
+            $result_small[] = $frame_data;
+        }
+
         return new ViewModel(
             array(
                 'category_page' => $page,
+                'big_frames' => $result_big,
+                'small_frames' => $result_small,
             )
         );
     }
@@ -36,17 +85,22 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             ->getRepository('PageBundle\Entity\Category')
             ->findByParent(null);
 
+        $languages = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Language')
+            ->findAll();
+
         $name = $this->getParam('name');
         foreach ($categories as $category) {
-            if ($name == $category->getName($this->getLanguage())){
-                $page = $this->getEntityManager()
-                    ->getRepository('PageBundle\Entity\Node\CategoryPage')
-                    ->findByCategory($category);
-                break;
+            foreach ($languages as $language) {
+                if ($name == $category->getName($language)) {
+                    $page = $this->getEntityManager()
+                        ->getRepository('PageBundle\Entity\Node\CategoryPage')
+                        ->findByCategory($category)[0];
+                    break;
+                }
             }
         }
 
-        $page = $page[0]; //TODO fix dat geen array is maar direct page
         if (!($page instanceof CategoryPage)) {
             return;
         }

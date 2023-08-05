@@ -15,7 +15,8 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @param CategoryPage $page
      */
-    public function findAllByCategoryPage(CategoryPage $page){
+    public function findAllByCategoryPage(CategoryPage $page)
+    {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
             ->findBy(array('categoryPage' => $page));
@@ -24,9 +25,50 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @param CategoryPage $page
      */
-    public function findAllActiveByCategoryPage(CategoryPage $page){
+    public function findAllActiveByCategoryPage(CategoryPage $page)
+    {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
             ->findBy(array('categoryPage' => $page, 'active' => true));
+    }
+
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllBigFrames(CategoryPage $page)
+    {
+        error_log('findbigframes');
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('f')
+            ->from('PageBundle\Entity\Frame', 'f')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('f.categoryPage', ':categoryPage'),
+                    $query->expr()->eq('f.active', 'true'),
+                    $query->expr()->eq('f.big', 'true')
+                )
+            )
+            ->setParameter('categoryPage', $page)
+            ->getQuery();
+    }
+
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllSmallFrames(CategoryPage $page)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('f')
+            ->from('PageBundle\Entity\Frame', 'f')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('f.categoryPage', ':categoryPage'),
+                    $query->expr()->eq('f.active', 'true'),
+                    $query->expr()->eq('f.big', 'false')
+                )
+            )
+            ->setParameter('categoryPage', $page)
+            ->getQuery();
     }
 }

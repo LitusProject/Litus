@@ -255,6 +255,22 @@ class Frame
      * @param boolean $allowFallback
      * @return string
      */
+    public function getTitle(Language $language = null, $allowFallback = true)
+    {
+        if(!is_null($this->linkToPage)){
+            return $this->linkToPage->getTitle($language, $allowFallback);
+        } else if ((!is_null($this->linkToLink))){
+            return $this->linkToLink->getName($language, $allowFallback);
+        }
+
+        return '';
+    }
+
+    /**
+     * @param Language|null $language
+     * @param boolean $allowFallback
+     * @return string
+     */
     public function getDescription(Language $language = null, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);

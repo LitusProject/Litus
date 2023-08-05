@@ -13,7 +13,17 @@
         </div>
         <div class="spacer40"></div>
 
-        This will contain some editable containers in the near future.
-
+        <div>Big Frames:
+            {% for result in big_frames %}
+                {% set frame = result.frame %}
+                <div>{{ frame.getTitle(language) }}</div>
+            {% endfor %}
+        </div>
+        <div>Small Frames:
+            {% for result in small_frames %}
+                {% set frame = result.frame %}
+                <div>{{ frame.getTitle(language) }}</div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
