@@ -21,6 +21,7 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $query->select('a')
             ->from('LogisticsBundle\Entity\Article', 'a')
             ->orderBy('a.name', 'ASC')
+            ->orderBy('a.category','ASC')
             ->getQuery();
     }
 
