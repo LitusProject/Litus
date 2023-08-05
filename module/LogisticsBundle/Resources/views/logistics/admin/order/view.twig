@@ -1,4 +1,5 @@
 {% extends 'admin/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
     {% include 'logistics/admin/order/partials/navigation.twig' %}
@@ -183,10 +184,10 @@
                     <span>Litus Admin</span>
                     /Review Order
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding-left: 20%">
                     <h1>Order: <b class="orderName"></b></h1>
-                    FORM
-                    <div class="footer">
+                    <div>{{ forms.renderForm(orderForm) }}</div>
+                    <div class="footer" style="margin-top:15px">
                         <button class="edit">Review</button>
                         <button class="cancel" data-dismiss="modal">Cancel</button>
                     </div>
@@ -204,8 +205,15 @@
                 </div>
                 <div class="modal-body">
                     <h1>Article: <b class="articleName"></b></h1>
-                    FORM
-                    <div class="footer">
+                    {% if articleForm is defined %}
+                        {% do articleForm.prepare() %}
+                        {% autoescape false %}
+                            {{ form().openTag(articleForm) }}
+                            {{ form().closeTag() }}
+                        {% endautoescape %}
+                    {% endif %}
+{#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
+                    <div class="footer" style="margin-top:15px">
                         <button class="edit">Review</button>
                         <button class="cancel" data-dismiss="modal">Cancel</button>
                     </div>

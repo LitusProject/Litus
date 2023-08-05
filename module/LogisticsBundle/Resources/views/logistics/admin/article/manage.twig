@@ -40,6 +40,7 @@
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
                     <th width="100px">Spot</th>
+                    <th width="100px">Description</th>
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -56,6 +57,7 @@
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
                     <th width="100px">Spot</th>
+                    <th width="100px">Description</th>      {# aditional info #}
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -69,6 +71,7 @@
                         <td>{{ article.getCategory() }}</td>
                         <td>{{ article.getLocation() }}</td>
                         <td>{{ article.getSpot() }}</td>
+                        <td>{{ article.getAdditionalInfo() }}</td>
                         <td>{{ article.getStatus() }}</td>
                         <td>{{ article.getVisibility() }}</td>
                         <td class="actions">

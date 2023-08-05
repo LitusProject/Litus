@@ -44,6 +44,43 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'contact',
+                'label'    => 'Contact Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'email',
+                'label'    => 'Email',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'start_date',
                 'label'    => 'Start Date',
@@ -139,43 +176,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'options' => $this->createUnitsArray(),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'contact',
-                'label'    => 'Contact Name',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => false,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
-                        ),
-                    ),
                 ),
             )
         );

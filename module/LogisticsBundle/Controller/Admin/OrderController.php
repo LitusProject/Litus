@@ -50,12 +50,20 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $oldOrder = $lastOrders[$orderIndex + 1];
         }
 
+        $orderForm = $this->getForm(
+            'logistics_admin_order_review',
+            array(
+                'order' => $order,
+            )
+        );
+
         return new ViewModel(
             array(
                 'order'         => $order,
                 'oldOrder'      => $oldOrder,
                 'articles'      => $articles,
                 'lastOrders'    => $lastOrders,
+                'orderForm'     => $orderForm,
             )
         );
     }
