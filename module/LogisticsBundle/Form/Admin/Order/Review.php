@@ -26,6 +26,11 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
 
         if ($this->order !== null) {
             $this->bind($this->order);
+
+            if ($this->order->getUnit() == null)
+            {
+                $this->remove('unit');
+            }
         }
     }
 
