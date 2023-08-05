@@ -23,42 +23,44 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
+        foreach ($this->articles as $article) {
+            $mapping = $article['article'];
 
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'amount',
-                'label'    => 'Amount',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'Int'),
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'amount',
+                    'label'    => 'Amount',
+                    'required' => true,
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
                         ),
                     ),
-                ),
-            )
-        );
+                )
+            );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'status',
-                'label'      => 'Status',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => OrderArticleMap::$POSSIBLE_STATUSES,
-                ),
-            )
-        );
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'status',
+                    'label'      => 'Status',
+                    'required'   => true,
+                    'attributes' => array(
+                        'options' => OrderArticleMap::$POSSIBLE_STATUSES,
+                    ),
+                )
+            );
 
-        $this->addSubmit('Save Changes', 'article_edit');
 
-        if ($this->orderArticleMap !== null) {
-            $this->bind($this->orderArticleMap);
+            if ($this->orderArticleMap !== null) {
+                $this->bind($this->orderArticleMap);
+            }
         }
     }
 

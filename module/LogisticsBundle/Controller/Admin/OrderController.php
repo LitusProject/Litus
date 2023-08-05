@@ -57,13 +57,22 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
 
+        $articleForm = $this->getForm(
+            'logistics_admin_order_orderarticlemap_review',
+            array(
+                'articles' => $articles,
+            )
+        );
+
         return new ViewModel(
             array(
                 'order'         => $order,
                 'oldOrder'      => $oldOrder,
                 'articles'      => $articles,
                 'lastOrders'    => $lastOrders,
+
                 'orderForm'     => $orderForm,
+                'articleForm'   => $articleForm,
             )
         );
     }
