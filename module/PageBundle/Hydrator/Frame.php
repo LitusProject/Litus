@@ -85,10 +85,6 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
             }
         }
 
-        error_log($data['poster']);
-        if($object->hasPoster() && isset($data['poster'])){
-            $object->setPoster($data['poster']);
-        }
         return $object;
     }
 
