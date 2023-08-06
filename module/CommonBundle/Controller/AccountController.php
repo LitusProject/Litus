@@ -502,6 +502,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function savePreferencesAction()
     {
+        error_log("here");
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();
@@ -510,7 +511,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $data = $this->getRequest()->getPost()->toArray();
 
         if (isset($data['preference_mappings_true'])) {
-            foreach ($data['preferences_mappings_true'] as $id) {
+            foreach ($data['preference_mappings_true'] as $id) {
                 $preferenceMapping = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
                     ->findOnebyId($id);
@@ -521,7 +522,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         if (isset($data['preference_mappings_false'])) {
-            foreach ($data['preferences_mappings_false'] as $id) {
+            foreach ($data['preference_mappings_false'] as $id) {
                 $preferenceMapping = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
                     ->findOnebyId($id);
