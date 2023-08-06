@@ -13,9 +13,9 @@ return array(
                     'action' => 'send',
                     'title'  => 'Het Bakske',
                 ),
-                'mail_admin_section' => array(
+                'mail_admin_preference' => array(
                     'action' => 'manage',
-                    'title'  => 'Newsletter',
+                    'title'  => 'Preferences',
                 ),
                 'mail_admin_list' => array(
                     'action' => 'manage',

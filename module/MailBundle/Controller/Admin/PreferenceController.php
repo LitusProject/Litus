@@ -3,19 +3,16 @@
 namespace MailBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
-use MailBundle\Entity\Section;
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\ClientException;
+use MailBundle\Entity\Preference;
 use GuzzleHttp\Exception\GuzzleException;
-use MailBundle\Entity\Section\Group;
 use Psr\Http\Message\StreamInterface;
 
-class SectionController extends \MailBundle\Component\Controller\AdminController
+class PreferenceController extends \MailBundle\Component\Controller\AdminController
 {
     public function manageAction()
     {
-        $sections = $this->paginator()->createFromEntity(
-            'MailBundle\Entity\Section',
+        $preferences = $this->paginator()->createFromEntity(
+            'MailBundle\Entity\Preference',
             $this->getParam('page'),
             array(),
             array(
@@ -25,7 +22,7 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
 
         return new ViewModel(
             array(
-                'sections'         => $sections,
+                'preferences'         => $preferences,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
@@ -38,23 +35,23 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
      */
     public function addAction()
     {
-        $form = $this->getForm('mail_section_add');
+        $form = $this->getForm('mail_preference_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
             if ($form->isValid()) {
-                $section = $form->hydrateObject();
+                $preference = $form->hydrateObject();
 
                 // sendinblue attribute character checking
-                if(!preg_match('/^[A-Za-z0-9_]+$/',$section->getAttribute())) {
+                if(!preg_match('/^[A-Za-z0-9_]+$/',$preference->getAttribute())) {
                     $this->flashMessenger()->error(
                         'Error',
                         'The SIB Attribute can only contain alphanumeric characters and underscore(_).'
                     );
                 }
                 else {
-                    $this->getEntityManager()->persist($section);
+                    $this->getEntityManager()->persist($preference);
                     $this->getEntityManager()->flush();
 
                     // config value that indicates if the api should be used or skipped (for local development)
@@ -62,18 +59,18 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('mail.enable_sib_api');
                     if ($enableSibApi == "1") {
-                        $this->sibAddAttribute($section->getAttribute());
-                        $this->sibUpdateAllUsers($section->getAttribute(), $section->getDefaultValue());
+                        $this->sibAddAttribute($preference->getAttribute());
+                        $this->sibUpdateAllUsers($preference->getAttribute(), $preference->getDefaultValue());
                     }
 
                     $this->flashMessenger()->success(
                         'Success',
-                        'The section was succesfully added!'
+                        'The preference was succesfully added!'
                     );
                 }
 
                 $this->redirect()->toRoute(
-                    'mail_admin_section',
+                    'mail_admin_preference',
                     array(
                         'action' => 'manage',
                     )
@@ -99,19 +96,19 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     {
         $this->initAjax();
 
-        $section = $this->getSectionEntity();
-        if ($section === null) {
+        $preference = $this->getPreferenceEntity();
+        if ($preference === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($section);
+        $this->getEntityManager()->remove($preference);
         $this->getEntityManager()->flush();
 
         $enableSibApi = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.enable_sib_api');
         if ($enableSibApi == "1") {
-            $this->sibRemoveAttribute($section->getName());
+            $this->sibRemoveAttribute($preference->getName());
         }
 
         return new ViewModel(
@@ -122,27 +119,27 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
     }
 
     /**
-     * @return Section|null
+     * @return Preference|null
      */
-    private function getSectionEntity()
+    private function getPreferenceEntity()
     {
-        $section = $this->getEntityById('MailBundle\Entity\Section');
+        $preference = $this->getEntityById('MailBundle\Entity\Preference');
 
-        if (!($section instanceof Section)) {
+        if (!($preference instanceof Preference)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No section was found!'
+                'No preference was found!'
             );
 
             $this->redirect()->toRoute(
-                'mail_admin_section',
+                'mail_admin_preference',
                 array(
                     'action' => 'manage',
                 )
             );
             return;
         }
-        return $section;
+        return $preference;
     }
 
     /**
@@ -185,8 +182,6 @@ class SectionController extends \MailBundle\Component\Controller\AdminController
                 'content-type' => 'application/json',
             ],
         ]);
-
-        error_log(json_encode($response->getBody()));
     }
 
     /**

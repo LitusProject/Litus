@@ -41,7 +41,7 @@ return array(
         ),
         'actions' => array(
             'common_account' => array(
-                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
+                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferenceMappings', 'savePreferenceMappings'
             ),
             'common_session' => array(
                 'manage', 'expire',

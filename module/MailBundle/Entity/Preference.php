@@ -4,20 +4,19 @@ namespace MailBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CommonBundle\Entity\User\Preference;
-use Doctrine\ORM\PersistentCollection;
+use CommonBundle\Entity\User\PreferenceMapping;
 
 /**
- * This is the entity for a newsletter section.
+ * This is the entity for a mailing preference.
  *
- * @ORM\Entity(repositoryClass="MailBundle\Repository\Section")
- * @ORM\Table(name="mail_sections")
+ * @ORM\Entity(repositoryClass="MailBundle\Repository\Preference")
+ * @ORM\Table(name="mail_preferences")
  */
 
-class Section
+class Preference
 {
     /**
-     * @var integer The entry's unique identifier
+     * @var integer The unique identifier of this mailing preference
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -26,39 +25,39 @@ class Section
     private $id;
 
     /**
-     * @var string The name of this newsletter section
+     * @var string The name of this mailing preference
      *
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @var string The attribute name of this newsletter section in SendInBlue
+     * @var string The attribute name of this mailing preference in SendInBlue
      *
      * @ORM\Column(type="string")
      */
     private $attribute;
 
     /**
-     * @var bool The default preference value of this newsletter section for each user
+     * @var bool The default preference value of this mailing preference for each user
      *
      * @ORM\Column(name="default_value", type="boolean")
      */
     private $defaultValue;
 
     /**
-     * @var ArrayCollection The preferences that refer to this section
+     * @var ArrayCollection The preferenceMappings that refer to this preference
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="section", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="preference", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $preferences;
+    private $preferenceMappings;
 
     /**
-     * Creates a new newsletter section with the given name.
+     * Creates a new mailing preference.
      *
-     * @param string $name The name for this newsletter section.
-     * @param string $attribute The SendInBlue attribute that corresponds to this newsletter section
-     * @param bool $defaultValue The default preference value of this newsletter section for each user
+     * @param string $name The name for this mailing preference.
+     * @param string $attribute The SendInBlue attribute that corresponds to this mailing preference
+     * @param bool $defaultValue The default preference value of this mailing preference for each user
      */
     public function __construct($name=null, $attribute=null, $defaultValue=false) {
     }
@@ -98,9 +97,9 @@ class Section
     /**
      * @return ArrayCollection
      */
-    public function getPreferences()
+    public function getPreferenceMappings()
     {
-        return $this->preferences;
+        return $this->preferenceMappings;
     }
 
     /**
@@ -139,23 +138,23 @@ class Section
     }
 
     /**
-     * @param  Preference $preference
+     * @param  PreferenceMapping $preferenceMapping
      * @return self
      */
-    public function addPreference(Preference $preference)
+    public function addPreferenceMapping(PreferenceMapping $preferenceMapping)
     {
-        $this->preferences->add($preference);
+        $this->preferenceMappings->add($preferenceMapping);
 
         return $this;
     }
 
     /**
-     * @param  Preference $preference
+     * @param  PreferenceMapping $preferenceMapping
      * @return self
      */
-    public function removePreference(Preference $preference)
+    public function removePreferenceMapping(PreferenceMapping $preferenceMapping)
     {
-        $this->preferences->removeElement($preference);
+        $this->preferenceMappings->removeElement($preferenceMapping);
 
         return $this;
     }
@@ -163,9 +162,9 @@ class Section
     /**
      * @return $this
      */
-    public function removeAllPreferences()
+    public function removeAllPreferenceMappings()
     {
-        $this->preferences = new ArrayCollection();
+        $this->preferenceMappings = new ArrayCollection();
 
         return $this;
     }
@@ -173,9 +172,9 @@ class Section
     /**
      * @return bool
      */
-    public function inPreferences($preferencesToCheck) {
-        foreach ($preferencesToCheck as $preference) {
-            if ($this->name == $preference->getSection()->getName()) {
+    public function inPreferencesMappings($preferenceMappingsToCheck) {
+        foreach ($preferenceMappingsToCheck as $preferenceMapping) {
+            if ($this->name == $preferenceMapping->getPreference()->getName()) {
                 return true;
             }
         }

@@ -1,13 +1,13 @@
 <?php
 
-namespace MailBundle\Form\Admin\Section;
+namespace MailBundle\Form\Admin\Preference;
 
 /**
- * Add Section
+ * Add Preference
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'MailBundle\Hydrator\Section';
+    protected $hydrator = 'MailBundle\Hydrator\Preference';
 
     public function init()
     {
@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'     => 'checkbox',
                 'name'     => 'default_value',
-                'label'    => 'Default Preference'
+                'label'    => 'Default value',
             )
         );
 

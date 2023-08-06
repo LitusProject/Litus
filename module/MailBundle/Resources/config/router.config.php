@@ -32,17 +32,17 @@ return array(
                 ),
             ),
         ),
-        'mail_admin_section' => array(
+        'mail_admin_preference' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/mail/newsletter[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/mail/preference[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'mail_admin_section',
+                    'controller' => 'mail_admin_preference',
                     'action'     => 'manage',
                 ),
             ),
@@ -136,7 +136,7 @@ return array(
     'controllers' => array(
         'mail_admin_alias'     => 'MailBundle\Controller\Admin\AliasController',
         'mail_admin_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
-        'mail_admin_section'    => 'MailBundle\Controller\Admin\SectionController',
+        'mail_admin_preference'    => 'MailBundle\Controller\Admin\PreferenceController',
         'mail_admin_group'     => 'MailBundle\Controller\Admin\GroupController',
         'mail_admin_list'      => 'MailBundle\Controller\Admin\MailingListController',
         'mail_admin_message'   => 'MailBundle\Controller\Admin\MessageController',

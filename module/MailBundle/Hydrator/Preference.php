@@ -2,14 +2,14 @@
 
 namespace MailBundle\Hydrator;
 
-use MailBundle\Entity\Section as SectionEntity;
+use MailBundle\Entity\Preference as PreferenceEntity;
 
-class Section extends \CommonBundle\Component\Hydrator\Hydrator
+class Preference extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $array, $object = null)
     {
         if ($object === null) {
-            $object = new SectionEntity();
+            $object = new PreferenceEntity();
         }
 
         $object->setName($array['name']);

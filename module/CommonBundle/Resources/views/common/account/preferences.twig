@@ -5,35 +5,44 @@
         <div class="flashmessage alert alert-success fade" id="preferences_saved_success">
             <button type="button" class="close">&times;</button>
             <div class="content">
-                {{ translate('Your newsletter preferences were successfully saved!') }}
+                {{ translate('Your mailing preferences were successfully saved!') }}
             </div>
         </div>
         <div class="flashmessage alert alert-danger alert-fixed-top fade" id="preferences_saved_error">
             <button type="button" class="close">&times;</button>
             <div class="content">
-                {{ translate('An error occurred while saving your newsletter preferences!') }}
+                {{ translate('An error occurred while saving your mailing preferences!') }}
             </div>
         </div>
     </div>
 
     <div class="container">
         <div class="spacer40"></div>
-        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Newsletter Preferences') }}</small></h1>
+        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Mailing Preferences') }}</small></h1>
         <div class="lineDecoration"></div>
 
         <div style="height: 50px"></div>
 
-        <h3>
-            {{ translate('Choose Your Newsletter Preferences') }}
-        </h3>
-        {% for preference in preferences %}
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" class="preference_subscribe" data-id="{{ preference.getId() }}" {% if preference.getValue() %}checked="checked"{% endif %}"> {{ preference.getSection.getName() }}
-                </label>
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>
             </div>
-        {% endfor %}
 
+            <div style="height: 15px"></div>
+            {% for preferenceMapping in preferenceMappings %}
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"  class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}
+                    </label>
+                </div>
+            {% endfor %}
+            <div style="height: 30px"></div>
+
+            <div class="buttonHolder">
+                <a class="myVtkButton preference_subscribe_button">{{ translate('Save Preferences') }}</a>
+            </div>
+
+        </div>
     </div>
 {% endblock %}
 
@@ -41,34 +50,28 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.preference_subscribe').click(function () {
-                if ( $(this).html() === '{{ translate('Subscribe') }}')
-                    $(this).text('{{ translate('Unsubscribe') }}');
-                else
-                    $(this).text('{{ translate('Subscribe') }}');
+            $('.preference_subscribe_button').click(function () {
+                $('.page-alert .flashmessage').removeClass('in');
+                saveChanges();
             });
 
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
-
-            $('.preference_subscribe').change(function () {
-                $('.page-alert .flashmessage').removeClass('in');
-                saveChanges();
-            });
         });
 
         function saveChanges() {
-            var preferences_true = [];
-            var preferences_false = [];
-            $('.preference_subscribe:checked').each(function () {
-                preferences_true.push($(this).data('id'));
+            var preference_mappings_true = [];
+            var preference_mappings_false = [];
+            $('.preference_checkbox:checked').each(function () {
+                preference_mappings_true.push($(this).data('id'));
             });
-            $('.preference_subscribe:not(:checked)').each(function () {
-                preferences_false.push($(this).data('id'));
+            $('.preference_checkbox:not(:checked)').each(function () {
+                preference_mappings_false.push($(this).data('id'));
             });
-
-            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preferences_true": preferences_true, "preferences_false": preferences_false}, function (data) {
+            console.log("prefernce mapping true: " + preference_mappings_true);
+            console.log("prefernce mapping false: " + preference_mappings_false);
+            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false}, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
                     $('#preferences_saved_success').addClass('in');

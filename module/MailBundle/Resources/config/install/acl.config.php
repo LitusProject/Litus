@@ -8,7 +8,7 @@ return array(
         'mail_admin_bakske' => array(
             'send',
         ),
-        'mail_admin_section' => array(
+        'mail_admin_preference' => array(
             'manage', 'add', 'delete',
         ),
         'mail_admin_list' => array(
