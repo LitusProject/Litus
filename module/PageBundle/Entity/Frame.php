@@ -155,6 +155,20 @@ class Frame
     /**
      * @return boolean
      */
+    public function doesLinkToPage(){
+        return !is_null($this->linkToPage);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function doesLinkToLink(){
+        return !is_null($this->linkToLink);
+    }
+
+    /**
+     * @return boolean
+     */
     public function isActive()
     {
         return $this->active;

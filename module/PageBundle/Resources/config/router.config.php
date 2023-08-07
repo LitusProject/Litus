@@ -109,9 +109,10 @@ return array(
         'page_categorypage' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/category[/:name][/]',
+                'route'       => '[/:language]/category[/:name][/:action[/:poster_name]][/]',
                 'constraints' => array(
                     'name'   => '[a-zA-Z0-9_-]*',
+                    'poster_name'   => '[a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
                 ),
                 'defaults'    => array(

@@ -2,8 +2,10 @@
 
 namespace PageBundle\Controller;
 
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\Category;
+use PageBundle\Entity\Frame;
 use PageBundle\Entity\Link;
 use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
@@ -76,6 +78,36 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         );
     }
 
+    public function posterAction()
+    {
+        $frame = $this->getFrameEntityByPoster();
+        if ($frame === null) {
+            return $this->notFoundAction();
+        }
+
+        $filePath = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('page.frame_poster_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $frame->getPoster()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $frame->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $frame->getPoster()));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
     /**
      * @return CategoryPage|null
      */
@@ -105,7 +137,20 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             return;
         }
 
-
         return $page;
+    }
+
+    /**
+     * @return Frame|null
+     */
+    private function getFrameEntityByPoster()
+    {
+        $frame = $this->getEntityById('PageBundle\Entity\Frame', 'poster_name', 'poster');
+
+        if (!($frame instanceof Frame)) {
+            return;
+        }
+
+        return $frame;
     }
 }
