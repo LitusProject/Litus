@@ -13,7 +13,7 @@ return array(
     ),
     array(
         'key'         => 'page.frame_poster_path',
-        'value'       => 'data/frame/posters',
+        'value'       => '/_frame/posters',
         'description' => 'The path to the frame posters',
     ),
 );

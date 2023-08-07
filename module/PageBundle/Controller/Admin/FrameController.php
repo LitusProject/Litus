@@ -190,6 +190,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'frame' => $frame,
+                'category_page_id' => $category_page->getId(),
                 'form'  => $form,
             )
         );
@@ -363,7 +364,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getFrameEntityByPoster()
     {
-        $frame = $this->getEntityById('PageBundle\Entity\Frame', 'frame_id', 'poster');
+        $frame = $this->getEntityById('PageBundle\Entity\Frame', 'name', 'poster');
 
         if (!($frame instanceof Frame)) {
             $this->flashMessenger()->error(

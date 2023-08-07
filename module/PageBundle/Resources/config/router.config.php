@@ -79,12 +79,13 @@ return array(
         'page_admin_categorypage_frame' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/site/page/categorypage/:category_page_id/frame[/:action[/:frame_id][/page/:page]][/]',
+                'route'       => '/admin/site/page/categorypage/:category_page_id/frame[/:action[/:frame_id][/:name][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'category_page_id'     => '[0-9]*',
                     'frame_id'     => '[0-9]*',
                     'page'   => '[0-9]*',
+                    'name' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'page_admin_categorypage_frame',
