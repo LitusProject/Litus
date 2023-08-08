@@ -4,7 +4,6 @@ namespace PageBundle\Controller;
 
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
-use PageBundle\Entity\Category;
 use PageBundle\Entity\Frame;
 use PageBundle\Entity\Link;
 use PageBundle\Entity\Node\CategoryPage;

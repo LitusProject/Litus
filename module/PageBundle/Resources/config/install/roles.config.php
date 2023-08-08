@@ -9,7 +9,7 @@ return array(
                 'add', 'delete', 'edit', 'manage', 'upload',
             ),
             'page_admin_categorypage' => array(
-                'add', 'delete', 'edit', 'manage',
+                'add', 'delete', 'edit', 'manage', 'upload',
             ),
         ),
     ),
@@ -22,6 +22,9 @@ return array(
             ),
             'page' => array(
                 'file', 'view',
+            ),
+            'page_categorypage' => array(
+                'view', 'poster',
             ),
         ),
     ),

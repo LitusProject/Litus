@@ -15,13 +15,16 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'page_admin_categorypage_frame' => array(
-            'add', 'delete', 'edit', 'manage',
+            'add', 'delete', 'edit', 'manage', 'editPoster', 'upload', 'poster',
         ),
         'page_link' => array(
             'view',
         ),
         'page' => array(
             'file', 'view',
+        ),
+        'page_categorypage' => array(
+            'view', 'poster',
         ),
     ),
 );
