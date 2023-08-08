@@ -266,7 +266,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             ->fromRoute(
                 'ticket',
                 array('action' => 'qr',
-                    'id'       => $event->getId(),
+                    'rand_id'       => $event->getRandId(),
                     'qr'     => $ticket->getQrCode()
                 ),
                 array('force_canonical' => true)

@@ -154,7 +154,7 @@
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
                                 {% if event.hasTicket(entityManager) == true %}
                                     <a class="myVtkButton"
-                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                       href="{{ url('ticket', {'rand_id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
                                 {% if event.hasTicket(entityManager) == true %}
                                     <a class="myVtkButton"
-                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                       href="{{ url('ticket', {'rand_id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
                             </div>
                         </div>
