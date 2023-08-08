@@ -238,11 +238,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     public function clearVisitorsAction(){
         $event = $this->getEventEntity();
         if ($event === null) {
-            return new ViewModel(
-                array(
-                    'status' => 'error',
-                )
-            );
+            return new ViewModel();
         }
 
         $visitors = $this->getEntityManager()
@@ -254,25 +250,19 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
         $this->getEntityManager()->flush();
 
-        assert(count($this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Event\Visitor')
-            ->findAllByEventAndExitNull($event))==0);
-
         $this->flashMessenger()->success(
             'Success',
             'All the visitors of this event have been removed!'
         );
 
-        return new ViewModel(
+        $this->redirect()->toRoute(
+            'ticket_admin_event',
             array(
-                'status' => 'success',
-                'info'   => array(
-                    'info' => array(
-                        'amount' => count($visitors),
-                    ),
-                ),
+                'action' => 'edit',
+                'id'     => $event->getId(),
             )
         );
+        return new ViewModel();
     }
 
     /**
