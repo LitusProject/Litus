@@ -6,38 +6,26 @@
     {{ inlineScript() }}
 
     <div class="container">
-
-    <div class="pageTitleHolder">
-        <h1>{{ categoryPage.getCategory().getName(language) }}</h1>
-        <div class="pageTitleDeco"></div>
-    </div>
     <div class="spacer40"></div>
-
-    <div>Big Frames:
-        {% for result in big_frames %}
-            {% set frame = result.frame %}
-            <div>{{ frame.getTitle(language) }}</div>
-        {% endfor %}
-    </div>
-    <div>Small Frames:
-        {% for result in small_frames %}
-            {% set frame = result.frame %}
-            <div>{{ frame.getTitle(language) }}</div>
-        {% endfor %}
+    <div class="pageTitleHolder">
+        <h1>{{ category_page.getCategory().getName(language) }}</h1>
+        <div class="pageTitleDeco"></div>
     </div>
 
 
     {% if big_frames|length != 0 %}
         <div class="container">
-            <div class="calendar-grid" style="margin-bottom: 40px">
+            <div class="frame-grid" style="margin-bottom: 40px">
                 {% for result in big_frames | slice(0, 3) %}
                     {% set frame = result.frame %}
-                    <div style="position: relative" class="calendar-item">
+                    <div style="position: relative" class="frame-item">
                         <div class="DELETE-BGIMAGE"
                              style="background-image:url({{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }})"></div>
-                        <div class="calendar-item-tekst">
+                        <div class="frame-item-tekst">
                             <h4>{{ frame.getTitle(language) }}</h4>
-                            <p class="calendar-emptyfill">{{ frame.getDescription(language) }}</p>
+                            <div class="markdown frame-emptyfill">
+                                {{ hideEmail(markdown(frame.getDescription(language)))|raw }}
+                            </div>
                             <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
                                 {% if frame.doesLinkToPage() %}
                                     {% if hasAccess('page', 'view') %}
@@ -57,31 +45,51 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="calendar-grid" style="margin-bottom: 40px">
-                {% for event in calendarItems | slice(3, 3) %}
-                    <div style="position: relative" class="calendar-item">
-                        <div class="DELETE-BGIMAGE"
-                             style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
-                        <div class="calendar-item-tekst">
-                            <h4>{{ event.getTitle(language) }}
-                                | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>
-                            <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>
+        </div>
+    {% endif %}
+
+    {% if small_frames|length != 0 %}
+        <div class="container">
+            <div class="frame-grid">
+                {% for result in small_frames %}
+                    {% set frame = result.frame %}
+                    <div style="position: relative; border-bottom: 20px solid white" class="frame-item" >
+                        {% if frame.hasPoster() %}
+                            <div class="DELETE-BGIMAGE"
+                                 style="background-image:url(
+                                 {% if frame.getPoster() %}
+                                        {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
+                                 {% else %}
+                                         https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80
+                                 {% endif %})"></div>
+                        {% endif %}
+                        <div class="frame-item-tekst">
+                            <h4>{{ frame.getTitle(language) }}</h4>
+                            {% if frame.hasDescription() %}
+                                <div class="markdown frame-emptyfill">
+                                    {{ hideEmail(markdown(frame.getDescription(language)))|raw }}
+                                </div>
+                            {% endif %}
+
                             <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
-                                <a class="myVtkButton"
-                                   href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
-                                {% if event.hasTicket(entityManager) == true %}
-                                    <a class="myVtkButton"
-                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                {% if frame.doesLinkToPage() %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ url('page', {'name': frame.getLinkTo().getName()}) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
+                                {% elseif frame.doesLinkToLink() %}
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ frame.getLinkTo().getUrl(language) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }}
-                →</a>
-        </div>
         </div>
     {% endif %}
-    </div>
 {% endblock %}

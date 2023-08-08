@@ -115,6 +115,7 @@
   width: 100%;
 }
 
+.frame-grid,
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -130,7 +131,7 @@
   margin-bottom: 50px
 }
 
-
+.frame-item,
 .calendar-item {
   background-color: whitesmoke; 
   height: 100%;
@@ -154,11 +155,13 @@
   align-items: flex-start;
 }
 
+.frame-item-tekst,
 .calendar-item-tekst {
   padding: 30px 20px 40px 20px; 
   flex-grow: 1; 
 }
 
+.frame-emptyfill,
 .calendar-emptyfill {
   -webkit-order: 0;
   -ms-flex-order: 0;
@@ -216,6 +219,7 @@
     -ms-flex-line-pack: flex-start;
   }
 
+  .frame-grid,
   .calendar-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -238,6 +242,7 @@
     margin-top: -15px; 
   }
 
+  .frame-item,
   .calendar-item {
     background-color: whitesmoke;
     padding: 10px;
