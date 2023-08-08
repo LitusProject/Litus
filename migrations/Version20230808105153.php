@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20230724190452
+ * Version 20230808105153
  */
-class Version20230724190452 extends \Doctrine\Migrations\AbstractMigration
+class Version20230808105153 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -24,7 +24,7 @@ class Version20230724190452 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE INDEX IDX_FE6E893ADC91ADBE ON frames (categoryPage)');
         $this->addSql('CREATE INDEX IDX_FE6E893A8E82FD1A ON frames (link_to_page)');
         $this->addSql('CREATE INDEX IDX_FE6E893AAC24D2CB ON frames (link_to_link)');
-        $this->addSql('CREATE TABLE frames_translations (id BIGINT NOT NULL, frame BIGINT DEFAULT NULL, language BIGINT DEFAULT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE frames_translations (id BIGINT NOT NULL, frame BIGINT DEFAULT NULL, language BIGINT DEFAULT NULL, description TEXT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_50836742B5F83CCD ON frames_translations (frame)');
         $this->addSql('CREATE INDEX IDX_50836742D4DB71B5 ON frames_translations (language)');
         $this->addSql('CREATE TABLE nodes_categorypages (id BIGINT NOT NULL, category BIGINT DEFAULT NULL, PRIMARY KEY(id))');
