@@ -791,7 +791,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
                 $visitor = $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Event\Visitor')
-                    ->findByEventAndQr($event, $qr);
+                    ->findByEventAndQrAndExitNull($event, $qr);
 
                 if ($visitor == null) {
                     // If no visitor, first entry
