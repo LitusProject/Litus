@@ -90,6 +90,18 @@
                 </div>
             </div>
         {% endif %}
+
+        <div class="sidebox">
+            <div class="title">Get Ticket Link</div>
+            <div class="content">
+                <p>
+                    <i>Please hit the link below to copy the ticket link to your clipboard.</i>
+                </p>
+                <p>
+                    <a onclick="copyTicketLink()" href="#" id="copy_ticket_link" data-url="{{ url('ticket', {'action': 'event', 'rand_id': event.getRandId()}) }}">&rarr; Get Ticket Link</a>
+                </p>
+            </div>
+        </div>
     </aside>
 {% endblock %}
 
@@ -145,6 +157,19 @@
             } else {
                 $('form .price_non_members').show();
             }
+        }
+
+        function copyTicketLink() {
+            let url = "https://vtk.be" + $('#copy_ticket_link').data('url');
+            navigator.clipboard.writeText(url).then(
+                () => {
+                    alert("Copied the text: " + url);
+                },
+                () => {
+                    alert("Failed to copy the text: " + url);
+                },
+            );
+
         }
     </script>
 {% endblock %}
