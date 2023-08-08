@@ -42,7 +42,7 @@ class Translation
     /**
      * @var string The description of this translation
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $description;
 
