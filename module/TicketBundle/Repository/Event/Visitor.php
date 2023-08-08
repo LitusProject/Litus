@@ -28,4 +28,38 @@ class Visitor extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByEventAndQrAndExitNull(Event $event, string $qr)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v')
+            ->from('TicketBundle\Entity\Event\Visitor', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.qrCode', ':qr'),
+                    $query->expr()->eq('v.event', ':event'),
+                    $query->expr()->isNull('v.exitTimestamp')
+                )
+            )
+            ->setParameter('qr', $qr)
+            ->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByEventAndExitNull(Event $event)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v')
+            ->from('TicketBundle\Entity\Event\Visitor', 'v')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('v.event', ':event'),
+                    $query->expr()->isNull('v.exitTimestamp')
+                )
+            )
+            ->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }
