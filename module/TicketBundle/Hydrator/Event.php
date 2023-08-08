@@ -20,7 +20,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     {
         if ($object === null) {
             do {
-                $rand_id = sha1(uniqid());
+                $rand_id = uniqid();
             } while (!is_null($this->getEntityManager()
                 ->getRepository("TicketBundle\Entity\Event")
                 ->findOneBy(array(
