@@ -112,7 +112,7 @@
                     <i>Please hit the link below to copy the ticket link to your clipboard.</i>
                 </p>
                 <p>
-                    <a onclick="copyTicketLink()" href="#" id="copy_ticket_link" data-url="{{ url('ticket', {'action': 'event', 'rand_id': event.getRandId(), 'language': 'nl'}) }}">&rarr; Get Ticket Link</a>
+                    <a onclick="copyTicketLink()" href="#" id="copy_ticket_link" data-url="{{ url('ticket', {'action': 'event', 'id': event.getRandId()}) }}">&rarr; Get Ticket Link</a>
                 </p>
             </div>
         </div>
