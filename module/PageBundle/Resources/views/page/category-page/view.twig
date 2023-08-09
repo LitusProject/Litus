@@ -20,7 +20,16 @@
                     {% set frame = result.frame %}
                     <div style="position: relative" class="frame-item">
                         <div class="DELETE-BGIMAGE"
-                             style="background-image:url({{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }})"></div>
+                        {% if frame.hasPoster() %}
+                            <div class="DELETE-BGIMAGE"
+                                 style="background-image:url(
+                                 {% if frame.getPoster() %}
+                                        {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
+                                 {% else %}
+                                         https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80
+                                 {% endif %})"></div>
+                        {% endif %}
+{#                             style="background-image:url({{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }})"></div>#}
                         <div class="frame-item-tekst">
                             <h4>{{ frame.getTitle(language) }}</h4>
                             <div class="markdown frame-emptyfill">
