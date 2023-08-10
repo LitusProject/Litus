@@ -1,0 +1,100 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/frame/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage error_message full_width poster_upload_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while uploading the poster.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>Frame</h1>
+
+        <p>Category: <b>{{ frame.getCategoryPage().getCategory().getName(language) }}</b></p>
+        <td>{% if result.linkto_type == "page" %}
+                {{ frame.getLinkTo().getTitle(language) }} (Page)
+            {% elseif result.linkto_type == "link" %}
+                {{ frame.getLinkTo().getName(language) }} (Link)
+            {% endif %}
+        </td>
+        <td>{{ result.frame_type }}</td>
+        <td>{% if result.frame_type == "Big Frame" or result.frame_type == "Small Frame with Description" %}
+                {{ frame.getDescription(language) }}
+            {% endif %}
+        </td>
+        <td>{% if frame.isActive() %}&times;{% endif %}</td>
+        <br />
+        <h1>Current Poster</h1>
+        {% if frame.getPoster() %}
+            <img src="{{ url('page_admin_categorypage_frame', {'action': 'poster', 'category_page_id': category_page_id, 'name': frame.getPoster()}) }}" alt="{{ frame.getTitle(language) }}" style="width: 500px">
+        {% else %}
+            <i>This frame currently has no poster.</i>
+        {% endif %}
+        <h1>Change Poster</h1>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <div class="modal fade" id="progressModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Upload Banner
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Your files are being uploaded.
+                    </p>
+                    <p>
+                        <div class="progress progress-striped active">
+                            <div class="bar" style="width: 100%;"></div>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#uploadPoster').formUploadProgress({
+                onProgress: function (data) {
+                    $('#progressModal').find('.bar').width(((data.current / data.total) * 100) + '%');
+                },
+                onSubmitted: function (data) {
+                    if (data == undefined) {
+                        $('.flashmessage').addClass('hide');
+                        $('.poster_upload_error').removeClass('hide');
+                    } else if (data.errors) {
+                        $('.flashmessage').addClass('hide');
+                        $('.poster_upload_error').removeClass('hide');
+                        $('#uploadPoster').displayFormErrors(data.errors);
+                    } else if (data.info) {
+                        window.location.reload();
+                    }
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                },
+                onSubmit: function () {
+                    $('.flashmessage').addClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.find('.bar').width('100%');
+                    progressModal.permanentModal('open');
+                },
+                onError: function () {
+                    $('.flashmessage').addClass('hide');
+                    $('.poster_upload_error').removeClass('hide');
+                    var progressModal = $('#progressModal');
+                    progressModal.permanentModal('hide');
+                }
+            });
+        });
+    </script>
+{% endblock %}

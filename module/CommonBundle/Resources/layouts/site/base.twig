@@ -15,8 +15,9 @@
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="/js/html5shiv.js"></script>
+    <script src="/js/html5shiv.js"></script>
     <![endif]-->
+    
 </head>
 
 {# Script for dropdown functionality  #}
@@ -25,139 +26,155 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var menuItems = document.getElementsByClassName('vtk-menuitem-holder dropdown');
-        
-        for(var i = 0; i < menuItems.length; i++) {
-            var current = menuItems[i]; 
-            current.addEventListener("mouseover", func, false);
-            current.addEventListener("mouseout", func1, false);  
 
-            function func() {   
+        for (var i = 0; i < menuItems.length; i++) {
+            var current = menuItems[i];
+            current.addEventListener("mouseover", func, false);
+            current.addEventListener("mouseout", func1, false);
+
+            function func() {
                 var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
-                currentDropdown.setAttribute("style", "visibility:visible;"); 
+                currentDropdown.setAttribute("style", "visibility:visible;");
             }
 
-            function func1() {  
+            function func1() {
                 var currentDropdown = this.querySelector('.vtk-dropdownitem-holder');
-                currentDropdown.setAttribute("style", "visibility:hidden;"); 
+                currentDropdown.setAttribute("style", "visibility:hidden;");
             }
         }
-        
+
     });
 
-    $(document).ready(function() {
-        var isOpen = false 
+    $(document).ready(function () {
+        var isOpen = false
 
-        var mobileMenuButton = document.getElementsByClassName('vtk-menu')[0]; 
-        var menuBars = document.getElementsByClassName('vtk-menu-bar'); 
-        mobileMenuButton.addEventListener("click", openCloseMenu, false); 
+        var mobileMenuButton = document.getElementsByClassName('vtk-menu')[0];
+        var menuBars = document.getElementsByClassName('vtk-menu-bar');
+        mobileMenuButton.addEventListener("click", openCloseMenu, false);
 
         function openCloseMenu() {
             if (!isOpen) {
-                var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
-                menuHolder.setAttribute("style", "visibility:visible; opacity: 0%; transition: all 200ms"); 
-                menuHolder.setAttribute("style", "visibility:visible; opacity: 100%; transition: all 200ms"); 
-                menuBars[1].setAttribute("style", "visibility:hidden; transition: all 0ms"); 
+                var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0];
+                menuHolder.setAttribute("style", "visibility:visible; opacity: 0%; transition: all 200ms");
+                menuHolder.setAttribute("style", "visibility:visible; opacity: 100%; transition: all 200ms");
+                menuBars[1].setAttribute("style", "visibility:hidden; transition: all 0ms");
                 menuBars[0].setAttribute("style", "margin-top: 10px; transform: rotate(45deg)");
                 menuBars[2].setAttribute("style", "margin-top: -10px; transform: rotate(-45deg)");
             } else {
-                var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0]; 
-                menuHolder.setAttribute("style", "visibility:hidden; opacity: 0%; transition: all 200ms"); 
+                var menuHolder = document.getElementsByClassName('vtk-mobile-menu')[0];
+                menuHolder.setAttribute("style", "visibility:hidden; opacity: 0%; transition: all 200ms");
                 menuBars[1].setAttribute("style", "visibility:visible; transition: all 0ms");
                 menuBars[0].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
                 menuBars[2].setAttribute("style", "margin-top: 6px; transform: rotate(0deg)");
             }
-            isOpen = ! isOpen; 
+            isOpen = !isOpen;
         }
     })
-</script>  
+</script>
 
 <body>
-    <div class="contentHolder">
+<div class="contentHolder">
     <div class="contentStretch">
-    <nav class="vtk-primary-navbar hidden-sm hidden-xs" role="navigation">
-        <div style="text-align: right" class="container">
-            <a class="vtk-primary-menuitem" href="{{ url('cudi_retail') }}">{{ translate('Second Hand') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
-            <a class="vtk-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
-        </div>
-    </nav>
-    <nav class="vtk-navbar" role="navigation">
-        <div class="container">
-            <div class="vtk-flex-stretch">
-                <div style="position: relative; margin-top: 5px"><a class="vtk-logo" href="/{{ language.getAbbrev() }}"></a></div>
+        <nav class="vtk-primary-navbar hidden-sm hidden-xs" role="navigation">
+            <div style="text-align: right" class="container">
+                <a class="vtk-primary-menuitem" href="{{ url('cudi_retail') }}">{{ translate('Second Hand') }}</a>
+                <a class="vtk-primary-menuitem"
+                   href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
+                <a class="vtk-primary-menuitem"
+                   href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
+                <a class="vtk-primary-menuitem"
+                   href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
+                <a class="vtk-primary-menuitem"
+                   href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
+            </div>
+        </nav>
+        <nav class="vtk-navbar" role="navigation">
+            <div class="container">
+                <div class="vtk-flex-stretch">
+                    <div style="position: relative; margin-top: 5px"><a class="vtk-logo" href="/{{ language.getAbbrev() }}"></a></div>
 
-                {# Menu items on desktop #}
-                <div class="vtk-flex-horizontal hidden-sm hidden-xs">
+                    {# Menu items on desktop #}
+                    <div class="vtk-flex-horizontal hidden-sm hidden-xs">
 
-                    {# Menu items #}
-                    {% for item in menu %}
-                        {% if 'category' == item.type %}
-                            <div class="vtk-menuitem-holder dropdown">
-                                <a class="vtk-menuitem" href="#">
-                                    {{ item.name }} 
-                                </a>
-                                <div class="vtk-dropdownitem-holder">
-                                    {% for categoryItem in item.items %}
-                                        {% if 'page' == categoryItem.type %}
-                                            {% if hasAccess('page', 'view') %}
-                                                <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link" href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a></div>
-                                            {% endif %}
-                                        {% endif %}
+                        {# Menu items #}
+                        {% for item in menu %}
+                            {% if 'category' == item.type %}
+                                {% if hasAccess('page_categorypage', 'view') %}
+                                    <div data-category="{{ item.name }}" class="vtk-menuitem-holder {% if not item.has_category_page %}dropdown{% endif %}">
+                                        <a class="vtk-menuitem vtk-menuitem-pointer"
+                                           href="{{ url('page_categorypage', {"name": item.name}) }}">
+                                            {{ item.name }}
+                                        </a>
+                                        <div class="vtk-dropdownitem-holder">
+                                            {% for categoryItem in item.items %}
+                                                {% if 'page' == categoryItem.type %}
+                                                    {% if hasAccess('page', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"
+                                                                                         href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
 
-                                        {% if 'link' == categoryItem.type %}
-                                            {% if hasAccess('page_link', 'view') %}
-                                                <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link" href="{{ categoryItem.url }}">{{ categoryItem.name }}</a></div>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    <div class="vtk-menuitem-holder">
-                        <a style="cursor: pointer" class="vtk-menuitem" href="https://www.vtk.be/contact">{% autoescape false %}{{ translate('Contact') }}{% endautoescape %}</a>
-                    </div>
-
-                    {# Separator #}
-                    <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div> 
-
-                    {# Language picker #}
-                    <div class="vtk-menuitem-holder dropdown">
-                        <a class="vtk-menuitem" href="#">
-                            {{ language.getAbbrev() }}
-                        </a>
-                        <div class="vtk-dropdownitem-holder">
-                            {% for language in languages %}
-                                <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link" href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a></div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    {# KNOP AANMELDEN OP PC #}
-                    {% if authenticatedPerson is not null %}
-                        <div class="vtk-menuitem-holder dropdown">
-                        <div class="vtk-menuitem">
-                            {% if authenticatedPerson.getPhotoPath() %}
-                                <div class="vtk-profile" style="background-image: url(/_common/profile/{{ authenticatedPerson.getPhotoPath() }}">
-                                </div>
-                            {% else %}
-                                <div class="vtk-profile" style="background-image: url(/img/profile.png)">
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="vtk-dropdownitem-holder right">
-
-                            <div class="vtk-dropdownitem">
-
-                                <p style="padding: 3px 6px; background-color: whitesmoke; white-space: nowrap; font-size: 14px">{{ authenticatedPerson.getFullName() }}</p>
-
-                                {% if hasAccess('common_account', 'index') %}
-                                    <a class="vtk-dropdownitem-link" href="{{ url('common_account')}}">{{ translate('My VTK') }}</a>
+                                                {% if 'link' == categoryItem.type %}
+                                                    {% if hasAccess('page_link', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"
+                                                                                         href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <div class="vtk-menuitem-holder">
+                            <a class="vtk-menuitem vtk-menuitem-pointer"
+                               href="https://www.vtk.be/contact">{% autoescape false %}{{ translate('Contact') }}{% endautoescape %}</a>
+                        </div>
 
-                                {# {% if hasAccess('common_account', 'index') %}
+                        {# Separator #}
+                        <div style="color: #ffd400; height: 30px; margin-top: 7px">|</div>
+
+                        {# Language picker #}
+                        <div class="vtk-menuitem-holder dropdown">
+                            <a class="vtk-menuitem" href="#">
+                                {{ language.getAbbrev() }}
+                            </a>
+                            <div class="vtk-dropdownitem-holder">
+                                {% for language in languages %}
+                                    <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"
+                                                                     href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {# KNOP AANMELDEN OP PC #}
+                        {% if authenticatedPerson is not null %}
+                            <div class="vtk-menuitem-holder dropdown">
+                            <div class="vtk-menuitem">
+                                {% if authenticatedPerson.getPhotoPath() %}
+                                    <div class="vtk-profile"
+                                         style="background-image: url(/_common/profile/{{ authenticatedPerson.getPhotoPath() }}">
+                                    </div>
+                                {% else %}
+                                    <div class="vtk-profile" style="background-image: url(/img/profile.png)">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="vtk-dropdownitem-holder right">
+
+                                <div class="vtk-dropdownitem">
+
+                                    <p style="padding: 3px 6px; background-color: whitesmoke; white-space: nowrap; font-size: 14px">{{ authenticatedPerson.getFullName() }}</p>
+
+                                    {% if hasAccess('common_account', 'index') %}
+                                        <a class="vtk-dropdownitem-link"
+                                           href="{{ url('common_account') }}">{{ translate('My VTK') }}</a>
+                                    {% endif %}
+
+                                    {# {% if hasAccess('common_account', 'index') %}
                                 <a class="vtk-dropdownitem-link" href="{{ url('common_account')}}">
 
                                 {% endif %}
@@ -169,17 +186,18 @@
                                 </div>
                                 {% endif %} #}
 
-                            </div>
+                                </div>
 
-                            <div class="vtk-dropdownitem">
-                                {% if hasAccess('common_admin_index', 'index') %}
-                                    <a class="vtk-dropdownitem-link" href="{{ url('common_admin_index')}}">{{ translate('Admin') }}</a>
-                                {% endif %}
-                            </div>
+                                <div class="vtk-dropdownitem">
+                                    {% if hasAccess('common_admin_index', 'index') %}
+                                        <a class="vtk-dropdownitem-link"
+                                           href="{{ url('common_admin_index') }}">{{ translate('Admin') }}</a>
+                                    {% endif %}
+                                </div>
 
-                            {# <div style="border-bottom: 1px solid grey; width: 100%"></div> #}
+                                {# <div style="border-bottom: 1px solid grey; width: 100%"></div> #}
 
-                            {# {% if hasAccess('cudi_booking', 'view') %}
+                                {# {% if hasAccess('cudi_booking', 'view') %}
                                 <div class="vtk-dropdownitem">
                                 <a class="vtk-dropdownitem-link" href="{{ url('cudi_booking') }}">{{ translate('My Bookings') }}</a>
                                 </div>
@@ -191,100 +209,112 @@
                                 </div>
                             {% endif %} #}
 
-                            <div class="vtk-dropdownitem">
-                                <a class="vtk-dropdownitem-link" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                <div class="vtk-dropdownitem">
+                                    <a class="vtk-dropdownitem-link"
+                                       href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                                </div>
+
                             </div>
-      
-                        </div>
-                    {% else %}
-                        <div class="vtk-menuitem-holder">
-                            <a style="cursor: pointer" class="vtk-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-                        </div>
+                        {% else %}
+                            <div class="vtk-menuitem-holder">
+                                <a style="cursor: pointer" class="vtk-menuitem"
+                                   href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                            </div>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                {# Toggle and menu items for mobile #}
+                <div class="vtk-menu hidden-lg hidden-md">
+                    <div class="vtk-menu-bar"></div>
+                    <div style="transition: all 0ms" class="vtk-menu-bar"></div>
+                    <div class="vtk-menu-bar"></div>
+                </div>
+            </div>
+        </nav>
+
+        {# Mobile menu #}
+        <div class="vtk-mobile-menu hidden-lg hidden-md">
+            {# Hardcoded quicklinks #}
+            <div class="container">
+                <p style="color:white" class="vtk-footerheading" href="#">
+                    {{ translate("Quicklinks") }}
+                </p>
+                {% if authenticatedPerson is not null %}
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
+                    {% if hasAccess('common_account', 'index') %}
+                        <a class="vtk-mobile-primary-menuitem"
+                           href="{{ url('common_account') }}">{{ translate('My VTK') }}</a>
+                    {% endif %}
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
+                    {% if hasAccess('common_admin_index', 'index') %}
+                        <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_index') }}">Admin</a>
+                    {% endif %}
+
+
+                {% else %}
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
+                {% endif %}
+                <p style="color:white" class="vtk-footerheading" href="#">
+                    {{ translate("Languages") }}
+                </p>
+                {% for language in languages %}
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a>
+                {% endfor %}
+
+            </div>
+
+
+            <div style="height: 20px"></div>
+
+            <div class="container vtk-mobile-container">
+                {# Menu items #}
+                {% for item in menu %}
+                    {% if 'category' == item.type %}
+                        <div class="vtk-mobile-category">
+                            <p style="color:white" class="vtk-footerheading" href="#">
+                                {{ item.name }}
+                            </p>
+                            {% for categoryItem in item.items %}
+                                {% if 'page' == categoryItem.type %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <a class="vtk-mobilelink"
+                                           href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
+                                    {% endif %}
+                                {% endif %}
+
+                                {% if 'link' == categoryItem.type %}
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <a class="vtk-mobilelink"
+                                           href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     {% endif %}
-                </div> 
-
-            </div>
-
-            {# Toggle and menu items for mobile #}
-            <div class="vtk-menu hidden-lg hidden-md">
-                <div class="vtk-menu-bar"></div>
-                <div style="transition: all 0ms" class="vtk-menu-bar"></div>
-                <div class="vtk-menu-bar"></div>
+                {% endfor %}
             </div>
         </div>
-    </nav>
 
-    {# Mobile menu #}
-    <div class="vtk-mobile-menu hidden-lg hidden-md">
-        {# Hardcoded quicklinks #}
-        <div class="container">
-            <p style="color:white" class="vtk-footerheading" href="#">
-                {{translate("Quicklinks")}}
-            </p>
-            {% if authenticatedPerson is not null %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>                
-                {% if hasAccess('common_account', 'index') %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_account')}}">{{ translate('My VTK') }}</a>
-                {% endif %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
-                {% if hasAccess('common_admin_index', 'index') %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ url('common_admin_index')}}">Admin</a>
-                {% endif %}
+        <div id="page">
+            <div id="content">
+                {% include 'site/partials/flashMessenger.twig' %}
 
-    
-            {% else %}
-                    <a class="vtk-mobile-primary-menuitem" href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('Login') }}{% endautoescape %}</a>
-            {% endif %}
-            <p style="color:white" class="vtk-footerheading" href="#">
-                {{translate("Languages")}}
-            </p>
-            {% for language in languages %}
-                <a class="vtk-mobile-primary-menuitem" href="{{ url(getParam('controller'), {'language': language.getAbbrev(), 'action': getParam('action'), 'parent': getParam('parent'), 'name': getParam('name'), 'id': getParam('id')}) }}">{{ translate(language.getName()) }}</a>
-            {% endfor %}
-
+                {% block content %} {% endblock %}
+            </div>
         </div>
-
-
-        <div style="height: 20px"></div>
-
-        <div class="container vtk-mobile-container">
-        {# Menu items #}
-            {% for item in menu %}
-                {% if 'category' == item.type %}
-                    <div class="vtk-mobile-category">
-                        <p style="color:white" class="vtk-footerheading" href="#">
-                            {{ item.name }} 
-                        </p>
-                        {% for categoryItem in item.items %}
-                            {% if 'page' == categoryItem.type %}
-                                {% if hasAccess('page', 'view') %}
-                                    <a class="vtk-mobilelink" href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if 'link' == categoryItem.type %}
-                                {% if hasAccess('page_link', 'view') %}
-                                    <a class="vtk-mobilelink"  href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-
-    <div id="page">
-        <div id="content">
-            {% include 'site/partials/flashMessenger.twig' %}
-
-            {% block content %} {% endblock %}
-        </div>
-    </div>
     </div>
 
     {# Footer #}
@@ -292,12 +322,14 @@
         <div style="background-color: whitesmoke; padding: 50px 0px">
             <div class="container" style="text-align: left">
                 <h3>{{ translate('Partners') }}</h3>
-                
+
                 <div style="height: 20px"></div>
-                
-                {% for logo in logos %}                
-                    <a class="footerLogoHolder" href="{{ logo.getUrl() }}" target="_blank" style="background-color: white">
-                        <div class="footerLogo" style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}')"></div>
+
+                {% for logo in logos %}
+                    <a class="footerLogoHolder" href="{{ logo.getUrl() }}" target="_blank"
+                       style="background-color: white">
+                        <div class="footerLogo"
+                             style="background-image: url('/{{ logoPath }}/{{ logo.getPath() }}')"></div>
                     </a>
                 {% endfor %}
             </div>
@@ -309,10 +341,14 @@
                     <div class="col-md-4">
                         <div class="vtk-footerlogo"></div>
                         <div style="height: 20px"></div>
-                        <a target="_blank" class="vtk-social-icon" href="http://facebook.com/VTKLeuven" style="background-image: url(/_site/img/icon-05.png)"></a>
-                        <a target="_blank" class="vtk-social-icon" href="https://www.instagram.com/vtkleuven/" style="background-image: url(/_site/img/icon-06.png)"></a>
-                        <a target="_blank" class="vtk-social-icon" href="https://www.youtube.com/user/VTKLeuven" style="background-image: url(/_site/img/youtube.png)"></a>
-                        <a target="_blank" class="vtk-social-icon" href="https://www.tiktok.com/@vtkleuven" style="background-image: url(/_site/img/tiktok.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="http://facebook.com/VTKLeuven"
+                           style="background-image: url(/_site/img/icon-05.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="https://www.instagram.com/vtkleuven/"
+                           style="background-image: url(/_site/img/icon-06.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="https://www.youtube.com/user/VTKLeuven"
+                           style="background-image: url(/_site/img/youtube.png)"></a>
+                        <a target="_blank" class="vtk-social-icon" href="https://www.tiktok.com/@vtkleuven"
+                           style="background-image: url(/_site/img/tiktok.png)"></a>
 
                         <h5>&copy; {{ 'now'|date('Y') }} {{ translate('Vlaamse Technische Kring vzw') }}</h5>
                     </div>
@@ -320,14 +356,18 @@
                         <h3 style="color: white">Links</h3>
                         <div>
                             <div style="display: inline-block; margin-right: 30px">
-                                <a target="_blank" class="button white unfilled" href="http://alum.kuleuven.be/alumni-ingenieurs/">Alumni</a>
+                                <a target="_blank" class="button white unfilled"
+                                   href="http://alum.kuleuven.be/alumni-ingenieurs/">Alumni</a>
                                 <a target="_blank" class="button white unfilled" href="http://best.vtk.be">BEST</a>
-                                <a target="_blank" class="button white unfilled" href="https://chemix.vtk.be/">Chemix</a>
+                                <a target="_blank" class="button white unfilled"
+                                   href="https://chemix.vtk.be/">Chemix</a>
                                 <a target="_blank" class="button white unfilled" href="http://existenz.be">Existenz</a>
                                 <a target="_blank" class="button white unfilled" href="http://eng.kuleuven.be">FIrW</a>
                                 <a target="_blank" class="button white unfilled" href="http://www.iaeste.be">IAESTE</a>
-                                <a target="_blank" class="button white unfilled" href="https://www.ie-net.be/">ie-net</a>
-                                <a target="_blank" class="button white unfilled" href="http://www.kuleuven.be">KU Leuven</a>
+                                <a target="_blank" class="button white unfilled"
+                                   href="https://www.ie-net.be/">ie-net</a>
+                                <a target="_blank" class="button white unfilled" href="http://www.kuleuven.be">KU
+                                    Leuven</a>
                                 <a target="_blank" class="button white unfilled" href="http://www.loko.be">LOKO</a>
                                 <a target="_blank" class="button white unfilled" href="https://mechanix.vtk.be/">Mechanix</a>
                                 <a target="_blank" class="button white unfilled" href="http://revue.vtk.be">Revue</a>
@@ -339,7 +379,8 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
-                        <h7 style="color: white">&copy; {{ 'now'|date('Y') }} {{ translate('VTK Ondersteuning vzw') }}<br></h7>
+                        <h7 style="color: white">&copy; {{ 'now'|date('Y') }} {{ translate('VTK Ondersteuning vzw') }}
+                            <br></h7>
                         <div>
                             <p>Studentenwijk Arenberg 6 bus 1, 3001 Heverlee <br>
                                 <a href="mailto:vtk@vtk.be">vtk@vtk.be</a> <br>
@@ -391,37 +432,32 @@
             $('.carousel').carousel();
 
             {% if showCookieBanner %}
-                $('.cookie-permission').click(function () {
-                    $('.cookie-banner').hide();
-                    var d = new Date();
-                    d.setTime(d.getTime() + (31*24*60*60*1000));
-                    document.cookie="cookie_permission=true;expires="+d.toUTCString();
-                });
+            $('.cookie-permission').click(function () {
+                $('.cookie-banner').hide();
+                var d = new Date();
+                d.setTime(d.getTime() + (31 * 24 * 60 * 60 * 1000));
+                document.cookie = "cookie_permission=true;expires=" + d.toUTCString();
+            });
 
-                $('.view-cookie-policy').click(function (e) {
-                    e.preventDefault();
-                    $('#cookie-policy').modal();
-                });
+            $('.view-cookie-policy').click(function (e) {
+                e.preventDefault();
+                $('#cookie-policy').modal();
+            });
             {% endif %}
         });
     </script>
 
     {% block content_script %} {% endblock %}
 
-{#
-            This view is loaded in every other view
-            To add a page to tracker add following code to controller of page:
-            'fathom'             => $this->getFathomInfo(),
-#}
     {% if fathom is not null %}
         <script type="text/javascript">
-            (function(f, a, t, h, o, m) {
-                a[h] = a[h] || function() {
+            (function (f, a, t, h, o, m) {
+                a[h] = a[h] || function () {
                     (a[h].q = a[h].q || []).push(arguments)
                 };
 
                 o = f.createElement('script'),
-                m = f.getElementsByTagName('script')[0];
+                    m = f.getElementsByTagName('script')[0];
 
                 o.async = 1;
                 o.src = t;
@@ -434,7 +470,7 @@
             fathom('trackPageview');
         </script>
     {% endif %}
-    
+
 </div>
 </body>
 </html>
