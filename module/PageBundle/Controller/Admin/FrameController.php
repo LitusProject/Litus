@@ -220,16 +220,14 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                     'The frame\'s poster has successfully been updated!'
                 );
 
-                return new ViewModel(
+                $this->redirect()->toRoute(
+                    'page_admin_categorypage_frame',
                     array(
-                        'status' => 'success',
-                        'info'   => array(
-                            'info' => array(
-                                'name' => $frame->getPoster(),
-                            ),
-                        ),
+                        'action' => 'manage',
+                        'category_page_id' => $this->getCategoryPageEntity()->getId(),
                     )
                 );
+                return new ViewModel();
             } else {
                 return new ViewModel(
                     array(
