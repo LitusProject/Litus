@@ -15,7 +15,7 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'page_admin_categorypage_frame' => array(
-            'add', 'delete', 'edit', 'manage', 'editPoster', 'upload', 'poster',
+            'add', 'delete', 'edit', 'manage', 'editPoster', 'upload',
         ),
         'page_link' => array(
             'view',

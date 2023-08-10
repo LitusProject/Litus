@@ -30,7 +30,7 @@
         <br />
         <h1>Current Poster</h1>
         {% if frame.getPoster() %}
-            <img src="{{ url('page_admin_categorypage_frame', {'action': 'poster', 'category_page_id': category_page_id, 'name': frame.getPoster()}) }}" alt="{{ frame.getTitle(language) }}" style="width: 500px">
+            <img src="{{ url('page_categorypage', {'action': 'poster', 'name': frame.getCategoryPage().getCategory().getName(language) , 'poster_name': frame.getPoster()}) }}" alt="{{ frame.getTitle(language) }}" style="width: 500px">
         {% else %}
             <i>This frame currently has no poster.</i>
         {% endif %}
