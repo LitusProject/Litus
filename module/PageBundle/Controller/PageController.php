@@ -38,6 +38,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'page'    => $page,
                 'submenu' => $submenu,
                 'faqs'    => $faqs,
+                'fathom'  => $this->getFathomInfo(),
             )
         );
     }

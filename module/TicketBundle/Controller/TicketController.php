@@ -22,8 +22,6 @@ namespace TicketBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CommonBundle\Component\Form\Admin\Element\DateTime;
-use CudiBundle\Controller\PrinterController;
-use CudiBundle\Controller\PrinterController as Printer;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
@@ -175,8 +173,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 $this->redirect()->toRoute(
                                     'ticket',
                                     array(
-                                        'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'action'  => 'event',
+                                        'id' => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -231,7 +229,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -269,7 +267,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -333,7 +331,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -413,7 +411,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -446,7 +444,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -477,7 +475,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -510,7 +508,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -628,7 +626,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id'     => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getRandId(),
                 )
             );
         } else {
@@ -650,7 +648,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id'     => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getRandId(),
                 )
             );
         }
@@ -793,7 +791,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
                 $visitor = $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Event\Visitor')
-                    ->findByEventAndQr($event, $qr);
+                    ->findByEventAndQrAndExitNull($event, $qr);
 
                 if ($visitor == null) {
                     // If no visitor, first entry
@@ -824,7 +822,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 ->fromRoute(
                     'ticket',
                     array('action' => 'qr',
-                        'id' => $event->getId(),
+                        'id' => $event->getRandId(),
                         'qr' => $qr
                     ),
                     array('force_canonical' => true)
@@ -867,10 +865,20 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getEventEntity()
     {
-        $event = $this->getEntityById('TicketBundle\Entity\Event');
-
+        $event = $this->getEntityById('TicketBundle\Entity\Event', 'id', 'rand_id');
         if (!($event instanceof Event)) {
-            return;
+            // Events without a rand_id return id when calling event->getRandId(). We only want to find events by there id
+            // if they don't have a rand_id. This is because older events don't have a rand_id.
+            $event = $this->getEntityManager()->getRepository('TicketBundle\Entity\Event')
+                ->findOneBy(
+                    array(
+                        'id' => $this->getParam('id'),
+                        'rand_id' => null,
+                    )
+                );
+            if (!($event instanceof Event)) {
+                return;
+            }
         }
 
         return $event;
@@ -1090,7 +1098,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->fromRoute(
                 'ticket',
                 array('action' => 'qr',
-                    'id'       => $event->getId(),
+                    'id'       => $event->getRandId(),
                     'qr'     => $ticket->getQrCode()
                 ),
                 array('force_canonical' => true)

@@ -5,7 +5,24 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div id="controller_action">
+    {# Page header + button to add page #}
+    <div class="page-header"  style="overflow: hidden;">
+        <div style="float:left; width: 80%;">
+            <h1>{{ translate('Flesserke') }}</h1>
+        </div>
+        {% if authenticatedPerson is not null %}
+        <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
+            <a href="{{ url('logistics_inventory', {"action": "add"})}}">
+                <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if authenticatedPerson is null %}
+        <div>{{ translate('Please login to view Flesserke.') }}</div>
+    {% else %}
+        <div id="controller_action">
 
         <div id="article_search" style="display:none;">
             <div style="padding:4px;text-align:right">
@@ -37,22 +54,24 @@
                 <thead>
                 <tr>
                     <th style="width: 20%">Name</th>
-                    <th style="width: 12.5%">Brand</th>
                     <th style="width: 12.5%">Category</th>
-                    <th style="width: 15%">Barcode</th>
+                    <th style="width: 12.5%">Brand</th>
+                    <th style="width: 9%">Unit</th>
+                    <th style="width: 11%">Barcode</th>
                     <th style="width: 10%">Res. / Avail.</th>
-                    <th style="width: 15%">Expiry Date</th>
+                    <th style="width: 10%">Expiry Date</th>
                     {% if hasAccess('logistics_inventory', 'reserve') %}
                         <th style="width: 15%">Actions</th>
                     {% endif %}
                 </tr>
                 </thead>
                 {% for article in paginator %}
-{#                    {% if article.getExpiryDate() <= date('d/m/y')  %}#}
+                    {# {% if article.getExpiryDate() <= date('d/m/y')  %}#}
                         <tr class="item item-{{ article.getId() }}">
                             <td>{{ article.getName() }}</td>
-                            <td>{{ article.getBrand() }}</td>
                             <td>{{ article.getCategory() }}</td>
+                            <td>{{ article.getBrand() }}</td>
+                            <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
                             <td>{{ article.getBarcode() }}</td>
                             <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
                             <td>{{ article.getExpiryDate() }}</td>
@@ -74,31 +93,32 @@
         </div>
 
         {% include 'admin/partials/paginationControl.twig' %}
-    </div>
+        </div>
 
-    <div class="modal fade" id="removeArticle" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Litus Admin</span>
-                    /Delete Article
-                </div>
-                <div class="modal-body">
-                    <p>
-                        You are about to delete the following article: <b class="articleName"></b>!
-                        Please note that this operation cannot be undone!
-                    </p>
-                    <p>
-                        Are you sure you want to continue?
-                    </p>
-                    <div class="footer">
-                        <button class="delete">Yes</button>
-                        <button class="cancel" data-dismiss="modal">No</button>
+        <div class="modal fade" id="removeArticle" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span>Litus Admin</span>
+                        /Delete Article
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            You are about to delete the following article: <b class="articleName"></b>!
+                            Please note that this operation cannot be undone!
+                        </p>
+                        <p>
+                            Are you sure you want to continue?
+                        </p>
+                        <div class="footer">
+                            <button class="delete">Yes</button>
+                            <button class="cancel" data-dismiss="modal">No</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {%  endif %}
 {% endblock %}
 
 {% block content_script %}

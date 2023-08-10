@@ -39,6 +39,26 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'name',
+                'label'    => 'Product Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+                'attributes' => array(
+                    'id'           => 'name',
+                    'placeholder'  => 'Product Name',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'select',
                 'name'       => 'category',
                 'label'      => 'Category',
@@ -69,15 +89,19 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
+                'attributes' => array(
+                    'id'           => 'brand',
+                    'placeholder'  => 'Brandname',
+                ),
             )
         );
 
         $this->add(
             array(
                 'type'     => 'text',
-                'name'     => 'name',
-                'label'    => 'Product Name',
-                'required' => true,
+                'name'     => 'perUnit',
+                'label'    => 'Per unit',
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -86,8 +110,27 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'name',
-                    'placeholder'  => 'Product Name',
+                    'id'           => 'perUnit',
+                    'placeholder'  => 'Amount per unit',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'required'   => false,
+                'attributes' => array(
+                    'options' => InventoryEntity::$possibleUnits,
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filter' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
                 ),
             )
         );
@@ -133,7 +176,7 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->addSubmit('Add/Subtract', 'inventory_add');
+        $this->addSubmit('Add', 'inventory_add');
 
         if ($this->inventory !== null) {
             $this->bind($this->inventory);

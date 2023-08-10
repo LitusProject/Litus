@@ -32,15 +32,17 @@ class Inventory
      * @var array The possible types of a category
      */
     public static $possibleCategories = array(
-        'Frisdrank' => 'Frisdrank',
-        'Alcohol' => 'Alcohol',
-        'Koffie & thee' => 'Koffie & thee',
-        'Groenten & fruit' => 'Groenten & fruit',
-        'Snacks' => 'Snacks',
-        'Kruiden' => 'Kruiden',
-        'Saus' => 'Saus',
-        'Conserven' => 'Conserven',
-        'Andere' => 'Andere'
+        ''                  => '',
+        'Frisdrank'         => 'Frisdrank',
+        'Alcohol'           => 'Alcohol',
+        'Koffie & thee'     => 'Koffie & thee',
+        'Voedsel'           => 'Voedsel',
+        'Groenten & fruit'  => 'Groenten & fruit',
+        'Snacks'            => 'Snacks',
+        'Kruiden'           => 'Kruiden',
+        'Saus'              => 'Saus',
+        'Conserven'         => 'Conserven',
+        'Andere'            => 'Andere'
     );
 
     /**
@@ -49,6 +51,34 @@ class Inventory
      * @ORM\Column(name="brand", type="string", nullable=true)
      */
     private $brand;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="unit", type="string", nullable=true)
+     */
+    private $unit;
+
+    /**
+     * @var array The possible types of units
+     */
+    public static $possibleUnits = array(
+        ''          => '',
+        'kg'        => 'kg',
+        'g'         => 'g',
+        'l'         => 'l',
+        'cl'        => 'cl',
+        'ml'        => 'ml',
+        'stuks'     => 'stuks',
+        'zakjes'    => 'zakjes',
+    );
+
+    /**
+     * @var integer Quantity per unit
+     *
+     * @ORM\Column(name="perUnit", type="integer", nullable=true)
+     */
+    private $perUnit;
 
     /**
      * @var string
@@ -142,6 +172,42 @@ class Inventory
     public function getBarcode()
     {
         return $this->barcode;
+    }
+
+    /**
+     * @param $unit
+     * @return self
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPerUnit()
+    {
+        return $this->perUnit;
+    }
+
+    /**
+     * @param $perUnit
+     * @return self
+     */
+    public function setPerUnit($perUnit)
+    {
+        $this->perUnit = $perUnit;
+        return $this;
     }
 
     /**

@@ -19,7 +19,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new EventEntity();
+            do {
+                $rand_id = uniqid();
+            } while (!is_null($this->getEntityManager()
+                ->getRepository("TicketBundle\Entity\Event")
+                ->findOneBy(array(
+                    "rand_id" => $rand_id,
+                ))));
+            $object = new EventEntity($rand_id);
         }
 
         $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || count($object->getOptions()) > 0;

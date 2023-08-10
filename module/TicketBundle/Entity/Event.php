@@ -27,6 +27,13 @@ class Event
     private $id;
 
     /**
+     * @var string The random ID of the event
+     *
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $rand_id;
+
+    /**
      * @var CalendarEvent The activity of the event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
@@ -196,8 +203,9 @@ class Event
      */
     private $deadlineTime;
 
-    public function __construct()
+    public function __construct(string $rand_id)
     {
+        $this->rand_id = $rand_id;
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->nextInvoiceNb = '0000';
@@ -209,6 +217,16 @@ class Event
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandId()
+    {
+        if (is_null($this->rand_id))
+            return $this->id;
+        return $this->rand_id;
     }
 
     /**

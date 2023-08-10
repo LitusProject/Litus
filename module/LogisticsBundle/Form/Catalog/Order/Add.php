@@ -49,8 +49,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'attributes' => array(
                         'multiple' => true,
                         'options'  => $this->createUnitsArray(),
+                        'value'    => $this->academic->getUnit($this->academicYear),
                     ),
-
                 )
             );
         }
@@ -68,6 +68,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                 ),
+                'attributes' => array(
+                    'id'           => 'contact_name',
+                    'placeholder'  => 'Contact name',
+                    'value'        => $this->academic->getFullName(),
+                ),
             )
         );
 
@@ -83,6 +88,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             array('name' => 'StringTrim'),
                         ),
                     ),
+                ),
+                'attributes' => array(
+                    'id'           => 'contact_mail',
+                    'placeholder'  => 'E-mail',
+                    'value'        => $this->academic->getEmail(),
                 ),
             )
         );

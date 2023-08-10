@@ -47,11 +47,11 @@
                                 <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_inventory', 'add') %}
-                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev(), 'action': 'add'}) }}">{{ translate('Flesserke Form') }}</a>
-                            </li>
-                        {% endif %}
+{#                        {% if hasAccess('logistics_inventory', 'add') %}#}
+{#                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>#}
+{#                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev(), 'action': 'add'}) }}">{{ translate('Flesserke Form') }}</a>#}
+{#                            </li>#}
+{#                        {% endif %}#}
                     </ul>
                     <ul class="nav navbar-nav pull-right lang-nav hidden-sm hidden-xs">
                         <li class="dropdown">
