@@ -142,7 +142,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'style'       => 'height: 20px;',
                 ),
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(

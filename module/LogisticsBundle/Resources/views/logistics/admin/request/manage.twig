@@ -25,16 +25,16 @@
                     <td>{{ request.getUnit().getName() }}</td>
                     <td>{{ request.getStartDate().format('d/m/Y H:i') }}</td>
                     <td>{{ request.getEndDate().format('d/m/Y H:i') }}</td>
-                    <td class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}">{{ request.getStatus() }}</td>
+                    <td >{{ request.getStatus() }}</td> {# class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}" #}
                     <td class="actions">
-                        {% if hasAccess('logistics_admin_request', 'view') %}
+                        {% if hasAccess('logistics_admin_order', 'view') %}
                             <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
                         {% endif %}
-                        {% if hasAccess('logistics_admin_request', 'approve') %}
-                            <a href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
+                        {% if hasAccess('logistics_admin_order', 'approve') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
                         {% endif %}
-                        {% if hasAccess('logistics_admin_request', 'reject') %}
-                            <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
+                        {% if hasAccess('logistics_admin_order', 'reject') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
                         {% endif %}
                     </td>
                 </tr>

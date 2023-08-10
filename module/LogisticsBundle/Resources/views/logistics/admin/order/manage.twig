@@ -37,7 +37,6 @@
                     <th>Name</th>
                     <th>Unit</th>
                     <th>Location</th>
-                    <th>Status</th>
                     <th>Start</th>
                     <th>End</th>
                     <th>Updated</th>
@@ -55,12 +54,11 @@
                     <th>Name</th>
                     <th>Unit</th>
                     <th>Location</th>
-                    <th>Status</th>
                     <th>Start</th>
                     <th>End</th>
                     <th>Updated</th>
                     <th>By</th>
-                    <th>Status'</th>
+                    <th>Status</th>
 {#                    <th style="width: 70px">Actions</th>#}
                 </tr>
 
@@ -70,7 +68,6 @@
                         <td>{{ order.getName() }}</td>
                         <td>{{ order.getUnit().getName() }}</td>
                         <td>{{ order.getLocation().getName() }}</td>
-                        <td>{{ order.getStatus() }}</td>
                         <td>{{ order.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ order.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ order.getUpdateDate().format('d/m/Y H:i') }}</td>
@@ -138,9 +135,11 @@
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.unit + '</td>')
                             .append('<td>' + this.location + '</td>')
-                            .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.startDate + '</td>')
                             .append('<td>' + this.endDate + '</td>')
+                            .append('<td>' + this.updateDate + '</td>')
+                            .append('<td>' + this.updator + '</td>')
+                            .append('<td>' + this.status + '</td>')
                         {#    .append(#}
                         {#        actions = $('<td>', {'class': 'actions'})#}
                         {#    );#}

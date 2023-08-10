@@ -40,7 +40,7 @@
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
                     <th width="100px">Spot</th>
-                    <th width="100px">Description</th>
+                    <th style="width: 150px">Description</th>  {# Additional info #}
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -57,7 +57,7 @@
                     <th width="150px">Category</th>
                     <th width="120px">Location</th>
                     <th width="100px">Spot</th>
-                    <th width="100px">Description</th>      {# aditional info #}
+                    <th style="width: 150px">Description</th>  {# Additional info #}
                     <th width="80px">Status</th>
                     <th width="80px">Visibility</th>
                     <th width="70px">Actions</th>
@@ -71,7 +71,7 @@
                         <td>{{ article.getCategory() }}</td>
                         <td>{{ article.getLocation() }}</td>
                         <td>{{ article.getSpot() }}</td>
-                        <td>{{ article.getAdditionalInfo() }}</td>
+                        <td>{{ article.getAdditionalInfo() }}</td>  {# Additional info #}
                         <td>{{ article.getStatus() }}</td>
                         <td>{{ article.getVisibility() }}</td>
                         <td class="actions">
@@ -141,6 +141,7 @@
                             .append('<td>' + this.category + '</td>')
                             .append('<td>' + this.location + '</td>')
                             .append('<td>' + this.spot + '</td>')
+                            .append('<td>' + this.additionalInfo + '</td>')
                             .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.visibility + '</td>')
                             .append(
@@ -169,17 +170,15 @@
                 }
             });
             {% endif %}
-
-            // To delete an article
             $('.item .delete').click(openModal);
         });
 
         function openModal(e) {
-            // Gets the object bound to the modal: an article
             var $this = $(this);
+
             e.preventDefault();
             var removeArticle = $('#removeArticle');
-            removeArticle.find('.articleName').html($(this).data('name'));
+            removeArticle.find('.driverName').html($(this).data('name'));
             var id = $this.data('id');
             removeArticle.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('logistics_admin_article', {"action": "delete"})}}' + id, function (data) {

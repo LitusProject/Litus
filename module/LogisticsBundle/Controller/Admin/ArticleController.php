@@ -189,6 +189,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->category = $article->getCategory();
             $item->location = $article->getLocation();
             $item->spot = $article->getSpot();
+            $item->additionalInfo = $article->getAdditionalInfo();
             $item->status = $article->getStatus();
             $item->visibility = $article->getVisibility();
             $result[] = $item;

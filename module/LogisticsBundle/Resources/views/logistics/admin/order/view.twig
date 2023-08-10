@@ -7,29 +7,30 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action" style="width:inherit;">
-
-        <aside style="margin-top: 32px">
-            {% if hasAccess('logistics_admin_article', 'edit') %}
-                <div class="sidebox">
-                    <div class="title">Edit Order Info</div>
-                    <div class="content">
-                        <p>
-                            <i>Please hit the link below to review this order!</i>
-                        </p>
-                        <p>
-                            <a href="#" class="review-order" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
-                                &rarr; Review Order
-                            </a>
-                        </p>
+        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+            <aside style="margin-top: 32px">
+                {% if hasAccess('logistics_admin_order', 'review') %}
+                    <div class="sidebox">
+                        <div class="title">Edit Order Info</div>
+                        <div class="content">
+                            <p>
+                                <i>Please hit the link below to review this order!</i>
+                            </p>
+                            <p>
+                                <a href="#" class="review-order" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                    &rarr; Review Order
+                                </a>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            {% endif %}
-        </aside>
+                {% endif %}
+            </aside>
+        {% endif %}
 
         {#     Order info       #}
         <div class="row" style="margin-top: 10px">
             <div class="col-md-12">
-                <h1>Order Info</h1>
+                <h1>Order Info: <b>{{ order.getName() }}</b></h1>
 
                 <table class="table" style="margin-top: 5px">
                     {#     Table header       #}
@@ -108,15 +109,14 @@
                         <th style="width: 20%">Status</th>
                         <th style="width: 10%">Old amount</th>
                         <th style="width: 10%">New amount</th>
-                        <th style="width: 50px">Actions</th>
+                        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+                            <th style="width: 50px">Actions</th>
+                        {% endif %}
                     </tr>
 
                     {#     Table content       #}
                     {% for mapping in articles %}
-                                <tr class="item item-{{ mapping.getId() }}"
-                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
-                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
-                                    {% else %}style="background-color: #fae3e3"{% endif %}>
+                                <tr class="item item-{{ mapping.getId() }}">
                                     <td>{{ mapping.getArticle().getName() }}</td>
                                     <td>{{ mapping.getArticle().getCategory() }}</td>
                                     <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
@@ -124,11 +124,13 @@
                                     <td>{{ mapping.getStatus() }}</td>
                                     <td>{{ mapping.getOldAmount() }}</td>
                                     <td>{{ mapping.getAmount() }}</td>
-                                    <td class="actions">
-                                        <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}">
-                                            <b>Review</b>
-                                        </a>
-                                    </td>
+                                    {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+                                        <td class="actions">
+                                            <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}" data-content="{{ mapping.getAmount() }}">
+                                                <b>Review</b>
+                                            </a>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                     {% endfor %}
                 </table>
@@ -154,8 +156,7 @@
                     </tr>
                     </thead>
                     {% for lastOrder in lastOrders %}
-                        <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}"
-                                {% if lastOrder.getId() == order.getId() %} style="background-color: #ecebff" {% endif %}>
+                        <tr class="item item-{{ lastOrder.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}" %}>
                             <td>{{ lastOrder.getName() }}</td>
                             <td class="hidden-xs">{{ lastOrder.getContact() }}</td>
                             <td class="hidden-xs">{{ lastOrder.getStartDate().format('d/m/Y H:i') }}</td>
@@ -175,6 +176,23 @@
                 </table>
             </div>
         </div>
+
+        {#     Review / Approve / Reject buttons       #}
+        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+            <div class="row" style="margin-top: 30px; text-align: center">
+                <div style="width: 230px; margin: auto">
+                    <a class="edit" style="margin: 6px" href="{{ url('logistics_admin_order', {"action" : 'review', "id" : order.getId()}) }}">
+                        <b style="padding-left: 5px">Review</b>
+                    </a>
+                    <a class="accept_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action": "approve", "id": order.getId()}) }}">
+                        <b style="padding-left: 5px">Accept</b>
+                    </a>
+                    <a class="reject_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action" : 'reject', "id" : order.getId()}) }}">
+                        <b style="padding-left: 5px">Reject</b>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <div class="modal fade" id="review-order" tabindex="-1">
@@ -189,7 +207,7 @@
                     <div>{{ forms.renderForm(orderForm) }}</div>
                     <div class="footer" style="margin-top:15px">
                         <button class="edit">Review</button>
-                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                        <button class="cancel" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -211,7 +229,7 @@
                     {#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
                     <div class="footer" style="margin-top:15px">
                         <button class="edit">Review</button>
-                        <button class="cancel" data-dismiss="modal">Cancel</button>
+                        <button class="cancel" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -235,14 +253,7 @@
             var name = $(this).data('name');
             reviewOrder.find('.orderName').html(name);
             reviewOrder.find('.edit').unbind('click').click(function () {
-                if (data && 'success' == data.status) {
-                    $('.flashmessage').addClass('hide');
-                    $('.order_removed_success').removeClass('hide');
-                    $('.item-' + id).remove();
-                    reviewOrder.modal('hide');
-                } else {
-                    errorRemove();
-                }
+                reviewOrder.modal('hide');
             });
             reviewOrder.modal();
         }
@@ -253,23 +264,18 @@
             e.preventDefault();
             var reviewArticle = $('#review-article');
             var id = $this.data('id');
-            var name = $(this).data('name');
+            var name = $this.data('name');
+            var oldAmount = $this.data('content');
             var input = reviewArticle.find('#article-' + id)
             reviewArticle.find('.articleName').html(name);
-            
+
             // Hide all labels and inputs
             reviewArticle.find('.form-group').addClass('hide');
             // Unhide input and label for article
             input.closest('.form-group').removeClass('hide');
 
             reviewArticle.find('.edit').unbind('click').click(function () {
-                if (data && 'success' == data.status) {
-                    $('.flashmessage').addClass('hide');
-                    $('.order_removed_success').removeClass('hide');
-                    reviewArticle.modal('hide');
-                } else {
-                    errorRemove();
-                }
+                reviewArticle.modal('hide');
             });
             reviewArticle.modal();
         }
