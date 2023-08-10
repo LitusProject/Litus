@@ -115,7 +115,39 @@
   width: 100%;
 }
 
-.frame-grid,
+.frame-poster-big {
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.frame-poster-small {
+  height: 140px;
+  //background-image: url(https://picsum.photos/400);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.frame-grid-big {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.frame-grid-small {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -155,7 +187,11 @@
   align-items: flex-start;
 }
 
-.frame-item-tekst,
+.frame-item-tekst{
+  padding: 10px 20px 30px 20px;
+  flex-grow: 1;
+}
+
 .calendar-item-tekst {
   padding: 30px 20px 40px 20px; 
   flex-grow: 1; 

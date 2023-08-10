@@ -15,21 +15,19 @@
 
     {% if big_frames|length != 0 %}
         <div class="container">
-            <div class="frame-grid" style="margin-bottom: 40px">
+            <div class="frame-grid-big" style="margin-bottom: 40px">
                 {% for result in big_frames | slice(0, 3) %}
                     {% set frame = result.frame %}
                     <div style="position: relative" class="frame-item">
-                        <div class="DELETE-BGIMAGE"
                         {% if frame.hasPoster() %}
-                            <div class="DELETE-BGIMAGE"
+                            <div class="frame-poster-big"
                                  style="background-image:url(
                                  {% if frame.getPoster() %}
                                         {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
                                  {% else %}
-                                         https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80
+                                         /_site/img/technisch_pattern.png
                                  {% endif %})"></div>
                         {% endif %}
-{#                             style="background-image:url({{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }})"></div>#}
                         <div class="frame-item-tekst">
                             <h4>{{ frame.getTitle(language) }}</h4>
                             <div class="markdown frame-emptyfill">
@@ -59,17 +57,17 @@
 
     {% if small_frames|length != 0 %}
         <div class="container">
-            <div class="frame-grid">
+            <div class="frame-grid-small">
                 {% for result in small_frames %}
                     {% set frame = result.frame %}
                     <div style="position: relative; border-bottom: 20px solid white" class="frame-item" >
                         {% if frame.hasPoster() %}
-                            <div class="DELETE-BGIMAGE"
+                            <div class="frame-poster-small"
                                  style="background-image:url(
                                  {% if frame.getPoster() %}
                                         {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
                                  {% else %}
-                                         https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80
+                                         /_site/img/technisch_pattern.png
                                  {% endif %})"></div>
                         {% endif %}
                         <div class="frame-item-tekst">
