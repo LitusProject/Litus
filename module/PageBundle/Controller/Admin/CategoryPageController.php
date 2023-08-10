@@ -18,7 +18,6 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         $category_pages = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\CategoryPage')
             ->findAll();
-        
         foreach ($category_pages as $key => $page) {
             if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($category_pages[$key]);

@@ -25,12 +25,12 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
 
         $big_frames = $this->getEntityManager()
             ->getRepository("PageBundle\Entity\Frame")
-            ->findAllBigFrames($page)
+            ->findAllActiveBigFrames($page)
             ->getResult();
 
         $small_frames = $this->getEntityManager()
             ->getRepository("PageBundle\Entity\Frame")
-            ->findAllSmallFrames($page)
+            ->findAllActiveSmallFrames($page)
             ->getResult();
 
         $result_big = array();

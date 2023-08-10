@@ -80,6 +80,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'value' => true,
             )
         );
+
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'order_number',
+                'label'   => 'Ordering Number',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
     }
 
     protected function addTab(FieldsetInterface $container, Language $language, $isDefault)

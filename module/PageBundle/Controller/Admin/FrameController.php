@@ -25,29 +25,24 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             return $this->notFoundAction();
         }
 
-        $frames = $this->getEntityManager()
+        $big_frames = $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
-            ->findAllByCategoryPage($category_page);
+            ->findAllBigFrames($category_page)
+            ->getResult();
+        $small_frames = $this->getEntityManager()
+            ->getRepository('PageBundle\Entity\Frame')
+            ->findAllSmallFrames($category_page)
+            ->getResult();
 
         $result = array();
-        foreach ($frames as $frame) {
-            $frame_data = array();
-            $frame_data['frame'] = $frame;
-            if ($frame->isBig()) {
-                $frame_data['frame_type'] = 'Big Frame';
-            } else if ($frame->hasDescription()) {
-                $frame_data['frame_type'] = 'Small Frame with Description';
-            } else if ($frame->hasPoster()) {
-                $frame_data['frame_type'] = 'Small Frame with Poster';
-            }
-            if ($frame->getLinkTo() instanceof Page) {
-                $frame_data['linkto_type'] = 'page';
-            } else if ($frame->getLinkTo() instanceof Link) {
-                $frame_data['linkto_type'] = 'link';
-            }
-
-            $result[] = $frame_data;
+        foreach ($big_frames as $frame) {
+            $result[] = $frame;
         }
+
+        foreach ($small_frames as $frame) {
+            $result[] = $frame;
+        }
+
         $paginator = $this->paginator()->createFromArray(
             $result,
             $this->getParam('page')

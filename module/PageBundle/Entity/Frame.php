@@ -93,6 +93,13 @@ class Frame
      */
     private $poster;
 
+    /**
+     * @var integer|null The ordering number for the frame in the category_page
+     *
+     * @ORM\Column(name="order_number", type="integer", nullable=true)
+     */
+    private $orderNumber;
+
     public function __construct()
     {
         $this->translations = new ArrayCollection();
@@ -311,6 +318,29 @@ class Frame
     {
         $this->poster = trim($poster, '/');
 
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param $orderNumber
+     * @return self
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $orderNumber = intval($orderNumber);
+        if ($orderNumber === null || $orderNumber === 0) {
+            $this->orderNumber = null;
+        } else {
+            $this->orderNumber = $orderNumber;
+        }
         return $this;
     }
 }

@@ -19,7 +19,7 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
-            ->findBy(array('categoryPage' => $page));
+            ->findBy(array('categoryPage' => $page), array('orderNumber', 'ASC'));
     }
 
     /**
@@ -29,7 +29,7 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
-            ->findBy(array('categoryPage' => $page, 'active' => true));
+            ->findBy(array('categoryPage' => $page, 'active' => true), array('orderNumber', 'ASC'));
     }
 
     /**
@@ -37,7 +37,25 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      */
     public function findAllBigFrames(CategoryPage $page)
     {
-        error_log('findbigframes');
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('f')
+            ->from('PageBundle\Entity\Frame', 'f')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('f.categoryPage', ':categoryPage'),
+                    $query->expr()->eq('f.big', 'true')
+                )
+            )
+            ->setParameter('categoryPage', $page)
+            ->orderBy('f.orderNumber', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllActiveBigFrames(CategoryPage $page)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('f')
             ->from('PageBundle\Entity\Frame', 'f')
@@ -49,15 +67,15 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('categoryPage', $page)
+            ->orderBy('f.orderNumber', 'ASC')
             ->getQuery();
     }
 
     /**
      * @param CategoryPage $page
      */
-    public function findAllSmallFrames(CategoryPage $page)
+    public function findAllActiveSmallFrames(CategoryPage $page)
     {
-
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('f')
             ->from('PageBundle\Entity\Frame', 'f')
@@ -69,6 +87,26 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('categoryPage', $page)
+            ->orderBy('f.orderNumber', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param CategoryPage $page
+     */
+    public function findAllSmallFrames(CategoryPage $page)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('f')
+            ->from('PageBundle\Entity\Frame', 'f')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('f.categoryPage', ':categoryPage'),
+                    $query->expr()->eq('f.big', 'false')
+                )
+            )
+            ->setParameter('categoryPage', $page)
+            ->orderBy('f.orderNumber', 'ASC')
             ->getQuery();
     }
 }

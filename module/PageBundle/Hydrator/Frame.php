@@ -45,6 +45,8 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setActive($data['active']);
         }
 
+        $object->setOrderNumber($data['order_number']);
+
         $link_to_id = $data['link_to_' . $data['category_page_id']];
         if ($link_to_id !== null) {
             $type = substr($link_to_id, 0, 4);
@@ -104,6 +106,7 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
 
 
         $data['active'] = $object->isActive();
+        $data['order_number'] = $object->getOrderNumber();
 
         if($object->isBig()){
             $data['frame_type'] = 'big';
