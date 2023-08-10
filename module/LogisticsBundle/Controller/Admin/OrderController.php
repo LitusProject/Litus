@@ -58,7 +58,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $articleForm = $this->getForm(
-            'logistics_admin_order_orderarticlemap_review',
+            'logistics_admin_order_orderArticleMap_review',
             array(
                 'articles' => $articles,
             )

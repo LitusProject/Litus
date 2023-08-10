@@ -205,14 +205,10 @@
                 </div>
                 <div class="modal-body">
                     <h1>Article: <b class="articleName"></b></h1>
-                    {% if articleForm is defined %}
-                        {% do articleForm.prepare() %}
-                        {% autoescape false %}
-                            {{ form().openTag(articleForm) }}
-                            {{ form().closeTag() }}
-                        {% endautoescape %}
-                    {% endif %}
-{#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
+                    <div>
+                        {{ forms.renderForm(articleForm) }}
+                    </div>
+                    {#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
                     <div class="footer" style="margin-top:15px">
                         <button class="edit">Review</button>
                         <button class="cancel" data-dismiss="modal">Cancel</button>
@@ -258,12 +254,18 @@
             var reviewArticle = $('#review-article');
             var id = $this.data('id');
             var name = $(this).data('name');
+            var input = reviewArticle.find('#article-' + id)
             reviewArticle.find('.articleName').html(name);
+            
+            // Hide all labels and inputs
+            reviewArticle.find('.form-group').addClass('hide');
+            // Unhide input and label for article
+            input.closest('.form-group').removeClass('hide');
+
             reviewArticle.find('.edit').unbind('click').click(function () {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
                     $('.order_removed_success').removeClass('hide');
-                    $('.item-' + id).remove();
                     reviewArticle.modal('hide');
                 } else {
                     errorRemove();

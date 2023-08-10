@@ -13,9 +13,9 @@ use LogisticsBundle\Entity\Order\OrderArticleMap;
 class Review extends \CommonBundle\Component\Form\Admin\Form
 {
     /**
-     * @var OrderArticleMap
+     * @var array[]
      */
-    private $orderArticleMap;
+    private $articles = array();
 
     protected $hydrator = 'LogisticsBundle\Hydrator\Order\OrderArticleMap';
 
@@ -23,14 +23,18 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
-        foreach ($this->articles as $article) {
-            $mapping = $article['article'];
+        foreach ($this->articles as $mapping) {
 
             $this->add(
                 array(
                     'type'     => 'text',
-                    'name'     => 'amount',
+                    'name'     => 'article-' . $mapping->getId(),
                     'label'    => 'Amount',
+                    'attributes' => array(
+                        'class'       => 'input-very-mini',
+                        'id'          => 'article-' . $mapping->getId(),
+                        'placeholder' => $mapping->getAmount(),
+                    ),
                     'required' => true,
                     'options'  => array(
                         'input' => array(
@@ -44,29 +48,12 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 )
             );
-
-            $this->add(
-                array(
-                    'type'       => 'select',
-                    'name'       => 'status',
-                    'label'      => 'Status',
-                    'required'   => true,
-                    'attributes' => array(
-                        'options' => OrderArticleMap::$POSSIBLE_STATUSES,
-                    ),
-                )
-            );
-
-
-            if ($this->orderArticleMap !== null) {
-                $this->bind($this->orderArticleMap);
-            }
         }
     }
 
-    public function setOrderArticleMap(OrderArticleMap $orderArticleMap)
+    public function setArticles(array $articles)
     {
-        $this->orderArticleMap = $orderArticleMap;
+        $this->articles = $articles;
 
         return $this;
     }
