@@ -6,9 +6,9 @@ namespace Migrations;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
- * Version 20230810100502
+ * Version 20230810131422
  */
-class Version20230810100502 extends \Doctrine\Migrations\AbstractMigration
+class Version20230810131422 extends \Doctrine\Migrations\AbstractMigration
 {
     /**
      * @param  \Doctrine\DBAL\Schema\Schema $schema
@@ -26,7 +26,7 @@ class Version20230810100502 extends \Doctrine\Migrations\AbstractMigration
         $this->addSql('CREATE TABLE categorypages_roles_map (category_page BIGINT NOT NULL, role VARCHAR(255) NOT NULL, PRIMARY KEY(category_page, role))');
         $this->addSql('CREATE INDEX IDX_93DB90F19F91CC67 ON categorypages_roles_map (category_page)');
         $this->addSql('CREATE INDEX IDX_93DB90F157698A6A ON categorypages_roles_map (role)');
-        $this->addSql('CREATE TABLE frames (id BIGINT NOT NULL, link_to_page BIGINT DEFAULT NULL, link_to_link BIGINT DEFAULT NULL, active BOOLEAN DEFAULT \'true\' NOT NULL, big BOOLEAN DEFAULT \'true\' NOT NULL, has_description BOOLEAN DEFAULT \'true\' NOT NULL, has_poster BOOLEAN DEFAULT \'true\' NOT NULL, poster VARCHAR(255) DEFAULT NULL, categoryPage BIGINT DEFAULT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE frames (id BIGINT NOT NULL, link_to_page BIGINT DEFAULT NULL, link_to_link BIGINT DEFAULT NULL, active BOOLEAN DEFAULT \'true\' NOT NULL, big BOOLEAN DEFAULT \'true\' NOT NULL, has_description BOOLEAN DEFAULT \'true\' NOT NULL, has_poster BOOLEAN DEFAULT \'true\' NOT NULL, poster VARCHAR(255) DEFAULT NULL, order_number INT DEFAULT NULL, categoryPage BIGINT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_FE6E893ADC91ADBE ON frames (categoryPage)');
         $this->addSql('CREATE INDEX IDX_FE6E893A8E82FD1A ON frames (link_to_page)');
         $this->addSql('CREATE INDEX IDX_FE6E893AAC24D2CB ON frames (link_to_link)');
