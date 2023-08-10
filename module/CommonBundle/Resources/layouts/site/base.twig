@@ -100,31 +100,30 @@
                         {% for item in menu %}
                             {% if 'category' == item.type %}
                                 {% if hasAccess('page_categorypage', 'view') %}
-{#                                    <div data-category="{{ item.name }}" class="vtk-menuitem-holder dropdown">#}
-                                    <div data-category="{{ item.name }}" class="vtk-menuitem-holder">
+                                    <div data-category="{{ item.name }}" class="vtk-menuitem-holder {% if not item.has_category_page %}dropdown{% endif %}">
                                         <a class="vtk-menuitem vtk-menuitem-pointer"
                                            href="{{ url('page_categorypage', {"name": item.name}) }}">
                                             {{ item.name }}
                                         </a>
-{#                                        <div class="vtk-dropdownitem-holder">#}
-{#                                            {% for categoryItem in item.items %}#}
-{#                                                {% if 'page' == categoryItem.type %}#}
-{#                                                    {% if hasAccess('page', 'view') %}#}
-{#                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"#}
-{#                                                                                         href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>#}
-{#                                                        </div>#}
-{#                                                    {% endif %}#}
-{#                                                {% endif %}#}
+                                        <div class="vtk-dropdownitem-holder">
+                                            {% for categoryItem in item.items %}
+                                                {% if 'page' == categoryItem.type %}
+                                                    {% if hasAccess('page', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"
+                                                                                         href="{{ url('page', {"name": categoryItem.name}) }}">{{ categoryItem.title }}</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
 
-{#                                                {% if 'link' == categoryItem.type %}#}
-{#                                                    {% if hasAccess('page_link', 'view') %}#}
-{#                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"#}
-{#                                                                                         href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>#}
-{#                                                        </div>#}
-{#                                                    {% endif %}#}
-{#                                                {% endif %}#}
-{#                                            {% endfor %}#}
-{#                                        </div>#}
+                                                {% if 'link' == categoryItem.type %}
+                                                    {% if hasAccess('page_link', 'view') %}
+                                                        <div class="vtk-dropdownitem"><a class="vtk-dropdownitem-link"
+                                                                                         href="{{ categoryItem.url }}">{{ categoryItem.name }}</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
