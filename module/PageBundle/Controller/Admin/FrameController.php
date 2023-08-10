@@ -5,9 +5,9 @@ namespace PageBundle\Controller\Admin;
 use Imagick;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\CategoryPage;
 use PageBundle\Entity\Frame;
 use PageBundle\Entity\Link;
-use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 
 /**
@@ -311,7 +311,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
      */
     private function getCategoryPageEntity()
     {
-        $page = $this->getEntityById('PageBundle\Entity\Node\CategoryPage', 'category_page_id');
+        $page = $this->getEntityById('PageBundle\Entity\CategoryPage', 'category_page_id');
 
         if (!($page instanceof CategoryPage) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(

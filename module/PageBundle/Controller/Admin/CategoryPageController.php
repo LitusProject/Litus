@@ -3,7 +3,7 @@
 namespace PageBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
-use PageBundle\Entity\Node\CategoryPage;
+use PageBundle\Entity\CategoryPage;
 
 /**
  * CategoryPageController
@@ -16,9 +16,9 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
     {
 
         $category_pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\CategoryPage')
+            ->getRepository('PageBundle\Entity\CategoryPage')
             ->findAll();
-
+        
         foreach ($category_pages as $key => $page) {
             if (!$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
                 unset($category_pages[$key]);
@@ -140,7 +140,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
      */
     private function getCategoryPageEntity()
     {
-        $page = $this->getEntityById('PageBundle\Entity\Node\CategoryPage');
+        $page = $this->getEntityById('PageBundle\Entity\CategoryPage');
 
         if (!($page instanceof CategoryPage) || !$page->canBeEditedBy($this->getAuthentication()->getPersonObject())) {
             $this->flashMessenger()->error(

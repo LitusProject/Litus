@@ -5,10 +5,8 @@ namespace PageBundle\Entity;
 
 use CommonBundle\Entity\General\Language;
 use Doctrine\Common\Collections\ArrayCollection;
-use http\Exception\InvalidArgumentException;
 use Locale;
 use PageBundle\Entity\Frame\Translation;
-use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +30,7 @@ class Frame
     /**
      * @var CategoryPage The frame's categoryPage
      *
-     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\Node\CategoryPage", )
+     * @ORM\ManyToOne(targetEntity="PageBundle\Entity\CategoryPage", )
      * @ORM\JoinColumn(name="categoryPage", referencedColumnName="id", onDelete="CASCADE")
      */
     private $categoryPage;

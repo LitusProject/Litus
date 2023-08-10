@@ -2,7 +2,7 @@
 
 namespace PageBundle\Form\Admin\CategoryPage;
 
-use PageBundle\Entity\Node\CategoryPage as CategoryPageEntity;
+use PageBundle\Entity\CategoryPage as CategoryPageEntity;
 use RuntimeException;
 
 /**
@@ -12,7 +12,7 @@ use RuntimeException;
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'PageBundle\Hydrator\Node\CategoryPage';
+    protected $hydrator = 'PageBundle\Hydrator\CategoryPage';
 
     /**
      * @var CategoryPageEntity
@@ -71,7 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $categoryOptions = array();
         foreach ($categories as $category) {
             $categorypage = $this->getEntityManager()
-                ->getRepository('PageBundle\Entity\Node\CategoryPage')
+                ->getRepository('PageBundle\Entity\CategoryPage')
                 ->findOneByCategory($category);
             if(!$categorypage) {
                 $categoryOptions[$category->getId()] = $category->getName();

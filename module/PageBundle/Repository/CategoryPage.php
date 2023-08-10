@@ -1,6 +1,6 @@
 <?php
 
-namespace PageBundle\Repository\Node;
+namespace PageBundle\Repository;
 
 /**
  * CategoryPage
@@ -14,7 +14,7 @@ class CategoryPage extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('p')
-            ->from('PageBundle\Entity\Node\CategoryPage', 'p')
+            ->from('PageBundle\Entity\CategoryPage', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('p.category', ':category'),

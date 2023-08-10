@@ -23,7 +23,6 @@
                 <thead>
                 <tr>
                     <th>Category</th>
-                    <th width="120px">Author</th>
                     <th width="70px">Actions</th>
                 </tr>
                 </thead>
@@ -32,7 +31,6 @@
                 {% for category_page in paginator %}
                     <tr class="item item-{{ category_page.getId() }}">
                         <td>{{ category_page.getCategory().getName(language) }}</td>
-                        <td>{{ category_page.getCreationPerson().getFullName() }}</td>
                         <td class="actions">
                             {% if category_page.canBeEditedBy(authenticatedPerson) %}
                                 {% if hasAccess('page_admin_categorypage', 'edit') %}

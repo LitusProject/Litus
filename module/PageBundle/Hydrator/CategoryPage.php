@@ -1,8 +1,8 @@
 <?php
 
-namespace PageBundle\Hydrator\Node;
+namespace PageBundle\Hydrator;
 
-use PageBundle\Entity\Node\CategoryPage as CategoryPageEntity;
+use PageBundle\Entity\CategoryPage as CategoryPageEntity;
 
 /**
  * This hydrator hydrates/extracts categorypage data.
@@ -14,7 +14,7 @@ class CategoryPage extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new CategoryPageEntity($this->getPersonEntity());
+            $object = new CategoryPageEntity();
         }
 
         if ($data['category'] != '') {

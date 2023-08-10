@@ -1,20 +1,27 @@
 <?php
 
-namespace PageBundle\Entity\Node;
+namespace PageBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use PageBundle\Entity\Category;
 
 /**
  * CategoryPage is de page opened when clicked on a category in the menu.
  *
- * @ORM\Entity(repositoryClass="PageBundle\Repository\Node\CategoryPage")
- * @ORM\Table(name="nodes_categorypages")
+ * @ORM\Entity(repositoryClass="PageBundle\Repository\CategoryPage")
+ * @ORM\Table(name="categorypages")
  */
-class CategoryPage extends \CommonBundle\Entity\Node
+class CategoryPage
 {
+    /**
+     * @var integer The ID of this category page
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="bigint")
+     */
+    private $id;
 
     /**
      * @var Category The page's category
@@ -29,21 +36,24 @@ class CategoryPage extends \CommonBundle\Entity\Node
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="nodes_categorypages_roles_map",
+     *      name="categorypages_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="category_page", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name", onDelete="CASCADE")},
      * )
      */
     private $editRoles;
 
-    /**
-     * @param Person $person
-     */
-    public function __construct(Person $person)
+    public function __construct()
     {
-        parent::__construct($person);
-
         $this->editRoles = new ArrayCollection();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

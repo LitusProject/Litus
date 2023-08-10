@@ -4,9 +4,9 @@ namespace PageBundle\Controller;
 
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use PageBundle\Entity\CategoryPage;
 use PageBundle\Entity\Frame;
 use PageBundle\Entity\Link;
-use PageBundle\Entity\Node\CategoryPage;
 use PageBundle\Entity\Node\Page;
 
 /**
@@ -125,7 +125,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             foreach ($languages as $language) {
                 if ($name == $category->getName($language)) {
                     $page = $this->getEntityManager()
-                        ->getRepository('PageBundle\Entity\Node\CategoryPage')
+                        ->getRepository('PageBundle\Entity\CategoryPage')
                         ->findByCategory($category)[0];
                     break;
                 }

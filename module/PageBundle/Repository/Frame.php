@@ -2,7 +2,7 @@
 
 namespace PageBundle\Repository;
 
-use PageBundle\Entity\Node\CategoryPage;
+use PageBundle\Entity\CategoryPage;
 
 /**
  * Frame

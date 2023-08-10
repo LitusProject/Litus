@@ -4,7 +4,7 @@ namespace PageBundle\Form\Admin\Frame;
 
 use CommonBundle\Component\Form\FieldsetInterface;
 use CommonBundle\Entity\General\Language;
-use PageBundle\Entity\Node\CategoryPage as CategoryPageEntity;
+use PageBundle\Entity\CategoryPage as CategoryPageEntity;
 use PageBundle\Entity\Frame as FrameEntity;
 
 /**
@@ -52,7 +52,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         );
 
         $category_pages = $this->getEntityManager()
-            ->getRepository('PageBundle\Entity\Node\CategoryPage')
+            ->getRepository('PageBundle\Entity\CategoryPage')
             ->findAll();
 
         foreach ($category_pages as $category_page) {
