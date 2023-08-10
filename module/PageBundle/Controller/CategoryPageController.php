@@ -126,7 +126,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
                 if ($name == $category->getName($language)) {
                     $page = $this->getEntityManager()
                         ->getRepository('PageBundle\Entity\CategoryPage')
-                        ->findByCategory($category)[0];
+                        ->findOneByCategory($category);
                     break;
                 }
             }

@@ -220,16 +220,14 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                     'The frame\'s poster has successfully been updated!'
                 );
 
-                return new ViewModel(
+                $this->redirect()->toRoute(
+                    'page_admin_categorypage_frame',
                     array(
-                        'status' => 'success',
-                        'info'   => array(
-                            'info' => array(
-                                'name' => $frame->getPoster(),
-                            ),
-                        ),
+                        'action' => 'manage',
+                        'category_page_id' => $this->getCategoryPageEntity()->getId(),
                     )
                 );
+                return new ViewModel();
             } else {
                 return new ViewModel(
                     array(
@@ -269,36 +267,6 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
         $image->writeImage($filePath . $fileName);
 
         $frame->setPoster($fileName);
-    }
-
-    public function posterAction()
-    {
-        $frame = $this->getFrameEntityByPoster();
-        if ($frame === null) {
-            return new ViewModel();
-        }
-
-        $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('page.frame_poster_path') . '/';
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Type' => mime_content_type($filePath . $frame->getPoster()),
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
-
-        $handle = fopen($filePath . $frame->getPoster(), 'r');
-        $data = fread($handle, filesize($filePath . $frame->getPoster()));
-        fclose($handle);
-
-        return new ViewModel(
-            array(
-                'data' => $data,
-            )
-        );
     }
 
     /**
@@ -349,32 +317,6 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             );
 
             return;
-        }
-
-        return $frame;
-    }
-
-    /**
-     * @return Frame|null
-     */
-    private function getFrameEntityByPoster()
-    {
-        $frame = $this->getEntityById('PageBundle\Entity\Frame', 'name', 'poster');
-
-        if (!($frame instanceof Frame)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No frame was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'page_admin_categorypage_frame',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return null;
         }
 
         return $frame;

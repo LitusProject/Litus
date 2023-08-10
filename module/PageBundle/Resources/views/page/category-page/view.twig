@@ -23,7 +23,7 @@
                             <div class="frame-poster-big"
                                  style="background-image:url(
                                  {% if frame.getPoster() %}
-                                        {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
+                                        {{ url('page_categorypage',{'action':'poster', 'name':category_page.getCategory().getName(language), 'poster_name': frame.getPoster()}) }}
                                  {% else %}
                                          /_site/img/technisch_pattern.png
                                  {% endif %})"></div>
@@ -65,7 +65,7 @@
                             <div class="frame-poster-small"
                                  style="background-image:url(
                                  {% if frame.getPoster() %}
-                                        {{ url('page_categorypage',{'action':'poster', 'poster_name': frame.getPoster()}) }}
+                                        {{ url('page_categorypage',{'action':'poster', 'name':category_page.getCategory().getName(language), 'poster_name': frame.getPoster()}) }}
                                  {% else %}
                                          /_site/img/technisch_pattern.png
                                  {% endif %})"></div>
