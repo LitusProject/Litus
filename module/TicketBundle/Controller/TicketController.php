@@ -983,8 +983,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $eventName = $ticket->getEvent()->getActivity()->getTitle();
 
-        $mailBody = $mailData['content'];
-        $mailSubject = $mailData['subject'];
+        $mailBody = $ticket->getEvent()->getConfirmationMailBody() ? :$mailData['content'];
+        $mailSubject = $ticket->getEvent()->getConfirmationMailSubject() ? :$mailData['subject'];
 
         $mailFrom = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

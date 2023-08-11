@@ -112,6 +112,38 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'mail_confirmation_subject',
+                'label'      => 'Subject of confirmation mail<br>Has to contain {{ event }}',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'mail_confirmation_body',
+                'label'      => 'Body of the confirmation mail<br>Has to contain {{ fullname }}<br>{{ event }}<br>{{ option }}<br>{{ paylink }}',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
                 'type'     => 'checkbox',
                 'name'     => 'deadline_enabled',
                 'label'    => 'Payable after 24 hours',

@@ -190,6 +190,20 @@ class Event
     private $mailFrom;
 
     /**
+     * @var string The subject for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_subject", type="string", nullable=true)
+     */
+    private $confirmationMailSubject;
+
+    /**
+     * @var string The body for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_body", type="string", nullable=true)
+     */
+    private $confirmationMailBody;
+
+    /**
      * @var boolean whether or not the pay page should be accessible after 24 hours
      *
      * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
@@ -790,6 +804,42 @@ class Event
     public function setMailFrom($mail)
     {
         $this->mailFrom = $mail;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationMailSubject()
+    {
+        return $this->confirmationMailSubject;
+    }
+
+    /**
+     * @param string $subject
+     * @return self
+     */
+    public function setConfirmationMailSubject(string $subject)
+    {
+        $this->confirmationMailSubject = $subject;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationMailBody()
+    {
+        return $this->confirmationMailBody;
+    }
+
+    /**
+     * @param string $body
+     * @return self
+     */
+    public function setConfirmationMailBody(string $body)
+    {
+        $this->confirmationMailBody = $body;
         return $this;
     }
 
