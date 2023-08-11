@@ -163,7 +163,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => str_replace('%url%', $this->event->getTermsUrl(), $this->getServiceLocator()->get('translator')->translate('I have read and accept the GDPR terms and condition specified here')),
+                'label'      => str_replace('%url%', $this->event->getTermsUrl(), $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified here')),
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
