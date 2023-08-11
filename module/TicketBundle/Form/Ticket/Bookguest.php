@@ -291,7 +291,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
             //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
-                'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren. Na afloop van de contacttracing worden mijn gegevens verwijderd.',
+                'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),

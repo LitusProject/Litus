@@ -333,6 +333,22 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'text',
+                'name'       => 'terms_url',
+                'label'      => 'Link to Terms and Conditions',
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
+        $this->add(
+            array(
                 'type'     => 'hidden',
                 'name'     => 'enable_options_hidden',
                 'required' => false,
