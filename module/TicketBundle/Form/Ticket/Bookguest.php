@@ -259,39 +259,66 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
             }
         }
 
-        $this->add(
-            array(
-                'type'       => 'checkbox',
-                'name'       => 'images',
-                'label'      => 'Hierbij geef ik toestemming om beeldmateriaal van mij te maken en te gebruiken (indien een gepubliceerde foto niet gewenst is kan je een mail sturen naar communicatie@vtk.be)',
-                'attributes' => array(
-                    'id' => 'images',
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'validators' => array(
-                            array(
-                                'name'    => 'identical',
-                                'options' => array(
-                                    'token'    => true,
-                                    'strict'   => false,
-                                    'messages' => array(
-                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'       => 'checkbox',
+//                'name'       => 'images',
+//                'label'      => 'Hierbij geef ik toestemming om beeldmateriaal van mij te maken en te gebruiken (indien een gepubliceerde foto niet gewenst is kan je een mail sturen naar communicatie@vtk.be)',
+//                'attributes' => array(
+//                    'id' => 'images',
+//                ),
+//                'options'    => array(
+//                    'input' => array(
+//                        'validators' => array(
+//                            array(
+//                                'name'    => 'identical',
+//                                'options' => array(
+//                                    'token'    => true,
+//                                    'strict'   => false,
+//                                    'messages' => array(
+//                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+//                                    ),
+//                                ),
+//                            ),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
+
+//        $this->add(
+//            array(
+//                'type'       => 'checkbox',
+//                'name'       => 'conditions',
+//            //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
+//                'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren.',
+//                'attributes' => array(
+//                    'id' => 'conditions',
+//                ),
+//                'options'    => array(
+//                    'input' => array(
+//                        'validators' => array(
+//                            array(
+//                                'name'    => 'identical',
+//                                'options' => array(
+//                                    'token'    => true,
+//                                    'strict'   => false,
+//                                    'messages' => array(
+//                                        Identical::NOT_SAME => 'You must agree to the terms and conditions.',
+//                                    ),
+//                                ),
+//                            ),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
 
         $this->add(
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-            //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
-                'label'      => 'Bij deze ga ik akkoord dat VTK mijn gegevens mag gebruiken voor de werking van deze activiteit, om te gebruiken voor noodgevallen en mij te contacteren.',
+                'label'      => str_replace('%url%', $this->event->getTermsUrl(), $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified here')),
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
