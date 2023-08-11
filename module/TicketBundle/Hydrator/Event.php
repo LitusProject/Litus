@@ -163,7 +163,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setOrderIdBase($data['order_base_id'])
             ->setForm($form)
             ->setPayDeadline($data['deadline_enabled'])
-            ->setDeadlineTime($data['deadline_time'] ? : null);
+            ->setDeadlineTime($data['deadline_time'] ? : null)
+            ->setConfirmationMailSubject($data['mail_confirmation_subject'])
+            ->setConfirmationMailBody($data['mail_confirmation_body']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -186,6 +188,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();
+        $data['mail_confirmation_subject'] = $object->getConfirmationMailSubject();
+        $data['mail_confirmation_body'] = $object->getConfirmationMailBody();
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
