@@ -217,6 +217,13 @@ class Event
      */
     private $deadlineTime;
 
+    /**
+     * @var string The link to the terms and conditions
+     *
+     * @ORM\Column(name="terms_url", type="string", nullable=true)
+     */
+    private $termsUrl;
+
     public function __construct(string $rand_id)
     {
         $this->rand_id = $rand_id;
@@ -876,6 +883,24 @@ class Event
     public function setDeadlineTime($time)
     {
         $this->deadlineTime = $time;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTermsUrl()
+    {
+        return $this->termsUrl;
+    }
+
+    /**
+     * @param string|null $url
+     * @return self
+     */
+    public function setTermsUrl($url)
+    {
+        $this->termsUrl = $url;
         return $this;
     }
 }
