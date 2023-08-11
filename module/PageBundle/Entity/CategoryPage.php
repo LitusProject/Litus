@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * CategoryPage is de page opened when clicked on a category in the menu.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\CategoryPage")
- * @ORM\Table(name="categorypages")
+ * @ORM\Table(name="nodes_pages_categorypages")
  */
 class CategoryPage
 {
@@ -36,7 +36,7 @@ class CategoryPage
      *
      * @ORM\ManyToMany(targetEntity="CommonBundle\Entity\Acl\Role")
      * @ORM\JoinTable(
-     *      name="categorypages_roles_map",
+     *      name="nodes_pages_categorypages_roles_map",
      *      joinColumns={@ORM\JoinColumn(name="category_page", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role", referencedColumnName="name", onDelete="CASCADE")},
      * )

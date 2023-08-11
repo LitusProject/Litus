@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity represents a frame in a CategoryPage.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame")
- * @ORM\Table(name="frames")
+ * @ORM\Table(name="nodes_pages_frames")
  */
 class Frame
 {

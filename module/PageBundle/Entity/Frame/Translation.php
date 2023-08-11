@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This entity stores the translations of a frame item.
  *
  * @ORM\Entity(repositoryClass="PageBundle\Repository\Frame\Translation")
- * @ORM\Table(name="frames_translations")
+ * @ORM\Table(name="nodes_pages_frames_translations")
  */
 class Translation
 {
