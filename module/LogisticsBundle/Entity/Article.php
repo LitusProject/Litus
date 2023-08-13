@@ -132,12 +132,32 @@ class Article
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
+        # Posten: hier moet automatisch mail adres aan toegevoegd worden
+        'acti'                   => 'Activiteiten',
+        'logistiek'              => 'Logistiek',
+        'sport'                  => 'Sport',
+        'fak'                    => 'Fak',
+        'cultuur'                => 'Cultuur',
+        'communicatie'           => 'Communicatie',
+//        'cursusdienst'           => 'Cursusdienst',       Idee om later toe te voegen (bv. labojassen)
+        'br'                     => 'BR',
+        'it'                     => 'IT',
+        'theokot'                => 'Theokot',
+        'secri'                  => 'Secri',
+        'vice'                   => 'Vice',
+        'praeses'                => 'Praeses',
+        'beheer'                 => 'Beheer',
+
+        # Flesserke: hier moet automatisch materiaal naar toe gebracht worden uit het Flesserke systeem
+        'Flesserke'              => 'Flesserke',
+
+        # Andere
+        'EHBO'                   => 'EHBO',     # EHBO mailadres aan toevoegen
         'geluid'                 => 'Geluid',
         'kabels'                 => 'Kabels',
-        'elektrisch gereedschap' => 'Elektrisch Gereedschap & toebehoren',
         'hand'                   => 'Handgereedschap',
         'kledij'                 => 'Werkkledij',
-        'materiaal'              => 'Material (eindig)',
+        'materiaal'              => 'Materiaal',
         'sanitair'               => 'Sanitair',
         'electronica'            => 'Electronica',
         'vastmaken'              => 'Vastmaken & CO',
@@ -145,23 +165,13 @@ class Article
         'lijm en silicoon'       => 'Lijmen & Siliconen',
         'verf'                   => 'Verven & CO',
         'stof'                   => 'Stof',
-        'br'                     => 'BR',
         'verkleed'               => 'Verkleedkledij',
-        'sport'                  => 'Sport',
-        'fak'                    => 'Fak',
         'varia'                  => 'Varia',
-        'logistiek'              => 'Logistiek',
-        'cultuur'                => 'Cultuur',
         'huis'                   => 'Huishoudelijk',
-        'acti'                   => 'Activiteiten',
-        'bier'                   => 'Bierpotten',
         'glazen'                 => 'Glazen',
         'elektriciteitskabels'   => 'Elektriciteitskabels',
         'kook'                   => 'Kookgerief',
         'corona'                 => 'Coronaproofing',
-        'it'                     => 'IT',
-        'theokot'                => 'Theokot',
-        'secri'                  => 'Secri'
     );
 
     /**
@@ -179,7 +189,7 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'ok'       => 'In Orde',
+        'ok'       => 'In orde',
         'vermist'  => 'Vermist',
         'weg'      => 'Weg',
         'kapot'    => 'Kapot',
@@ -358,7 +368,7 @@ class Article
     /**
      * @return string
      */
-    public function getStatusCode()
+    public function getStatusKey()
     {
         return $this->status;
     }

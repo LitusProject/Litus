@@ -1,23 +1,17 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    <div class="page-header">
-        <h1>{{ translate('My Orders') }}</h1>
-    </div>
-
-    <div class="flashmessage alert alert-danger order_canceled_error fade">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to cancel the order. Please try again later.</p>
+    <div class="page-header" style="overflow: hidden;">
+        <div style="float:left;">
+            <h1>{{ translate('MyRequests') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if authenticatedPerson is not null %}
+                <a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success pull-right">{{ translate('New Reservation') }}</a>
+            {% endif %}
         </div>
     </div>
 
-    <div class="flashmessage alert alert-danger order_edited_error fade">
-        <div class="title">Error</div>
-        <div class="content">
-            <p>An error occurred while trying to edit the order. Please try again later.</p>
-        </div>
-    </div>
     <div class="flashmessage alert alert-danger request_canceled_error fade">
         <div class="title">Error</div>
         <div class="content">
@@ -25,100 +19,146 @@
         </div>
     </div>
 
-    <div class="flashmessage alert alert-danger request_edited_error fade">
+    <div class="flashmessage alert alert-danger request_removed_error fade">
         <div class="title">Error</div>
         <div class="content">
-            <p>An error occurred while trying to edit the request. Please try again later.</p>
+            <p>An error occurred while trying to remove the request. Please try again later.</p>
         </div>
     </div>
+
+{#    <div class="flashmessage alert alert-danger order_edited_error fade">#}
+{#        <div class="title">Error</div>#}
+{#        <div class="content">#}
+{#            <p>An error occurred while trying to edit the order. Please try again later.</p>#}
+{#        </div>#}
+{#    </div>#}
+{#    <div class="flashmessage alert alert-danger request_edited_error fade">#}
+{#        <div class="title">Error</div>#}
+{#        <div class="content">#}
+{#            <p>An error occurred while trying to edit the request. Please try again later.</p>#}
+{#        </div>#}
+{#    </div>#}
 
 
     {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view your orders.') }}</div>
     {% else %}
 
-        {% if enableExtraText %}
-            <p>{{ orderText }}</p>
-        {% endif %}
-        <table class="table">
-            <tr>
-                <th>{{ translate('Booking') }}</th>
-                <th class="hidden-xs">{{ translate('Author') }}</th>
-                <th class="hidden-xs">{{ translate('Start Date') }}</th>
-                <th class="hidden-xs">{{ translate('End Date') }}</th>
-                <th class="hidden-xs">{{ translate('Status') }}</th>
-                <th>{{ translate('Actions') }}</th>
-            </tr>
-            {% for order in orders %}
-                <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">
-                    <td>{{ order.getName() }}</td>
-                    <td class="hidden-xs">{{ order.getContact() }}</td>
-                    <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
-                    <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                    <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>
-                    <td class="actions">
-                        {% if order.isEditable() %}
-                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-warning btn-sm edit">
-                                {{ translate('Edit') }}
-                            </a>
-                        {% endif %}
-                        <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
-                            {{ translate('Articles') }}
-                        </a>
-                        {% if order.isCancellable() %}
-                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">
-                                {{ translate('Cancel') }}
-                            </a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+{#        {% if enableExtraText %}#}
+{#            <p>{{ orderText }}</p>#}
+{#        {% endif %}#}
+{#        <table class="table">#}
+{#            <tr>#}
+{#                <th>{{ translate('Booking') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Author') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Start Date') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('End Date') }}</th>#}
+{#                <th class="hidden-xs">{{ translate('Status') }}</th>#}
+{#                <th>{{ translate('Actions') }}</th>#}
+{#            </tr>#}
+{#            {% for order in orders %}#}
+{#                <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}">#}
+{#                    <td>{{ order.getName() }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getContact() }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>#}
+{#                    <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>#}
+{#                    <td class="hidden-xs">{{ translate(order.getStatus()) }}</td>#}
+{#                    <td class="actions">#}
+{#                        {% if order.isEditable() %}#}
+{#                            <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': order.getId() }) }}" class="btn btn-warning btn-sm edit">#}
+{#                                {{ translate('Edit') }}#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{#                        <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">#}
+{#                            {{ translate('Articles') }}#}
+{#                        </a>#}
+{#                        {% if order.isCancellable() %}#}
+{#                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-title="{{ order.getName() }}">#}
+{#                                {{ translate('Cancel') }}#}
+{#                            </a>#}
+{#                        {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
 
-        </table>
+{#        </table>#}
 
-        <a href="{{ url('logistics_catalog', {"action" : 'addOrder'}) }}" class="btn btn-success pull-right">{{ translate('New Reservation') }}</a>
-
-        {% if not requests is empty %}
-            <div class="row">
-                <div class="col-md-12">
-                    <h1>{{ translate('Requests') }}</h1>
-                </div>
-            </div>
+        {% if not lastOrders is empty %}
             <div class="row">
                 {% set onceRejected = false %}
                 {% set oncePending = false %}
+
+                {#        Table with all latest orders        #}
                 <div class="col-md-12">
-                    <table class="table table-hover full-width">
-                        {% for request in requests %}
-                            {% if request.getStatus() == 'rejected' %}{% set onceRejected = true %}{% endif %}
-                            {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}
-                            <tr>
-                                <td width="200">
-                                    Type: <strong>{{ translate(request.getRequestType()) }}</strong>
-                                    <br/><br/>
-                                    Status: <strong>{{ translate(request.getStatus()) }}</strong>
-                                </td>
-                                <td>
-                                    <strong>{{ request.getRecentOrder().getName() }} </strong>
-                                    <br/>
-                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getRecentOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>
-                                    <br/>
-                                    {% if request.getStatus() == 'rejected' %}
-                                        <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>{{ translate('Request') }}</th>
+                            <th class="hidden-xs">{{ translate('Contact') }}</th>
+                            <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                            <th class="hidden-xs">{{ translate('End Date') }}</th>
+                            <th class="hidden-xs">{{ translate('Status') }}</th>
+                            <th>{{ translate('Actions') }}</th>
+                        </tr>
+                        </thead>
+                        {% for order in lastOrders %}
+                            <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %}">
+                                <td>{{ order.getName() }}</td>
+                                <td class="hidden-xs">{{ order.getContact() }}</td>
+                                <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs item-{{ order.getId() }}-status">{{ translate(order.getStatus()) }}</td>
+                                <td class="actions">
+                                    <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                    {%if not order.isCanceled() %}
+                                        <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Cancel') }}
+                                        </a>
                                     {% else %}
-                                        {{ request.getRecentOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
+                                        <a href="#" class="btn btn-danger btn-sm delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Delete') }}
+                                        </a>
                                     {% endif %}
-                                </td>
-                                <td width="230" style="vertical-align: middle;">
-                                    {% if request.getRequestType() != 'delete' %}
-                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>
-                                    {% endif %}
-                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getRecentOrder().getId()}) }}">{{ translate('View') }}</a>
-                                    <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>
                                 </td>
                             </tr>
                         {% endfor %}
                     </table>
+{#                    <table class="table table-hover full-width">#}
+{#                        {% for lastOrder in lastOrders %}#}
+{#                            <div>{{ lastOrder.name }}</div>#}
+{#                        {% endfor %}#}
+{#                        {% for request in requests %}#}
+{#                            {% if request.getStatus() == 'rejected' %}{% set onceRejected = true %}{% endif %}#}
+{#                            {% if request.getStatus() == 'pending' %}{% set oncePending = true %}{% endif %}#}
+{#                            <tr>#}
+{#                                <td width="200">#}
+{#                                    Type: <strong>{{ translate(request.getRequestType()) }}</strong>#}
+{#                                    <br/><br/>#}
+{#                                    Status: <strong>{{ translate(request.getStatus()) }}</strong>#}
+{#                                </td>#}
+{#                                <td>#}
+{#                                    <strong>{{ request.getRecentOrder().getName() }} </strong>#}
+{#                                    <br/>#}
+{#                                    <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ request.getRecentOrder().getLastUpdateDate().format('d/m/Y H:i') }}</strong></div>#}
+{#                                    <br/>#}
+{#                                    {% if request.getStatus() == 'rejected' %}#}
+{#                                        <font color="red">{{ request.getRejectMessage()|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</font>#}
+{#                                    {% else %}#}
+{#                                        {{ request.getRecentOrder().getDescription(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}#}
+{#                                    {% endif %}#}
+{#                                </td>#}
+{#                                <td width="230" style="vertical-align: middle;">#}
+{#                                    {% if request.getRequestType() != 'delete' %}#}
+{#                                        <a class="btn btn-sm btn-warning" href="{{ url('logistics_catalog', {'action': 'editRequest', 'request': request.getId()}) }}">{{ translate('Edit') }}</a>#}
+{#                                    {% endif %}#}
+{#                                        <a class="btn btn-sm btn-primary" href="{{ url('logistics_catalog', {'action': 'view', 'order': request.getRecentOrder().getId()}) }}">{{ translate('View') }}</a>#}
+{#                                    <a class="btn btn-sm btn-danger deleteRequest" data-id="{{ request.getId() }}" href="#">{{ translate('Delete') }}</a>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                        {% endfor %}#}
+{#                    </table>#}
                 </div>
                 {% if onceRejected == true %}
                     <div class="flashmessage alert alert-warning fade in">
@@ -137,7 +177,7 @@
 
     {% endif %}
 
-    <div class="modal fade" id="cancelReservation">
+    <div class="modal fade" id="cancelRequest">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -145,25 +185,27 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        {{ translate('Are you sure you want to cancel the following order:') }} <b class="orderName"></b>?
+                        {{ translate('Are you sure you want to cancel the following request:') }} <b class="orderName"></b>?
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger continue">Yes</button>
-                    <button class="btn btn-default cancel" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">{{ translate('No') }}</button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="modalDeleteRequest" class="modal fade">
+    <div class="modal fade" id="deleteRequest">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Remove request') }}</h4>
+                    <h4>{{ translate('Logistics') }}</h4>
                 </div>
                 <div class="modal-body">
-                    {{ translate('Are you sure you want to remove this request') }}?
+                    <p>
+                    {{ translate('Are you sure you want to remove the following request:') }} <b class="orderName"></b>?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
@@ -178,66 +220,66 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
-            $('.item .cancel').click(openModalCancel);
-            $('.deleteRequest').click(openRemoveRequest);
-
+            $('.item .cancel').click(openCancelRequest);
+            $('.item .delete').click(openRemoveRequest);
         });
 
-        function openModalCancel(e) {
+        function openCancelRequest(e) {
+            // Gets the object bound to the modal: an order
             var $this = $(this);
-
             e.preventDefault();
-            var cancelReservation = $('#cancelReservation');
-            cancelReservation.find('.articleTitle').html($(this).data('title'));
+            var cancelRequest = $('#cancelRequest');
             var id = $this.data('id');
-            cancelReservation.find('.continue').unbind('click').click(function () {
-                $.post('{{ url('logistics_catalog', {"action": "removeOrder"})}}' + id, function (data) {
+            cancelRequest.find('.orderName').html($(this).data('name'));
+            cancelRequest.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_catalog', {"action": "cancelRequest"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
-                        $('.item-' + id).remove();
-                        $('#cancelReservation').modal('hide');
+                        $('.item-' + id + '-status').html("Canceled");
+                        $('#cancelRequest').modal('hide');
+                        location.reload();
                     } else {
-                        errorRemove();
+                        errorCancel();
                     }
-                }, 'json').error(errorRemove);
+                }, 'json').error(errorCancel);
             });
-            cancelReservation.modal();
+            cancelRequest.modal();
         }
 
         function openRemoveRequest(e) {
             var $this = $(this);
             e.preventDefault();
 
-            var deleteRequest = $('#modalDeleteRequest');
+            var deleteRequest = $('#deleteRequest');
             var id = $this.data('id');
+            deleteRequest.find('.orderName').html($(this).data('name'));
             deleteRequest.find('.confirm').unbind('click').click(function () {
-                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + 'request/' + id, function (data) {
+                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#request_removed_success').addClass('in');
+                        $('.item-' + id).remove();
                         deleteRequest.modal('hide');
-                        location.reload();
                     } else {
-                        errorDeleteRequest();
+                        errorRemove();
                     }
-                }, 'json').error(errorDeleteRequest);
+                }, 'json').error(errorRemove);
             });
             deleteRequest.modal();
+        }
+
+        function errorCancel() {
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.request_canceled_error').removeClass('hidden');
+            $('#cancelRequest').modal('hide');
         }
 
         function errorRemove() {
             $('.flashmessage').addClass('in');
             $('.flashmessage').addClass('hidden');
-            $('.order_canceled_error').removeClass('hidden');
-            $('#cancelReservation').modal('hide');
+            $('.request_removed_error').removeClass('hidden');
+            $('#deleteRequest').modal('hide');
         }
-
-        function errorDeleteRequest() {
-            $('.flashmessage').addClass('in');
-            $('.flashmessage').addClass('hidden');
-            $('.request_canceled_error').removeClass('hidden');
-            $('#modalDeleteRequest').modal('hide');
-        }
-
     </script>
 {% endblock %}

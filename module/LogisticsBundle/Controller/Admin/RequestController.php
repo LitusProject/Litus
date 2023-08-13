@@ -2,8 +2,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Request;
 
 /**
@@ -14,121 +16,144 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $requests = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findNewRequests();
+        $requests = $this->getOpenRequests();
+
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrders[] = $this->getLastOrderByRequest($request);
+        }
 
         return new ViewModel(
             array(
-                'requests' => $requests,
+                'requests'    => $lastOrders,
             )
         );
     }
 
     public function viewAction()
     {
-        $request = $this->getRequestEntity();
-        if ($request === null) {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
             return new ViewModel();
         }
 
-        $newOrder = $request->getEditOrder();
-        $oldOrder = $request->getOrder();
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
 
-        $mappings = array();
-
-        if ($newOrder === null) {
-            $newMaps = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllByOrderQuery($oldOrder)->getResult();
-        } else {
-            $oldMaps = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllByOrderQuery($oldOrder)->getResult();
-            $newMaps = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllByOrderQuery($newOrder)->getResult();
-
-            foreach ($oldMaps as $map) {
-                $id = $map->getArticle()->getId();
-                $mappings[$id] = array(
-                    'name' => $map->getArticle()->getName(),
-                    'old'  => $map->getAmount(),
-                    'new'  => 0,
-                );
-            }
-        }
-
-        foreach ($newMaps as $map) {
-            $id = $map->getArticle()->getId();
-            if (array_key_exists($id, $mappings)) {
-                $mappings[$id]['new'] = $map->getAmount();
-            } else {
-                $mappings[$id] = array(
-                    'name' => $map->getArticle()->getName(),
-                    'new'  => $map->getAmount(),
-                    'old'  => 0,
-                );
-            }
-        }
-
-        $diffs = array(
-            'Name'        => array($oldOrder->getName()),
-            'Location'    => array($oldOrder->getLocation()->getName()),
-            'Creator'     => array($oldOrder->getCreator()->getFullName()),
-            'Contact'     => array($oldOrder->getContact()),
-            'Start Date'  => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
-            'End Date'    => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
-            'Description' => array($oldOrder->getDescription()),
-        );
-        if ($newOrder !== null) {
-            $diffs['Name'][] = $newOrder->getName();
-            $diffs['Location'][] = $newOrder->getLocation()->getName();
-            $diffs['Creator'][] = $newOrder->getCreator()->getFullName();
-            $diffs['Contact'][] = $newOrder->getContact();
-            $diffs['Start Date'][] = $newOrder->getStartDate()->format('d/m/Y H:i');
-            $diffs['End Date'][] = $newOrder->getEndDate()->format('d/m/Y H:i');
-            $diffs['Description'][] = $newOrder->getDescription();
-        }
+        $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
 
         return new ViewModel(
             array(
-                'request'  => $request,
-                'newOrder' => $newOrder,
-                'oldOrder' => $oldOrder,
-                'diffs'    => $diffs,
-                'mappings' => $mappings,
-            )
-        );
-    }
-
-    public function approveAction()
-    {
-        $request = $this->getRequestEntity();
-        if ($request === null) {
-            return new ViewModel();
-        }
-
-        $request->approveRequest();
-        $request->handled();
-        $request->setRemoved(true);
-
-        $this->getEntityManager()->flush();
-
-        $this->sendMailToContact($request);
-        $this->flashMessenger()->success(
-            'Success',
-            'The request was succesfully approved.'
-        );
-
-        $this->redirect()->toRoute(
-            'logistics_admin_request',
-            array(
-                'action' => 'manage',
+                'order'         => $order,
+                'articles'      => $articles,
+                'lastOrders'    => $lastOrders,
             )
         );
 
-        return new ViewModel();
+//        $request = $this->getRequestEntity();
+//        if ($request === null) {
+//            return new ViewModel();
+//        }
+//
+//        $newOrder = $request->getEditOrder();
+//        $oldOrder = $request->getOrder();
+//
+//        $mappings = array();
+//
+//        if ($newOrder === null) {
+//            $newMaps = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+//                ->findAllByOrderQuery($oldOrder)->getResult();
+//        } else {
+//            $oldMaps = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+//                ->findAllByOrderQuery($oldOrder)->getResult();
+//            $newMaps = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+//                ->findAllByOrderQuery($newOrder)->getResult();
+//
+//            foreach ($oldMaps as $map) {
+//                $id = $map->getArticle()->getId();
+//                $mappings[$id] = array(
+//                    'name' => $map->getArticle()->getName(),
+//                    'old'  => $map->getAmount(),
+//                    'new'  => 0,
+//                );
+//            }
+//        }
+//
+//        foreach ($newMaps as $map) {
+//            $id = $map->getArticle()->getId();
+//            if (array_key_exists($id, $mappings)) {
+//                $mappings[$id]['new'] = $map->getAmount();
+//            } else {
+//                $mappings[$id] = array(
+//                    'name' => $map->getArticle()->getName(),
+//                    'new'  => $map->getAmount(),
+//                    'old'  => 0,
+//                );
+//            }
+//        }
+//
+//        $diffs = array(
+//            'Name'        => array($oldOrder->getName()),
+//            'Location'    => array($oldOrder->getLocation()->getName()),
+//            'Creator'     => array($oldOrder->getCreator()->getFullName()),
+//            'Contact'     => array($oldOrder->getContact()),
+//            'Start Date'  => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
+//            'End Date'    => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
+//            'Description' => array($oldOrder->getDescription()),
+//        );
+//        if ($newOrder !== null) {
+//            $diffs['Name'][] = $newOrder->getName();
+//            $diffs['Location'][] = $newOrder->getLocation()->getName();
+//            $diffs['Creator'][] = $newOrder->getCreator()->getFullName();
+//            $diffs['Contact'][] = $newOrder->getContact();
+//            $diffs['Start Date'][] = $newOrder->getStartDate()->format('d/m/Y H:i');
+//            $diffs['End Date'][] = $newOrder->getEndDate()->format('d/m/Y H:i');
+//            $diffs['Description'][] = $newOrder->getDescription();
+//        }
+//
+//        return new ViewModel(
+//            array(
+//                'request'  => $request,
+//                'newOrder' => $newOrder,
+//                'oldOrder' => $oldOrder,
+//                'diffs'    => $diffs,
+//                'mappings' => $mappings,
+//            )
+//        );
+//    }
+//
+//    public function approveAction()
+//    {
+//        $request = $this->getRequestEntity();
+//        if ($request === null) {
+//            return new ViewModel();
+//        }
+//
+//        $request->approveRequest();
+//        $request->handled();
+//        $request->setRemoved(true);
+//
+//        $this->getEntityManager()->flush();
+//
+//        $this->sendMailToContact($request);
+//        $this->flashMessenger()->success(
+//            'Success',
+//            'The request was succesfully approved.'
+//        );
+//
+//        $this->redirect()->toRoute(
+//            'logistics_admin_request',
+//            array(
+//                'action' => 'manage',
+//            )
+//        );
+//
+//        return new ViewModel();
     }
 
     public function rejectAction()
@@ -176,6 +201,50 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     }
 
     /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        return $academic;
+    }
+
+    /**
+     * @return Order|null
+     */
+    private function getOrderEntity()
+    {
+        $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
+        error_log($order? 'Order': 'No order');
+
+        if (!($order instanceof Order)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No Order was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'logistics_admin_request',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+        return $order;
+    }
+
+    /**
      * @return Request|null
      */
     private function getRequestEntity()
@@ -197,6 +266,79 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $request;
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequestsByAcademic(Academic $academic)
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findUnhandledByAcademic($academic);
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findHandledByAcademic($academic);
+
+        return array_merge($handledRejects, $unhandledRequests);
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequestsByUnit($unit)
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findAllUnhandledByUnit($unit);
+
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findActiveRejectsByUnit($unit);
+
+        return array_merge($handledRejects, $unhandledRequests);
+    }
+
+    /**
+     * @return array
+     */
+    private function getOpenRequests()
+    {
+        $unhandledRequests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findAllUnhandled();
+        $handledRejects = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findAllHandled();
+
+        return array_merge($unhandledRequests, $handledRejects);
+    }
+
+    /**
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function mergeArraysUnique(array $a1, array $a2)
+    {
+        foreach ($a2 as $e2) {
+            if (!in_array($e2, $a1)) {
+                array_push($a1, $e2);
+            }
+        }
+        return $a1;
+    }
+
+    /**
+     * @param Request $request
+     * @return Order
+     */
+    private function getLastOrderByRequest($request)                  // Gets the most recent order
+    {
+        $order = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        return current($order);                                       // Gets the first element of an array
     }
 
     /**

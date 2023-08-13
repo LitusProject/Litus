@@ -13,7 +13,8 @@ class Date extends \CommonBundle\Component\Form\Bootstrap\Element\Text
     {
         parent::init();
 
-        $this->setAttribute('placeholder', 'dd/mm/yyyy');
+        $this->setAttribute('placeholder', 'dd/mm/yyyy')
+            ->setAttribute('data-datepicker', true);
     }
 
     public function getInputSpecification()

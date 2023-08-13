@@ -26,14 +26,6 @@ class Request
     private $id;
 
     /**
-     * @var Academic The contact used in this order
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
-     */
-    private $contact;
-
-    /**
      * @var DateTime The time of creation of this node
      *
      * @ORM\Column(name="creation_time", type="datetime")
@@ -43,21 +35,37 @@ class Request
     /**
      * @var boolean True if the request has been handled, false if not.
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" = false})
      */
     private $handled;
 
     /**
      * @var boolean True if the request has been removed, false if not.
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" = false})
      */
     private $removed;
 
     /**
+     * @var boolean True if the request has been removed, false if not.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $canceled;
+
+    /**
+     * @var Academic The contact used in this order
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
+     */
+    private $contact;
+
+//    START
+    /**
      * @var string The type of the request
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $requestType;
 
@@ -65,7 +73,7 @@ class Request
      * @var Order The order this is associated with
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id", nullable=true)
      */
     private $referencedOrder;
 
@@ -101,22 +109,29 @@ class Request
         'add'         => 'add',
         'delete'      => 'delete',
     );
+//  END
 
     /**
-     * @param Academic   $contact
-     * @param Order      $order
-     * @param string     $requestType
-     * @param Order|null $editOrder
+//     * @param Academic   $contact
+//     * @param Order      $order
+//     * @param string     $requestType
+//     * @param Order|null $editOrder
      */
-    public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
+//    WISSELEN
+//
+//    public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
+    public function __construct(Academic $contact)
     {
         $this->creationTime = new DateTime();
-        $this->contact = $contact;
         $this->handled = false;
         $this->removed = false;
-        $this->referencedOrder = $order;
-        $this->setRequestType($requestType);
-        $this->editOrder = $editOrder;
+        $this->canceled = false;
+        $this->contact = $contact;
+//        START
+//        $this->referencedOrder = $order;
+//        $this->setRequestType($requestType);
+//        $this->editOrder = $editOrder;
+//        END
     }
 
     /**
@@ -125,17 +140,6 @@ class Request
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param  Academic $contact
-     * @return Request
-     */
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
-
-        return $this;
     }
 
     /**
@@ -157,6 +161,42 @@ class Request
     /**
      * @return boolean
      */
+    public function handled()
+    {
+        $this->handled = true;
+
+        return $this->handled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCanceled()
+    {
+        return $this->canceled;
+    }
+
+    /**
+     * @param boolean $canceled
+     */
+    public function setCanceled(bool $canceled)
+    {
+        $this->removed = $canceled;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function cancel()
+    {
+        $this->canceled = true;
+
+        return $this->canceled;
+    }
+
+    /**
+     * @return boolean
+     */
     public function isRemoved()
     {
         return $this->removed;
@@ -171,11 +211,14 @@ class Request
     }
 
     /**
-     * @return Academic
+     * @return boolean
      */
-    public function getContact()
+    public function remove()
     {
-        return $this->contact;
+        $this->canceled = false;
+        $this->removed = true;
+
+        return $this->removed;
     }
 
     /**
@@ -187,15 +230,24 @@ class Request
     }
 
     /**
-     * @return boolean
+     * @param  Academic $contact
+     * @return Request
      */
-    public function handled()
+    public function setContact($contact)
     {
-        $this->handled = true;
+        $this->contact = $contact;
 
-        return true;
+        return $this;
+    }
+    /**
+     * @return Academic
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 
+//    START
     /**
      * @return string
      */
@@ -324,4 +376,5 @@ class Request
         }
         return $this;
     }
+//    END
 }

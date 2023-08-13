@@ -5,7 +5,10 @@ namespace LogisticsBundle\Repository;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use LogisticsBundle\Entity\Article as ArticleEntity;
+use LogisticsBundle\Entity\Order as OrderEntity;
+use LogisticsBundle\Entity\Request;
 
 /**
  * Order
@@ -78,6 +81,8 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getOneOrNullResult();
     }
 
+
+
     /**
      * @param  Person\Academic $creator
      * @return \Doctrine\ORM\Query
@@ -118,6 +123,24 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('unit', $unit)
             ->setParameter('now', new DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Request $request
+     * @return ArrayCollection
+     */
+    public function findAllByRequest(Request $request)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->where(
+                $query->expr()->eq('o.referencedRequest', ':request')
+            )
+            ->setParameter('request', $request)
+            ->orderBy('o.dateUpdated', 'DESC')
             ->getQuery()
             ->getResult();
     }

@@ -35,12 +35,14 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th width="150px">Unit</th>
-                    <th width="120px">Location</th>
-                    <th width="80px">Status</th>
+                    <th>Unit</th>
+                    <th>Location</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th width="70px">Actions</th>
+                    <th>Updated</th>
+                    <th>By</th>
+                    <th>Status</th>
+{#                    <th style="width: 70px">Actions</th>#}
                 </tr>
             </table>
         </div>
@@ -50,12 +52,14 @@
             <table class="full_width manage">
                 <tr>
                     <th>Name</th>
-                    <th width="150px">Unit</th>
-                    <th width="120px">Location</th>
-                    <th width="80px">Status</th>
+                    <th>Unit</th>
+                    <th>Location</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th width="70px">Actions</th>
+                    <th>Updated</th>
+                    <th>By</th>
+                    <th>Status</th>
+{#                    <th style="width: 70px">Actions</th>#}
                 </tr>
 
                 {% for order in paginator %}
@@ -64,17 +68,19 @@
                         <td>{{ order.getName() }}</td>
                         <td>{{ order.getUnit().getName() }}</td>
                         <td>{{ order.getLocation().getName() }}</td>
-                        <td>{{ order.getStatus() }}</td>
                         <td>{{ order.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                        <td class="actions">
-                            {% if hasAccess('logistics_admin_order', 'edit') %}
-                                <a href="{{ url('logistics_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>
-                            {% endif %}
-                            {% if hasAccess('logistics_admin_order', 'delete') %}
-                                <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">Delete</a>
-                            {% endif %}
-                        </td>
+                        <td>{{ order.getUpdateDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ order.getUpdator() }}</td>
+                        <td>{{ order.getStatus() }}</td>
+{#                        <td class="actions">#}
+{#                            {% if hasAccess('logistics_admin_order', 'edit') %}#}
+{#                                <a href="{{ url('logistics_admin_order', {"action": "edit", "id": order.getId()}) }}" class="edit">Edit</a>#}
+{#                            {% endif %}#}
+{#                            {% if hasAccess('logistics_admin_order', 'delete') %}#}
+{#                                <a href="#" class="delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">Delete</a>#}
+{#                            {% endif %}#}
+{#                        </td>#}
                     </tr>
 
                 {% endfor %}
@@ -129,23 +135,25 @@
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.unit + '</td>')
                             .append('<td>' + this.location + '</td>')
-                            .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.startDate + '</td>')
                             .append('<td>' + this.endDate + '</td>')
-                            .append(
-                                actions = $('<td>', {'class': 'actions'})
-                            );
+                            .append('<td>' + this.updateDate + '</td>')
+                            .append('<td>' + this.updator + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                        {#    .append(#}
+                        {#        actions = $('<td>', {'class': 'actions'})#}
+                        {#    );#}
 
-                        {% if hasAccess('logistics_admin_order', 'edit') %}
-                        actions.append('<a href="{{ url('logistics_admin_order', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
-                        {% endif %}
+                        {#{% if hasAccess('logistics_admin_order', 'edit') %}#}
+                        {#actions.append('<a href="{{ url('logistics_admin_order', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')#}
+                        {#{% endif %}#}
 
-                        {% if hasAccess('logistics_admin_order', 'delete') %}
-                        actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-                        deleteButton.data({
-                            id: this.id,
-                        });
-                        {% endif %}
+                        {#{% if hasAccess('logistics_admin_order', 'delete') %}#}
+                        {#actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))#}
+                        {#deleteButton.data({#}
+                        {#    id: this.id,#}
+                        {#});#}
+                        {#{% endif %}#}
                     });
                     $('#order_search .delete').click(openModal);
                     $('#order_search table').change();

@@ -44,6 +44,67 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'contact',
+                'label'    => 'Contact Name',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createUnitsArray(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'email',
+                'label'    => 'Email',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array(
+                                'name' => 'EmailAddress',
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
+                'name'       => 'location',
+                'label'      => 'Location',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createLocationsArray(),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'datetime',
                 'name'     => 'start_date',
                 'label'    => 'Start Date',
@@ -78,7 +139,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'textarea',
                 'name'     => 'description',
                 'label'    => 'Description',
-                'required' => true,
+                'attributes' => array(
+                    'style'       => 'height: 20px;',
+                ),
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -94,6 +158,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'    => 'textarea',
                 'name'    => 'internal_comment',
                 'label'   => 'Internal Comment',
+                'attributes' => array(
+                    'style'       => 'height: 30px;',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -109,6 +176,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'    => 'textarea',
                 'name'    => 'external_comment',
                 'label'   => 'External Comment',
+                'attributes' => array(
+                    'style'       => 'height: 30px;',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -119,86 +189,27 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'location',
-                'label'      => 'Location',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => $this->createLocationsArray(),
-                ),
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'       => 'select',
+//                'name'       => 'status',
+//                'label'      => 'Status',
+//                'required'   => true,
+//                'attributes' => array(
+//                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
+//                ),
+//            )
+//        );
 
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'unit',
-                'label'      => 'Unit',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => $this->createUnitsArray(),
-                ),
-            )
-        );
 
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'contact',
-                'label'    => 'Contact Name',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => false,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
-                                'name' => 'EmailAddress',
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'status',
-                'label'      => 'Status',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'  => 'checkbox',
-                'name'  => 'needs_ride',
-                'label' => 'Needs a Van-ride (Kar-rit)',
-            )
-        );
+// ADD BACK LATER
+//        $this->add(
+//            array(
+//                'type'  => 'checkbox',
+//                'name'  => 'needs_ride',
+//                'label' => 'Needs a Van-ride (Kar-rit)',
+//            )
+//        );
 
         $this->addSubmit('Add', 'order_add');
     }
