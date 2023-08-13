@@ -5,9 +5,11 @@ namespace LogisticsBundle\Entity;
 use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use LogisticsBundle\Entity\Request;
 
 /**
  * This is the entity for an order.
@@ -69,8 +71,16 @@ class Order
      */
     private $location;
 
+//    /**
+//     * @var Academic The contact used in this order
+//     *
+//     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+//     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
+//     */
+//    private $contact;
+
     /**
-     * @var string The contact used in this order
+     * @var string The contact name used in this order
      *
      * @ORM\Column(name="contact", type="text", nullable=true)
      */
@@ -85,7 +95,7 @@ class Order
     private $creator;
 
     /**
-     * @var Unit The unit of the order
+     * @var Unit The unit of the order: gives access to the whole unit to view the order
      *
      * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
      * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
@@ -98,6 +108,13 @@ class Order
      * @ORM\Column(type="datetime")
      */
     private $dateUpdated;
+
+    /**
+     * @var string The person who updated this particular order
+     *
+     * @ORM\Column(name="updator", type="text", nullable=true)
+     */
+    private $updator;
 
     /**
      * @var DateTime The start date and time of this order.
@@ -135,21 +152,57 @@ class Order
     private $rejected;
 
     /**
-     * @var boolean If this order needs a van ride (een kar-rit).
+     * @var boolean If this order has been reviewed.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $reviewed;
+
+    /**
+     * @var boolean If this order has been canceled.
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $canceled;
+
+    /**
+     * @var boolean If this order needs a ride (een kar-rit, auto-rit of dergelijke).
      *
      * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
      */
     private $needsRide;
 
     /**
-     * @param string $contact
+     * @var Request The Request of the mapping
+     *
+     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Request", cascade={"persist"})
+     * @ORM\JoinColumn(name="referenced_Request", referencedColumnName="id", onDelete="CASCADE")
      */
-    public function __construct($contact)
+    private $referencedRequest;
+
+
+    /**
+     * @param Academic $contact
+     * @param Request  $request
+     * @param string $updator
+     */
+    public function __construct($contact, Request $request, string $updator, string $status='')
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
+        $this->updator = $updator;
         $this->removed = false;
         $this->rejected = false;
+        $this->referencedRequest = $request;
+        $this->setStatus($status);
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->referencedRequest;
     }
 
     /**
@@ -166,7 +219,13 @@ class Order
         if ($this->isApproved()) {
             return 'Approved';
         }
-        return 'Pending';
+        if ($this->isReviewed()) {
+            return 'Reviewed';
+        }
+        if ($this->isCanceled()) {
+            return 'Canceled';
+        }
+        return 'Pending';               // Default is pending
     }
 
     /**
@@ -182,10 +241,12 @@ class Order
             $this->reject();
         } elseif ($status == 'approved') {
             $this->approve();
-        } elseif ($status == 'pending') {
-            $this->pending();
+        } elseif ($status == 'reviewed') {
+            $this->review();
+        } elseif ($status == 'canceled') {
+            $this->cancel();
         }
-        return $this;
+        return $this->pending();        // Default is pending
     }
 
     /**
@@ -195,7 +256,7 @@ class Order
     {
         $this->approved = true;
         $this->rejected = false;
-        $this->removed = false;
+        $this->reviewed = false;
 
         return $this;
     }
@@ -208,6 +269,46 @@ class Order
         $this->approved = false;
         $this->rejected = false;
         $this->removed = false;
+        $this->reviewed = false;
+        $this->canceled = false;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function review()
+    {
+        $this->approved = false;
+        $this->rejected = false;
+        $this->reviewed = true;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function reject()
+    {
+        $this->rejected = true;
+        $this->approved = false;
+        $this->reviewed = false;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function cancel()
+    {
+        $this->rejected = false;
+        $this->approved = false;
+        $this->reviewed = false;
+        $this->canceled = true;
+
         return $this;
     }
 
@@ -216,8 +317,7 @@ class Order
      */
     public function remove()
     {
-        $this->approved = false;
-        $this->rejected = false;
+        $this->canceled = false;
         $this->removed = true;
 
         return $this;
@@ -229,17 +329,6 @@ class Order
     public function isRejected(): bool
     {
         return $this->rejected;
-    }
-
-    /**
-     * @return self
-     */
-    public function reject()
-    {
-        $this->rejected = true;
-        $this->removed = false;
-        $this->approved = false;
-        return $this;
     }
 
     /**
@@ -272,6 +361,30 @@ class Order
         }
 
         return !$this->approved && !$this->rejected && !$this->removed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isReviewed()
+    {
+        if ($this->reviewed === null) {
+            return false;
+        }
+
+        return $this->reviewed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCanceled()
+    {
+        if ($this->canceled === null) {
+            return false;
+        }
+
+        return $this->canceled;
     }
 
     /**
@@ -430,9 +543,17 @@ class Order
     /**
      * @return DateTime The last time this order was updated.
      */
-    public function getLastUpdateDate()
+    public function getUpdateDate()
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdator()
+    {
+        return $this->updator;
     }
 
     /**

@@ -2,10 +2,12 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
+use LogisticsBundle\Entity\Request;
 
 /**
  * OrderController
@@ -28,6 +30,227 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );
+    }
+
+    public function viewAction()
+    {
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+
+        foreach ($articles as $mapping) {
+            error_log($mapping->getArticle()->getName());
+        }
+
+        $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
+
+        $oldOrder = false;
+        if ($order != end($lastOrders)) {                                // Look if order is not the oldest order
+            $orderIndex = array_search($order, $lastOrders);
+            $oldOrder = $lastOrders[$orderIndex + 1];
+        }
+
+        $orderForm = $this->getForm(
+            'logistics_admin_order_review',
+            array(
+                'order' => $order,
+            )
+        );
+
+        $articleForm = $this->getForm(
+            'logistics_admin_order_orderArticleMap_review',
+            array(
+                'articles' => $articles,
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'order'         => $order,
+                'oldOrder'      => $oldOrder,
+                'articles'      => $articles,
+                'lastOrders'    => $lastOrders,
+
+                'orderForm'     => $orderForm,
+                'articleForm'   => $articleForm,
+            )
+        );
+    }
+
+    public function reviewAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+        $orderForm = $this->getForm('logistics_admin_order_review', array('order' => $order,));
+
+        if ($academic !== $order->getCreator()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
+            return $this->notFoundAction();
+        }
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        $articleForm = $this->getForm('logistics_admin_order_orderArticleMap_review', array('articles' => $mappings,));
+
+
+
+        if ($orderForm->isValid() && $articleForm->isValid()) {
+            $newOrder = $orderForm->hydrateObject(
+                $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName())
+            );
+            $newOrder->review();
+            $this->getEntityManager()->persist($newOrder);
+
+            $request = $order->getRequest();
+            $request->handled();
+
+            foreach ($mappings as $mapping) {
+                $newMapping = $articleForm->hydrateObject(new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount()));
+                if ($mapping->getAmount() == $mapping->getOldAmount()) {
+                    $newMapping->setStatus('goedgekeurd');
+                } else {
+                    $newMapping->setStatus('herzien');
+                }
+                $this->getEntityManager()->persist($newMapping);
+            }
+
+            $this->getEntityManager()->flush();
+
+            //        $this->sendMailToContact($request);
+            $this->flashMessenger()->success(
+                'Success',
+                'The request was succesfully reviewed.'
+            );
+        }
+        $this->redirect()->toRoute(
+            'logistics_admin_request',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+
+    }
+
+    public function approveAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        if ($academic !== $order->getCreator()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
+            return $this->notFoundAction();
+        }
+
+        $newOrder = $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName());
+        $newOrder->approve();
+        $this->getEntityManager()->persist($newOrder);
+
+        $request = $order->getRequest();
+        $request->handled();
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($mappings as $mapping) {
+            $newMapping = new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount());
+            $newMapping->setStatus('goedgekeurd');
+            $this->getEntityManager()->persist($newMapping);
+        }
+
+        $this->getEntityManager()->flush();
+
+//        $this->sendMailToContact($request);
+        $this->flashMessenger()->success(
+            'Success',
+            'The request was succesfully approved.'
+        );
+
+        $this->redirect()->toRoute(
+            'logistics_admin_request',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
+    }
+
+    public function rejectAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return new ViewModel();
+        }
+
+        if ($academic !== $order->getCreator()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
+            return $this->notFoundAction();
+        }
+
+        $newOrder = $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName());
+        $newOrder->reject();
+        $this->getEntityManager()->persist($newOrder);
+
+        $request = $order->getRequest();
+        $request->handled();
+
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($mappings as $mapping) {
+            $newMapping = new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount());
+            $newMapping->setStatus('afgewezen');
+            $this->getEntityManager()->persist($newMapping);
+        }
+
+        $this->getEntityManager()->flush();
+
+//        $this->sendMailToContact($request);
+        $this->flashMessenger()->success(
+            'Success',
+            'The request was succesfully rejected.'
+        );
+
+        $this->redirect()->toRoute(
+            'logistics_admin_request',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
     }
 
     public function removedAction()
@@ -370,6 +593,24 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * @return Academic|null
+     */
+    private function getAcademicEntity()
+    {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            return null;
+        }
+
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            return;
+        }
+
+        return $academic;
+    }
+
+    /**
      * @return Order|null
      */
     private function getOrderEntity()
@@ -393,6 +634,19 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $order;
+    }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    private function getAllOrdersByRequest($request)                  // Gets all orders except oldest (dummy order)
+    {
+        $orders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllByRequest($request);
+        array_pop($orders);
+        return $orders;
     }
 
     /**
@@ -420,6 +674,61 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $map;
+    }
+
+    /**
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function mergeArraysUnique(array $a1, array $a2)
+    {
+        foreach ($a2 as $e2) {
+            if (!in_array($e2, $a1)) {
+                array_push($a1, $e2);
+            }
+        }
+        return $a1;
+    }
+
+    /**
+     * @param Order $order
+     * @return Order
+     */
+    private function recreateOrder(Order $order, string $updator)
+    {
+        $new = new Order($order->getContact(), $order->getRequest(), $updator);
+        $new->setCreator($order->getCreator());
+        $new->setLocation($order->getLocation());
+        $new->setDescription($order->getDescription());
+        $new->setEmail($order->getEmail());
+        $new->setStartDate($order->getStartDate());
+        $new->setEndDate($order->getEndDate());
+        $new->setName($order->getName());
+        $new->setUnit($order->getUnit());
+        $new->pending();
+        # In comment: should be fixed later on when adding van system
+        # $new->setNeedsRide($order->needsRide());
+
+        return $new;
+    }
+
+    /**
+     * @param array $a1
+     * @param array $a2
+     * @return array
+     */
+    private function getAllArticleNames(array $a1, array $a2)
+    {
+        $articleNames = array();
+        $diff = $this->mergeArraysUnique($a1, $a2);          // Gets the union of old and new articles
+        foreach ($diff as $mapping){
+            $name = $mapping->getArticle()->getName();
+            if (!in_array($name, $articleNames)){
+                $articleNames[] = $mapping->getArticle()->getName();
+            }
+        }
+        return $articleNames;
     }
 
     private function findOverlapping(array $array, OrderArticleMap $mapping)

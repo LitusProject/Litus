@@ -13,7 +13,9 @@ class DateTime extends \CommonBundle\Component\Form\Bootstrap\Element\Text
     {
         parent::init();
 
-        $this->setAttribute('placeholder', 'dd/mm/yyyy hh:mm');
+        $this->setAttribute('placeholder', 'dd/mm/yyyy hh:mm')
+            ->setAttribute('data-datepicker', true)
+            ->setAttribute('data-timepicker', true);
     }
 
     public function getInputSpecification()

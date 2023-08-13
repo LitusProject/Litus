@@ -25,7 +25,7 @@ class OrderArticleMap
      * @var Order The Order of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id", onDelete="CASCADE")
      */
     private $referencedOrder;
 
@@ -33,7 +33,7 @@ class OrderArticleMap
      * @var Article The Article of the mapping
      *
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Article")
-     * @ORM\JoinColumn(name="referenced_article", referencedColumnName="id")
+     * @ORM\JoinColumn(name="referenced_article", referencedColumnName="id", onDelete="CASCADE")
      */
     private $referencedArticle;
 
@@ -43,6 +43,13 @@ class OrderArticleMap
      * @ORM\Column(type="bigint")
      */
     private $amount;
+
+    /**
+     * @var integer amount of this Article in the previous order
+     *
+     * @ORM\Column(type="bigint", options={"default" = 0})
+     */
+    private $oldAmount;
 
     /**
      * @var string status of this Article-request in this order
@@ -58,14 +65,19 @@ class OrderArticleMap
     public static $POSSIBLE_STATUSES = array(
         'aangevraagd' => 'Aangevraagd',
         'goedgekeurd' => 'Goedgekeurd',
+        'afgewezen'   => 'Afgewezen',
+        'herzien'     => 'Herzien',
         'op locatie'  => 'Op Locatie',
-        'vermist'     => 'Vermist',
         'terug'       => 'Terug',
         'klaar'       => 'Klaar',
         'weggezet'    => 'Weggezet',
         'none'        => 'None',
-        'vuil'        => 'Vuil',
-        'kapot'       => 'Kapot'
+        'vuil'          => 'Vuil',
+        'kapot'         => 'Kapot',
+        'vermist'       => 'Vermist',
+        'weg'           => 'Weg',
+        'aankopen'      => 'Aankopen',
+        'nakijken'      => 'Nakijken',
     );
 
     /**
@@ -73,13 +85,19 @@ class OrderArticleMap
      * @param Order   $order
      * @param Article $article
      * @param integer $amount
+     * @param int $oldAmount
      */
-    public function __construct(Order $order, Article $article, $amount)
+    public function __construct(Order $order, Article $article, $amount, $oldAmount=0)
     {
         $this->referencedOrder = $order;
         $this->referencedArticle = $article;
         $this->amount = $amount;
-        $this->status = 'none';
+        $this->oldAmount = $oldAmount;
+        if ($article->getStatusKey() === 'ok') {
+            $this->status = 'aangevraagd';
+        } else {
+            $this->status = $article->getStatusKey();
+        }
     }
 
     /**
@@ -117,6 +135,22 @@ class OrderArticleMap
     /**
      * @return integer
      */
+    public function getOldAmount()
+    {
+        return $this->oldAmount;
+    }
+
+    /**
+     * @param integer $amount
+     */
+    public function setOldAmount($amount)
+    {
+        $this->oldAmount = $amount;
+    }
+
+    /**
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
@@ -133,7 +167,7 @@ class OrderArticleMap
     /**
      * @return string
      */
-    public function getStatusCode()
+    public function getStatusKey()
     {
         return $this->status ? $this->status : 'none';
     }

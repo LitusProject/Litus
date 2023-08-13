@@ -10,12 +10,12 @@
         <div style="float:left; width: 80%;">
             <h1>{{ translate('Flesserke') }}</h1>
         </div>
-        {% if authenticatedPerson is not null %}
-        <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
-            <a href="{{ url('logistics_inventory', {"action": "add"})}}">
-                <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
-            </a>
-        </div>
+        {% if hasAccess('logistics_inventory', 'add') %}
+            <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
+                <a href="{{ url('logistics_inventory', {"action": "add"})}}">
+                    <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
+                </a>
+            </div>
         {% endif %}
     </div>
 
@@ -77,8 +77,12 @@
                             <td>{{ article.getExpiryDate() }}</td>
                             {% if hasAccess('logistics_inventory', 'reserve') %}
                                 <td class="actions">
-                                    <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
-                                    <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
+                                    {% if hasAccess('logistics_inventory', 'edit') %}
+                                        <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
+                                    {% endif %}
+                                    {% if hasAccess('logistics_inventory', 'reserve') %}
+                                        <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
+                                    {% endif %}
                                     {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
                                     {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
                                     {#                            {% endif %}#}

@@ -149,6 +149,84 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param Academic $academic
+     * @return ArrayCollection
+     */
+    public function findHandledByAcademic(Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.contact', ':academic'),
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
+            ->setParameter('academic', $academic)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function findAllHandled()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Academic $academic
+     * @return ArrayCollection
+     */
+    public function findUnhandledByAcademic(Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.contact', ':academic'),
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
+            ->setParameter('academic', $academic)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function findAllUnhandled()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('LogisticsBundle\Entity\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.removed', 'FALSE'),
+                )
+            )
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param Unit $unit
      * @return \Doctrine\Common\Collections\ArrayCollection
      */

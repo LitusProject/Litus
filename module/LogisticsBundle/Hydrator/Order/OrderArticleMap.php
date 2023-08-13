@@ -34,7 +34,7 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['status'] = $object->getStatusCode();
+        $data['status'] = $object->getStatusKey();
 
         return $data;
     }
