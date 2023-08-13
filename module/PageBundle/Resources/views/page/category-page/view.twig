@@ -1,0 +1,102 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+
+    {# Script for dropdown functionality  #}
+    {{ inlineScript() }}
+
+    <div class="container">
+    <div class="spacer40"></div>
+    <div class="pageTitleHolder">
+        <h1>{{ category_page.getCategory().getName(language) }}</h1>
+        <div class="pageTitleDeco"></div>
+    </div>
+
+
+    {% if big_frames|length != 0 %}
+        <div class="container">
+            <div class="frame-grid-big" style="margin-bottom: 40px">
+                {% for result in big_frames | slice(0, 3) %}
+                    {% set frame = result.frame %}
+                    <div style="position: relative" class="frame-item">
+                        {% if frame.hasPoster() %}
+                            <div class="frame-poster-big"
+                                 style="background-image:url(
+                                 {% if frame.getPoster() %}
+                                        {{ url('page_categorypage',{'action':'poster', 'name':category_page.getCategory().getName(language), 'poster_name': frame.getPoster()}) }}
+                                 {% else %}
+                                         /_site/img/technisch_pattern.png
+                                 {% endif %})"></div>
+                        {% endif %}
+                        <div class="frame-item-tekst">
+                            <h4>{{ frame.getTitle(language) }}</h4>
+                            <div class="markdown frame-emptyfill">
+                                {{ hideEmail(markdown(frame.getDescription(language)))|raw }}
+                            </div>
+                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                {% if frame.doesLinkToPage() %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ url('page', {'name': frame.getLinkTo().getName()}) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
+                                {% elseif frame.doesLinkToLink() %}
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ frame.getLinkTo().getUrl(language) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if small_frames|length != 0 %}
+        <div class="container">
+            <div class="frame-grid-small">
+                {% for result in small_frames %}
+                    {% set frame = result.frame %}
+                    <div style="position: relative; border-bottom: 20px solid white" class="frame-item" >
+                        {% if frame.hasPoster() %}
+                            <div class="frame-poster-small"
+                                 style="background-image:url(
+                                 {% if frame.getPoster() %}
+                                        {{ url('page_categorypage',{'action':'poster', 'name':category_page.getCategory().getName(language), 'poster_name': frame.getPoster()}) }}
+                                 {% else %}
+                                         /_site/img/technisch_pattern.png
+                                 {% endif %})"></div>
+                        {% endif %}
+                        <div class="frame-item-tekst">
+                            <h4>{{ frame.getTitle(language) }}</h4>
+                            {% if frame.hasDescription() %}
+                                <div class="markdown frame-emptyfill">
+                                    {{ hideEmail(markdown(frame.getDescription(language)))|raw }}
+                                </div>
+                            {% endif %}
+
+                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                {% if frame.doesLinkToPage() %}
+                                    {% if hasAccess('page', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ url('page', {'name': frame.getLinkTo().getName()}) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
+                                {% elseif frame.doesLinkToLink() %}
+                                    {% if hasAccess('page_link', 'view') %}
+                                        <a class="myVtkButton"
+                                           href="{{ frame.getLinkTo().getUrl(language) }}"
+                                        >{{ translate('Read More') }}</a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -27,6 +27,13 @@ class Event
     private $id;
 
     /**
+     * @var string The random ID of the event
+     *
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $rand_id;
+
+    /**
      * @var CalendarEvent The activity of the event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
@@ -183,6 +190,20 @@ class Event
     private $mailFrom;
 
     /**
+     * @var string The subject for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_subject", type="string", nullable=true)
+     */
+    private $confirmationMailSubject;
+
+    /**
+     * @var string The body for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_body", type="string", nullable=true)
+     */
+    private $confirmationMailBody;
+
+    /**
      * @var boolean whether or not the pay page should be accessible after 24 hours
      *
      * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
@@ -196,8 +217,16 @@ class Event
      */
     private $deadlineTime;
 
-    public function __construct()
+    /**
+     * @var string The link to the terms and conditions
+     *
+     * @ORM\Column(name="terms_url", type="string", nullable=true)
+     */
+    private $termsUrl;
+
+    public function __construct(string $rand_id)
     {
+        $this->rand_id = $rand_id;
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->nextInvoiceNb = '0000';
@@ -209,6 +238,16 @@ class Event
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandId()
+    {
+        if (is_null($this->rand_id))
+            return $this->id;
+        return $this->rand_id;
     }
 
     /**
@@ -776,6 +815,42 @@ class Event
     }
 
     /**
+     * @return string
+     */
+    public function getConfirmationMailSubject()
+    {
+        return $this->confirmationMailSubject;
+    }
+
+    /**
+     * @param string $subject
+     * @return self
+     */
+    public function setConfirmationMailSubject(string $subject)
+    {
+        $this->confirmationMailSubject = $subject;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationMailBody()
+    {
+        return $this->confirmationMailBody;
+    }
+
+    /**
+     * @param string $body
+     * @return self
+     */
+    public function setConfirmationMailBody(string $body)
+    {
+        $this->confirmationMailBody = $body;
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getPayDeadline()
@@ -808,6 +883,24 @@ class Event
     public function setDeadlineTime($time)
     {
         $this->deadlineTime = $time;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTermsUrl()
+    {
+        return $this->termsUrl;
+    }
+
+    /**
+     * @param string|null $url
+     * @return self
+     */
+    public function setTermsUrl($url)
+    {
+        $this->termsUrl = $url;
         return $this;
     }
 }

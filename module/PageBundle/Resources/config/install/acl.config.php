@@ -11,11 +11,20 @@ return array(
         'page_admin_link' => array(
             'add', 'delete', 'edit', 'manage',
         ),
+        'page_admin_categorypage' => array(
+            'add', 'delete', 'edit', 'manage',
+        ),
+        'page_admin_categorypage_frame' => array(
+            'add', 'delete', 'edit', 'manage', 'editPoster', 'upload',
+        ),
         'page_link' => array(
             'view',
         ),
         'page' => array(
             'file', 'view',
+        ),
+        'page_categorypage' => array(
+            'view', 'poster',
         ),
     ),
 );

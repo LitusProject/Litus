@@ -136,7 +136,7 @@
         <div class="flexHorizontal">
             {% if hasAccess('ticket', 'event') and ticketEvent is not null and ticketEvent.isActive() %}
                 <div class="flexChild">
-                     <a href="{{ url('ticket', {'id': ticketEvent.getId()}) }}" class="button btn-default">
+                     <a href="{{ url('ticket', {'id': ticketEvent.getRandId()}) }}" class="button btn-default">
                             <span class="glyphicon glyphicon-tags"></span>
                             {{ translate('Tickets') }}
                         </a>

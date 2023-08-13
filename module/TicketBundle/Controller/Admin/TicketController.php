@@ -312,7 +312,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->fromRoute(
                 'ticket',
                 array('action' => 'qr',
-                    'id'       => $event->getId(),
+                    'id'       => $event->getRandId(),
                     'qr'     => $ticket->getQrCode()
                 ),
                 array('force_canonical' => true)

@@ -106,6 +106,8 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 'name'   => $category->getName($this->getLanguage()),
                 'items'  => array(),
                 'active' => false,
+                'has_category_page' => !is_null($this->getEntityManager()->getRepository("PageBundle\Entity\CategoryPage")
+                    ->findOneByCategory($category)),
             );
 
             $pages = $this->getEntityManager()

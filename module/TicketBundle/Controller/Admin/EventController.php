@@ -233,6 +233,39 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
+     * Clear all visitors of this event. This will set the exit_time of every visitor to now.
+     */
+    public function clearVisitorsAction(){
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $visitors = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event\Visitor')
+            ->findAllByEventAndExitNull($event);
+
+        foreach ($visitors as $visitor){
+            $visitor->setExitTimestamp(new DateTime());
+        }
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Success',
+            'All the visitors of this event have been removed!'
+        );
+
+        $this->redirect()->toRoute(
+            'ticket_admin_event',
+            array(
+                'action' => 'edit',
+                'id'     => $event->getId(),
+            )
+        );
+        return new ViewModel();
+    }
+
+    /**
      * @return Event|null
      */
     private function getEventEntity()

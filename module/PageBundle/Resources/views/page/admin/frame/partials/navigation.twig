@@ -1,0 +1,21 @@
+<header id="controller_header">
+    <div class="title"><span class="page">Category Page Frames</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if category_page_id is defined %}
+                {% if hasAccess('page_admin_categorypage_frame', 'add') %}
+                    <li><a {% if 'add' == getParam('action') %} class="active" {% endif %}
+                                href="{{ url("page_admin_categorypage_frame", {"action": "add", "category_page_id": category_page_id}) }}">Add</a>
+                    </li>
+                {% endif %}
+                {% if hasAccess('page_admin_categorypage_frame', 'manage') %}
+                    <li>
+                        <a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %}
+                                href="{{ url("page_admin_categorypage_frame", {"action": "manage", "category_page_id": category_page_id}) }}">Manage</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+</header>

@@ -48,6 +48,13 @@ class Visitor
     private $entryTime;
 
     /**
+     * @var DateTime The exit time
+     *
+     * @ORM\Column(name="exit_time", type="datetime", nullable=true)
+     */
+    private $exitTimestamp;
+
+    /**
      * @param Event $event
      * @param string $qrCode
      */
@@ -88,5 +95,23 @@ class Visitor
     public function getEntryTime()
     {
         return $this->entryTime;
+    }
+
+    /**
+     * @param DateTime $exitTimestamp
+     * @return self
+     */
+    public function setExitTimestamp($exitTimestamp)
+    {
+        $this->exitTimestamp = $exitTimestamp;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getExitTimestamp()
+    {
+        return $this->exitTimestamp;
     }
 }
