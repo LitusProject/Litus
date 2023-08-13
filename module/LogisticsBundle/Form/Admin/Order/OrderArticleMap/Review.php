@@ -30,10 +30,10 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
                     'type'     => 'text',
                     'name'     => 'article-' . $mapping->getId(),
                     'label'    => 'Amount',
+                    'value'    => $mapping->getAmount(),
                     'attributes' => array(
                         'class'       => 'input-very-mini',
                         'id'          => 'article-' . $mapping->getId(),
-                        'placeholder' => $mapping->getAmount(),
                     ),
                     'required' => true,
                     'options'  => array(

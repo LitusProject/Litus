@@ -66,6 +66,7 @@ class OrderArticleMap
         'aangevraagd' => 'Aangevraagd',
         'goedgekeurd' => 'Goedgekeurd',
         'afgewezen'   => 'Afgewezen',
+        'herzien'     => 'Herzien',
         'op locatie'  => 'Op Locatie',
         'terug'       => 'Terug',
         'klaar'       => 'Klaar',
