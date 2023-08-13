@@ -3,7 +3,7 @@
 return array(
     'submenus' => array(
         'Mail' => array(
-            'subtitle' => array('Aliases', 'Lists', 'Newsletter', 'Mass Mail'),
+            'subtitle' => array('Aliases', 'Lists', 'Preferences', 'Mass Mail'),
             'items'    => array(
                 'mail_admin_alias' => array(
                     'action' => 'manage',

@@ -502,7 +502,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function savePreferencesAction()
     {
-        error_log("here");
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();

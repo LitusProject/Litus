@@ -9,7 +9,7 @@ return array(
             'send',
         ),
         'mail_admin_preference' => array(
-            'manage', 'add', 'delete',
+            'manage', 'add', 'edit', 'delete',
         ),
         'mail_admin_list' => array(
             'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry', 'search',

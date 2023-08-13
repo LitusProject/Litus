@@ -19,13 +19,13 @@
     </div>
 
     {# Preferences table #}
-    <div id="controller_action" style="margin-top: 30px;">
+    <div id="controller_action">
 
         <div id="normal_page">
 
             <table class="full_width manage">
                 <tr>
-                    <th>Preference</th>
+                    <th>Display Name</th>
                     <th>SIB Attribute</th>
                     <th>Default Preference</th>
                     <th width="70px">Action</th>
@@ -39,6 +39,9 @@
                         <td class="actions">
                             {% if hasAccess('mail_admin_preference', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ preference.getId() }}" data-name="{{ preference.getName() }}">Delete</a>
+                            {% endif %}
+                            {% if hasAccess('mail_admin_preference', 'edit') %}
+                                <a href="{{ url('mail_admin_preference', {"action": "edit", "id": preference.getId()}) }}" class="edit">Edit</a></li>
                             {% endif %}
                         </td>
                     </tr>

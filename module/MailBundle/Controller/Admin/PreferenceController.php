@@ -87,6 +87,46 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
         );
     }
 
+    public function editAction()
+    {
+        $preference = $this->getPreferenceEntity();
+        if ($preference === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('mail_preference_edit', $preference);
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    'The preference was successfully updated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'mail_admin_preference',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $preference->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form'  => $form,
+                'preference' => $preference,
+            )
+        );
+    }
+
     /**
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws GuzzleException

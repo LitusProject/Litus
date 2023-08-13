@@ -17,7 +17,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'     => 'text',
                 'name'     => 'name',
-                'label'    => 'Name',
+                'label'    => 'Display Name',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -53,6 +53,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'mail_add');
+        $this->addSubmit('Add', 'preference_add');
     }
 }

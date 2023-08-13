@@ -1,0 +1,20 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'mail/admin/preference/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>Preference</h1>
+        <p>Current display name: <b>{{ preference.getName() }}</b> </p>
+        <p>Attribute: <b>{{ preference.getAttribute() }}</b> </p>
+
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <div id="controller_action">
+
+    </div>
+{% endblock %}
