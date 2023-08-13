@@ -28,11 +28,6 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
         );
     }
 
-    /**
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws GuzzleException
-     */
     public function addAction()
     {
         $form = $this->getForm('mail_preference_add');
@@ -44,10 +39,17 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                 $preference = $form->hydrateObject();
 
                 // sendinblue attribute character checking
+                // TODO: put in form validator
                 if(!preg_match('/^[A-Za-z0-9_]+$/',$preference->getAttribute())) {
                     $this->flashMessenger()->error(
                         'Error',
                         'The SIB Attribute can only contain alphanumeric characters and underscore(_).'
+                    );
+                }
+                else if (strncmp($preference->getName(), "newsletter_", 11) === 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'The SIB Attribute cannot start with "newsletter_", as this will be automatically appended in front of it.'
                     );
                 }
                 else {

@@ -30,6 +30,14 @@ class Edit extends Add
                 )
             );
 
+        $this->remove('is_newsletter')
+            ->add(
+                array(
+                    'type' => 'hidden',
+                    'name' => 'is_newsletter',
+                )
+            );
+
         // TODO check how this works with API, what happens after editing default value?
         // TODO is there API support for renaming attributes?
 

@@ -6,7 +6,7 @@ use MailBundle\Entity\Preference as PreferenceEntity;
 
 class Preference extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'default_value', 'attribute');
+    private static $stdKeys = array('name', 'default_value', 'attribute', 'is_newsletter');
 
     protected function doHydrate(array $array, $object = null)
     {

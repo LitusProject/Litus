@@ -53,13 +53,21 @@ class Preference
     private $preferenceMappings;
 
     /**
+     * @var bool If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
+     *
+     * @ORM\Column(name="newsletter", type="boolean")
+     */
+    private $isNewsletter;
+
+    /**
      * Creates a new mailing preference.
      *
      * @param string $name The name for this mailing preference.
      * @param string $attribute The SendInBlue attribute that corresponds to this mailing preference
      * @param bool $defaultValue The default preference value of this mailing preference for each user
+     * @param bool $isNewsletter If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
      */
-    public function __construct($name=null, $attribute=null, $defaultValue=false) {
+    public function __construct($name=null, $attribute=null, $defaultValue=false, $isNewsletter=false) {
     }
 
     /**
@@ -103,13 +111,26 @@ class Preference
     }
 
     /**
+     * @return bool
+     */
+    public function isNewsletter()
+    {
+        return $this->isNewsletter;
+    }
+
+    /**
      * @param string $name
      *
      * @return self
      */
     public function setName(string $name)
     {
-        $this->name = $name;
+        if ($this->isNewsletter) {
+            $this->name = "newsletter_" . $name;
+        }
+        else {
+            $this->name = $name;
+        }
         return $this;
     }
 
@@ -133,6 +154,26 @@ class Preference
     public function setDefaultValue(bool $defaultValue)
     {
         $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $isNewsletter
+     *
+     * @return $this
+     */
+    public function setNewsletter(bool $isNewsletter)
+    {
+        $this->isNewsletter = $isNewsletter;
+
+        // when newsletter is set, name should always start with "newsletter_"
+        if ( $isNewsletter && !(strncmp($this->name, "newsletter_", 11) === 0)) {
+            $this->name = "newsletter_" . $this->name;
+        }
+        if ( !$isNewsletter && strncmp($this->name, "newsletter_", 11) === 0) {
+            $this->name = substr($this->name, 11);
+        }
 
         return $this;
     }
