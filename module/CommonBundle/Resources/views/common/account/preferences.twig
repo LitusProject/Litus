@@ -39,7 +39,7 @@
             <div style="height: 30px"></div>
 
             <div class="buttonHolder">
-                <a class="myVtkButton preference_subscribe_button">{{ translate('Save Preferences') }}</a>
+                <a class="myVtkButton preference_subscribe_button" href="{{ url('common_account', {'action': 'profile'}) }}">{{ translate('Save Preferences') }}</a>
             </div>
 
         </div>
@@ -69,8 +69,6 @@
             $('.preference_checkbox:not(:checked)').each(function () {
                 preference_mappings_false.push($(this).data('id'));
             });
-            console.log("prefernce mapping true: " + preference_mappings_true);
-            console.log("prefernce mapping false: " + preference_mappings_false);
             $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false}, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').removeClass('in');
