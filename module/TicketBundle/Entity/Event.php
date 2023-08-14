@@ -199,7 +199,7 @@ class Event
     /**
      * @var string The body for the confirmation mail
      *
-     * @ORM\Column(name="mail_confirmation_body", type="string", nullable=true)
+     * @ORM\Column(name="mail_confirmation_body", type="text", nullable=true)
      */
     private $confirmationMailBody;
 

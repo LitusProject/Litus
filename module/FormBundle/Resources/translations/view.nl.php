@@ -38,4 +38,5 @@ return array(
     'Yes'                                                      => 'Ja',
     'No'                                                       => 'Neen',
     '(empty)'                                                  => '(leeg)',
+    'I have read and accept the terms and conditions specified here'                                                                                                                                                                       => 'Ik heb de voorwaarden, <a href="%url%" target="_blank"><strong><u>hier</u></strong></a> te vinden, gelezen en ga er mee akkoord.',
 );
