@@ -163,7 +163,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'checkbox',
                 'name'       => 'conditions',
-                'label'      => str_replace('%url%', $this->event->getTermsUrl(), $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified here')),
+                'label'      => $this->getTermsLabel(),
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
@@ -250,5 +250,25 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->conditionsChecked = !!$conditionsChecked;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    private function getTermsLabel(){
+        $urls = explode(',', $this->event->getTermsUrl());
+        $text = $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified');
+        $here = $this->getServiceLocator()->get('translator')->translate('here');
+        if(count($urls) == 1){
+            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+        } elseif (count($urls) > 1) {
+            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            for ($i = 1;$i <=count($urls)-2;$i++){
+                $text = $text . ', ' . str_replace(array('url', 'here'), array($urls[$i], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            }
+            $and = $this->getServiceLocator()->get('translator')->translate('and');
+            $text = $text . ' ' . $and . ' ' . str_replace(array('url', 'here'), array($urls[-1], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+        }
+        return $text;
     }
 }
