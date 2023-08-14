@@ -267,7 +267,7 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
                 $text = $text . ', ' . str_replace(array('url', 'here'), array($urls[$i], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
             }
             $and = $this->getServiceLocator()->get('translator')->translate('and');
-            $text = $text . ' ' . $and . ' ' . str_replace(array('url', 'here'), array($urls[-1], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+            $text = $text . ' ' . $and . ' ' . str_replace(array('url', 'here'), array(end($urls), $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         }
         return $text;
     }
