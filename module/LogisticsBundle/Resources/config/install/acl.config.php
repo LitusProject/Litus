@@ -12,7 +12,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
         ),
         'logistics_admin_order' => array(
-            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting', 'review', 'approve', 'reject'
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting', 'review', 'approve', 'reject', 'view',
         ),
         'logistics_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
