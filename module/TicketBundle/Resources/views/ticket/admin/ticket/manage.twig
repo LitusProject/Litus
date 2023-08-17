@@ -57,6 +57,7 @@
                         <th width="100px">Email</th>
                         <th width="150px">Option</th>
                         <th width="100px">Number</th>
+                        <th width="100px">Order ID</th>
                         <th width="110px">Book Date</th>
                         <th width="110px">Sold Date</th>
                         <th width="70px">Member</th>
@@ -75,6 +76,7 @@
                             <th width="100px">Email</th>
                             <th width="150px">Option</th>
                             <th width="100px">Number</th>
+                            <th width="100px">Order ID</th>
                             <th width="110px">Book Date</th>
                             <th width="110px">Sold Date</th>
                             <th width="70px">Member</th>
@@ -93,6 +95,7 @@
                                 <td>{{ ticket.getEmail() }}</td>
                                 <td>{{ ticket.getOption().getName() }} ({% if ticket.isMember() %}Member{% else %}Non Member{% endif %})</td>
                                 <td>{{ ticket.getNumber() }}</td>
+                                <td>{{ ticket.getOrderId() }}</td>
                                 <td>{{ ticket.getBookDate().format('d/m/Y H:i') }}</td>
                                 <td>{{ ticket.getSoldDate().format('d/m/Y H:i') }}</td>
                                 <td>{% if ticket.isMember() %}&times;{% endif %}</td>
@@ -131,6 +134,7 @@
                             .append('<td>' + this.email + '</td>')
                             .append('<td>' + this.option + '</td>')
                             .append('<td>' + this.number + '</td>')
+                            .append('<td>' + this.orderId + '</td>')
                             .append('<td>' + this.bookDate + '</td>')
                             .append('<td>' + this.soldDate + '</td>')
                             .append('<td>' + (this.isMember ? '&times' : '') + '</td>');

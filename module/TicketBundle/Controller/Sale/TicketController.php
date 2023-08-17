@@ -148,6 +148,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             $item->organization = $ticket->getOrganization();
             $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
             $item->number = $ticket->getNumber();
+            $item->orderId = $ticket->getOrderId();
             $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
             $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
             $item->isMember = $ticket->isMember();
