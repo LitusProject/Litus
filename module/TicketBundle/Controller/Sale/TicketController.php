@@ -153,6 +153,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             $item->isMember = $ticket->isMember();
             $item->rNumber = $ticket->getUniversityIdentification();
             $item->price = $ticket->getPrice();
+            $item->qrCode = $ticket->getQrCode();
             $result[] = $item;
         }
 
