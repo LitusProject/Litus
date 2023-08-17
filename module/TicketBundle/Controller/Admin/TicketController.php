@@ -347,7 +347,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setBody($newMessage)
             ->setFrom($mailAddress, $mailName)
             ->addTo($ticket->getEmail(), $ticket->getFullName())
-            ->setSubject($subject);
+            ->setSubject($subject)
+            ->addBcc('it@vtk.be')
+            ->addBcc($mailAddress);
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }
