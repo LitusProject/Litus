@@ -190,7 +190,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findOneBy(
                             array(
-                                'orderId' => $data[1]
+                                'orderId'   => $data[1],  //orderId
+                                'invoiceId' => $data[23], //invoiceId
                             )
                         );
 
