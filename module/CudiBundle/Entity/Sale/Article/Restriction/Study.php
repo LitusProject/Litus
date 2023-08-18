@@ -21,7 +21,7 @@ class Study extends \CudiBundle\Entity\Sale\Article\Restriction
      *
      * @ORM\ManyToMany(targetEntity="SyllabusBundle\Entity\Study")
      * @ORM\JoinTable(name="cudi_sale_articles_restrictions_studies_map",
-     *     joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id")},
+     *     joinColumns={@ORM\JoinColumn(name="restriction", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="study", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
