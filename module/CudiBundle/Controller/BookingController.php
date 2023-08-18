@@ -282,6 +282,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                                 if ($amount + $formValue > $restriction->getValue()) {
                                     $formValue = $restriction->getValue() - $amount;
                                 }
+                            } elseif ($restriction->getType() == 'available') {
+                                $currentPeriod = $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                                    ->findOneActive();
+                                $currentPeriod->setEntityManager($this->getEntityManager());
+
+                                $available = $saleArticle->getStockValue() - $currentPeriod->getNbAssigned($saleArticle);
+
+                                if ($formValue > $available) {
+                                    $formValue = $available;
+                                }
                             }
                         }
 
