@@ -207,6 +207,10 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Ticket')
                     ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
+            case 'orderid':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndOrderId($event, $this->getParam('string'));
         }
     }
 
