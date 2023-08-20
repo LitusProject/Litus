@@ -65,7 +65,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $now = new DateTime();
-        $filename = 'tickets_' . $now->format('Y_m_d') . '.csv';
+        $filename = 'tickets_' . str_replace(' ', '_', $event->getActivity()->getTitle()) . '_'. $now->format('Y_m_d') . '.csv';
 
         $headers = new Headers();
         $headers->addHeaders(
