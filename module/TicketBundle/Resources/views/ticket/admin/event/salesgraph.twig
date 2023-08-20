@@ -5,6 +5,9 @@
 
     <h1 style="font-size: 15pt">{{ event.getActivity().getTitle() }}</h1>
     <h2>{{ event.getActivity().getStartDate().format("d/m/Y H:i") }} - {{ event.getActivity().getEndDate().format("d/m/Y H:i") }}</h2>
+    {% if hasAccess('ticket_admin_event', 'exportSalesgraph') %}
+        <a href="{{ url('ticket_admin_event', {"action": "exportSalesgraph", "id": event.getId()}) }}">Export graph as csv</a>
+    {% endif %}
     <h2 style="font-size: 12pt">Total sales</h2>
     <div class="chart full_width full_width">
         <canvas id="salesGraph" ></canvas>
