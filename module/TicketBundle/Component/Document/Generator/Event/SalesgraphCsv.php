@@ -24,7 +24,7 @@ class SalesgraphCsv extends \CommonBundle\Component\Document\Generator\Csv
         $result = array();
         for ($i = 0; $i < sizeof($labels); $i++) {
             $result[] = array(
-                date('d/m/Y H:i', $labels[$i]),
+                date('d/m/Y H:i', $labels[$i]/1000),
                 $data[$i],
             );
         }
