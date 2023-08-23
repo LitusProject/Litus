@@ -199,6 +199,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     if ($ticket !== null && $ticket->getEvent()->getId() === $this->getEventEntity()->getId() && ($data[3] === '9' || $data[3] === '5')) {
                         if ($ticket->getStatus() !== 'Sold') {
                             $ticket->setStatus('sold');
+                            $ticket->setPayId(substr($data[0],0, 10)); // payId
                             if ($ticket->getEvent()->getQrEnabled()) {
                                 $ticket->setQrCode();
                                 $this->sendQrMail($ticket);

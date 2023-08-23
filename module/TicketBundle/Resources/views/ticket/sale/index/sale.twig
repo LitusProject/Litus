@@ -47,6 +47,14 @@
                 }
             }).change();
 
+            $('#payed').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#payid').closest('.row').show();
+                } else {
+                    $('#payid').closest('.row').hide();
+                }
+            }).change();
+
             $('#person_form\\[person\\]').typeaheadRemote(
                 {
                     source: '{{ url("ticket_sale_person_typeahead")}}',
