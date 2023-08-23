@@ -119,6 +119,13 @@ class Ticket
     private $orderId;
 
     /**
+     * @var string|null Paypage Betaalreferentie
+     *
+     * @ORM\Column(name="pay_id", type="string", nullable=true)
+     */
+    private $payId;
+
+    /**
      * @var string Unique identifier for QR code of the ticket
      *
      * @ORM\Column(name="qr_code", type="text", unique=true, nullable=true)
@@ -468,6 +475,22 @@ class Ticket
     public function setOrderId(string $orderId)
     {
         $this->orderId = $orderId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPayId()
+    {
+        return $this->payId;
+    }
+
+    /**
+     * @param string $payId
+     */
+    public function setPayId(string $payId)
+    {
+        $this->payId = $payId;
     }
 
     /**
