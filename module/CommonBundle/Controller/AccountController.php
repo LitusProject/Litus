@@ -732,12 +732,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $code = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Code')
                 ->findOneBy(array('code' => $this->getParam('code')));
-            $isExpired = $code->getExpirationTime() < new DateTime();
-            if($isExpired){
-                $this->flashMessenger()->error(
-                    'Error',
-                    'This code is expired!'
-                );
+            if (!is_null($code)) {
+                $isExpired = $code->getExpirationTime() < new DateTime();
+                if ($isExpired) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This code is expired!'
+                    );
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'No person was found!'
+                    );
+                }
             } else {
                 $this->flashMessenger()->error(
                     'Error',
