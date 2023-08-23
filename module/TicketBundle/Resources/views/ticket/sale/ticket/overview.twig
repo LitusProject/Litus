@@ -57,8 +57,8 @@
                 <select id="searchField">
                     <option value="person">Person</option>
                     <option value="option">Option</option>
-                    <option value="organization">Organization</option>
                     <option value="orderid">Order Id</option>
+                    <option value="payid">Pay Id</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -73,11 +73,12 @@
                     <th style="width:180px">Email</th>
                     <th style="width:60px">Status</th>
                     <th style="width:140px">Option</th>
+                    <th style="width:90px">Pay ID</th>
                     <th style="width:90px">Order ID</th>
                     <th style="width:40px">Price</th>
                     <th style="width:110px">Book Date</th>
                     <th style="width:110px">Sold Date</th>
-                    <th>QR Code</th>
+                    <th style="width:60px;">QR Code</th>
                     <th style="width:190px">Action</th>
                 </tr>
                 </thead>
@@ -98,11 +99,12 @@
                     <th style="width:180px">Email</th>
                     <th style="width:60px">Status</th>
                     <th style="width:140px">Option</th>
+                    <th style="width:90px">Pay ID</th>
                     <th style="width:90px">Order ID</th>
                     <th style="width:40px">Price</th>
                     <th style="width:110px">Book Date</th>
                     <th style="width:110px">Sold Date</th>
-                    <th>QR Code</th>
+                    <th style="width:60px;">QR Code</th>
                     <th style="width:190px">Action</th>
                 </tr>
                 </thead>
@@ -132,11 +134,12 @@
                         {% else %}
                             <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
                         {% endif %}
+                        <td>{{ ticket.getPayId() }}</td>
                         <td>{{ ticket.getOrderId() }}</td>
                         <td>{{ ticket.getPrice() }}</td>
                         <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
-                        <td class="qrCode">{{ ticket.getQrCode() }}</td>
+                        <td class="qrCode">{% if ticket.getQrCode() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
                                 <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
