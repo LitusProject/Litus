@@ -486,11 +486,15 @@ class Ticket
     }
 
     /**
-     * @param string $payId
+     * @param string|null $payId
+     *
+     * @return self
      */
-    public function setPayId(string $payId)
+    public function setPayId($payId)
     {
         $this->payId = $payId;
+
+        return $this;
     }
 
     /**

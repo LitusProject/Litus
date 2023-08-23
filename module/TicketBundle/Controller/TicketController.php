@@ -203,6 +203,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             null,
                             $guestInfo
@@ -300,6 +301,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             null,
                             $guestInfo
@@ -422,6 +424,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             $person,
                             null
@@ -486,6 +489,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             $person,
                             null

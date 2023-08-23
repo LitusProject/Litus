@@ -39,6 +39,9 @@ return Config::create(
                 'OrderBase'         => Component\Validator\OrderId::class,
                 'orderBase'         => Component\Validator\OrderId::class,
                 'orderbase'         => Component\Validator\OrderId::class,
+                'payid'             => Component\Validator\PayId::class,
+                'payId'             => Component\Validator\PayId::class,
+                'PayId'             => Component\Validator\PayId::class,
             ),
         ),
     )
