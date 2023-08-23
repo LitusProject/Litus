@@ -598,6 +598,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $data = array();
         $paymentParams = array();
         $shasign = '';
+        $payid = '';
 
         $params = explode('&', $allParams);
         foreach ($params as $param) {
@@ -606,6 +607,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
             } else {
                 $shasign = $keyAndVal[1];
+            }
+
+            if($keyAndVal[0] === 'PAYID'){
+                $payid = $keyAndVal[1];
             }
         }
 
@@ -631,6 +636,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             );
         } else {
             $ticket->setStatus('sold');
+            $ticket->setPayId($payid);
             if ($ticket->getEvent()->getQrEnabled()) {
                 $ticket->setQrCode();
             }
@@ -667,6 +673,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $data = array();
         $paymentParams = array();
         $shasign = '';
+        $payid = '';
 
         $params = explode('&', $allParams);
         foreach ($params as $param) {
@@ -675,6 +682,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
             } else {
                 $shasign = $keyAndVal[1];
+            }
+
+            if($keyAndVal[0] === 'PAYID'){
+                $payid = $keyAndVal[1];
             }
         }
 
@@ -710,6 +721,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (strtoupper($generatedHash) === $shasign) {
             if (!($ticket->getStatus() == 'Sold')) {
                 $ticket->setStatus('sold');
+                $ticket->setPayId($payid);
                 if ($ticket->getEvent()->getQrEnabled()) {
                     $ticket->setQrCode();
                     $this->sendQrMail($ticket);
