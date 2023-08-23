@@ -147,7 +147,7 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
             $item->email = $ticket->getEmail();
             $item->organization = $ticket->getOrganization();
             $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
-            $item->number = $ticket->getNumber();
+            $item->payId = $ticket->getPayId();
             $item->orderId = $ticket->getOrderId();
             $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
             $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
@@ -203,14 +203,14 @@ class TicketController extends \TicketBundle\Component\Controller\SaleController
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Ticket')
                     ->findAllByEventAndOption($event, $this->getParam('string'));
-            case 'organization':
-                return $this->getEntityManager()
-                    ->getRepository('TicketBundle\Entity\Ticket')
-                    ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
             case 'orderid':
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Ticket')
                     ->findAllByEventAndOrderId($event, $this->getParam('string'));
+            case 'payid':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPayId($event, $this->getParam('string'));
         }
     }
 
