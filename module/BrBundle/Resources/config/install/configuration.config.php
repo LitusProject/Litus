@@ -256,8 +256,8 @@ Example content of this section.
         'key'         => 'br.contract_payment_details',
         'value'       => serialize(
             array(
-                'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
-                'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of VTK Ondersteuning VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
+                'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van Vlaamse Technische Kring vzw met vermelding van het factuurnummer.',
+                'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of Vlaamse Technische Kring VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
             )
         ),
         'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
