@@ -2,9 +2,6 @@
 
 namespace TicketBundle\Controller\Sale;
 
-use Laminas\Mail\Message;
-use Laminas\Mime\Mime;
-use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Entity\Event;
 use TicketBundle\Entity\Ticket;

@@ -25,8 +25,6 @@ use CommonBundle\Component\Form\Admin\Element\DateTime;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
-use Laminas\Mime\Mime;
-use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;

@@ -6,14 +6,10 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
 use Laminas\Http\Headers;
-use Laminas\Mail\Message;
-use Laminas\Mime\Mime;
-use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator;
 use TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
 use TicketBundle\Entity\Event;
-use TicketBundle\Entity\Ticket;
 
 /**
  * TicketController
