@@ -33,6 +33,10 @@
                     {% endfor %}
                 </div>
             </div>
+        {% else %}
+            <div>
+                <h4>{{ translate('There are no upcoming Career events.') }}</h4>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
