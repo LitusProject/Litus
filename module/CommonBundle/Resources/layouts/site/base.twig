@@ -296,7 +296,7 @@
                             <p style="color:white" class="vtk-footerheading" href="#">
                                 {{ item.name }}
                             </p>
-                            {% for categoryItem in item.items %}
+                            {% for categoryItem in item.frames   %}
                                 {% if 'page' == categoryItem.type %}
                                     {% if hasAccess('page', 'view') %}
                                         <a class="vtk-mobilelink"
