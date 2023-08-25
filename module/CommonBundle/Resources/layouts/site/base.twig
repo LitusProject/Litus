@@ -80,8 +80,8 @@
                 <a class="vtk-primary-menuitem" href="{{ url('cudi_retail') }}">{{ translate('Second Hand') }}</a>
                 <a class="vtk-primary-menuitem"
                    href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-                <a class="vtk-primary-menuitem"
-                   href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
+{#                <a class="vtk-primary-menuitem"#}
+{#                   href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>#}
                 <a class="vtk-primary-menuitem"
                    href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
                 <a class="vtk-primary-menuitem"
@@ -139,7 +139,11 @@
                         {% endfor %}
                         <div class="vtk-menuitem-holder">
                             <a class="vtk-menuitem vtk-menuitem-pointer"
-                               href="https://www.vtk.be/contact">{% autoescape false %}{{ translate('Contact') }}{% endautoescape %}</a>
+                               href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
+                        </div>
+                        <div class="vtk-menuitem-holder">
+                            <a class="vtk-menuitem vtk-menuitem-pointer"
+                               href="{{ url("common_contact", {"language": language.getAbbrev()}) }}">{{ translate('Contact') }}</a>
                         </div>
 
                         {# Separator #}
@@ -264,6 +268,8 @@
                         <a class="vtk-mobile-primary-menuitem"
                            href="{{ url('common_account') }}">{{ translate('My VTK') }}</a>
                     {% endif %}
+                    <a class="vtk-mobile-primary-menuitem"
+                       href="{{ url("common_contact", {"language": language.getAbbrev()}) }}">{{ translate('Contact') }}</a>
                     <a class="vtk-mobile-primary-menuitem"
                        href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                     {% if hasAccess('common_admin_index', 'index') %}
