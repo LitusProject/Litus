@@ -1,0 +1,42 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    <div class="container">
+        <div class="standardPageTitleHolder">
+            <h1>{{ translate('Calendar') }}</h1>
+            <div class="pageTitleDeco"></div>
+        </div>
+
+        <div style="height: 20px"></div>
+
+        {% if calendarItems|length != 0 %}
+            <div class="careerCalendarHolder">
+                <div class="calendar-grid" style="margin-bottom: 40px">
+                    {% for event in calendarItems %}
+                        <div style="position: relative" class="calendar-item">
+                            <div class="DELETE-BGIMAGE"
+                                 style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+                            <div class="calendar-item-tekst">
+                                <h4>{{ event.getTitle(language) }}
+                                    | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>
+                                <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>
+                                <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                    <a class="myVtkButton"
+                                       href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                    {% if event.hasTicket(entityManager) == true %}
+                                        <a class="myVtkButton"
+                                           href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div>
+                <h4>{{ translate('There are no upcoming Career events.') }}</h4>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

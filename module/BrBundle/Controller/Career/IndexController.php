@@ -48,4 +48,22 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
             )
         );
     }
+
+    public function calendarAction(){
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllCareerAndActiveAndNotHidden();
+
+        $calendarItems = array();
+        foreach ($events as $event) {
+            $calendarItems[$event->getId()] = $event;
+        }
+
+        return new ViewModel(
+            array(
+                'entityManager' => $this->getEntityManager(),
+                'calendarItems' => $calendarItems,
+            )
+        );
+    }
 }

@@ -29,7 +29,7 @@ class Frame extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Frame')
-            ->findBy(array('categoryPage' => $page, 'active' => true), array('orderNumber', 'ASC'));
+            ->findBy(array('categoryPage' => $page, 'active' => true), array('orderNumber' => 'ASC'));
     }
 
     /**
