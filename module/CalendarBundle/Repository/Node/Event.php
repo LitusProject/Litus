@@ -134,9 +134,9 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->orX(
                         $query->expr()->gt('e.endDate', ':now'),
                         $query->expr()->gt('e.startDate', ':now'),
-                        $query->expr()->gt('e.isCareer', 'true')
                     ),
                     $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->eq('e.isCareer', 'true'),
                     $query->expr()->orX(
                         $query->expr()->eq('e.isHidden', 'false'),
                         $query->expr()->isNull('e.isHidden')

@@ -72,6 +72,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
         }
         $data['is_hidden'] = $object->isHidden();
+        $data['is_career'] = $object->isCareer();
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()]['title'] = $object->getTitle($language, false);
