@@ -1,0 +1,52 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    {{ language.getAbbrev() }}
+    {% if calendarItems|length != 0 %}
+        <div class="container careerCalendarHolder">
+            <div class="calendar-grid" style="margin-bottom: 40px">
+                {% for event in calendarItems %}
+                    <div style="position: relative" class="calendar-item">
+                        <div class="DELETE-BGIMAGE"
+                             style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>
+                        <div class="calendar-item-tekst">
+                            <h4>{{ event.getTitle(language) }}
+                                | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>
+                            <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>
+                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
+                                <a class="myVtkButton"
+                                   href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
+                                {% if event.hasTicket(entityManager) == true %}
+                                    <a class="myVtkButton"
+                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+{#            <div class="calendar-grid" style="margin-bottom: 40px">#}
+{#                {% for event in calendarItems | slice(3, 3) %}#}
+{#                    <div style="position: relative" class="calendar-item">#}
+{#                        <div class="DELETE-BGIMAGE"#}
+{#                             style="background-image:url({{ url('calendar',{'action':'poster', 'name': event.getPoster()}) }})"></div>#}
+{#                        <div class="calendar-item-tekst">#}
+{#                            <h4>{{ event.getTitle(language) }}#}
+{#                                | {{ dateLocalized(event.getStartDate(), 'LLL')|capitalize }} {{ dateLocalized(event.getStartDate(), 'd') }} </h4>#}
+{#                            <p class="calendar-emptyfill">{{ event.getSummary(150, language) }}</p>#}
+{#                            <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">#}
+{#                                <a class="myVtkButton"#}
+{#                                   href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>#}
+{#                                {% if event.hasTicket(entityManager) == true %}#}
+{#                                    <a class="myVtkButton"#}
+{#                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>#}
+{#                                {% endif %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#            </div>#}
+        </div>
+    {% endif %}
+
+{% endblock %}
