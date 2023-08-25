@@ -176,6 +176,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 ->findOneByCategory($category);
             if(is_null($categoryPage)){
                 $menu[$i]['frames'] =  $menu[$i]['items'];
+                $i++;
                 continue;
             }
             $big_frames = $this->getEntityManager()
