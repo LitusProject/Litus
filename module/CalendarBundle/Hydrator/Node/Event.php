@@ -29,6 +29,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $object->setStartDate($startDate)
             ->setEndDate(self::loadDateTime($data['end_date']));
         $object->setIsHidden($data['is_hidden']);
+        $object->setIsCareer($data['is_career']);
 
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
