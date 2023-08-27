@@ -30,7 +30,7 @@ class ShiftController extends \CommonBundle\Component\Controller\ActionControlle
 
         $person = $this->getPersonEntity();
         if ($person === null) {
-            return $this->notFoundAction();
+            return $this->redirect()->toRoute('common_auth');
         }
 
         $myShifts = $this->getEntityManager()

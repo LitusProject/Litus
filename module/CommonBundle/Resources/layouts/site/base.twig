@@ -255,21 +255,22 @@
                 <p style="color:white" class="vtk-footerheading" href="#">
                     {{ translate("Quicklinks") }}
                 </p>
+
+                <a class="vtk-mobile-primary-menuitem"
+                   href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
+                <a class="vtk-mobile-primary-menuitem"
+                   href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
+                <a class="vtk-mobile-primary-menuitem"
+                   href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
+                <a class="vtk-mobile-primary-menuitem"
+                   href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
+                <a class="vtk-mobile-primary-menuitem"
+                   href="{{ url("common_contact", {"language": language.getAbbrev()}) }}">{{ translate('Contact') }}</a>
                 {% if authenticatedPerson is not null %}
-                    <a class="vtk-mobile-primary-menuitem"
-                       href="{{ url('cudi_booking', {'action': 'book'}) }}">{{ translate('Order Books') }}</a>
-                    <a class="vtk-mobile-primary-menuitem"
-                       href="{{ url('shop', {'action': 'reserve'}) }}">{{ translate('Theokot Sandwiches') }}</a>
-                    <a class="vtk-mobile-primary-menuitem"
-                       href="{{ url('shift', {'action': 'index'}) }}">{{ translate('Shifts') }}</a>
-                    <a class="vtk-mobile-primary-menuitem"
-                       href="{{ url('registration_shift', {'action': 'index'}) }}">{{ translate('Timeslots') }}</a>
                     {% if hasAccess('common_account', 'index') %}
                         <a class="vtk-mobile-primary-menuitem"
                            href="{{ url('common_account') }}">{{ translate('My VTK') }}</a>
                     {% endif %}
-                    <a class="vtk-mobile-primary-menuitem"
-                       href="{{ url("common_contact", {"language": language.getAbbrev()}) }}">{{ translate('Contact') }}</a>
                     <a class="vtk-mobile-primary-menuitem"
                        href="{{ url("common_auth", {"action": "logout", "language": language.getAbbrev()}) }}">{{ translate('Logout') }}</a>
                     {% if hasAccess('common_admin_index', 'index') %}

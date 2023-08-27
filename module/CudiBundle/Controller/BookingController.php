@@ -99,7 +99,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();
+            return $this->redirect()->toRoute('common_auth');
         }
 
         $max_booking_number = $this->getEntityManager()
