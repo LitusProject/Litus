@@ -306,7 +306,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     private function canReserve()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
-            return $this->redirect()->toRoute('common_auth');
+            return $this->redirect()->toRoute('common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                ));
         }
 
         $reservationPermission = $this->getEntityManager()
