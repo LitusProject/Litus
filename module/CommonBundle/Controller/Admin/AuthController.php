@@ -68,6 +68,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 'isAuthenticated' => $isAuthenticated,
                 'form'            => $this->getForm('common_auth_login'),
                 'shibbolethUrl'   => $this->getShibbolethUrl(),
+                'redirect'        => urldecode($this->getParam('redirect')),
             )
         );
     }
