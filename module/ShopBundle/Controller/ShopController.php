@@ -301,12 +301,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     }
 
     /**
-     * @return boolean
+     * @return bool | \Laminas\Http\Response
      */
     private function canReserve()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
-            return false;
+            return $this->redirect()->toRoute('common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                ));
         }
 
         $reservationPermission = $this->getEntityManager()

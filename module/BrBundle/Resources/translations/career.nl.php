@@ -38,4 +38,5 @@ return array(
     'Get the company guide here'                                                                                                                                                       => 'Bekijk de Company Guide hier',
     'View the time table for the busses here'                                                                                                                                          => 'Bekijk hier het busschema',
     'There are no upcoming Career events.'                                                                                                                                             => 'Er zijn geen aankomende Career evenementen.',
+    'Career Calendar'                                                                                                                                                                  => 'Career Kalender',
 );

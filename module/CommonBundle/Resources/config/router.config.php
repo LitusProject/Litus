@@ -256,7 +256,7 @@ return array(
         'common_auth' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]]][/]',
+                'route'       => '[/:language]/auth[/:action[/identification/:identification[/hash/:hash]][/redirect/:redirect]][/]',
                 'constraints' => array(
                     'action'         => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'identification' => '[mrsu][0-9]{7}',
