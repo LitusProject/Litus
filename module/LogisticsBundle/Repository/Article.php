@@ -60,6 +60,23 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param  string $visibility
+     * @return Query
+     */
+    public function findAllByUnitNameQuery($unitName)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\Article', 'a')
+            ->where(
+                $query->expr()->like($query->expr()->lower('a.unitName'), ':unitName')
+            )
+            ->setParameter('unitName', '%' . strtolower($unitName) . '%')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
      * @param  string $status
      * @return Query
      */
