@@ -28,7 +28,7 @@
                     <option value="location">Location</option>
                     <option value="status">Status</option>
                     <option value="visibility">Visibility</option>
-                    <option value="unit">Unit</option>
+                    <option value="unitName">Unit</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -154,17 +154,17 @@
                             );
 
                         {% if hasAccess('logistics_admin_article', 'edit') %}
-                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                            actions.append('<a href="{{ url('logistics_admin_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                         {% endif %}
 
                         {% if hasAccess('logistics_admin_article', 'delete') %}
-                        actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-                        deleteButton.data({
-                            id: this.id,
-                        });
+                            actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                            deleteButton.data({
+                                id: this.id,
+                            });
                         {% endif %}
                         {% if hasAccess('logistics_admin_article', 'orders') %}
-                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "orders"}) }}' + this.id + '" class="order">Orders</a>')
+                            actions.append('<a href="{{ url('logistics_admin_article', {"action": "orders"}) }}' + this.id + '" class="order">Orders</a>')
                         {% endif %}
                     });
                     $('#article_search .delete').click(openModal);
