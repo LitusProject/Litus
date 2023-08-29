@@ -178,7 +178,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         $articles = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
-
         $result = array();
         foreach ($articles as $article) {
             $item = (object) array();
@@ -186,7 +185,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->name = $article->getName();
             $item->amountOwned = $article->getAmountOwned();
             $item->amountAvailable = $article->getAmountAvailable();
-            $item->unitName = $article->getUnit()->GetName();
+            $article->getUnit()? $item->unitName = $article->getUnit()->GetName(): $item->unitName = '';
             $item->category = $article->getCategory();
             $item->location = $article->getLocation();
             $item->spot = $article->getSpot();
@@ -195,7 +194,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->visibility = $article->getVisibility();
             $result[] = $item;
         }
-
         return new ViewModel(
             array(
                 'result' => $result,
@@ -251,6 +249,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 return $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Article')
                     ->findAllByVisibilityQuery($this->getParam('string'));
+            case 'unitName':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByUnitNameQuery($this->getParam('string'));
         }
         return;
     }
