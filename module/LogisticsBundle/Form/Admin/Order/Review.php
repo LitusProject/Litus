@@ -22,7 +22,7 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
     {
         parent::init();
 
-        $this->remove('submit');
+        $this->remove('submit')->addSubmit('', 'hide');
 
         if ($this->order !== null) {
             $this->bind($this->order);

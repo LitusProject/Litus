@@ -186,6 +186,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->name = $article->getName();
             $item->amountOwned = $article->getAmountOwned();
             $item->amountAvailable = $article->getAmountAvailable();
+            $item->unitName = $article->getUnit()->GetName();
             $item->category = $article->getCategory();
             $item->location = $article->getLocation();
             $item->spot = $article->getSpot();

@@ -39,7 +39,7 @@
         "colinmollenhour/credis": "^1.10",
         "dragonmantank/cron-expression": "^3.1",
         "erusev/parsedown": "^1.7",
-        "guzzlehttp/guzzle": "v7.7.0",
+        "guzzlehttp/guzzle": "v7.8.0",
         "google/apiclient": "^2.12",
         "league/uri-parser": "^1.4",
         "misterion/ko-process": "^0.5",
