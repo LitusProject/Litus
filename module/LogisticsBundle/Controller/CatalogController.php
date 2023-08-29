@@ -665,7 +665,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             ->setBody(
                 str_replace(
                     array('{{ name }}', '{{ type }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->getRequestType(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                    array($order->getName(), $request->Handled(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                     $message
                 )
             )

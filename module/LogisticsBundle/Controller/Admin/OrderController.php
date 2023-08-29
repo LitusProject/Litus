@@ -34,6 +34,11 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
         $order = $this->getOrderEntity();
         if ($order === null) {
             return new ViewModel();
@@ -68,6 +73,55 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'articles' => $articles,
             )
         );
+        if ($this->getRequest()->isPost()) {
+            $orderForm->setData($this->getRequest()->getPost());
+
+            if ($orderForm->isValid()) {
+                $newOrder = $orderForm->hydrateObject(
+                    $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName())
+                );
+                $newOrder->review();
+                $this->getEntityManager()->persist($newOrder);
+
+                $request = $order->getRequest();
+                $request->handled();
+
+                if ($this->getRequest()->isPost()) {
+                    $articleForm->setData($this->getRequest()->getPost());
+
+                    if ($articleForm->isValid()) {
+                        foreach ($articles as $mapping) {
+                            $newMapping = $articleForm->hydrateObject(new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount()));
+                            if ($mapping->getAmount() == $mapping->getOldAmount()) {
+                                $newMapping->setStatus('goedgekeurd');
+                            } else {
+                                $newMapping->setStatus('herzien');
+                            }
+                            $this->getEntityManager()->persist($newMapping);
+                        }
+
+                        $this->getEntityManager()->flush();
+
+                        //        $this->sendMailToContact($request);
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The order was succesfully reviewed.'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'logistics_admin_request',
+                            array(
+                                'action' => 'manage',
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+                }
+            }
+        }
+
+
 
         return new ViewModel(
             array(

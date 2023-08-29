@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Entity;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -128,6 +129,14 @@ class Article
     private $alertMail;
 
     /**
+     * @var Unit The unit which has to be mailed when the article gets booked
+     *
+    * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
+    * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
+    */
+    private $unit;
+
+    /**
      * @static
      * @var array All the possible categories allowed
      */
@@ -179,9 +188,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'internal' => 'Internal',
-        'external' => 'External',
-        'private'  => 'Private',
+        'private'  => 'Post',
+        'internal' => 'Praesidium',
+        'workgroups' => 'Greater VTK',
+        'external' => 'Members',
     );
 
     /**
@@ -241,6 +251,23 @@ class Article
     public function setAlertMail($alertMail)
     {
         $this->alertMail = $alertMail;
+        return $this;
+    }
+
+    /**
+     * @return Unit
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param Unit $unit
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
         return $this;
     }
 

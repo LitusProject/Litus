@@ -28,6 +28,7 @@
                     <option value="location">Location</option>
                     <option value="status">Status</option>
                     <option value="visibility">Visibility</option>
+                    <option value="unit">Unit</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -35,15 +36,16 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="130px">Name</th>
-                    <th width="90px">Available/Owned</th>
-                    <th width="150px">Category</th>
-                    <th width="120px">Location</th>
-                    <th width="100px">Spot</th>
-                    <th style="width: 150px">Description</th>  {# Additional info #}
-                    <th width="80px">Status</th>
-                    <th width="80px">Visibility</th>
-                    <th width="70px">Actions</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 8%">Avail./Owned</th>
+                    <th style="width: 8%">Unit</th>
+                    <th style="width: 8%">Category</th>
+                    <th style="width: 6%">Location</th>
+                    <th style="width: 10%">Spot</th>
+                    <th style="width: 17%">Description</th>  {# Additional info #}
+                    <th style="width: 6%">Status</th>
+                    <th style="width: 6%">Visibility</th>
+                    <th style="width: 20px">Actions</th>
                 </tr>
             </table>
         </div>
@@ -52,15 +54,16 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="130px">Name</th>
-                    <th width="90px">Available/Owned</th>
-                    <th width="150px">Category</th>
-                    <th width="120px">Location</th>
-                    <th width="100px">Spot</th>
-                    <th style="width: 150px">Description</th>  {# Additional info #}
-                    <th width="80px">Status</th>
-                    <th width="80px">Visibility</th>
-                    <th width="70px">Actions</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 8%">Avail./Owned</th>
+                    <th style="width: 8%">Unit</th>
+                    <th style="width: 8%">Category</th>
+                    <th style="width: 6%">Location</th>
+                    <th style="width: 10%">Spot</th>
+                    <th style="width: 17%">Description</th>  {# Additional info #}
+                    <th style="width: 6%">Status</th>
+                    <th style="width: 6%">Visibility</th>
+                    <th style="width: 20px">Actions</th>
                 </tr>
 
                 {% for article in paginator %}
@@ -68,6 +71,7 @@
                     <tr class="item item-{{ article.getId() }}">
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getAmountAvailable() }}/{{ article.getAmountOwned() }}</td>
+                        <td>{{ article.getUnit().getName() }}</td>
                         <td>{{ article.getCategory() }}</td>
                         <td>{{ article.getLocation() }}</td>
                         <td>{{ article.getSpot() }}</td>
@@ -138,6 +142,7 @@
                         $('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.amountAvailable + "/" + this.amountOwned + '</td>')
+                            .append('<td>' + this.unitName + '</td>')
                             .append('<td>' + this.category + '</td>')
                             .append('<td>' + this.location + '</td>')
                             .append('<td>' + this.spot + '</td>')

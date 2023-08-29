@@ -64,9 +64,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['location'] = $object->getLocation()->getId();
-        if ($data['unit']) {
-            $data['unit'] = $unit->getId();
-        }
+        $data['unit'] = $unit->getId();
         $data['name'] = $object->getName();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');

@@ -38,6 +38,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'    => 'textarea',
                 'name'    => 'additional_info',
                 'label'   => 'Additional Info',
+                'attributes' => array(
+                    'style'    => 'height: 50px;',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -50,42 +53,43 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'text',
-                'name'    => 'alertMail',
-                'label'   => 'Alert Mail',
+                'type'    => 'select',
+                'name'    => 'unit',
+                'label'   => 'Unit',
                 'options' => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
                         ),
-                        'validators' => array(
-                            array('name' => 'EmailAddress'),
-                        ),
                     ),
+                ),
+                'required'   => true,
+                'attributes' => array(
+                    'options' => $this->createUnitsArray(),
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'    => 'textarea',
-                'name'    => 'internal_comment',
-                'label'   => 'Internal Comment',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
+                'type'       => 'select',
+                'name'       => 'category',
+                'label'      => 'Category',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => Article::$POSSIBLE_CATEGORIES,
                 ),
             )
         );
+
+
 
         $this->add(
             array(
                 'type'    => 'text',
                 'name'    => 'amount_owned',
                 'label'   => 'Amount Owned',
+                'required'=> true,
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -104,6 +108,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'    => 'text',
                 'name'    => 'amount_available',
                 'label'   => 'Amount Available',
+                'required'=> true,
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -144,18 +149,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'select',
-                'name'       => 'category',
-                'label'      => 'Category',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => Article::$POSSIBLE_CATEGORIES,
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
                 'name'       => 'location',
                 'label'      => 'Location',
                 'required'   => true,
@@ -170,6 +163,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'    => 'text',
                 'name'    => 'spot',
                 'label'   => 'Spot',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'    => 'textarea',
+                'name'    => 'internal_comment',
+                'label'   => 'Internal Comment',
+                'attributes' => array(
+                    'style'    => 'height: 50px;',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -229,5 +240,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('logistics.locations')
         );
+    }
+
+    /**
+     * @return array
+     */
+    private function createUnitsArray()
+    {
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        if (count($units) == 0) {
+            throw new RuntimeException('There needs to be at least one unit before you can add a RegistrationShift');
+        }
+
+        $unitsArray = array();
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+        }
+
+        return $unitsArray;
     }
 }

@@ -178,7 +178,7 @@
                             <td class="hidden-xs item-{{ lastOrder.getId() }}-status">{{ translate(lastOrder.getStatus()) }}</td>
                             <td class="actions">
                                 {% if lastOrders[0].getId() != lastOrder.getId() and not lastOrders[0].isRemoved() and not lastOrders[0].isCanceled() %}
-                                    <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': lastOrder.getId() }) }}" class="btn btn-warning btn-sm edit">
+                                    <a href="#" class="btn btn-warning btn-sm edit revert" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
                                         {{ translate('Revert') }}
                                     </a>
                                 {% endif %}
@@ -208,7 +208,21 @@
         </div>
     </div>
 
-    {#      Modals voor requests te cancelen/verwijderen      #}
+    {#      Modals voor requests te cancelen/verwijderen/reverten      #}
+    <div class="modal fade" id="revertRequest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('This function is coming soon!') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="cancelRequest">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -256,10 +270,36 @@
             {#    Display remarks when hovering    #}
             $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
-            {#    Open modals for cancel/remove request    #}
+            {#    Open modals for cancel/remove/revert request    #}
+            $('.item .revert').click(openRevertRequest);
             $('.item .cancel').click(openCancelRequest);
             $('.item .delete').click(openRemoveRequest);
         });
+
+        function openRevertRequest(e) {
+            // Gets the object bound to the modal: an order
+            var $this = $(this);
+            e.preventDefault();
+            var revertRequest = $('#revertRequest');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            revertRequest.find('.orderName').html(name);
+            {#revertRequest.find('.confirm').unbind('click').click(function () {#}
+            {#    $.post('{{ url('logistics_catalog', {"action": "revertRequest"})}}' + id, function (data) {#}
+            {#        if (data && 'success' == data.status) {#}
+            {#            $('.flashmessage').addClass('hide');#}
+            {#            $('.item-' + id + '-status').html("Canceled");#}
+            {#            $('#infoStatus').html("Canceled");#}
+            {#            $('.item .cancel').remove();#}
+            {#            $('#cancelRequest').modal('hide');#}
+            {#            location.reload();#}
+            {#        } else {#}
+            {#            errorCancel();#}
+            {#        }#}
+            {#    }, 'json').error(errorCancel);#}
+            {#});#}
+            revertRequest.modal();
+        }
 
         function openCancelRequest(e) {
             // Gets the object bound to the modal: an order
