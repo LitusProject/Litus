@@ -17,8 +17,9 @@ class Article extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
         $data['warranty'] = $object->getWarranty() / 100;
         $data['rent'] = $object->getRent() / 100;
-        $data['unit'] = $object->getUnit()->getId();
-
+        if ($object->getUnit()) {
+            $data['unit'] = $object->getUnit()->getId();
+        }
         $data['alertMail'] = $object->getAlertMail();
         $data['visibility'] = $object->getVisibilityCode();
         $data['status'] = $object->getStatusKey();
