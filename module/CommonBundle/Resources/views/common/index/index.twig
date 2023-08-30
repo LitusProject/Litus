@@ -267,7 +267,7 @@
                     <h3 style="margin-bottom: 22px" href="#">
                         {{ item.name }}
                     </h3>
-                    {% for categoryItem in item.items | slice(0, 5) %}
+                    {% for categoryItem in item.frames %}
                         {% if 'page' == categoryItem.type %}
                             {% if hasAccess('page', 'view') %}
                                 <div class="menulink"><a class="category-title"
