@@ -75,7 +75,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'select',
                 'name'       => 'category',
                 'label'      => 'Category',
-                'required'   => true,
                 'attributes' => array(
                     'options' => Article::$POSSIBLE_CATEGORIES,
                 ),

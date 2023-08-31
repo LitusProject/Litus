@@ -57,77 +57,88 @@
                 {% autoescape false %}
                     {{ form().openTag(form) }}
                     {{ formElement(form.get('csrf')) }}
-
-                    <table class="table mappings">
-                        <thead>
-                        <tr>
-                            <th>{{ translate('Name') }}</th>
-                            <th class="hidden-xs">{{ translate('Status') }}</th>
-                            <th class="hidden-xs">{{ translate('Amount') }}</th>
-                            <th style="min-width: 100px"></th>
-                            <th style="width: 12%; min-width: 140px"></th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for category in categories %}
-                            <tr class="spacer">
-                                <td colspan="7"></td>
+                    <div class="accordion" id="accordionExample">
+                        <table class="table mappings">
+                            <thead>
+                            <tr>
+                                <th>{{ translate('Name') }}</th>
+                                <th class="hidden-xs">{{ translate('Status') }}</th>
+                                <th class="hidden-xs">{{ translate('Amount') }}</th>
+                                <th style="min-width: 100px"></th>
+                                <th style="width: 12%; min-width: 140px"></th>
                             </tr>
+                            </thead>
 
-                            <tr class="category-name">
-                                <td colspan="7" style="background-color: #D2D0F5">
-                                    <b>{{ category }}</b>
-                                </td>
-                            </tr>
+                            <tbody>
+                            {% for unit in units %}
+                                <div class="accordion-item">
 
-                            {% for map in articles %}
-                                {% if map['article'].getCategory() == category %}
-                                    <tr class="{% if map['mapped'] > 0 %}success{% endif %}">
-                                        <td>{{ map['article'].getName() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}{% if isPraesidium %}/{{ map['article'].getAmountOwned() }}{% endif %}</td>
-                                        <td class="hidden-xs">
-                                            {% if map['article'].getAdditionalInfo()|length > 0 %}
-                                                <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+                                    <tr class="spacer">
+                                        <td colspan="7"></td>
+                                    </tr>
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <tr class="category-name">
+                                                <td colspan="7" style="background-color: #D2D0F5">
+                                                    <b>{{ unit }}</b>
+                                                </td>
+                                            </tr>
+                                        </button>
+                                    </h2>
 
-                                                    <span class='badge badge-info'></span> {{ map['article'].getAdditionalInfo() }}<br/>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                        {% for map in articles %}
+                                            {% if map['article'].getUnit() == unit %}
+                                                <tr class="{% if map['mapped'] > 0 %}success{% endif %}">
+                                                    <td>{{ map['article'].getName() }}</td>
+                                                    <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
+                                                    <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}{% if isPraesidium %}/{{ map['article'].getAmountOwned() }}{% endif %}</td>
+                                                    <td class="hidden-xs">
+                                                        {% if map['article'].getAdditionalInfo()|length > 0 %}
+                                                            <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
 
-                                                    " data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                                                <span class='badge badge-info'></span> {{ map['article'].getAdditionalInfo() }}<br/>
+
+                                                                " data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        {% set name = 'article-' ~ map['article'].getId() %}
+                                                        {% set element = form.get(name) %}
+                                                        <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>
+                                                        <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
+                                                        <a>{{ formElement(element) }}</a>
+                                                        <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                                    </td>
+                                                </tr>
                                             {% endif %}
-                                        </td>
-                                        <td style="text-align: center;">
-                                            {% set name = 'article-' ~ map['article'].getId() %}
-                                            {% set element = form.get(name) %}
-                                            <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>
-                                            <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
-                                            <a>{{ formElement(element) }}</a>
-                                            <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
-                                        </td>
-                                    </tr>
-                                {% endif %}
 
-                                {% if element.getMessages()|length > 0  and map['bookable'] %}
-                                    <tr>
-                                        <td colspan="7" style="border-top-width:0px;">
-                                            <div class="help-block pull-right">
-                                                {{ formElementErrors(element) }}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="7" style="border-top-width:0px;">
-                                        <div>
-                                            <em>{{ translate('No articles available for this category.') }}</em>
+                                                {% if element.getMessages()|length > 0  and map['bookable'] %}
+                                                    <tr>
+                                                        <td colspan="7" style="border-top-width:0px;">
+                                                            <div class="help-block pull-right">
+                                                                {{ formElementErrors(element) }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="7" style="border-top-width:0px;">
+                                                    <div>
+                                                        <em>{{ translate('No articles available for this category.') }}</em>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                         </div>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
                             {% endfor %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div>
                         {% if form.get('submit') %}
