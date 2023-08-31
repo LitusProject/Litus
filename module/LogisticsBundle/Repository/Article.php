@@ -68,8 +68,9 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\Article', 'a')
+            ->innerJoin('a.unit', 'u')
             ->where(
-                $query->expr()->like($query->expr()->lower('a.unitName'), ':unitName')
+                $query->expr()->like($query->expr()->lower('u.name'), ':unitName')
             )
             ->setParameter('unitName', '%' . strtolower($unitName) . '%')
             ->orderBy('a.name', 'ASC')

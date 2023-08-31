@@ -167,6 +167,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 'isPraesidium'  => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'articles'      => $allArticles,
                 'categories'    => Article::$POSSIBLE_CATEGORIES,
+                'units'         => $this->getAllActiveUnits(),
                 'form'          => $form,
                 'searchForm'    => $searchForm,
                 'order'         => $order,
@@ -529,6 +530,27 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         return $request;
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllActiveUnits()
+    {
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAllActive();
+
+        if (count($units) == 0) {
+            throw new RuntimeException('There needs to be at least one unit');
+        }
+
+        $unitsArray = array();
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+        }
+
+        return $unitsArray;
     }
 
     /**
