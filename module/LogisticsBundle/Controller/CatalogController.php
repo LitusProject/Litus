@@ -576,7 +576,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         $requests = array();
         foreach ($activeOrders as $activeOrder) {
-            $requests[] = $activeOrder->getRequest();
+            $request = $activeOrder->getRequest();
+            if (!($request->removed())) {
+                $requests[] = $activeOrder->getRequest();
+            }
         }
 
         return array_unique($requests);
