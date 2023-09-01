@@ -570,15 +570,16 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function getOpenRequestsByUnit($unit)
     {
-        $unhandledRequests = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findAllUnhandledByUnit($unit);
+        $activeOrders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllActiveByUnit($unit);
 
-        $handledRejects = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findActiveRejectsByUnit($unit);
+        $requests = array();
+        foreach ($activeOrders as $activeOrder) {
+            $requests[] = $activeOrder->getRequest();
+        }
 
-        return array_merge($handledRejects, $unhandledRequests);
+        return array_unique($requests);
     }
 
     /**
