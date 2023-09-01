@@ -505,10 +505,11 @@ class Ticket
      */
     public function getPrice()
     {
+        $option_or_event = $this->getOption() ?? $this->getEvent();
         if ($this->isMember() === true) {
-            $price = $this->getOption()->getPriceMembers();
+            $price = $option_or_event->getPriceMembers();
         } else {
-            $price = $this->getOption()->getPriceNonMembers();
+            $price = $option_or_event->getPriceNonMembers();
         }
 
         return number_format($price / 100, 2);
