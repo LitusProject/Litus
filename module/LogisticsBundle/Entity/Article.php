@@ -141,21 +141,22 @@ class Article
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
+        ''                       => '',
         # Posten: hier moet automatisch mail adres aan toegevoegd worden
-        'acti'                   => 'Activiteiten',
-        'logistiek'              => 'Logistiek',
-        'sport'                  => 'Sport',
-        'fak'                    => 'Fak',
-        'cultuur'                => 'Cultuur',
-        'communicatie'           => 'Communicatie',
-//        'cursusdienst'           => 'Cursusdienst',       Idee om later toe te voegen (bv. labojassen)
-        'br'                     => 'BR',
-        'it'                     => 'IT',
-        'theokot'                => 'Theokot',
-        'secri'                  => 'Secri',
-        'vice'                   => 'Vice',
-        'praeses'                => 'Praeses',
-        'beheer'                 => 'Beheer',
+//        'acti'                   => 'Activiteiten',
+//        'logistiek'              => 'Logistiek',
+//        'sport'                  => 'Sport',
+//        'fak'                    => 'Fak',
+//        'cultuur'                => 'Cultuur',
+//        'communicatie'           => 'Communicatie',
+////        'cursusdienst'           => 'Cursusdienst',       Idee om later toe te voegen (bv. labojassen)
+//        'br'                     => 'BR',
+//        'it'                     => 'IT',
+//        'theokot'                => 'Theokot',
+//        'secri'                  => 'Secri',
+//        'vice'                   => 'Vice',
+//        'praeses'                => 'Praeses',
+//        'beheer'                 => 'Beheer',
 
         # Flesserke: hier moet automatisch materiaal naar toe gebracht worden uit het Flesserke systeem
         'Flesserke'              => 'Flesserke',
@@ -188,10 +189,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'private'  => 'Post',
-        'internal' => 'Praesidium',
-        'workgroups' => 'Greater VTK',
-        'external' => 'Members',
+        'post'  => 'Post',
+        'praesidium' => 'Praesidium',
+        'greatervtk' => 'Greater VTK',
+        'members' => 'Members',
     );
 
     /**
