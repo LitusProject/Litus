@@ -346,7 +346,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function sendMailToContact(Request $request, $rejected = false)
     {
-        $order = $request->getEditOrder() ?? $request->getOrder();
+        $order = $this->getLastOrderByRequest($request);
         $mailAddress = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.order_mail');
