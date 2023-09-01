@@ -63,13 +63,7 @@ class Request
 
     /**
      * //     * @param Academic $contact
-     * //     * @param Order $order
-     * //     * @param string $requestType
-     * //     * @param Order|null $editOrder
      */
-//    WISSELEN
-//
-//    public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
     public function __construct(Academic $contact)
     {
         $this->creationTime = new DateTime();
@@ -77,11 +71,6 @@ class Request
         $this->removed = false;
         $this->canceled = false;
         $this->contact = $contact;
-//        START
-//        $this->referencedOrder = $order;
-//        $this->setRequestType($requestType);
-//        $this->editOrder = $editOrder;
-//        END
     }
 
     /**

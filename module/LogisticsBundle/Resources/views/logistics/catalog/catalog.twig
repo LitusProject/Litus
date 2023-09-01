@@ -80,49 +80,49 @@
                                 </td>
                             </tr>
 
-                            {% for map in articles %}
-                                {% if map['article'].getUnit().getName() == unit %}
-                                    <tr class="{% if map['mapped'] > 0 %}success{% endif %}">
-                                        <td>{{ map['article'].getName() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
-                                        <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}</td>
-                                        <td class="hidden-xs">
-                                            {% if map['article'].getAdditionalInfo()|length > 0 %}
-                                                <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
-
-                                                    <span class='badge badge-info'></span> {{ map['article'].getAdditionalInfo() }}<br/>
-
-                                                    " data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
-                                            {% endif %}
-                                        </td>
-                                        <td style="text-align: center;">
-                                            {% set name = 'article-' ~ map['article'].getId() %}
-                                            {% set element = form.get(name) %}
-                                            <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>
-                                            <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
-                                            <a>{{ formElement(element) }}</a>
-                                            <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                            {% for category in categories %}
+                                {% if unit == 'Logistiek' and category != '' %}
+                                    <tr class="category-name">
+                                        <td colspan="7" style="background-color: #D2D0F5">
+                                            <b>{{ category }}</b>
                                         </td>
                                     </tr>
                                 {% endif %}
 
-                                {% if element.getMessages()|length > 0  and map['bookable'] %}
-                                    <tr>
-                                        <td colspan="7" style="border-top-width:0px;">
-                                            <div class="help-block pull-right">
-                                                {{ formElementErrors(element) }}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                {% endif %}
-                            {% else %}
-                                <tr>
-                                    <td colspan="7" style="border-top-width:0px;">
-                                        <div>
-                                            <em>{{ translate('No articles available for this category.') }}</em>
-                                        </div>
-                                    </td>
-                                </tr>
+                                {% for map in articles %}
+                                    {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category %}
+                                        <tr class="{% if map['mapped'] > 0 %}success{% endif %}">
+                                            <td>{{ map['article'].getName() }}</td>
+                                            <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
+                                            <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}</td>
+                                            <td class="hidden-xs">
+                                                {% if map['article'].getAdditionalInfo()|length > 0 %}
+                                                    <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+                                                        <span class='badge badge-info'></span> {{ map['article'].getAdditionalInfo() }}<br/>
+                                                        " data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td style="text-align: center;">
+                                                {% set name = 'article-' ~ map['article'].getId() %}
+                                                {% set element = form.get(name) %}
+                                                <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>
+                                                <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
+                                                <a>{{ formElement(element) }}</a>
+                                                <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+
+                                    {% if element.getMessages()|length > 0  and map['bookable'] %}
+                                        <tr>
+                                            <td colspan="7" style="border-top-width:0px;">
+                                                <div class="help-block pull-right">
+                                                    {{ formElementErrors(element) }}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
                             {% endfor %}
                         {% endfor %}
                         </tbody>
