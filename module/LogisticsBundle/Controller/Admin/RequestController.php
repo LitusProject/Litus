@@ -283,21 +283,21 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return array_merge($handledRejects, $unhandledRequests);
     }
 
-    /**
-     * @return array
-     */
-    private function getOpenRequestsByUnit($unit)
-    {
-        $unhandledRequests = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findAllUnhandledByUnit($unit);
-
-        $handledRejects = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findActiveRejectsByUnit($unit);
-
-        return array_merge($handledRejects, $unhandledRequests);
-    }
+//    /**
+//     * @return array
+//     */
+//    private function getOpenRequestsByUnit($unit)
+//    {
+//        $unhandledRequests = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Request')
+//            ->findAllUnhandledByUnit($unit);
+//
+//        $handledRejects = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Request')
+//            ->findActiveRejectsByUnit($unit);
+//
+//        return array_merge($handledRejects, $unhandledRequests);
+//    }
 
     /**
      * @return array

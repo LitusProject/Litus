@@ -539,7 +539,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     {
         $unitsArray = array();
         foreach ($articles as $article) {
-            $unitsArray[] = $article->getUnit()->getName();
+            if ($article->getUnit()) {
+                $unitsArray[] = $article->getUnit()->getName();
+            }
         }
         $unitsArray = array_unique($unitsArray);
 
