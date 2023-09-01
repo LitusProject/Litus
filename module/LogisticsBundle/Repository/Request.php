@@ -58,12 +58,12 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 //    {
 //        $query = $this->getEntityManager()->createQueryBuilder();
 //        return $query->select('r')
-//            ->from('LogisticsBundle\Entity\Request', 'r')
+//            ->from('LogisticsBundle\Entity\Order', 'o')
 ////            ->innerJoin('r.editOrder', 'o')
 //            ->where(
 //                $query->expr()->andx(
 //                    $query->expr()->eq('r.handled', 'FALSE'),
-////                    $query->expr()->eq('o.unit', ':unit'),
+//                    $query->expr()->eq('o.unit', ':unit'),
 ////                    $query->expr()->eq('o.removed', 'FALSE')
 //                )
 //            )
