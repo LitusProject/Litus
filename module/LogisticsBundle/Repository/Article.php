@@ -20,7 +20,9 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\Article', 'a')
-            ->orderBy('a.category', 'ASC')
+            ->innerJoin('a.unit', 'u')
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
             ->getQuery();
     }

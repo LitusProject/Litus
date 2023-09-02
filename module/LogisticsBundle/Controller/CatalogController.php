@@ -579,12 +579,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $requests = array();
         foreach ($activeOrders as $activeOrder) {
             $request = $activeOrder->getRequest();
-            if (!($request->isRemoved())) {
+            if (!($request->isRemoved()) and !(in_array($request, $requests, true))) {
                 $requests[] = $activeOrder->getRequest();
             }
         }
 
-        return array_unique($requests);
+        return $requests;
     }
 
     /**
