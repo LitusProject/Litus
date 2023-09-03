@@ -18,7 +18,7 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
      */
     public function __construct(EntityManager $entityManager, Event $event)
     {
-        $headers = array('ID', 'Name', 'Email', 'Organization', 'Status', 'Option', 'Number', 'orderId', 'invoiceId', 'Book Date', 'Sold Date', 'Member', 'r-number');
+        $headers = array('ID', 'Name', 'Email', 'Organization', 'Status', 'Option', 'Number', 'orderId', 'invoiceId', 'payId', 'Book Date', 'Sold Date', 'Member', 'r-number');
         $tickets = $entityManager
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllActiveByEvent($event);
@@ -35,6 +35,7 @@ class Csv extends \CommonBundle\Component\Document\Generator\Csv
                 $ticket->getNumber(),
                 $ticket->getOrderId(),
                 $ticket->getInvoiceId(),
+                $ticket->getPayId(),
                 $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '',
                 $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '',
                 $ticket->isMember() ? '1' : '0',
