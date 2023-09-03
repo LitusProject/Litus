@@ -36,7 +36,6 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'file',
                 'name'       => 'file',
                 'label'      => 'Article csv',
-                //                'required'   => true,
                 'attributes' => array(
                     'data-help' => 'The maximum file size is ' . self::FILE_SIZE . '.',
                 ),

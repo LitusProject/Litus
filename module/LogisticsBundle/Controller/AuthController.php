@@ -89,7 +89,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
             );
 
             $code = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
+                ->getRepository('CommonBundle\Repository\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
             if ($code !== null) {
