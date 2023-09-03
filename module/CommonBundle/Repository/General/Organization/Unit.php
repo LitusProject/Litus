@@ -64,6 +64,23 @@ class Unit extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
+    public function findOneByName($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('u')
+            ->from('CommonBundle\Entity\General\Unit', 'u')
+            ->where(
+                $query->expr()->eq('u.name', ':name')
+            )
+            ->setParameter('name', $name)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();

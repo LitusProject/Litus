@@ -13,6 +13,7 @@ use LogisticsBundle\Entity\Request;
 /**
  * CatalogController
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsController
 {

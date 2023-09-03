@@ -76,7 +76,12 @@
                             </tr>
                             <tr id="{{ unit }}" class="category-name collapsed" data-content="{{ unit }}">
                                 <td colspan="7" style="padding: 0">
-                                    <div><button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left"><b>{{ unit }}</b></button></div>
+                                    <div>
+                                        <button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left">
+                                            <b>{{ unit }}</b>
+{#                                            <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>#}
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -84,7 +89,12 @@
                                 {% if unit == 'Logistiek' and category != '' %}
                                     <tr id="{{ category }}" class="category-name collapsed {{ unit }}" data-content="{{ category }}">
                                         <td colspan="7" style="padding: 0">
-                                            <div><button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left"><b>{{ category }}</b></button></div>
+                                            <div>
+                                                <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
+                                                    <b>{{ category }}</b>
+                                                    <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -153,7 +163,20 @@
                 </tbody>
             </table>
         </div>
-
+        <div class="modal fade" id="searchRequest">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{ translate('Logistics') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('This function is coming soon!') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
 
@@ -162,6 +185,7 @@
         $(document).ready(function () {
             $('.category-name').click(collapseCategory);
             $('.unit-name').click(collapseCategory);
+            $('#searchArticles').click(openSearchRequest);
 
             $(window).keydown(function(event){
                 if(event.keyCode === 13) {
@@ -204,119 +228,125 @@
                 });
             });
 
-            {% if hasAccess('logistics_catalog', 'search') %}
-            $('#searchArticles').click(function (e) {
-                e.preventDefault();
-                var view = $(this).data('view') == undefined ? 'view' : $(this).data('view');
+{#            {% if hasAccess('logistics_catalog', 'search') %}#}
+{#            $('#searchArticles').click(function (e) {#}
+{#                e.preventDefault();#}
+{#                var view = $(this).data('view') == undefined ? 'view' : $(this).data('view');#}
 
-                if (view == 'view') {
-                    $('#viewArticlesPage').hide();
-                    $('#searchArticlesPage').show();
-                    $('#search_string').focus();
-                    $(this).html('{{ translate('Stop Search') }}').data('view', 'search');
-                } else {
-                    $('#viewArticlesPage').show();
-                    $('#searchArticlesPage').hide();
-                    $(this).html('{{ translate('Search') }}').data('view', 'view');
-                }
-            });
+{#                if (view == 'view') {#}
+{#                    $('#viewArticlesPage').hide();#}
+{#                    $('#searchArticlesPage').show();#}
+{#                    $('#search_string').focus();#}
+{#                    $(this).html('{{ translate('Stop Search') }}').data('view', 'search');#}
+{#                } else {#}
+{#                    $('#viewArticlesPage').show();#}
+{#                    $('#searchArticlesPage').hide();#}
+{#                    $(this).html('{{ translate('Search') }}').data('view', 'view');#}
+{#                }#}
+{#            });#}
 
-            $('#search_string').bind('keyup', function () {
-                var $this = $(this);
-                clearTimeout($(this).data('timeout'));
-                $(this).data('timeout', setTimeout(function () {
-                    if ('' == $this.val() || $this.val().length < 3) {
-                        $('#searchArticlesPage tbody').html('').append(
-                            $('<tr>', {'class': 'spacer'}).append(
-                                $('<td>', {'colspan': 6})
-                            ),
-                            $('<tr>', {'class': 'category-title'}).append(
-                                $('<td>', {'colspan': 6}).append(
-                                    $('<i>').append('{{ translate('No Articles Found') }}')
-                                )
-                            )
-                        );
-                        return;
-                    }
-                    $.ajax({
-                        url: '{{ url('logistics_catalog_typeahead', {'order': order.getId()}) }}' + $this.val(),
-                        method: 'get',
-                        dataType: 'json',
-                        success: function (e) {
-                            var tbody = $('#searchArticlesPage tbody').html('').append(
-                                $('<tr>', {'class': 'spacer'}).append(
-                                    $('<td>', {'colspan': 6})
-                                )
-                            );
-                            $(e).each(function () {
-                                tbody.append(
-                                    $('<tr>', {'class': (this.mapped > 0 ? 'success ': '')}).append(
-                                        $('<td>').html(this.title),
-                                        $('<td>', {'class': 'hidden-xs'}).html(this.status),
-                                        $('<td>', {'class': 'hidden-xs'}).html(this.amt),
-                                        comments = $('<td>', {'class': 'hidden-xs'}),
-                                        book = $('<td>', {'style': 'text-align: center; width: 12%; min-width: 140px'})
-                                    )
-                                );
+{#            $('#search_string').bind('keyup', function () {#}
+{#                var $this = $(this);#}
+{#                clearTimeout($(this).data('timeout'));#}
+{#                $(this).data('timeout', setTimeout(function () {#}
+{#                    if ('' == $this.val() || $this.val().length < 3) {#}
+{#                        $('#searchArticlesPage tbody').html('').append(#}
+{#                            $('<tr>', {'class': 'spacer'}).append(#}
+{#                                $('<td>', {'colspan': 6})#}
+{#                            ),#}
+{#                            $('<tr>', {'class': 'category-title'}).append(#}
+{#                                $('<td>', {'colspan': 6}).append(#}
+{#                                    $('<i>').append('{{ translate('No Articles Found') }}')#}
+{#                                )#}
+{#                            )#}
+{#                        );#}
+{#                        return;#}
+{#                    }#}
+{#                    $.ajax({#}
+{#                        url: '{{ url('logistics_catalog_typeahead', {'order': order.getId()}) }}' + $this.val(),#}
+{#                        method: 'get',#}
+{#                        dataType: 'json',#}
+{#                        success: function (e) {#}
+{#                            var tbody = $('#searchArticlesPage tbody').html('').append(#}
+{#                                $('<tr>', {'class': 'spacer'}).append(#}
+{#                                    $('<td>', {'colspan': 6})#}
+{#                                )#}
+{#                            );#}
+{#                            $(e).each(function () {#}
+{#                                tbody.append(#}
+{#                                    $('<tr>', {'class': (this.mapped > 0 ? 'success ': '')}).append(#}
+{#                                        $('<td>').html(this.title),#}
+{#                                        $('<td>', {'class': 'hidden-xs'}).html(this.status),#}
+{#                                        $('<td>', {'class': 'hidden-xs'}).html(this.amt),#}
+{#                                        comments = $('<td>', {'class': 'hidden-xs'}),#}
+{#                                        book = $('<td>', {'style': 'text-align: center; width: 12%; min-width: 140px'})#}
+{#                                    )#}
+{#                                );#}
 
-                                if (this.additionalInfo) {
-                                    var popoverContent = '';
-                                    popoverContent += '<span class="badge badge-info"></span> ' + this.additionalInfo + '<br/>';
-                                    comments.append(
-                                        $('<a>', {
-                                            'data-original-title': '{{ translate('Comments') }}',
-                                            'data-content': popoverContent,
-                                            'data-placement': 'left',
-                                            'style': 'cursor:pointer',
-                                            'class': 'label label-warning',
-                                        }).html('{{ translate('Remark') }}').popover({'trigger': 'hover', 'html': true})
-                                    );
-                                }
-                                book.append(
-                                        {#<td style="text-align: center;">#}
-                                        {#    {% set name = 'article-' ~ map['article'].getId() %}#}
-                                        {#    {% set element = form.get(name) %}#}
-                                        {#    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>#}
-                                        {#    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>#}
-                                        {#    <a>{{ formElement(element) }}</a>#}
-                                        {#    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>#}
-                                        {#</td>#}
-                                    $('<b>', {'style': 'visibility: hidden'}).html(this.mapped?? 0),
-                                    $('<a>', {'href': '#', 'class': 'decrease-value'}).append($('<span>', {'class': 'glyphicon glyphicon-minus-sign pull-left', 'style': 'margin-top: 3px;'})),
-                                    $('<a>', {'style': 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',}).append($('<input type="text">', {'id': 'search-article-' + this.id, 'placeholder': this.mapped, 'style': 'max-width: 20px;',}).data('id', this.id)),
-                                    $('<a>', {'href': '#', 'class': 'increase-value'}).append($('<span>', {'class': 'glyphicon glyphicon-plus-sign pull-right', 'style': 'margin-top: 3px;'}))
-                                );
+{#                                if (this.additionalInfo) {#}
+{#                                    var popoverContent = '';#}
+{#                                    popoverContent += '<span class="badge badge-info"></span> ' + this.additionalInfo + '<br/>';#}
+{#                                    comments.append(#}
+{#                                        $('<a>', {#}
+{#                                            'data-original-title': '{{ translate('Comments') }}',#}
+{#                                            'data-content': popoverContent,#}
+{#                                            'data-placement': 'left',#}
+{#                                            'style': 'cursor:pointer',#}
+{#                                            'class': 'label label-warning',#}
+{#                                        }).html('{{ translate('Remark') }}').popover({'trigger': 'hover', 'html': true})#}
+{#                                    );#}
+{#                                }#}
+{#                                book.append(#}
+{#                                        #}{#<td style="text-align: center;">#}
+{#                                        #}{#    {% set name = 'article-' ~ map['article'].getId() %}#}
+{#                                        #}{#    {% set element = form.get(name) %}#}
+{#                                        #}{#    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>#}
+{#                                        #}{#    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>#}
+{#                                        #}{#    <a>{{ formElement(element) }}</a>#}
+{#                                        #}{#    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>#}
+{#                                        #}{#</td>#}
+{#                                    $('<b>', {'style': 'visibility: hidden'}).html(this.mapped?? 0),#}
+{#                                    $('<a>', {'href': '#', 'class': 'decrease-value'}).append($('<span>', {'class': 'glyphicon glyphicon-minus-sign pull-left', 'style': 'margin-top: 3px;'})),#}
+{#                                    $('<a>', {'style': 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',}).append($('<input type="text">', {'id': 'search-article-' + this.id, 'placeholder': this.mapped, 'style': 'max-width: 20px;',}).data('id', this.id)),#}
+{#                                    $('<a>', {'href': '#', 'class': 'increase-value'}).append($('<span>', {'class': 'glyphicon glyphicon-plus-sign pull-right', 'style': 'margin-top: 3px;'}))#}
+{#                                );#}
 
-                                $('.increase-value').unbind('click').click(function (e) {
-                                    e.preventDefault();
-                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) + 1;
+{#                                $('.increase-value').unbind('click').click(function (e) {#}
+{#                                    e.preventDefault();#}
+{#                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) + 1;#}
 
-                                    $(e.target).closest('td').find('b').html(newAmount);
-                                    $(e.target).closest('td').find('input').val(newAmount);
-                                    let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;
-                                    $(document.getElementById("article-"+id)).val(newAmount);
-                                    $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);
-                                });
+{#                                    $(e.target).closest('td').find('b').html(newAmount);#}
+{#                                    $(e.target).closest('td').find('input').val(newAmount);#}
+{#                                    let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;#}
+{#                                    $(document.getElementById("article-"+id)).val(newAmount);#}
+{#                                    $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);#}
+{#                                });#}
 
-                                $('.decrease-value').unbind('click').click(function (e) {
-                                    e.preventDefault();
-                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) - 1;
+{#                                $('.decrease-value').unbind('click').click(function (e) {#}
+{#                                    e.preventDefault();#}
+{#                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) - 1;#}
 
-                                    if (newAmount >= 0) {
-                                        $(e.target).closest('td').find('b').html(newAmount);
-                                        $(e.target).closest('td').find('input').val(newAmount);
-                                        let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;
-                                        $(document.getElementById("article-"+id)).val(newAmount);
-                                        $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);
-                                    }
-                                });
-                            });
-                        }
-                    });
-                }, 200));
-            });
-            {% endif %}
+{#                                    if (newAmount >= 0) {#}
+{#                                        $(e.target).closest('td').find('b').html(newAmount);#}
+{#                                        $(e.target).closest('td').find('input').val(newAmount);#}
+{#                                        let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;#}
+{#                                        $(document.getElementById("article-"+id)).val(newAmount);#}
+{#                                        $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);#}
+{#                                    }#}
+{#                                });#}
+{#                            });#}
+{#                        }#}
+{#                    });#}
+{#                }, 200));#}
+{#            });#}
+{#            {% endif %}#}
         });
+
+        function openSearchRequest(e) {
+            e.preventDefault();
+            var revertRequest = $('#searchRequest');
+            revertRequest.modal();
+        }
 
         function collapseCategory(e) {
             var $this = $(this);
@@ -324,18 +354,24 @@
             e.preventDefault();
             var name = $this.data('content');
             var category = document.getElementById(name);
-            console.log('category: ' + category);
-
             var items = Array.from(document.getElementsByClassName(name));
-            console.log('items: ' + items);
+            var icon = $this.find('.ui-icon');
 
             if (category.classList.contains("collapsed")) {
                 items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-s");
+                    icon.addClass("ui-icon-triangle-1-n");
+                    console.log(icon);
                     item.classList.remove('hide');
+                    if (item.classList.contains("collapsed")) {
+                        item.classList.remove("collapsed");
+                    }
                     category.classList.remove("collapsed");
                 });
             } else {
                 items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-n");
+                    icon.addClass("ui-icon-triangle-1-s");
                     item.classList.add('hide');
                     category.classList.add("collapsed");
                 });
