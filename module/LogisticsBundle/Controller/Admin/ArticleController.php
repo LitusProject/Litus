@@ -198,20 +198,26 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 $unit = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                     ->findOneById($formData['unit']);
+                error_log($unit->getName());
+
                 foreach ($articleArray as $data) {
-                    if (in_array(null, array_slice($data, 0, 9))) {
+                    if (in_array(null, array_slice($data, 0, 6))) {
+                        error_log('fail');
                         continue;
                     }
 
                     $name = $data[0];
-                    $additional_info = $data[1];
-                    $category = $data[2];
-                    $amount_owned = intval($data[3]);
-                    $amount_available = intval($data[4]);
-                    $visibility = $data[5];
-                    $status = $data[6];
-                    $location = $data[7];
-                    $spot = $data[8];
+                    $amount_owned = intval($data[1]);
+                    $amount_available = intval($data[2]);
+                    $visibility = $data[3];
+                    $status = $data[4];
+                    $location = $data[5];
+                    for ($x = 6; $x <= 9; $x++) {
+                       $data[$x] = $data[$x]?: ' ';
+                    }
+                    $spot = $data[6];
+                    $category = $data[7];
+                    $additional_info = $data[8];
                     $internal_comment = $data[9];
 
                     error_log($name);
@@ -222,7 +228,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     error_log($visibility);
                     error_log($status);
                     error_log($location);
-
+                    error_log($spot);
+                    error_log($internal_comment);
 
                     $article = new Article();
                     $article->setName($name)->setAdditionalInfo($additional_info)->setUnit($unit)
