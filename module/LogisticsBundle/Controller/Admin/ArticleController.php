@@ -196,9 +196,8 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 $count = 0;
 
                 $unit = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Unit')
-                    ->findOneByName($formData['unit']);
-
+                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                    ->findOneById($formData['unit']);
                 foreach ($articleArray as $data) {
                     if (in_array(null, array_slice($data, 0, 9))) {
                         continue;
@@ -207,18 +206,29 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $name = $data[0];
                     $additional_info = $data[1];
                     $category = $data[2];
-                    $amount_owned = $data[3];
-                    $amount_available = $data[4];
+                    $amount_owned = intval($data[3]);
+                    $amount_available = intval($data[4]);
                     $visibility = $data[5];
                     $status = $data[6];
                     $location = $data[7];
                     $spot = $data[8];
                     $internal_comment = $data[9];
+
+                    error_log($name);
+                    error_log($additional_info);
+                    error_log($category);
+                    error_log($amount_owned);
+                    error_log($amount_available);
+                    error_log($visibility);
+                    error_log($status);
+                    error_log($location);
+
+
                     $article = new Article();
                     $article->setName($name)->setAdditionalInfo($additional_info)->setUnit($unit)
                         ->setCategory($category)->setAmountOwned($amount_owned)->setAmountAvailable($amount_available)
                         ->setVisibility($visibility)->setStatus($status)->setLocation($location)->setSpot($spot)
-                        ->setInternalComment($internal_comment);
+                        ->setInternalComment($internal_comment)->setRent(0)->setWarranty(0);
                     $this->getEntityManager()->persist($article);
                     $count += 1;
                 }

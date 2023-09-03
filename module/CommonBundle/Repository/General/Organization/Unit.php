@@ -64,15 +64,15 @@ class Unit extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findOneByName($name)
+    public function findOneById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('u')
-            ->from('CommonBundle\Entity\General\Unit', 'u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
             ->where(
-                $query->expr()->eq('u.name', ':name')
+                $query->expr()->eq('u.id', ':id')
             )
-            ->setParameter('name', $name)
+            ->setParameter('id', $id)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
