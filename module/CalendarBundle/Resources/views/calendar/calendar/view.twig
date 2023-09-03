@@ -101,7 +101,7 @@
 
     <div class="pageBanner"></div>
 
-    <div class="container"> 
+    <div class="container">
 
         <div class="pageTitleHolder">
             <h1>{{ event.getTitle(language) }}</h1>
@@ -118,6 +118,8 @@
                     {% else %}
                         {{ dateLocalized(event.getStartDate(), 'd MMM HH:mm') }} - {{ dateLocalized(event.getEndDate(), 'd MMM HH:mm') }}
                     {% endif %}
+                {% else %}
+                    {{ dateLocalized(event.getStartDate(), 'HH:mm') }}
                 {% endif %}
             </div>
             <div class="label">
