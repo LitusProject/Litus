@@ -189,10 +189,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'post'  => 'Post',
-        'praesidium' => 'Praesidium',
-        'greatervtk' => 'Greater VTK',
-        'members' => 'Members',
+        'post'          => 'Post',
+        'praesidium'    => 'Praesidium',
+        'greatervtk'    => 'Greater VTK',
+        'members'       => 'Members',
     );
 
     /**
@@ -236,6 +236,8 @@ class Article
     public function setSpot($spot)
     {
         $this->spot = $spot;
+
+        return $this;
     }
 
     /**
@@ -252,6 +254,7 @@ class Article
     public function setAlertMail($alertMail)
     {
         $this->alertMail = $alertMail;
+
         return $this;
     }
 
@@ -269,6 +272,7 @@ class Article
     public function setUnit($unit)
     {
         $this->unit = $unit;
+
         return $this;
     }
 
@@ -343,6 +347,8 @@ class Article
     public function setAmountOwned($amountOwned)
     {
         $this->amountOwned = $amountOwned;
+
+        return $this;
     }
 
     /**
@@ -359,6 +365,8 @@ class Article
     public function setAmountAvailable($amountAvailable)
     {
         $this->amountAvailable = $amountAvailable;
+
+        return $this;
     }
 
     /**
@@ -383,6 +391,8 @@ class Article
     public function setVisibility($visibility)
     {
         $this->visibility = $visibility;
+
+        return $this;
     }
 
     /**
@@ -407,6 +417,8 @@ class Article
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -423,6 +435,8 @@ class Article
     public function setLocation($location)
     {
         $this->location = $location;
+
+        return $this;
     }
 
     /**
@@ -439,6 +453,8 @@ class Article
     public function setWarranty($warranty)
     {
         $this->warranty = $warranty;
+
+        return $this;
     }
 
     /**
@@ -455,6 +471,8 @@ class Article
     public function setRent($rent)
     {
         $this->rent = $rent;
+
+        return $this;
     }
 
     /**
@@ -479,6 +497,8 @@ class Article
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -495,6 +515,8 @@ class Article
     public function setDateUpdated($dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
     }
 
     /**

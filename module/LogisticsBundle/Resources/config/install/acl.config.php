@@ -9,7 +9,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
         'logistics_admin_article' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders', 'csv',
         ),
         'logistics_admin_order' => array(
             'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting', 'review', 'approve', 'reject', 'view',

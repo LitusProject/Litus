@@ -48,7 +48,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
         }
 
         $this->redirect()->toRoute(
-            'logistics_index',
+            'logistics_catalog',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -111,7 +111,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             );
                         } else {
                             $this->redirect()->toRoute(
-                                'logistics_index'
+                                'logistics_catalog'
                             );
                         }
 

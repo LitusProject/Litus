@@ -76,7 +76,12 @@
                             </tr>
                             <tr id="{{ unit }}" class="category-name collapsed" data-content="{{ unit }}">
                                 <td colspan="7" style="padding: 0">
-                                    <div><button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left"><b>{{ unit }}</b></button></div>
+                                    <div>
+                                        <button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left">
+                                            <b>{{ unit }}</b>
+{#                                            <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>#}
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -84,7 +89,12 @@
                                 {% if unit == 'Logistiek' and category != '' %}
                                     <tr id="{{ category }}" class="category-name collapsed {{ unit }}" data-content="{{ category }}">
                                         <td colspan="7" style="padding: 0">
-                                            <div><button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left"><b>{{ category }}</b></button></div>
+                                            <div>
+                                                <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
+                                                    <b>{{ category }}</b>
+                                                    <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 {% endif %}
@@ -324,18 +334,24 @@
             e.preventDefault();
             var name = $this.data('content');
             var category = document.getElementById(name);
-            console.log('category: ' + category);
-
             var items = Array.from(document.getElementsByClassName(name));
-            console.log('items: ' + items);
+            var icon = $this.find('.ui-icon');
 
             if (category.classList.contains("collapsed")) {
                 items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-s");
+                    icon.addClass("ui-icon-triangle-1-n");
+                    console.log(icon);
                     item.classList.remove('hide');
+                    if (item.classList.contains("collapsed")) {
+                        item.classList.remove("collapsed");
+                    }
                     category.classList.remove("collapsed");
                 });
             } else {
                 items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-n");
+                    icon.addClass("ui-icon-triangle-1-s");
                     item.classList.add('hide');
                     category.classList.add("collapsed");
                 });

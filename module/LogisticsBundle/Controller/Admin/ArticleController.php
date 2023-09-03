@@ -167,6 +167,86 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function csvAction()
+    {
+        $form = $this->getForm('logistics_article_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $articleArray = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 10000, ',');
+
+                while ($data !== false) {
+                    $articleArray[] = $data;
+                    $data = fgetcsv($open, 10000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+
+                $unit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Unit')
+                    ->findOneByName($formData['unit']);
+
+                foreach ($articleArray as $data) {
+                    if (in_array(null, array_slice($data, 0, 9))) {
+                        continue;
+                    }
+
+                    $name = $data[0];
+                    $additional_info = $data[1];
+                    $category = $data[2];
+                    $amount_owned = $data[3];
+                    $amount_available = $data[4];
+                    $visibility = $data[5];
+                    $status = $data[6];
+                    $location = $data[7];
+                    $spot = $data[8];
+                    $internal_comment = $data[9];
+                    $article = new Article();
+                    $article->setName($name)->setAdditionalInfo($additional_info)->setUnit($unit)
+                        ->setCategory($category)->setAmountOwned($amount_owned)->setAmountAvailable($amount_available)
+                        ->setVisibility($visibility)->setStatus($status)->setLocation($location)->setSpot($spot)
+                        ->setInternalComment($internal_comment);
+                    $this->getEntityManager()->persist($article);
+                    $count += 1;
+                }
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' articles imported'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_article',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();
