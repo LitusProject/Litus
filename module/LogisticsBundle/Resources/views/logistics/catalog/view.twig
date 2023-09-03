@@ -65,9 +65,9 @@
             <div class="col-md-4" style="padding-right: 3%; padding-top: 10px;">
                 {#     Personal info  #}
                 <div class="info-content">
-                    <p>Contact: &emsp;&ensp;&ensp;<b>{{ order.getContact() }}</b></p>
+                    <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
                     {% if order.getUnit() %}
-                        <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+                        <p>Unit: &emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
                     {% endif %}
                     <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
                 </div>
@@ -82,20 +82,6 @@
                         <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
                     {% endif %}
                 </div>
-{#       Old edit order block         #}
-{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-{#                    <div class="title"><b>Edit Order</b></div>#}
-{#                    <div class="content">#}
-{#                        <p>#}
-{#                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>#}
-{#                        </p>#}
-{#                        <p>#}
-{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">#}
-{#                                Edit Order#}
-{#                            </a>#}
-{#                        </p>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
 
             {#     Article body       #}
@@ -132,20 +118,6 @@
                         </table>
                     </div>
                 </div>
-{#       Old edit article block         #}
-{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-{#                    <div class="title"><b>Edit Articles</b></div>#}
-{#                    <div class="content">#}
-{#                        <p>#}
-{#                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>#}
-{#                        </p>#}
-{#                        <p>#}
-{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">#}
-{#                                &rarr; Edit Articles#}
-{#                            </a>#}
-{#                        </p>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
         </div>
 

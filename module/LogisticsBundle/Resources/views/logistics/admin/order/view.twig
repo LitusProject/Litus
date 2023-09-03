@@ -103,10 +103,11 @@
                     {#     Table header       #}
                     <thead>
                     <tr>
-                        <th style="width: 20%">Name</th>
-                        <th style="width: 20%">Category</th>
+                        <th style="width: 15%">Name</th>
+                        <th style="width: 15%">Unit</th>
+                        <th style="width: 15%">Category</th>
                         <th style="width: 20%">Comments</th>
-                        <th style="width: 20%">Status</th>
+                        <th style="width: 15%">Status</th>
                         <th style="width: 10%">Old amount</th>
                         <th style="width: 10%">New amount</th>
                         {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
@@ -118,6 +119,7 @@
                     {% for mapping in articles %}
                                 <tr class="item item-{{ mapping.getId() }}">
                                     <td>{{ mapping.getArticle().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getArticle().getCategory() }}</td>
                                     <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
                                             {{ mapping.getArticle().getAdditionalInfo() }}{% endif %}</td>
