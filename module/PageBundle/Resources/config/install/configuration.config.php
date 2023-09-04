@@ -8,7 +8,7 @@ return array(
     ),
     array(
         'key'         => 'page.poster_path',
-        'value'       => 'data/page/posters',
+        'value'       => '/_page/posters',
         'description' => 'The path to the page posters',
     ),
     array(

@@ -21,6 +21,7 @@
 namespace PageBundle\Controller\Admin;
 
 use CommonBundle\Entity\General\Node\FAQ\FAQPageMap;
+use Imagick;
 use Laminas\Filter\File\RenameUpload as RenameUploadFilter;
 use Laminas\Validator\File\IsImage as IsImageValidator;
 use Laminas\Validator\File\UploadFile as UploadFileValidator;
@@ -335,6 +336,106 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'result' => $result,
             )
         );
+    }
+
+    public function editPosterAction()
+    {
+        $page = $this->getPageEntity();
+        if ($page === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_page_poster');
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'page_admin_page',
+                array(
+                    'action' => 'uploadPoster',
+                    'id'     => $page->getId(),
+                )
+            )
+        );
+
+        return new ViewModel(
+            array(
+                'page' => $page,
+                'form'  => $form,
+            )
+        );
+    }
+
+    public function uploadPosterAction()
+    {
+        $page = $this->getFrameEntity();
+        if ($page === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('page_page_poster');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+
+                $this->receive($formData['poster'], $page);
+
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The page\'s poster has successfully been updated!'
+                );
+
+                $this->redirect()->toRoute(
+                    'page_admin_page',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+                return new ViewModel();
+            } else {
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form' => array(
+                            'errors' => $form->getMessages(),
+                        ),
+                    )
+                );
+            }
+        }
+
+        return new ViewModel();
+    }
+
+    private function receive($file, Page $page)
+    {
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.poster_path');
+
+        $image = new Imagick($file['tmp_name']);
+        $image->thumbnailImage(760, 400, true);
+
+        if ($page->getPoster() != '' || $page->getPoster() !== null) {
+            $fileName = '/' . $page->getPoster();
+        } else {
+            do {
+                $fileName = '/' . sha1(uniqid());
+            } while (file_exists($filePath . $fileName));
+        }
+
+        $image->writeImage($filePath . $fileName);
+
+        $page->setPoster($fileName);
     }
 
     /**
