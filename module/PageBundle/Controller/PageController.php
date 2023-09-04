@@ -147,4 +147,18 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
         return $page;
     }
+
+    /**
+     * @return Page|null
+     */
+    private function getPageEntityByPoster()
+    {
+        $page = $this->getEntityById('PageBundle\Entity\Page', 'id', 'poster');
+
+        if (!($page instanceof Page)) {
+            return;
+        }
+
+        return $page;
+    }
 }

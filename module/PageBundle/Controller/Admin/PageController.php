@@ -367,7 +367,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
 
     public function uploadPosterAction()
     {
-        $page = $this->getFrameEntity();
+        $page = $this->getPageEntity();
         if ($page === null) {
             return new ViewModel();
         }
