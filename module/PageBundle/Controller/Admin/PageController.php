@@ -434,7 +434,6 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $image->writeImage($filePath . $fileName);
-
         $page->setPoster($fileName);
     }
 
