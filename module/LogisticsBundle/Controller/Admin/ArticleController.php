@@ -2,7 +2,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Imagick;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
 
@@ -260,6 +263,56 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function templateAction()
+    {
+        $file = new CsvFile();
+        $heading = array(
+            'name',
+            'amount_owned',
+            'amount_available',
+            'visibility',
+            'status',
+            'location',
+            'spot',
+            'category',
+            'additional_info',
+            'internal_comment',
+        );
+
+        $results = array();
+        $results[] = array(
+            'article',
+            0,
+            0,
+            '(post, praesidium, greatervtk, members)',
+            '(ok, vermist, weg, kapot, vuil, aankopen, nakijken)',
+            '(Blok 6, Loods, Fak, Theokot)',
+            '',
+            '',
+            '',
+            '',
+        );
+
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="article_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
             )
         );
     }
