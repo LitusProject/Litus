@@ -274,6 +274,28 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+        $this->add(
+            array(
+                'type' => 'text',
+                'name' => 'payId',
+                'label' => 'Betaalreferentie',
+                'required' => false,
+                'attributes' => array(
+                    'id' => 'payid',
+                ),
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'payId'),
+                        ),
+                    ),
+                ),
+            ),
+        );
+
         $this->addSubmit('Sale', 'sale_tickets', 'sale', array('id' => 'sale_tickets'));
     }
 

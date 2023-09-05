@@ -38,4 +38,7 @@ return array(
     'Yes'                                                      => 'Ja',
     'No'                                                       => 'Neen',
     '(empty)'                                                  => '(leeg)',
+    'I have read and accept the terms and conditions specified'=> 'Ik heb de voorwaarden gelezen en ga er mee akkoord. Deze zijn te vinden',
+    'here'                                                     => 'hier',
+    'and'                                                      => 'en',
 );

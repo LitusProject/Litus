@@ -22,10 +22,11 @@ class Catalog extends \CommonBundle\Component\Form\Bootstrap\Form
 
             $this->add(
                 array(
-                    'type'       => 'hidden',
+                    'type'       => 'text',
                     'name'       => 'article-' . $mapping->getId(),
                     'attributes' => array(
                         'class'       => 'input-very-mini',
+                        'style'       => 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',
                         'id'          => 'article-' . $mapping->getId(),
                         'placeholder' => '0',
                     ),

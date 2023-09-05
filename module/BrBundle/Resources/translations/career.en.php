@@ -49,4 +49,6 @@ return array(
     'Look at the attending companies here'                                                                                                                                             => 'Look at the attending companies here',
     'Get the company guide here'                                                                                                                                                       => 'Get the company guide here',
     'View the time table for the busses here'                                                                                                                                          => 'View the time table for the buses here',
+    'There are no upcoming Career events.'                                                                                                                                             => 'There are no upcoming Career events.',
+    'Career Calendar'                                                                                                                                                                  => 'Career Calendar',
 );

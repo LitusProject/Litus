@@ -70,6 +70,13 @@ class Event extends \CommonBundle\Entity\Node
     private $isHidden;
 
     /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_career", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isCareer;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -298,6 +305,26 @@ class Event extends \CommonBundle\Entity\Node
     public function setIsHidden($isHidden)
     {
         $this->isHidden = $isHidden;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCareer()
+    {
+        return $this->isCareer;
+    }
+
+    /**
+     * @param boolean $isCareer
+     *
+     * @return self
+     */
+    public function setIsCareer($isCareer)
+    {
+        $this->isCareer = $isCareer;
 
         return $this;
     }

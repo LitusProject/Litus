@@ -9,10 +9,10 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
         'logistics_admin_article' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders', 'csv', 'template'
         ),
         'logistics_admin_order' => array(
-            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting'
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting', 'review', 'approve', 'reject', 'view',
         ),
         'logistics_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
@@ -39,7 +39,7 @@ return array(
             'index',
         ),
         'logistics_catalog' => array(
-            'addOrder', 'editOrder', 'overview', 'catalog', 'removeOrder', 'editRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
+            'addOrder', 'editOrder', 'overview', 'catalog', 'cancelRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
         ),
         'logistics_inventory' => array(
             'index', 'add', 'edit', 'reserve',

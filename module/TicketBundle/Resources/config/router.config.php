@@ -25,8 +25,6 @@ return array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
-                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'ticket_admin_ticket',
@@ -82,7 +80,7 @@ return array(
         'ticket_sale_ticket' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/ticket/sale/ticket[/:action[/:id[/:ticket][/:field/:string]][/page/:page]][/]',
+                'route'       => '/ticket/sale/ticket[/:action[/:id][/:ticket][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -114,7 +112,7 @@ return array(
                 'route'       => '[/:language]/ticket[/:action[/:id[/code/:code][/qr/:qr]]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9]*',
+                    'id'       => '[a-zA-Z0-9_-]*',
                     'code'     => '[0-9]*',
                     'language' => '(en|nl)',
                     'qr'  => '[a-zA-Z0-9_-]*',

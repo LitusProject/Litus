@@ -57,10 +57,10 @@
   padding: 160px 0px;
   background: linear-gradient(
       0deg,
-      rgba(50, 50, 50, 0.6),
-      rgba(50, 50, 50, 0.6)
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3)
     ),
-    url(../_site/img/br-bg.png);
+    url(../_site/img/br-img.jpg);
   background-position: center;
   background-size: cover;
 }
@@ -115,6 +115,39 @@
   width: 100%;
 }
 
+.frame-poster-big {
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.frame-poster-small {
+  height: 140px;
+  //background-image: url(https://picsum.photos/400);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.frame-grid-big {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+.frame-grid-small {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -126,11 +159,17 @@
 .container.calendarHolder {
   position: relative; 
   padding: 20px 15px;
-  margin-top: -75px; 
+  margin-top: -75px;
   margin-bottom: 50px
 }
 
+.container.careerCalendarHolder {
+  position: relative;
+  padding: 20px 15px;
+  margin-bottom: 50px
+}
 
+.frame-item,
 .calendar-item {
   background-color: whitesmoke; 
   height: 100%;
@@ -154,11 +193,17 @@
   align-items: flex-start;
 }
 
+.frame-item-tekst{
+  padding: 10px 20px 30px 20px;
+  flex-grow: 1;
+}
+
 .calendar-item-tekst {
   padding: 30px 20px 40px 20px; 
   flex-grow: 1; 
 }
 
+.frame-emptyfill,
 .calendar-emptyfill {
   -webkit-order: 0;
   -ms-flex-order: 0;
@@ -216,6 +261,8 @@
     -ms-flex-line-pack: flex-start;
   }
 
+  .frame-grid-big,
+  .frame-grid-small,
   .calendar-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -238,6 +285,7 @@
     margin-top: -15px; 
   }
 
+  .frame-item,
   .calendar-item {
     background-color: whitesmoke;
     padding: 10px;

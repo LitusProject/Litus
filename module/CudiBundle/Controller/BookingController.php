@@ -99,7 +99,10 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();
+            return $this->redirect()->toRoute('common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                ));
         }
 
         $max_booking_number = $this->getEntityManager()
@@ -267,18 +270,31 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         foreach ($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getType() == 'amount') {
-                                $amount = count(
-                                    $this->getEntityManager()
+                                $bookings = $this->getEntityManager()
                                         ->getRepository('CudiBundle\Entity\Sale\Booking')
                                         ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
                                             $saleArticle,
                                             $academic,
                                             $this->getCurrentAcademicYear()
-                                        )
-                                );
+                                        );
+                                $amount = 0;
+                                foreach ($bookings as $booking){
+                                    $amount += $booking->getNumber();
+                                }
 
                                 if ($amount + $formValue > $restriction->getValue()) {
                                     $formValue = $restriction->getValue() - $amount;
+                                }
+                            } elseif ($restriction->getType() == 'available') {
+                                $currentPeriod = $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                                    ->findOneActive();
+                                $currentPeriod->setEntityManager($this->getEntityManager());
+
+                                $available = $saleArticle->getStockValue() - $currentPeriod->getNbAssigned($saleArticle);
+
+                                if ($formValue > $available) {
+                                    $formValue = $available;
                                 }
                             }
                         }

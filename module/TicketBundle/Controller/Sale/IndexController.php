@@ -23,7 +23,14 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $form->hydrateObject($event);
+                $tickets = $form->hydrateObject($event);
+                foreach ($tickets as $ticket){
+                    if($ticket->getStatus() === 'Sold' && $ticket->getEvent()->getQrEnabled()){
+                        $ticket->setQrCode();
+                        $ticket->sendQrMail($this, $this->getLanguage());
+                    }
+                }
+
                 $formData = $form->getData();
 
                 $this->getEntityManager()->flush();

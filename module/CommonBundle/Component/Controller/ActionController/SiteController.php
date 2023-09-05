@@ -105,9 +105,13 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
                 'type'   => 'category',
                 'name'   => $category->getName($this->getLanguage()),
                 'items'  => array(),
+                'frames' => array(),
                 'active' => false,
+                'has_category_page' => !is_null($this->getEntityManager()->getRepository("PageBundle\Entity\CategoryPage")
+                    ->findOneByCategory($category)),
             );
 
+            // todo remove all items when frames have replaced all tabs (echa tab is $menu[$i])
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findBy(
@@ -165,6 +169,62 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             }
 
             array_multisort($sort, $menu[$i]['items']);
+
+            // get all frames for mobile menu
+            $categoryPage = $this->getEntityManager()
+                ->getRepository("PageBundle\Entity\CategoryPage")
+                ->findOneByCategory($category);
+            if(is_null($categoryPage)){
+                $menu[$i]['frames'] =  $menu[$i]['items'];
+                $i++;
+                continue;
+            }
+            $big_frames = $this->getEntityManager()
+                ->getRepository("PageBundle\Entity\Frame")
+                ->findAllActiveBigFrames($categoryPage)
+                ->getResult();
+
+            $small_frames = $this->getEntityManager()
+                ->getRepository("PageBundle\Entity\Frame")
+                ->findAllActiveSmallFrames($categoryPage)
+                ->getResult();
+
+            // todo refactor this code after all tabs have been replaced
+            foreach ($big_frames as $frame) {
+                $item = array(
+                    'id' => $frame->getId(),
+                    'title' => $frame->getTitle($this->getLanguage()),
+                );
+                if($frame->doesLinkToPage()){
+                    $item['type'] = 'page';
+                    $item['name'] = $frame->getLinkTo()->getName();
+                }
+                if($frame->doesLinkToLink()){
+                    $item['type'] = 'link';
+                    $item['url'] = $frame->getLinkTo()->getUrl();
+                    $item['name'] = $frame->getTitle();
+                }
+
+                $menu[$i]['frames'][] = $item;
+            }
+
+            foreach ($small_frames as $frame) {
+                $item = array(
+                    'id' => $frame->getId(),
+                    'title' => $frame->getTitle($this->getLanguage()),
+                );
+                if($frame->doesLinkToPage()){
+                    $item['type'] = 'page';
+                    $item['name'] = $frame->getLinkTo()->getName();
+                }
+                if($frame->doesLinkToLink()){
+                    $item['type'] = 'link';
+                    $item['url'] = $frame->getLinkTo()->getUrl();
+                    $item['name'] = $frame->getTitle();
+                }
+
+                $menu[$i]['frames'][] = $item;
+            }
 
             $i++;
         }

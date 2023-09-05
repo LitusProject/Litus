@@ -38,4 +38,7 @@ return array(
     'Yes'                                                      => 'Yes',
     'No'                                                       => 'No',
     '(empty)'                                                  => '(empty)',
+    'I have read and accept the terms and conditions specified'=> 'I have read and accept the terms and condition specified',
+    'here'                                                     => 'here',
+    'and'                                                      => 'and',
 );

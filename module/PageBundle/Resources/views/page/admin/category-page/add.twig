@@ -1,0 +1,23 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/category-page/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#category').change(function () {
+                $('select.parent').closest('.row').hide();
+                $('select#parent_' + $(this).find('option:selected').val()).closest('.row').show();
+            }).trigger('change');
+        });
+    </script>
+{% endblock %}

@@ -7,7 +7,7 @@ use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\Preference;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CudiBundle\Form\Admin\Sale\Article\View;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Imagick;
 use Laminas\View\Model\ViewModel;
@@ -729,10 +729,28 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findOnePersonByCode($this->getParam('code'));
 
         if (!($person instanceof Person)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No person was found!'
-            );
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Code')
+                ->findOneBy(array('code' => $this->getParam('code')));
+            if (!is_null($code)) {
+                $isExpired = $code->getExpirationTime() < new DateTime();
+                if ($isExpired) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This code is expired!'
+                    );
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'No person was found!'
+                    );
+                }
+            } else {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No person was found!'
+                );
+            }
 
             $this->redirect()->toRoute(
                 'common_index'

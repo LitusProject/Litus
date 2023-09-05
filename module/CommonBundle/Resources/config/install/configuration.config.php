@@ -324,7 +324,7 @@ Deze gegevens worden verkregen via volgende wegen:
 
 Deze gegevens worden aan volgende derden doorgegeven:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Vlaamse Technische Kring vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 U kan deze gegevens op iedere moment kosteloos wijzigen of verwijderen.
 
@@ -391,7 +391,7 @@ This information is obtained from the following sources:
 
 These information will be passed to the following third parties:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Vlaamse Technische Kring vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 You can modify or remove this information free of charge at any moment.
 

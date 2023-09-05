@@ -1,0 +1,337 @@
+{% extends 'admin/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    {% include 'logistics/admin/order/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action" style="width:inherit;">
+        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+            <aside style="margin-top: 32px">
+                {% if hasAccess('logistics_admin_order', 'review') %}
+                    <div class="sidebox">
+                        <div class="title">Edit Order Info</div>
+                        <div class="content">
+                            <p>
+                                <i>Please hit the link below to review this order!</i>
+                            </p>
+                            <p>
+                                <a href="#" class="review-order" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                    &rarr; Review Order Info
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            </aside>
+        {% endif %}
+
+        {#     Order info       #}
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12">
+                <h1>Order Info: <b>{{ order.getName() }}</b></h1>
+
+                <table class="table" style="margin-top: 5px">
+                    {#     Table header       #}
+                    <thead>
+                    <tr>
+                        <th style="width: 120px">Info</th>
+                        {% if oldOrder %}<th>Old</th>{% endif %}
+                        <th>New</th>
+                    </tr>
+
+                    {#     Table content       #}
+                    {#     Personal info       #}
+                    <tr>
+                        <td><b>Contact</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getContact() }}</td>{% endif %}
+                        <td>{{ order.getContact() }}</td>
+                    </tr>
+                    {% if order.getUnit() %}
+                        <tr>
+                            <td>Unit</td>
+                            {% if oldOrder %}<td>{{ oldOrder.getUnit().getName() }}</td>{% endif %}
+                            <td>{{ order.getUnit().getName() }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td><b>Email</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getEmail() }}</td>{% endif %}
+                        <td>{{ order.getEmail() }}</td>
+                    </tr>
+                    {#     Order info       #}
+                    <tr>
+                        <td><b>Location</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getLocation().getName() }}</td>{% endif %}
+                        <td>{{ order.getLocation().getName() }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Start Date</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getStartDate().format('d/m/Y H:i') }}</td>{% endif %}
+                        <td>{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>End Date</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getEndDate().format('d/m/Y H:i') }}</td>{% endif %}
+                        <td>{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Status</b></td>
+                        {% if oldOrder %}<td>{{ oldOrder.getStatus()}}</td>{% endif %}
+                        <td>{{ order.getStatus()}}</td>
+                    </tr>
+                    {% if oldOrder.getDescription() != '' and order.getDescription() != ''%}
+                        <tr>
+                            <td><b>Description</b></td>
+                            {% if oldOrder %}<td>{{ oldOrder.getDescription() }}</td>{% endif %}
+                            <td>{{ order.getDescription() }}</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+
+        {#     Articles       #}
+
+        {#     Article body       #}
+        <div class="row" style="margin-top: 30px">
+            <div class="col-md-12">
+                <h1>Articles</h1>
+
+                <table class="table full_width" style="margin-top: 5px;">
+                    {#     Table header       #}
+                    <thead>
+                    <tr>
+                        <th style="width: 15%">Name</th>
+                        <th style="width: 15%">Unit</th>
+                        <th style="width: 15%">Category</th>
+                        <th style="width: 20%">Comments</th>
+                        <th style="width: 15%">Status</th>
+                        <th style="width: 10%">Old amount</th>
+                        <th style="width: 10%">New amount</th>
+                        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+                            <th style="width: 50px">Actions</th>
+                        {% endif %}
+                    </tr>
+
+                    {#     Table content       #}
+                    {% for mapping in articles %}
+                                <tr class="item item-{{ mapping.getId() }}">
+                                    <td>{{ mapping.getArticle().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getCategory() }}</td>
+                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
+                                            {{ mapping.getArticle().getAdditionalInfo() }}{% endif %}</td>
+                                    <td>{{ mapping.getStatus() }}</td>
+                                    <td>{{ mapping.getOldAmount() }}</td>
+                                    <td>{{ mapping.getAmount() }}</td>
+                                    {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+                                        <td class="actions">
+                                            <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}" data-content="{{ mapping.getAmount() }}">
+                                                <b>Review</b>
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {#     Order history       #}
+        <div class="row" style="margin-top: 30px">
+            <div class="col-md-12">
+                <h1>History</h1>
+
+                <table class="table full_width" style="margin-top: 5px">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Request') }}</th>
+                        <th class="hidden-xs">Contact</th>
+                        <th class="hidden-xs">Start Date</th>
+                        <th class="hidden-xs">End Date</th>
+                        <th class="hidden-xs">Updated</th>
+                        <th class="hidden-xs">By</th>
+                        <th class="hidden-xs">Status</th>
+                        <th style="width: 50px">Actions</th>
+                    </tr>
+                    </thead>
+                    {% for lastOrder in lastOrders %}
+                        <tr class="item item-{{ lastOrder.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}" %}>
+                            <td>{{ lastOrder.getName() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getContact() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdateDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdator() }}</td>
+                            <td class="hidden-xs item-{{ lastOrder.getId() }}-status">{{ lastOrder.getStatus() }}</td>
+                            <td class="actions" style="text-align: center">
+                                {% if lastOrder.getId() != order.getId() and not lastOrders[0].isRemoved() %}
+                                    <a href="{{ url('logistics_admin_order', {"action" : 'view', "id" : lastOrder.getId()}) }}">
+                                        <b>View</b>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+        {#     Review / Approve / Reject buttons       #}
+        {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+            <div class="row" style="margin-top: 30px; text-align: center">
+                <div style="width: 230px; margin: auto">
+                    <a class="edit review" style="margin: 6px" href="#" data-id="{{ order.getId() }}">
+                        <b style="padding-left: 5px">Review</b>
+                    </a>
+                    <a class="accept_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action": "approve", "id": order.getId()}) }}">
+                        <b style="padding-left: 5px">Accept</b>
+                    </a>
+                    <a class="reject_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action" : 'reject', "id" : order.getId()}) }}">
+                        <b style="padding-left: 5px">Reject</b>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="review-order" tabindex="-1">
+        <div class="modal-dialog" style="max-height: 600px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Order Info
+                </div>
+                <div class="modal-body" style="padding-left: 20%">
+                    <h1>Order: <b class="orderName"></b></h1>
+                    <div>{{ forms.renderForm(orderForm) }}</div>
+{#                    <div class="footer" style="margin-top:15px">#}
+{#                        <button class="edit">Review</button>#}
+{#                        <button class="cancel" data-dismiss="modal">Close</button>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="review-article" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Article
+                </div>
+                <div class="modal-body">
+                    <h1>Article: <b class="articleName"></b></h1>
+                    <div>
+                        {{ forms.renderForm(articleForm) }}
+                    </div>
+                    {#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
+{#                    <div class="footer" style="margin-top:15px">#}
+{#                        <button class="edit">Review</button>#}
+{#                        <button class="cancel" data-dismiss="modal">Close</button>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reviewAll" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Order
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to <b>review</b> the order?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.review-order').click(openReviewOrderModal);
+            $('.item .review-article').click(openReviewArticleModal);
+            $('.review').click(reviewAllModal);
+        });
+
+        function openReviewOrderModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var reviewOrder = $('#review-order');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            reviewOrder.find('.orderName').html(name);
+            reviewOrder.find('.edit').unbind('click').click(function () {
+                reviewOrder.modal('hide');
+            });
+            reviewOrder.modal();
+        }
+
+        function openReviewArticleModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var reviewArticle = $('#review-article');
+            var id = $this.data('id');
+            var name = $this.data('name');
+            var oldAmount = $this.data('content');
+            var input = reviewArticle.find('#article-' + id)
+            reviewArticle.find('.articleName').html(name);
+
+            // Hide all labels and inputs
+            reviewArticle.find('.form-group').addClass('hide');
+            // Unhide input and label for article
+            input.closest('.form-group').removeClass('hide');
+
+            reviewArticle.find('.edit').unbind('click').click(function () {
+                reviewArticle.modal('hide');
+            });
+            reviewArticle.modal();
+        }
+
+        function reviewAllModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            console.log('review');
+            var reviewAll = $('#reviewAll');
+
+            var id = $this.data('id');
+
+            reviewAll.find('.edit').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "review"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        // $('.article_removed_success').removeClass('hide');
+                        // $('.item-' + id).remove();
+                        reviewAll.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            reviewAll.modal();
+{#        {{ url('logistics_admin_order', {"action" : 'review', "id" : order.getId()}) }}#}
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.order_removed_error').removeClass('hide');
+            $('#removeOrder').modal('hide');
+        }
+    </script>
+{% endblock %}

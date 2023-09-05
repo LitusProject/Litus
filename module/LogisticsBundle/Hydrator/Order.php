@@ -59,12 +59,13 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             return array();
         }
-        $unit = $object->getUnit();
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['location'] = $object->getLocation()->getId();
-        $data['unit'] = $unit->getId();
+        if ($object->getUnit()) {
+            $data['unit'] = $object->getUnit()->getId();
+        }
         $data['name'] = $object->getName();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');

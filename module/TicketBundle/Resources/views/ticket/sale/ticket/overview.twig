@@ -57,7 +57,8 @@
                 <select id="searchField">
                     <option value="person">Person</option>
                     <option value="option">Option</option>
-                    <option value="organization">Organization</option>
+                    <option value="orderid">Order Id</option>
+                    <option value="payid">Pay Id</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -66,16 +67,19 @@
             <table class="table table-striped tickets">
                 <thead>
                 <tr>
-                    <th width="100px">Person</th>
-                    <th width="100px">R-Number</th>
-                    <th width="100px">Organisation</th>
-                    <th width="180px">Email</th>
-                    <th width="90px">Status</th>
-                    <th width="150px">Option</th>
-                    <th width="40px">Price</th>
-                    <th width="110px">Book Date</th>
-                    <th width="110px">Sold Date</th>
-                    <th>QR Code</th>
+                    <th>Person</th>
+                    <th style="width:60px">Org.</th>
+                    <th style="width:100px">R-Number</th>
+                    <th style="width:180px">Email</th>
+                    <th style="width:60px">Status</th>
+                    <th style="width:140px">Option</th>
+                    <th style="width:90px">Pay ID</th>
+                    <th style="width:90px">Order ID</th>
+                    <th style="width:40px">Price</th>
+                    <th style="width:110px">Book Date</th>
+                    <th style="width:110px">Sold Date</th>
+                    <th style="width:60px;">QR Code</th>
+                    <th style="width:190px">Action</th>
                 </tr>
                 </thead>
             </table>
@@ -89,17 +93,19 @@
             <table class="table table-striped tickets">
                 <thead>
                 <tr>
-                    <th>{{ translate('Person') }}</th>
-                    <th>{{ translate('Organization') }}</th>
-                    <th width="60px">{{ translate('R-number') }}</th>
-                    <th width="60px">{{ translate('Status') }}</th>
-                    <th width="140px">{{ translate('Option') }}</th>
-                    <th width="90px">{{ translate('Number') }}</th>
-                    <th width="90px">{{ translate('Invoice ID') }}</th>
-                    <th width="130px">{{ translate('Book Date') }}</th>
-                    <th width="130px">{{ translate('Sold Date') }}</th>
-                    <th>QR Code</th>
-                    <th width="190px">{{ translate('Action') }}</th>
+                    <th>Person</th>
+                    <th style="width:60px">Org.</th>
+                    <th style="width:100px">R-Number</th>
+                    <th style="width:180px">Email</th>
+                    <th style="width:60px">Status</th>
+                    <th style="width:140px">Option</th>
+                    <th style="width:90px">Pay ID</th>
+                    <th style="width:90px">Order ID</th>
+                    <th style="width:40px">Price</th>
+                    <th style="width:110px">Book Date</th>
+                    <th style="width:110px">Sold Date</th>
+                    <th style="width:60px;">QR Code</th>
+                    <th style="width:190px">Action</th>
                 </tr>
                 </thead>
 
@@ -117,17 +123,23 @@
                             {% else %}
                                 {{ ticket.getPerson().getUniversityIdentification() }}
                             {% endif %}</td>
+                        <td>{% if ticket.getGuestInfo() %}
+                                {{ ticket.getGuestInfo().getEmail() }}
+                            {% else %}
+                                {{ ticket.getPerson().getEmail() }}
+                            {% endif %}</td>
                         <td class="status">{{ ticket.getStatus() }}</td>
                         {% if ticket.getOption() != null %}
                             <td class="status">{{ ticket.getOption().getName() }}</td>
                         {% else %}
                             <td class="status">{{ ticket.isMember()==true?"member":"non-mmber"  }}</td>
                         {% endif %}
-                        <td>{{ "%010d"|format(ticket.getNumber()) }}</td>
+                        <td>{{ ticket.getPayId() }}</td>
                         <td>{{ ticket.getOrderId() }}</td>
+                        <td>€{{ ticket.getPrice() }}</td>
                         <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
-                        <td class="qrCode">{{ ticket.getQrCode() }}</td>
+                        <td class="qrCode">{% if ticket.getQrCode() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('ticket_sale_ticket', 'unassign') and event.areTicketsGenerated() and ticket.getFullName() %}
                                 <a href="#" data-id="{{ ticket.getId() }}" data-person="{{ ticket.getFullName() }}" class="btn btn-danger btn-sm unassignTicket">{{ translate('Unassign') }}</a>
@@ -245,11 +257,13 @@
                     $(data).each(function () {
                         $('#ticket_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.person + '</td>')
-                            .append('<td>' + this.rNumber + '</td>')
                             .append('<td>' + this.organization + '</td>')
+                            .append('<td>' + this.rNumber + '</td>')
                             .append('<td>' + this.email + '</td>')
                             .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.option + '</td>')
+                            .append('<td>' + this.payId + '</td>')
+                            .append('<td>' + this.orderId + '</td>')
                             .append('<td>' + '€' + this.price + '</td>')
                             .append('<td>' + this.bookDate + '</td>')
                             .append('<td>' + this.soldDate + '</td>')

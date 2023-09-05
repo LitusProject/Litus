@@ -58,15 +58,17 @@ class Amount extends \CudiBundle\Entity\Sale\Article\Restriction
     {
         $academicYear = AcademicYear::getUniversityYear($entityManager);
 
-        $amount = count(
-            $entityManager
-                ->getRepository('CudiBundle\Entity\Sale\Booking')
-                ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                    $this->getArticle(),
-                    $person,
-                    $academicYear
-                )
-        );
+        $bookings = $entityManager
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                $this->getArticle(),
+                $person,
+                $academicYear
+            );
+        $amount = 0;
+        foreach ($bookings as $booking){
+            $amount += $booking->getNumber();
+        }
 
         return $amount < $this->value;
     }

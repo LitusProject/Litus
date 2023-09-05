@@ -75,6 +75,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         $event,
                         $numbers,
                         false,
+                        null,
                         $this->getEntityManager(),
                         null,
                         $guestInfo,
@@ -130,6 +131,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         $event,
                         $numbers,
                         false,
+                        null,
                         $this->getEntityManager(),
                         $person,
                         null,
@@ -349,13 +351,19 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         $newMessage = new \Laminas\Mime\Message();
         $newMessage->addPart($part);
         $mail = new Message();
+        $secretary_mail = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.mail');
         $mail->setEncoding('UTF-8')
             ->setBody($newMessage)
-            ->setFrom('secretaris@vtk.be', 'secretaris@vtk.be')
+            ->setFrom($secretary_mail, 'Secretaris')
             ->addTo($ticket->getEmail(), $ticket->getFullName())
             ->setSubject($subject)
-            ->addBcc('it@vtk.be')
-            ->addBcc('secretaris@vtk.be');
+            ->addBcc($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail'),
+                'System Administrator')
+            ->addBcc($secretary_mail);
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }

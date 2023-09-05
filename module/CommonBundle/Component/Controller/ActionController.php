@@ -302,8 +302,10 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
                         && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
-                            $authenticationHandler['auth_route']
-                        );
+                            $authenticationHandler['auth_route'],
+                            array(
+                                'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                            ));
                     }
                 } else {
                     throw new Exception\HasNoAccessException(

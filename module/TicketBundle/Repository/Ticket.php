@@ -303,6 +303,70 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $tickets;
     }
 
+    public function findAllByEventAndOrderId(EventEntity $event, $orderId)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    ),
+                    $query->expr()->like($query->expr()->lower('t.orderId'), ':orderid')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
+            ->setParameter('orderid', '%' . strtolower($orderId) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $tickets = array();
+        foreach ($resultSet as $ticket) {
+            $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
+        }
+
+        ksort($tickets);
+
+        return $tickets;
+    }
+
+    public function findAllByEventAndPayId(EventEntity $event, $payid)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('t.event', ':event'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    ),
+                    $query->expr()->like($query->expr()->lower('t.payId'), ':payid')
+                )
+            )
+            ->setParameter('event', $event)
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
+            ->setParameter('payid', '%' . strtolower($payid) . '%')
+            ->getQuery()
+            ->getResult();
+
+        $tickets = array();
+        foreach ($resultSet as $ticket) {
+            $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
+        }
+
+        ksort($tickets);
+
+        return $tickets;
+    }
+
     /**
      * @param  integer $id
      * @return \TicketBundle\Entity\Ticket|null

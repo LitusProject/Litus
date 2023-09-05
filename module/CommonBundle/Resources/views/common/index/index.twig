@@ -154,7 +154,7 @@
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
                                 {% if event.hasTicket(entityManager) == true %}
                                     <a class="myVtkButton"
-                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -175,7 +175,7 @@
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
                                 {% if event.hasTicket(entityManager) == true %}
                                     <a class="myVtkButton"
-                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getId()}) }}">{{ translate('Buy Tickets') }}</a>
+                                       href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -184,7 +184,6 @@
             </div>
             <a class="button blue unfilled" href="{{ url('calendar') }}">{{ translate('View the whole Calendar Here') }}
                 →</a>
-        </div>
         </div>
     {% endif %}
 
@@ -268,7 +267,7 @@
                     <h3 style="margin-bottom: 22px" href="#">
                         {{ item.name }}
                     </h3>
-                    {% for categoryItem in item.items | slice(0, 5) %}
+                    {% for categoryItem in item.frames %}
                         {% if 'page' == categoryItem.type %}
                             {% if hasAccess('page', 'view') %}
                                 <div class="menulink"><a class="category-title"

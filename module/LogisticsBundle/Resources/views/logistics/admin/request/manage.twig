@@ -10,31 +10,31 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th>Creator</th>
+                <th>Contact</th>
                 <th>Unit</th>
-                <th>Creation Time</th>
-                <th>Type</th>
-{#                <th>Flag</th>#}
-                <th width="70px">Action</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th style="width: 70px">Action</th>
             </tr>
 
             {% for request in requests %}
                 <tr class="item item-{{ request.getId() }}">
-                    <td>{{ request.getRecentOrder().getName() }}</td>
-                    <td>{{ request.getRecentOrder().getCreator().getFullName() }}</td>
-                    <td>{{ request.getRecentOrder().getUnit().getName() }}</td>
-                    <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
-                    <td>{{ request.getRequestType() }}</td>
-{#                    <td>{{ request.getFlag() }}</td>#}
+                    <td>{{ request.getName() }}</td>
+                    <td>{{ request.getContact() }}</td>
+                    <td>{{ request.getUnit().getName() }}</td>
+                    <td>{{ request.getStartDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ request.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td >{{ request.getStatus() }}</td> {# class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}" #}
                     <td class="actions">
-                        {% if hasAccess('logistics_admin_request', 'view') %}
-                            <a href="{{ url('logistics_admin_request', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
+                        {% if hasAccess('logistics_admin_order', 'view') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
                         {% endif %}
-                        {% if hasAccess('logistics_admin_request', 'approve') %}
-                            <a href="{{ url('logistics_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
+                        {% if hasAccess('logistics_admin_order', 'approve') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
                         {% endif %}
-                        {% if hasAccess('logistics_admin_request', 'reject') %}
-                            <a href="{{ url('logistics_admin_request', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
+                        {% if hasAccess('logistics_admin_order', 'reject') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
                         {% endif %}
                     </td>
                 </tr>

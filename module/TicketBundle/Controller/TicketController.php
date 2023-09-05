@@ -22,13 +22,9 @@ namespace TicketBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
 use CommonBundle\Component\Form\Admin\Element\DateTime;
-use CudiBundle\Controller\PrinterController;
-use CudiBundle\Controller\PrinterController as Printer;
 use FormBundle\Entity\Node\Entry as FormEntry;
 use FormBundle\Entity\Node\Form;
 use Laminas\Mail\Message;
-use Laminas\Mime\Mime;
-use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
@@ -175,8 +171,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 $this->redirect()->toRoute(
                                     'ticket',
                                     array(
-                                        'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'action'  => 'event',
+                                        'id' => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -205,6 +201,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             null,
                             $guestInfo
@@ -231,7 +228,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -269,7 +266,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -302,6 +299,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             null,
                             $guestInfo
@@ -333,7 +331,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -413,7 +411,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -424,6 +422,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             $person,
                             null
@@ -446,7 +445,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -477,7 +476,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                     'ticket',
                                     array(
                                         'action' => 'event',
-                                        'id'     => $event->getId(),
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -488,6 +487,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $event,
                             $numbers,
                             false,
+                            null,
                             $this->getEntityManager(),
                             $person,
                             null
@@ -510,7 +510,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             'ticket',
                             array(
                                 'action' => 'event',
-                                'id'     => $event->getId(),
+                                'id'     => $event->getRandId(),
                             )
                         );
                     }
@@ -600,6 +600,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $data = array();
         $paymentParams = array();
         $shasign = '';
+        $payid = '';
 
         $params = explode('&', $allParams);
         foreach ($params as $param) {
@@ -608,6 +609,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
             } else {
                 $shasign = $keyAndVal[1];
+            }
+
+            if($keyAndVal[0] === 'PAYID'){
+                $payid = $keyAndVal[1];
             }
         }
 
@@ -628,17 +633,18 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id'     => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getRandId(),
                 )
             );
         } else {
             $ticket->setStatus('sold');
+            $ticket->setPayId($payid);
             if ($ticket->getEvent()->getQrEnabled()) {
                 $ticket->setQrCode();
             }
             $this->getEntityManager()->flush();
             if ($ticket->getEvent()->getQrEnabled()) {
-                $this->sendQrMail($ticket);
+                $ticket->sendQrMail($this,$this->getLanguage());
             }
 
             $this->flashMessenger()->success(
@@ -650,7 +656,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 'ticket',
                 array(
                     'action' => 'event',
-                    'id'     => $ticket->getEvent()->getId(),
+                    'id'     => $ticket->getEvent()->getRandId(),
                 )
             );
         }
@@ -669,6 +675,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $data = array();
         $paymentParams = array();
         $shasign = '';
+        $payid = '';
 
         $params = explode('&', $allParams);
         foreach ($params as $param) {
@@ -677,6 +684,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $paymentParams[strtoupper($keyAndVal[0])] = $keyAndVal[1];
             } else {
                 $shasign = $keyAndVal[1];
+            }
+
+            if($keyAndVal[0] === 'PAYID'){
+                $payid = $keyAndVal[1];
             }
         }
 
@@ -712,9 +723,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         if (strtoupper($generatedHash) === $shasign) {
             if (!($ticket->getStatus() == 'Sold')) {
                 $ticket->setStatus('sold');
+                $ticket->setPayId($payid);
                 if ($ticket->getEvent()->getQrEnabled()) {
                     $ticket->setQrCode();
-                    $this->sendQrMail($ticket);
+                    $ticket->sendQrMail($this, $this->getLanguage());
                 }
                 if ($ticket->getEvent()->getId() === $printerEventId) {
 //                    $this->runPowershell($ticket);
@@ -793,7 +805,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             if ($this->hasAccess()->toResourceAction('ticket', 'scanQr')) {
                 $visitor = $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Event\Visitor')
-                    ->findByEventAndQr($event, $qr);
+                    ->findByEventAndQrAndExitNull($event, $qr);
 
                 if ($visitor == null) {
                     // If no visitor, first entry
@@ -824,7 +836,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 ->fromRoute(
                     'ticket',
                     array('action' => 'qr',
-                        'id' => $event->getId(),
+                        'id' => $event->getRandId(),
                         'qr' => $qr
                     ),
                     array('force_canonical' => true)
@@ -867,10 +879,20 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
      */
     private function getEventEntity()
     {
-        $event = $this->getEntityById('TicketBundle\Entity\Event');
-
+        $event = $this->getEntityById('TicketBundle\Entity\Event', 'id', 'rand_id');
         if (!($event instanceof Event)) {
-            return;
+            // Events without a rand_id return id when calling event->getRandId(). We only want to find events by there id
+            // if they don't have a rand_id. This is because older events don't have a rand_id.
+            $event = $this->getEntityManager()->getRepository('TicketBundle\Entity\Event')
+                ->findOneBy(
+                    array(
+                        'id' => $this->getParam('id'),
+                        'rand_id' => null,
+                    )
+                );
+            if (!($event instanceof Event)) {
+                return;
+            }
         }
 
         return $event;
@@ -975,8 +997,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $eventName = $ticket->getEvent()->getActivity()->getTitle();
 
-        $mailBody = $mailData['content'];
-        $mailSubject = $mailData['subject'];
+        $mailBody = $ticket->getEvent()->getConfirmationMailBody() ? :$mailData['content'];
+        $mailSubject = $ticket->getEvent()->getConfirmationMailSubject() ? :$mailData['subject'];
 
         $mailFrom = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -1015,7 +1037,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setFrom($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
-            ->addBcc('it@vtk.be')
+            ->addBcc($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail'),
+                'System Administrator')
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
@@ -1056,80 +1081,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $cookie = $this->getRequest()->getCookie();
 
         return $cookie !== false && $cookie->offsetExists(\FormBundle\Entity\Node\GuestInfo::$cookieNamespace);
-    }
-
-    private function sendQrMail(Ticket $ticket)
-    {
-        $event = $ticket->getEvent();
-        $language = $this->getLanguage();
-
-        $entityManager = $this->getEntityManager();
-        if ($language === null) {
-            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
-        }
-
-        $mailData = unserialize(
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('ticket.subscription_mail_data')
-        );
-
-        $message = $mailData[$language->getAbbrev()]['content'];
-        $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
-
-        $mailAddress = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('ticket.subscription_mail');
-
-        $mailName = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('ticket.subscription_mail_name');
-
-        $url = $this->url()
-            ->fromRoute(
-                'ticket',
-                array('action' => 'qr',
-                    'id'       => $event->getId(),
-                    'qr'     => $ticket->getQrCode()
-                ),
-                array('force_canonical' => true)
-            );
-
-        $url = str_replace('leia.', '', $url);
-
-        $qrSource = str_replace(
-            '{{encodedUrl}}',
-            urlencode($url),
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.google_qr_api')
-        );
-
-        $message = str_replace('{{event}}', $event->getActivity()->getTitle($language), $message);
-        $message = str_replace('{{eventDate}}', $event->getActivity()->getStartDate()->format('d/m/Y'), $message);
-        $message = str_replace('{{qrSource}}', $qrSource, $message);
-        $message = str_replace('{{qrLink}}', $url, $message);
-        $message = str_replace('{{actiMail}}', $mailAddress, $message);
-        $message = str_replace('{{ticketOption}}', $ticket->getOption() ? $ticket->getOption()->getName() : 'base', $message);
-
-        $part = new Part($message);
-
-        $part->type = Mime::TYPE_HTML;
-        $part->charset = 'utf-8';
-        $newMessage = new \Laminas\Mime\Message();
-        $newMessage->addPart($part);
-        $mail = new Message();
-        $mail->setEncoding('UTF-8')
-            ->setBody($newMessage)
-            ->setFrom($mailAddress, $mailName)
-            ->addTo($ticket->getEmail(), $ticket->getFullName())
-            ->setSubject($subject)
-            ->addBcc('it@vtk.be')
-            ->addBcc($mailAddress);
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport()->send($mail);
-        }
     }
 
     private function runPowershell($ticket)

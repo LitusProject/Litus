@@ -1,0 +1,163 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/category-page/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message category_page_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The CategoryPage was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message category_page_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the Categorypage.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="manage">
+                <thead>
+                <tr>
+                    <th>Category</th>
+                    <th width="70px">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for category_page in paginator %}
+                    <tr class="item item-{{ category_page.getId() }}">
+                        <td>{{ category_page.getCategory().getName(language) }}</td>
+                        <td class="actions">
+                            {% if category_page.canBeEditedBy(authenticatedPerson) %}
+                                {% if hasAccess('page_admin_categorypage', 'edit') %}
+                                    <a href="{{ url('page_admin_categorypage', {"action": "edit", "id": category_page.getId()}) }}"
+                                       class="edit">Edit</a>
+                                {% endif %}
+                                {% if hasAccess('page_admin_categorypage', 'delete') %}
+                                    <a href="#" data-id="{{ category_page.getId() }}"
+                                       data-name="{{ category_page.getCategory().getName(language) }}" class="delete">Delete</a>
+                                {% endif %}
+                                {% if hasAccess('page_admin_categorypage_frame', 'manage') %}
+                                    <a href="{{ url('page_admin_categorypage_frame', {"action": "manage", "category_page_id": category_page.getId()}) }}"  class="frame_manage">Manage Frames</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <aside>
+        {% if hasAccess('page_admin_page', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_page', {"action": "manage"}) }}">&rarr; Pages</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('page_admin_category', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categories</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create categories!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_category', {"action": "manage"}) }}">&rarr; Categories</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('page_admin_link', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Links</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create links!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_link', {"action": "manage"}) }}">&rarr; Links</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div class="modal fade" id="removeCategoryPage" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete CategoryPage
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following CategoryPage: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeCategoryPage = $('#removeCategoryPage');
+            removeCategoryPage.find('.name').html($(this).data('name'));
+            removeCategoryPage.find('.cancel').one('click', function () {
+                removeCategoryPage.modal('hide');
+            });
+            var id = $this.data('id');
+            removeCategoryPage.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('page_admin_categorypage', {"action": "delete"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.category_page_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeCategoryPage.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeCategoryPage.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.category_page_removed_error').removeClass('hide');
+            $('#removeCategoryPage').modal('hide');
+        }
+    </script>
+{% endblock %}

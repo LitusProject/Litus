@@ -2,9 +2,12 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateInterval;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Component\Document\Generator\Event\SalesgraphCsv as SalesgraphCsvGenerator;
 use TicketBundle\Entity\Event;
 
 /**
@@ -230,6 +233,100 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 'salesGraphData' => $salesGraphData,
             )
         );
+    }
+
+    /**
+     * Export the data of the salesgraph
+     */
+    public function exportSalesgraphAction(){
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $sales = $this->getEntityManager()
+            ->getRepository("TicketBundle\Entity\Ticket")
+            ->findAllByStatusAndEvent("sold", $this->getEventEntity());
+
+        // $data exist of a key: UNIX timestamp and the amount of tickets sold at that moment
+        $data = array();
+        foreach ($sales as $sale) {
+            if (array_key_exists($sale->getSoldDate()->format('Uv'), $data)) {
+                $data[$sale->getSoldDate()->format('Uv')]++;
+            } else {
+                $data[$sale->getSoldDate()->format('Uv')] = 1;
+            }
+        }
+
+        $dates = array();
+        $sales_each_day = array();
+        foreach ($data as $date => $nb_of_sales) {
+            $dates[] = $date;
+            $sales_each_day[] = $nb_of_sales;
+        }
+
+        $sales_accumulated = array();
+        for ($i = 0; $i < sizeof($sales_each_day); $i++) {
+            $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
+        }
+
+        $salesGraphData['labels'] = $dates;
+        $salesGraphData['dataset'] = $sales_accumulated;
+
+        $file = new CsvFile();
+        $document = new SalesgraphCsvGenerator($this->getEntityManager(), $salesGraphData);
+        $document->generateDocument($file);
+
+        $now = new DateTime();
+        $filename = 'salesgraph_' . str_replace(' ', '_', $event->getActivity()->getTitle()) . '_'. $now->format('Y_m_d') . '.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    /**
+     * Clear all visitors of this event. This will set the exit_time of every visitor to now.
+     */
+    public function clearVisitorsAction(){
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $visitors = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event\Visitor')
+            ->findAllByEventAndExitNull($event);
+
+        foreach ($visitors as $visitor){
+            $visitor->setExitTimestamp(new DateTime());
+        }
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Success',
+            'All the visitors of this event have been removed!'
+        );
+
+        $this->redirect()->toRoute(
+            'ticket_admin_event',
+            array(
+                'action' => 'edit',
+                'id'     => $event->getId(),
+            )
+        );
+        return new ViewModel();
     }
 
     /**

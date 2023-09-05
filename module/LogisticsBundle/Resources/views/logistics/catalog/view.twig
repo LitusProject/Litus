@@ -1,93 +1,341 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    {% include 'admin/partials/flashMessenger.twig' %}
+    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
+
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Request') }}: {{ order.getName() }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if order.getExternalComment() %}
+                <a rel="popover" style="float: right; background-color: #ed1a1a; padding: 10px"
+                   data-original-title="{{ translate('Logistics remark') }}"
+                   data-content="<span class='badge badge-info'></span> {{ order.getExternalComment() }}<br/>"
+                   data-placement="left" class="label label-warning">{{ translate('Logistics remark') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger request_removed fade">
+        <div class="title">Removed</div>
+        <div class="content">
+            <p>This request is removed, please go back to overview.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger request_canceled_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to cancel the request. Please try again later.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger request_removed_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to remove the request. Please try again later.</p>
+        </div>
+    </div>
 
     <div id="controller_action">
         <div class="row">
-            <div class="col-md-4">
-                <h1>Order</h1>
+            <div class="col-md-4" style="padding-right: 3%;">
+                <h1 class="pull-left">{{ translate('Info') }}</h1>
+                {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
+                    <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                       href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
+                        Update
+                    </a>
+                {% endif %}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <p>Name: <b>{{ order.getName() }}</b></p>
-                <p>Location: <b>{{ order.getLocation().getName() }}</b></p>
-                <p>Start Date: <b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
-                <p>End Date: <b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
-                <p>Approved: <b>{{ order.isApproved() ? 'Yes':'No' }}</b></p>
-                <p>Removed: <b>{{ order.isRemoved() ? 'Yes':'No' }}</b></p>
-            </div>
-            <div class="col-md-4">
-                <p>Creator: <b>{{ order.getCreator().getFullName() }}</b></p>
-                <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
-                <p>Contact: <b>{{ order.getContact() }}</b></p>
-                <p>Email:<b>{{ order.getEmail() }}</b></p>
-            </div>
-            <div class="col-md-4 pull-right">
-                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">
-                    <div class="title"><b>Edit Articles</b></div>
-                    <div class="content">
-                        <p>
-                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>
-                        </p>
-                        <p>
-                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
-                                &rarr; Edit Articles
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">
-                    <div class="title"><b>Edit Order</b></div>
-                    <div class="content">
-                        <p>
-                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>
-                        </p>
-                        <p>
-                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
-                                &rarr; Edit Order
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h4><b>Description:</b></h4>
-                <p>{{ order.getDescription() }}</p>
-                <br style="clear:both">
-                {% if order.getExternalComment() %}
-                    <div style="border: solid red 2px;">
-                        <b style="color: red;">You received a comment from the logistics team!</b>
-                        <h4><b>Comment:</b></h4>
-                        <p>{{ order.getExternalComment() }}</p>
-                    </div>
+            <div class="col-md-8" style="padding-left: 50px">
+                <h1 class="pull-left">{{ translate('Articles') }}</h1>
+                {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
+                    <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                       href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
+                        Update
+                    </a>
                 {% endif %}
             </div>
         </div>
-        <div class="row" style="padding-top: 30px">
-            <div class="table-condensed">
-                <table class="table mappings">
+
+        {#     Order info body       #}
+        <div class="row">
+            <div class="col-md-4" style="padding-right: 3%; padding-top: 10px;">
+                {#     Personal info  #}
+                <div class="info-content">
+                    <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
+                    {% if order.getUnit() %}
+                        <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
+                    {% endif %}
+                    <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
+                </div>
+
+                {#       Order info     #}
+                <div class="info-content">
+                    <p>Location:        &emsp;&ensp;&nbsp;<b>{{ order.getLocation().getName() }}</b></p>
+                    <p>Start Date:      &emsp;<b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+                    <p>End Date:        &emsp;&nbsp;<b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+                    <p>Status:          &emsp;&emsp;&ensp;&nbsp;<b id="infoStatus" {% if order.isCanceled() or order.isRemoved() %} style="color: #882a25"{% endif %}>{{ translate(order.getStatus())}}</b></p>
+                    {% if order.getDescription() != '' %}
+                        <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {#     Article body       #}
+            <div class="col-md-8" style="padding-left: 50px">
+                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px; overflow: auto; max-height: 330px">
+                    <div class="table-condensed">
+                        <table class="table mappings">
+                            {#     Table header       #}
+                            <tr>
+                                <th style="width: 25%">{{ Translate('Name') }}</th>
+                                <th style="width: 25%">{{ Translate('Unit') }}</th>
+                                <th style="width: 20%">{{ Translate('Status') }}</th>
+                                <th style="width: 20%">{{ Translate('Description') }}</th>
+                                <th style="width: 10%">{{ Translate('Amount') }}</th>
+                            </tr>
+
+                            {#     Table content       #}
+                            {% for mapping in articles %}
+                                <tr class="item item-{{ mapping.getId() }}"
+                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
+                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
+                                    {% else %}style="background-color: #fae3e3"{% endif %}>
+                                    <td>{{ mapping.getArticle().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
+                                    <td>{{ mapping.getStatus() }}</td>
+                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 1 %}
+                                            <a rel="popover" data-original-title="{{ translate('Comments') }}"
+                                               data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
+                                               data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                        {% endif %}</td>
+                                    <td>{{ mapping.getAmount() }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {#     Order history       #}
+        <div class="row" style="margin-top: 30px">
+            <div class="col-md-12">
+                <h1>{{ translate('History') }}</h1>
+                <table class="table table-hover" style="margin-top: 15px">
+                    <thead>
                     <tr>
-                        <th>{{ Translate('Name') }}</th>
-                        <th>{{ Translate('Amount') }}</th>
-                        <th>{{ Translate('Status') }}</th>
-                        <th style="min-width: 400px">{{ Translate('Comments') }}</th>
+                        <th>{{ translate('Request') }}</th>
+                        <th class="hidden-xs">{{ translate('Contact') }}</th>
+                        <th class="hidden-xs">{{ translate('Start Date') }}</th>
+                        <th class="hidden-xs">{{ translate('End Date') }}</th>
+                        <th class="hidden-xs">{{ translate('Updated') }}</th>
+                        <th class="hidden-xs">{{ translate('By') }}</th>
+                        <th class="hidden-xs">{{ translate('Status') }}</th>
+                        <th style="width: 160px">{{ translate('Actions') }}</th>
                     </tr>
-                    {% for mapping in articles %}
-                        <tr class="item item-{{ mapping.getId() }}">
-                            <td>{{ mapping.getArticle().getName() }}</td>
-                            <td>{{ mapping.getAmount() }}</td>
-                            <td>{{ mapping.getStatus() }}</td>
-                            <td>{{ mapping.getArticle().getAdditionalInfo() }}</td>
+                    </thead>
+                    {% for lastOrder in lastOrders[:5] %}
+                        <tr class="item item-{{ order.getId() }} {% if 'confirmed' == order.getStatus() %}success{% endif %}"
+                            {% if lastOrder.getId() == order.getId() %} style="background-color: #ecebff" {% endif %}>
+                            <td>{{ lastOrder.getName() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getContact() }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getStartDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getEndDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdateDate().format('d/m/Y H:i') }}</td>
+                            <td class="hidden-xs">{{ lastOrder.getUpdator() }}</td>
+                            <td class="hidden-xs item-{{ lastOrder.getId() }}-status">{{ translate(lastOrder.getStatus()) }}</td>
+                            <td class="actions">
+                                {% if lastOrders[0].getId() != lastOrder.getId() and not lastOrders[0].isRemoved() and not lastOrders[0].isCanceled() %}
+                                    <a href="#" class="btn btn-warning btn-sm edit revert" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                        {{ translate('Revert') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrder.getId() != order.getId() and not lastOrders[0].isRemoved() %}
+                                    <a href="{{ url('logistics_catalog', {"action" : 'view', "order" : lastOrder.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                {% endif %}
+                                {% if lastOrders[0].getId() == lastOrder.getId() %}
+                                    {% if not lastOrders[0].isRemoved() %}
+                                        {% if not lastOrders[0].isCanceled() %}
+                                            <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                                {{ translate('Cancel') }}
+                                            </a>
+                                        {% else %}
+                                            <a href="#" class="btn btn-danger btn-sm delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                                {{ translate('Delete') }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
         </div>
-        <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
     </div>
 
+    {#      Modals voor requests te cancelen/verwijderen/reverten      #}
+    <div class="modal fade" id="revertRequest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('This function is coming soon!') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="cancelRequest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Are you sure you want to cancel the following request:') }} <b class="orderName"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteRequest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Are you sure you want to remove the following request:') }} <b class="orderName"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            {#    Display remarks when hovering    #}
+            $('[rel=tooltip]').tooltip();
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
+            {#    Open modals for cancel/remove/revert request    #}
+            $('.item .revert').click(openRevertRequest);
+            $('.item .cancel').click(openCancelRequest);
+            $('.item .delete').click(openRemoveRequest);
+        });
+
+        function openRevertRequest(e) {
+            // Gets the object bound to the modal: an order
+            var $this = $(this);
+            e.preventDefault();
+            var revertRequest = $('#revertRequest');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            revertRequest.find('.orderName').html(name);
+            {#revertRequest.find('.confirm').unbind('click').click(function () {#}
+            {#    $.post('{{ url('logistics_catalog', {"action": "revertRequest"})}}' + id, function (data) {#}
+            {#        if (data && 'success' == data.status) {#}
+            {#            $('.flashmessage').addClass('hide');#}
+            {#            $('.item-' + id + '-status').html("Canceled");#}
+            {#            $('#infoStatus').html("Canceled");#}
+            {#            $('.item .cancel').remove();#}
+            {#            $('#cancelRequest').modal('hide');#}
+            {#            location.reload();#}
+            {#        } else {#}
+            {#            errorCancel();#}
+            {#        }#}
+            {#    }, 'json').error(errorCancel);#}
+            {#});#}
+            revertRequest.modal();
+        }
+
+        function openCancelRequest(e) {
+            // Gets the object bound to the modal: an order
+            var $this = $(this);
+            e.preventDefault();
+            var cancelRequest = $('#cancelRequest');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            cancelRequest.find('.orderName').html(name);
+            cancelRequest.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_catalog', {"action": "cancelRequest"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.item-' + id + '-status').html("Canceled");
+                        $('#infoStatus').html("Canceled");
+                        $('.item .cancel').remove();
+                        $('#cancelRequest').modal('hide');
+                        location.reload();
+                    } else {
+                        errorCancel();
+                    }
+                }, 'json').error(errorCancel);
+            });
+            cancelRequest.modal();
+        }
+
+        function openRemoveRequest(e) {
+            var $this = $(this);
+            e.preventDefault();
+
+            var deleteRequest = $('#deleteRequest');
+            var id = $this.data('id');
+            deleteRequest.find('.orderName').html($(this).data('name'));
+            deleteRequest.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_catalog', {"action": "removeRequest"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#request_removed_success').addClass('in');
+                        $('.item-' + id + '-status').html("Removed");
+                        $('#infoStatus').html("Removed");
+                        $('.item .delete').remove();
+                        deleteRequest.modal('hide');
+
+                        $('.request_removed').addClass('in').addClass('hidden').removeClass('hidden');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            deleteRequest.modal();
+        }
+
+        function errorCancel() {
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.request_canceled_error').removeClass('hidden');
+            $('#cancelRequest').modal('hide');
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('in');
+            $('.flashmessage').addClass('hidden');
+            $('.request_removed_error').removeClass('hidden');
+            $('#deleteRequest').modal('hide');
+        }
+    </script>
 {% endblock %}

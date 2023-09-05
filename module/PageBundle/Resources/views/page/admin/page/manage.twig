@@ -63,7 +63,7 @@
                                     {% if hasAccess('page_admin_page', 'edit') %}
                                         <a href="{{ url('page_admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
                                     {% endif %}
-                                    {% if hasAccess('page_admin_page', 'poster') %}
+                                    {% if hasAccess('page_admin_page', 'editPoster') %}
                                         <a href="{{ url('page_admin_page', {"action": "editPoster", "id": page.getId()}) }}" class="image_edit">Poster</a>
                                     {% endif %}
                                     {% if hasAccess('page_admin_page', 'delete') %}
@@ -90,6 +90,20 @@
                     </p>
                     <p>
                         <a href="{{ url('page_admin_category', {"action": "manage"}) }}">&rarr; Categories</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('page_admin_categorypage', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categorie Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create Categorie Pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_categorypage', {"action": "manage"}) }}">&rarr; Categorie Pages</a>
                     </p>
                 </div>
             </div>
