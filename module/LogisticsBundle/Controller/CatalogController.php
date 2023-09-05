@@ -729,6 +729,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 ->getConfigValue('logistics.order_alert_mail')
         );
 
+        $reviewLink = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.order_link') . $order->getId();
+
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
@@ -751,7 +755,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     error_log($map->getArticle()->getName());
                     error_log($alertMail);
                     error_log('_');
-                    $articleBody .= "\t* " . $map->getArticle()->getName() . "\t\t\taantal: " . $map->getAmount() . "\r\n";
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . ", aantal: " . $map->getAmount() . "\r\n";
                 }
 
                 error_log($articleBody);
@@ -767,8 +771,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $mail->setEncoding('UTF-8')->setHeaders($headers)
                     ->setBody(
                         str_replace(
-                            array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                            array($order->getName(), $articleBody, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                            array('{{ name }}', '{{ article }}', '{{link}}', '{{ person }}', '{{ end }}', '{{ start }}'),
+                            array($order->getName(), $articleBody, $reviewLink, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                             $message
                         )
                     )
