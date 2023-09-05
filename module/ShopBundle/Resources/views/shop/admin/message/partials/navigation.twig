@@ -1,0 +1,13 @@
+<header id="controller_header">
+    <div class="title"><span class="clock">Message</span></div>
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('shop_admin_shop_message', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('shop_admin_shop_message', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_message', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('shop_admin_shop_message', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

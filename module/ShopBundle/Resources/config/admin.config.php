@@ -17,6 +17,11 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Permissions',
                 ),
+                'shop_admin_shop_message' => array(
+                    'action' => 'manage',
+                    'title'  => 'Message',
+                ),
+
             ),
             'controllers' => array('shop_admin_shop'),
         ),
