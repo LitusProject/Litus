@@ -130,9 +130,10 @@
                     {% endfor %}
                 </div>
                 <div class="col-md-6"><h2>Theokot - {{ translate('Opening Hours') }}</h2>
-                    <div>
-                        <p style="display:inline-block">{{ shop.openingHours }}</p>
-                    </div>
+                    {% for message in shop.messages %}
+                        <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
