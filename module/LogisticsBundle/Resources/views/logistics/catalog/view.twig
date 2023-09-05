@@ -86,7 +86,7 @@
 
             {#     Article body       #}
             <div class="col-md-8" style="padding-left: 50px">
-                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px; overflow: auto; max-height: 350px">
+                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px;">
                     <div class="table-condensed">
                         <table class="table mappings">
                             {#     Table header       #}
@@ -99,22 +99,24 @@
                             </tr>
 
                             {#     Table content       #}
-                            {% for mapping in articles %}
-                                <tr class="item item-{{ mapping.getId() }}"
-                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
-                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
-                                    {% else %}style="background-color: #fae3e3"{% endif %}>
-                                    <td>{{ mapping.getArticle().getName() }}</td>
-                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
-                                    <td>{{ mapping.getStatus() }}</td>
-                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
-                                            <a rel="popover" data-original-title="{{ translate('Comments') }}"
-                                               data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
-                                               data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
-                                        {% endif %}</td>
-                                    <td>{{ mapping.getAmount() }}</td>
-                                </tr>
-                            {% endfor %}
+                            <div style="overflow: auto; max-height: 330px">
+                                {% for mapping in articles %}
+                                    <tr class="item item-{{ mapping.getId() }}"
+                                        {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
+                                        {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
+                                        {% else %}style="background-color: #fae3e3"{% endif %}>
+                                        <td>{{ mapping.getArticle().getName() }}</td>
+                                        <td>{{ mapping.getArticle().getUnit().getName() }}</td>
+                                        <td>{{ mapping.getStatus() }}</td>
+                                        <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
+                                                <a rel="popover" data-original-title="{{ translate('Comments') }}"
+                                                   data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
+                                                   data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                            {% endif %}</td>
+                                        <td>{{ mapping.getAmount() }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </div>
                         </table>
                     </div>
                 </div>
