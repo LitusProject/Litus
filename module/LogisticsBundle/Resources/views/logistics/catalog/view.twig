@@ -107,11 +107,11 @@
                                     <td>{{ mapping.getArticle().getName() }}</td>
                                     <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getStatus() }}</td>
-                                    <td>{% if map['article'].getAdditionalInfo()|length > 1%}
-                                            <a rel="popover" data-original-title="{{ translate('Description') }}"
+                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 1 %}
+                                            <a rel="popover" data-original-title="{{ translate('Comments') }}"
                                                data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
                                                data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
-                                    {% endif %}</td>
+                                        {% endif %}</td>
                                     <td>{{ mapping.getAmount() }}</td>
                                 </tr>
                             {% endfor %}

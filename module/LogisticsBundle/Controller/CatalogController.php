@@ -683,6 +683,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 ->getConfigValue('logistics.order_request')
         );
 
+        $reviewLink = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.order_link') . $order->getId();
+
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
@@ -690,8 +694,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $mail->setEncoding('UTF-8')
             ->setBody(
                 str_replace(
-                    array('{{ name }}', '{{ type }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->Handled(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                    array('{{ name }}', '{{ person }}', '{{ end }}', '{{ start }}', '{{ link }}'),
+                    array($order->getName(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i'), $reviewLink),
                     $message
                 )
             )
@@ -752,13 +756,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             if ($alertMail != Null && $alertMail !== '') {
                 $articleBody = '';
                 foreach ($mappings as $map) {
-                    error_log($map->getArticle()->getName());
-                    error_log($alertMail);
-                    error_log('_');
                     $articleBody .= "\t* " . $map->getArticle()->getName() . "\t\t\t\t aantal: " . $map->getAmount() . "\r\n";
                 }
-
-                error_log($articleBody);
 
                 $headers = new Headers();
                 $headers->addHeaders(
@@ -780,35 +779,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     ->addTo($map->getArticle()->getAlertMail(), $map->getArticle()->getUnit()->getName())
                     ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
 
-                error_log($mail->getHeaders());
-
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
             }
         }
-
-//        foreach ($mappings as $map) {
-//            $alertMail = $map->getArticle()->getAlertMail();
-//            if ($alertMail != Null && $alertMail !== '') {
-//                $mail = new Message();
-//                $mail->setEncoding('UTF-8')
-//                    ->setBody(
-//                        str_replace(
-//                            array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-//                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
-//                            $message
-//                        )
-//                    )
-//                    ->setFrom($mailAddress, $mailName)
-//                    ->addTo($map->getArticle()->getAlertMail(), $mailName)
-//                    ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
-//
-//
-//                if (getenv('APPLICATION_ENV') != 'development') {
-//                    $this->getMailTransport()->send($mail);
-//                }
-//            }
-//        }
     }
 }
