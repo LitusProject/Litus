@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
+use Laminas\Mail\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
@@ -753,13 +754,20 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     $articleBody .= $map->getArticle()->getName();
                     $articleBody .= '   aantal: ';
                     $articleBody .= $map->getAmount();
-                    $articleBody .= '<br>';
+                    $articleBody .= '\n';
                 }
 
                 error_log($articleBody);
 
+                $headers = new Headers();
+                $headers->addHeaders(
+                    array(
+                        'Content-Type' => 'text/plain',
+                    )
+                );
+                
                 $mail = new Message();
-                $mail->setEncoding('UTF-8')
+                $mail->setEncoding('UTF-8')->setHeaders($headers)
                     ->setBody(
                         str_replace(
                             array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
@@ -768,7 +776,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                         )
                     )
                     ->setFrom($mailAddress, $mailName)
-                    ->addTo($map->getArticle()->getAlertMail(), $mailName)
+                    ->addTo($map->getArticle()->getAlertMail(), $map->getArticle()->getUnit()->getName())
                     ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
 
                 if (getenv('APPLICATION_ENV') != 'development') {
