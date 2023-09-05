@@ -55,6 +55,16 @@ return array(
             '@common_jquery_form',
             '@common_remote_typeahead',
         ),
+        'shop_admin_shop_message' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_tab',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+            '@common_jquery_form',
+            '@common_remote_typeahead',
+        ),
 
         'shop' => array(
             '@common_jquery',
