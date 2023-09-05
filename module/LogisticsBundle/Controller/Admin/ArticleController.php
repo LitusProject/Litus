@@ -203,6 +203,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneById($formData['unit']);
                 error_log($unit->getName());
 
+                array_shift($articleArray);                 // Remove header
                 foreach ($articleArray as $data) {
                     if (in_array(null, array_slice($data, 0, 6))) {
                         error_log('fail');

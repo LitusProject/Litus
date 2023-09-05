@@ -129,7 +129,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                             ->findOneById($articleId);
 
                         $oldAmount = $mapped[$articleId]?: 0;
-//                        error_log($oldAmount);
                         $booking = new Map($newOrder, $article, $formValue, $oldAmount);
 
                         $this->getEntityManager()->persist($booking);
@@ -732,27 +731,73 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
+        $alertMailArray = array();
         foreach ($mappings as $map) {
             $alertMail = $map->getArticle()->getAlertMail();
+            if (!($alertMail == 'logistiek@vtk.be')) {
+                if ($alertMailArray[$alertMail]) {
+                    $alertMailArray[$alertMail][] = $map;
+                } else {
+                    $alertMailArray[$alertMail] = array($map);
+                }
+            }
+        }
+
+        foreach ($alertMailArray as $alertMail => $mappings) {
             if ($alertMail != Null && $alertMail !== '') {
+                $articleBody = '';
+                foreach ($mappings as $map) {
+                    error_log($map->getArticle()->getName());
+                    error_log($alertMail);
+                    error_log('_');
+                    $articleBody .= $map->getArticle()->getName();
+                    $articleBody .= '   aantal: ';
+                    $articleBody .= $map->getAmount();
+                    $articleBody .= '<br>';
+                }
+
+                error_log($articleBody);
+
                 $mail = new Message();
                 $mail->setEncoding('UTF-8')
                     ->setBody(
                         str_replace(
-                            array('{{ name }}', '{{ article }}', '{{ amount }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                            array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
+                            array($order->getName(), $articleBody, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                             $message
                         )
                     )
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($map->getArticle()->getAlertMail(), $mailName)
-                    ->setSubject(str_replace(array('{{ name }}', '{{ article }}'), array($order->getName(), $map->getArticle()->getName()), $subject));
-
+                    ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
 
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
                 }
             }
         }
+
+//        foreach ($mappings as $map) {
+//            $alertMail = $map->getArticle()->getAlertMail();
+//            if ($alertMail != Null && $alertMail !== '') {
+//                $mail = new Message();
+//                $mail->setEncoding('UTF-8')
+//                    ->setBody(
+//                        str_replace(
+//                            array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
+//                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+//                            $message
+//                        )
+//                    )
+//                    ->setFrom($mailAddress, $mailName)
+//                    ->addTo($map->getArticle()->getAlertMail(), $mailName)
+//                    ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
+//
+//
+//                if (getenv('APPLICATION_ENV') != 'development') {
+//                    $this->getMailTransport()->send($mail);
+//                }
+//            }
+//        }
     }
 }
