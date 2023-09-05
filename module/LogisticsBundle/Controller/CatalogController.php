@@ -729,6 +729,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 ->getConfigValue('logistics.order_alert_mail')
         );
 
+        $reviewLink = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.order_link') . $order->getId();
+
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
@@ -767,8 +771,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $mail->setEncoding('UTF-8')->setHeaders($headers)
                     ->setBody(
                         str_replace(
-                            array('{{ name }}', '{{ article }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                            array($order->getName(), $articleBody, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                            array('{{ name }}', '{{ article }}', '{{link}}', '{{ person }}', '{{ end }}', '{{ start }}'),
+                            array($order->getName(), $articleBody, $reviewLink, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                             $message
                         )
                     )

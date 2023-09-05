@@ -106,8 +106,8 @@
                                             <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
                                             <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}</td>
                                             <td class="hidden-xs">
-                                                {% if map['article'].getAdditionalInfo()|length > 0 %}
-                                                    <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="
+                                                {% if map['article'].getAdditionalInfo()|length > 0 and map['article'].getAdditionalInfo() != ' '%}
+                                                    <a rel="popover" data-original-title="{{ translate('Description') }}" data-content="
                                                         <span class='badge badge-info'></span> {{ map['article'].getAdditionalInfo() }}<br/>
                                                         " data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
                                                 {% endif %}
