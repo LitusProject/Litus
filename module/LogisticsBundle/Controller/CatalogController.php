@@ -751,10 +751,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     error_log($map->getArticle()->getName());
                     error_log($alertMail);
                     error_log('_');
-                    $articleBody .= $map->getArticle()->getName();
-                    $articleBody .= '   aantal: ';
-                    $articleBody .= $map->getAmount();
-                    $articleBody .= '\n';
+                    $articleBody .= $map->getArticle()->getName() . '   aantal: ' . $map->getAmount() . "\r\n";
                 }
 
                 error_log($articleBody);
@@ -765,7 +762,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                         'Content-Type' => 'text/plain',
                     )
                 );
-                
+
                 $mail = new Message();
                 $mail->setEncoding('UTF-8')->setHeaders($headers)
                     ->setBody(
@@ -778,6 +775,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($map->getArticle()->getAlertMail(), $map->getArticle()->getUnit()->getName())
                     ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
+
+                error_log($mail->getHeaders());
 
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
