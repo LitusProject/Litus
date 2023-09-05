@@ -647,7 +647,10 @@ class Ticket
             ->setFrom($mailAddress, $mailName)
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject)
-            ->addBcc('it@vtk.be')
+            ->addBcc($entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail'),
+                'System Administrator')
             ->addBcc($mailAddress);
 
         if (getenv('APPLICATION_ENV') != 'development') {
