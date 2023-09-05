@@ -755,7 +755,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     error_log($map->getArticle()->getName());
                     error_log($alertMail);
                     error_log('_');
-                    $articleBody .= "\t* " . $map->getArticle()->getName() . ", aantal: " . $map->getAmount() . "\r\n";
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . "\t\t\t\t aantal: " . $map->getAmount() . "\r\n";
                 }
 
                 error_log($articleBody);
