@@ -92,7 +92,7 @@
                             {#     Table header       #}
                             <tr>
                                 <th style="width: 25%">{{ Translate('Name') }}</th>
-                                <th style="width: 25%">{{ Translate('Category') }}</th>
+                                <th style="width: 25%">{{ Translate('Unit') }}</th>
                                 <th style="width: 20%">{{ Translate('Status') }}</th>
                                 <th style="width: 20%">{{ Translate('Comments') }}</th>
                                 <th style="width: 10%">{{ Translate('Amount') }}</th>
@@ -105,7 +105,7 @@
                                     {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
                                     {% else %}style="background-color: #fae3e3"{% endif %}>
                                     <td>{{ mapping.getArticle().getName() }}</td>
-                                    <td>{{ mapping.getArticle().getCategory() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getStatus() }}</td>
                                     <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
                                             <a rel="popover" data-original-title="{{ translate('Comments') }}"
