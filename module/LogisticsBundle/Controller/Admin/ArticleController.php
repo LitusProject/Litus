@@ -217,7 +217,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $status = $data[4];
                     $location = $data[5];
                     for ($x = 6; $x <= 9; $x++) {
-                       $data[$x] = $data[$x]?: ' ';
+                       $data[$x] = $data[$x]?: '';
                     }
                     $spot = $data[6];
                     $category = $data[7];
