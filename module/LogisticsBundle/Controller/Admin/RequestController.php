@@ -76,31 +76,31 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $conflicts = array();
 
+        // Loop over all made mappings
         foreach ($mappings as $map) {
-            $max = $map->getArticle()->getAmountAvailable();
+
+            $overlapping_maps = $this->findOverlapping($mappings, $map);
+
             $allOverlap = array();
-
-            foreach ($mappings as $map) {
-                $overlapping_maps = $this->findOverlapping($mappings, $map);
-
-                foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)) {
-                        array_push($allOverlap, $overlap);
-                    }
+            foreach ($overlapping_maps as $overlap) {
+                if (!in_array($overlap, $allOverlap)) {
+                    $allOverlap[] = $overlap;
                 }
             }
 
+            // Look if all overlapping article amounts surpass the amount available
             $total = 0;
             foreach ($allOverlap as $overlap) {
                 $total += $overlap->getAmount();
             }
+            $max = $map->getArticle()->getAmountAvailable();
             if ($total > $max) {
                 $conflict = array(
-                    'article'  => $article,
+                    'article'  => $map->getArticle(),
                     'mappings' => $allOverlap,
                     'total'    => $total
                 );
-                array_push($conflicts, $conflict);
+                $conflicts[] = $conflict;
             }
         }
 
@@ -392,12 +392,13 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     {
         $start = $mapping->getOrder()->getStartDate();
         $end = $mapping->getOrder()->getEndDate();
+
         $overlapping = array();
         foreach ($array as $map) {
             if ($map->getOrder() !== $mapping->getOrder()
-                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() <= $start)
+                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() < $start)
             ) {
-                array_push($overlapping, $map);
+                $overlapping[] = $map;
             }
         }
         return $overlapping;

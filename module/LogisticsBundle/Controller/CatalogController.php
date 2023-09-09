@@ -756,9 +756,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             if ($alertMail != Null && $alertMail !== '') {
                 $articleBody = '';
                 foreach ($mappings as $map) {
-                    $articleBody .= "\t* " . $map->getArticle()->getName() . " " * (35 - count($map->getArticle()->getName())) . "aantal: " . $map->getAmount() . "\r\n";
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . str_repeat(" ", 25 - strlen($map->getArticle()->getName())) . "aantal: " . $map->getAmount() . "\r\n";
                 }
-
+                error_log($articleBody);
                 $headers = new Headers();
                 $headers->addHeaders(
                     array(
