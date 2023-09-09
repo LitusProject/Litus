@@ -310,7 +310,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
 
-        // Gets last order for every request
+        // Gets all orders for request
         $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
 
         return new ViewModel(
@@ -756,7 +756,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             if ($alertMail != Null && $alertMail !== '') {
                 $articleBody = '';
                 foreach ($mappings as $map) {
-                    $articleBody .= "\t* " . $map->getArticle()->getName() . "\t\t\t\t aantal: " . $map->getAmount() . "\r\n";
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . " " * (35 - count($map->getArticle()->getName())) . "aantal: " . $map->getAmount() . "\r\n";
                 }
 
                 $headers = new Headers();

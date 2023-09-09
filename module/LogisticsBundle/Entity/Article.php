@@ -142,46 +142,28 @@ class Article
      */
     public static $POSSIBLE_CATEGORIES = array(
         ''                       => '',
-        # Posten: hier moet automatisch mail adres aan toegevoegd worden
-//        'acti'                   => 'Activiteiten',
-//        'logistiek'              => 'Logistiek',
-//        'sport'                  => 'Sport',
-//        'fak'                    => 'Fak',
-//        'cultuur'                => 'Cultuur',
-//        'communicatie'           => 'Communicatie',
-////        'cursusdienst'           => 'Cursusdienst',       Idee om later toe te voegen (bv. labojassen)
-//        'br'                     => 'BR',
-//        'it'                     => 'IT',
-//        'theokot'                => 'Theokot',
-//        'secri'                  => 'Secri',
-//        'vice'                   => 'Vice',
-//        'praeses'                => 'Praeses',
-//        'beheer'                 => 'Beheer',
+        'allerlei'                  => 'Allerlei',
+        'archief'                   => 'Archief',
+        'banners&vlaggen'           => 'Banners & vlaggen',
+        'BR&Dev'                    => 'BR & Dev',
+        'cantus'                    => 'Cantus',
+        'decoratie'                 => 'Decoratie',
+        'elektriciteit'             => 'Elektriciteit',
+        'fak'                       => 'Fak',
+        'keuken'                    => 'Keuken',
+        'kledij'                    => 'Kledij',
+        'kuisproducten'             => 'Kuisproducten',
+        'secrimateriaal'            => 'Secrimateriaal',
+        'the game'                  => 'The game',
+        'touw&tape'                 => 'Touw & tape',
+        'veiligheid&signalisatie'   => 'Veiligheid & signalisatie',
+        'verf'                      => 'Verf',
+        'vuur'                      => 'Vuur',
+        'werkmateriaal'             => 'Werkmateriaal',
 
-        # Flesserke: hier moet automatisch materiaal naar toe gebracht worden uit het Flesserke systeem
-        'Flesserke'              => 'Flesserke',
-
-        # Andere
-        'EHBO'                   => 'EHBO',     # EHBO mailadres aan toevoegen
-        'geluid'                 => 'Geluid',
-        'kabels'                 => 'Kabels',
-        'hand'                   => 'Handgereedschap',
-        'kledij'                 => 'Werkkledij',
-        'materiaal'              => 'Materiaal',
-        'sanitair'               => 'Sanitair',
-        'electronica'            => 'Electronica',
-        'vastmaken'              => 'Vastmaken & CO',
-        'bouwen'                 => 'Bouwen',
-        'lijm en silicoon'       => 'Lijmen & Siliconen',
-        'verf'                   => 'Verven & CO',
-        'stof'                   => 'Stof',
-        'verkleed'               => 'Verkleedkledij',
-        'varia'                  => 'Varia',
-        'huis'                   => 'Huishoudelijk',
-        'glazen'                 => 'Glazen',
-        'elektriciteitskabels'   => 'Elektriciteitskabels',
-        'kook'                   => 'Kookgerief',
-        'corona'                 => 'Coronaproofing',
+        # Flesserke en EHBO: hier moet automatisch materiaal naar toe gebracht worden
+        'flesserke'                 => 'Flesserke',
+        'ehbo'                      => 'EHBO',
     );
 
     /**
