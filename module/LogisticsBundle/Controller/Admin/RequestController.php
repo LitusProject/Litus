@@ -73,20 +73,16 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
                 ->findAllByOrderQuery($order)->getResult());
         }
-        error_log(count($mappings));
         $conflicts = array();
 
         // Loop over all made mappings
         foreach ($mappings as $map) {
-
+            // Find overlaps
             $overlapping_maps = $this->findOverlapping($mappings, $map);
-            error_log('overlapping maps:');
-            error_log(count($overlapping_maps));
-            error_log('mappings old:');
-            error_log(count($mappings));
-            $mappings = array_diff($mappings, $overlapping_maps);
-            error_log('mappings new:');
-            error_log(count($mappings));
+            // Delete map so it doesn't pop up twice
+            $mappings = array_udiff(array($map), $overlapping_maps, function ($obj_a, $obj_b) {
+                return $obj_a->getId() - $obj_b->getId();
+            });
 
             // Look if all overlapping article amounts surpass the amount available
             $total = 0;
@@ -395,9 +391,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $overlapping = array();
         foreach ($array as $map) {
-            if ($map->getOrder() === $mapping->getOrder()
-                && (($map->getOrder()->getStartDate() > $start && $map->getOrder()->getStartDate() < $end)
-                || ($map->getOrder()->getEndDate() > $start && $map->getOrder()->getEndDate() < $end))
+            if ($map->getArticle() === $mapping->getArticle()
+                && ($map->getOrder()->getStartDate() >= $start && $map->getOrder()->getStartDate() <= $end
+                || $map->getOrder()->getEndDate() >= $start && $map->getOrder()->getEndDate() <= $end)
             ) {
                 $overlapping[] = $map;
             }
