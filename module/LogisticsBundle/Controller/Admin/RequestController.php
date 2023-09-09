@@ -3,9 +3,11 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
+use LogisticsBundle\Entity\Order\OrderArticleMap;
 use LogisticsBundle\Entity\Request;
 
 /**
@@ -46,11 +48,68 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'order'         => $order,
-                'articles'      => $articles,
-                'lastOrders'    => $lastOrders,
+                'order' => $order,
+                'articles' => $articles,
+                'lastOrders' => $lastOrders,
             )
         );
+    }
+
+    public function conflictingAction()
+    {
+        $requests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findNewRequests();
+
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrders[] = $this->getLastOrderByRequest($request);
+        }
+
+        $mappings = array();
+        foreach ($lastOrders as $order){
+            $mappings[] = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($order)->getResult();
+        }
+
+        $conflicts = array();
+
+        foreach ($mappings as $map) {
+            $max = $map->getArticle()->getAmountAvailable();
+            $allOverlap = array();
+
+            foreach ($mappings as $map) {
+                $overlapping_maps = $this->findOverlapping($mappings, $map);
+
+                foreach ($overlapping_maps as $overlap) {
+                    if (!in_array($overlap, $allOverlap)) {
+                        array_push($allOverlap, $overlap);
+                    }
+                }
+            }
+
+            $total = 0;
+            foreach ($allOverlap as $overlap) {
+                $total += $overlap->getAmount();
+            }
+            if ($total > $max) {
+                $conflict = array(
+                    'article'  => $article,
+                    'mappings' => $allOverlap,
+                    'total'    => $total
+                );
+                array_push($conflicts, $conflict);
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'conflicts' => $conflicts,
+            )
+        );
+    }
 
 //        $request = $this->getRequestEntity();
 //        if ($request === null) {
@@ -154,7 +213,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 //        );
 //
 //        return new ViewModel();
-    }
+//    }
 
     public function rejectAction()
     {
@@ -327,6 +386,21 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             }
         }
         return $a1;
+    }
+
+    private function findOverlapping(array $array, OrderArticleMap $mapping)
+    {
+        $start = $mapping->getOrder()->getStartDate();
+        $end = $mapping->getOrder()->getEndDate();
+        $overlapping = array();
+        foreach ($array as $map) {
+            if ($map->getOrder() !== $mapping->getOrder()
+                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() <= $start)
+            ) {
+                array_push($overlapping, $map);
+            }
+        }
+        return $overlapping;
     }
 
     /**
