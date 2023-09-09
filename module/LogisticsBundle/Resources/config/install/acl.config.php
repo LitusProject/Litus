@@ -15,7 +15,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting', 'review', 'approve', 'reject', 'view',
         ),
         'logistics_admin_request' => array(
-            'reject', 'approve', 'manage', 'view',
+            'reject', 'approve', 'manage', 'view', 'conflicting',
         ),
         'logistics_admin_van_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',

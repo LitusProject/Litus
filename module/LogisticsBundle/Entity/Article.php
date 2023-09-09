@@ -149,6 +149,7 @@ class Article
         'cantus'                    => 'Cantus',
         'decoratie'                 => 'Decoratie',
         'elektriciteit'             => 'Elektriciteit',
+        'licht&geluid'              => 'Licht & geluid',
         'fak'                       => 'Fak',
         'keuken'                    => 'Keuken',
         'kledij'                    => 'Kledij',
