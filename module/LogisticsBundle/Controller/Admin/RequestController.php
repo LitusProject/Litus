@@ -69,35 +69,35 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $mappings = array();
         foreach ($lastOrders as $order){
-            $mappings[] = $this->getEntityManager()
+            $mappings = array_merge($mappings, $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllByOrderQuery($order)->getResult();
+                ->findAllByOrderQuery($order)->getResult());
         }
-
+        error_log(count($mappings));
         $conflicts = array();
 
         // Loop over all made mappings
         foreach ($mappings as $map) {
 
             $overlapping_maps = $this->findOverlapping($mappings, $map);
-
-            $allOverlap = array();
-            foreach ($overlapping_maps as $overlap) {
-                if (!in_array($overlap, $allOverlap)) {
-                    $allOverlap[] = $overlap;
-                }
-            }
+            error_log('overlapping maps:');
+            error_log(count($overlapping_maps));
+            error_log('mappings old:');
+            error_log(count($mappings));
+            $mappings = array_diff($mappings, $overlapping_maps);
+            error_log('mappings new:');
+            error_log(count($mappings));
 
             // Look if all overlapping article amounts surpass the amount available
             $total = 0;
-            foreach ($allOverlap as $overlap) {
+            foreach ($overlapping_maps as $overlap) {
                 $total += $overlap->getAmount();
             }
             $max = $map->getArticle()->getAmountAvailable();
             if ($total > $max) {
                 $conflict = array(
                     'article'  => $map->getArticle(),
-                    'mappings' => $allOverlap,
+                    'mappings' => $overlapping_maps,
                     'total'    => $total
                 );
                 $conflicts[] = $conflict;
@@ -395,8 +395,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $overlapping = array();
         foreach ($array as $map) {
-            if ($map->getOrder() !== $mapping->getOrder()
-                && !($map->getOrder()->getStartDate() > $end || $map->getOrder()->getEndDate() < $start)
+            if ($map->getOrder() === $mapping->getOrder()
+                && (($map->getOrder()->getStartDate() > $start && $map->getOrder()->getStartDate() < $end)
+                || ($map->getOrder()->getEndDate() > $start && $map->getOrder()->getEndDate() < $end))
             ) {
                 $overlapping[] = $map;
             }
