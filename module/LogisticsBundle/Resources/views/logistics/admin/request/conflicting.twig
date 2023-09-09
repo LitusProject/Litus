@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'logistics/admin/order/partials/navigation.twig' %}
+    {% include 'logistics/admin/request/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
@@ -11,14 +11,14 @@
         {% for conflict in conflicts %}
             <h2><b>Article:</b>{{ conflict['article'].getName() }}</h2>
             <p><b>Amount available/owned:</b> {{ conflict['article'].getAmountAvailable() }}/{{ conflict['article'].getAmountOwned() }}</p>
-            <p><b>Amount requested:</b> {{ conflict['total'] }}</p>
+            <p><b>Amount requested:</b> {{ conflict['total'] }}</p><br>
             <table class="manage" style="width:100%;">
                 <tr>
-                    <th style="width: 150px">Name</th>
-                    <th style="width: 200px">Date</th>
-                    <th style="width: 90px">Amount</th>
-                    <th style="width: 90px">Status</th>
-                    <th style="width: 90px">Actions</th>
+                    <th style="width: 20%">Request name</th>
+                    <th style="width: 20%">Date</th>
+                    <th style="width: 20%">Amount</th>
+                    <th style="width: 20%">Status</th>
+                    <th style="width: 20%">Actions</th>
                 </tr>
                 {% for mapping in conflict.mappings %}
                     <tr class="item item-{{ mapping.getId() }}">
