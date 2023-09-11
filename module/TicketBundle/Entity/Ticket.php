@@ -599,7 +599,7 @@ class Ticket
         $message = $mailData[$language->getAbbrev()]['content'];
         $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
 
-        $mailAddress = $entityManager
+        $mailAddress = $this->getEvent()->getMailFrom() ? : $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.subscription_mail');
 
