@@ -39,6 +39,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
+        $reviewingUnit = $academic->getUnit($this->getCurrentAcademicYear());
+
         $order = $this->getOrderEntity();
         if ($order === null) {
             return new ViewModel();
@@ -59,13 +61,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $orderIndex = array_search($order, $lastOrders);
             $oldOrder = $lastOrders[$orderIndex + 1];
         }
-
-        $orderForm = $this->getForm(
-            'logistics_admin_order_review',
-            array(
-                'order' => $order,
-            )
-        );
 
         $articleForm = $this->getForm(
             'logistics_admin_order_orderArticleMap_review',
@@ -531,59 +526,59 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function conflictingAction()
-    {
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Article')
-            ->findAll();
-
-        $conflicts = array();
-
-        foreach ($articles as $article) {
-            $mappings = array();
-            $allmaps = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllActiveByArticleQuery($article)->getResult();
-
-            foreach ($allmaps as $map) {
-                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
-                    array_push($mappings, $map);
-                }
-            }
-
-            $max = $article->getAmountAvailable();
-            $allOverlap = array();
-
-            foreach ($mappings as $map) {
-                $overlapping_maps = $this->findOverlapping($mappings, $map);
-
-                foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)) {
-                        array_push($allOverlap, $overlap);
-                    }
-                }
-            }
-
-            $total = 0;
-            foreach ($allOverlap as $overlap) {
-                $total += $overlap->getAmount();
-            }
-            if ($total > $max) {
-                $conflict = array(
-                    'article'  => $article,
-                    'mappings' => $allOverlap,
-                    'total'    => $total
-                );
-                array_push($conflicts, $conflict);
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'conflicts' => $conflicts,
-            )
-        );
-    }
+//    public function conflictingAction()
+//    {
+//        $articles = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Article')
+//            ->findAll();
+//
+//        $conflicts = array();
+//
+//        foreach ($articles as $article) {
+//            $mappings = array();
+//            $allmaps = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+//                ->findAllActiveByArticleQuery($article)->getResult();
+//
+//            foreach ($allmaps as $map) {
+//                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
+//                    array_push($mappings, $map);
+//                }
+//            }
+//
+//            $max = $article->getAmountAvailable();
+//            $allOverlap = array();
+//
+//            foreach ($mappings as $map) {
+//                $overlapping_maps = $this->findOverlapping($mappings, $map);
+//
+//                foreach ($overlapping_maps as $overlap) {
+//                    if (!in_array($overlap, $allOverlap)) {
+//                        array_push($allOverlap, $overlap);
+//                    }
+//                }
+//            }
+//
+//            $total = 0;
+//            foreach ($allOverlap as $overlap) {
+//                $total += $overlap->getAmount();
+//            }
+//            if ($total > $max) {
+//                $conflict = array(
+//                    'article'  => $article,
+//                    'mappings' => $allOverlap,
+//                    'total'    => $total
+//                );
+//                array_push($conflicts, $conflict);
+//            }
+//        }
+//
+//        return new ViewModel(
+//            array(
+//                'conflicts' => $conflicts,
+//            )
+//        );
+//    }
 
     public function deleteArticleAction()
     {

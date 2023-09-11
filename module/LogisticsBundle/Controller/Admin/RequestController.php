@@ -3,9 +3,11 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
+use LogisticsBundle\Entity\Order\OrderArticleMap;
 use LogisticsBundle\Entity\Request;
 
 /**
@@ -46,11 +48,64 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'order'         => $order,
-                'articles'      => $articles,
-                'lastOrders'    => $lastOrders,
+                'order' => $order,
+                'articles' => $articles,
+                'lastOrders' => $lastOrders,
             )
         );
+    }
+
+    public function conflictingAction()
+    {
+        $requests = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Request')
+            ->findNewRequests();
+
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrders[] = $this->getLastOrderByRequest($request);
+        }
+
+        $mappings = array();
+        foreach ($lastOrders as $order){
+            $mappings = array_merge($mappings, $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($order)->getResult());
+        }
+        $conflicts = array();
+
+        // Loop over all made mappings
+        foreach ($mappings as $map) {
+            // Find overlaps
+            $overlapping_maps = $this->findOverlapping($mappings, $map);
+            // Delete map so it doesn't pop up twice
+            $mappings = array_udiff(array($map), $overlapping_maps, function ($obj_a, $obj_b) {
+                return $obj_a->getId() - $obj_b->getId();
+            });
+
+            // Look if all overlapping article amounts surpass the amount available
+            $total = 0;
+            foreach ($overlapping_maps as $overlap) {
+                $total += $overlap->getAmount();
+            }
+            $max = $map->getArticle()->getAmountAvailable();
+            if ($total > $max) {
+                $conflict = array(
+                    'article'  => $map->getArticle(),
+                    'mappings' => $overlapping_maps,
+                    'total'    => $total
+                );
+                $conflicts[] = $conflict;
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'conflicts' => $conflicts,
+            )
+        );
+    }
 
 //        $request = $this->getRequestEntity();
 //        if ($request === null) {
@@ -154,7 +209,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 //        );
 //
 //        return new ViewModel();
-    }
+//    }
 
     public function rejectAction()
     {
@@ -327,6 +382,23 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             }
         }
         return $a1;
+    }
+
+    private function findOverlapping(array $array, OrderArticleMap $mapping)
+    {
+        $start = $mapping->getOrder()->getStartDate();
+        $end = $mapping->getOrder()->getEndDate();
+
+        $overlapping = array();
+        foreach ($array as $map) {
+            if ($map->getArticle() === $mapping->getArticle()
+                && ($map->getOrder()->getStartDate() >= $start && $map->getOrder()->getStartDate() <= $end
+                || $map->getOrder()->getEndDate() >= $start && $map->getOrder()->getEndDate() <= $end)
+            ) {
+                $overlapping[] = $map;
+            }
+        }
+        return $overlapping;
     }
 
     /**
