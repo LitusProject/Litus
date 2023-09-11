@@ -3,8 +3,8 @@
 return array(
     array(
         'key'         => 'mail.enable_sib_api',
-        'value'       => '1',
-        'description' => '1: API is used, 0: API is skipped (for local use)',
+        'value'       => '0',
+        'description' => '1: API is used, 0: API is skipped',
     ),
     array(
         'key'         => 'mail.sib_api',

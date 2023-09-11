@@ -8,7 +8,8 @@
     <div id="controller_action">
         <h1>Preference</h1>
         <p>Current display name: <b>{{ preference.getName() }}</b> </p>
-        <p>Attribute: <b>{{ preference.getAttribute() }}</b> </p>
+        <p>Current description: <b>{{ preference.getDescription() }}</b> </p>
+        <p>Current Attribute: <b>{{ preference.getAttribute() }}</b> </p>
 
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}

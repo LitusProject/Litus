@@ -25,11 +25,18 @@ class Preference
     private $id;
 
     /**
-     * @var string The name of this mailing preference
+     * @var string The name of this mailing preference that will be shown on the account page
      *
      * @ORM\Column(type="string")
      */
     private $name;
+
+    /**
+     * @var string The description of this mailing preference that will be shown on the account page
+     *
+     * @ORM\Column(type="text")
+     */
+    private $description;
 
     /**
      * @var string The attribute name of this mailing preference in SendInBlue
@@ -46,6 +53,13 @@ class Preference
     private $defaultValue;
 
     /**
+     * @var bool If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
+     *
+     * @ORM\Column(name="is_newsletter", type="boolean")
+     */
+    private $isNewsletter;
+
+    /**
      * @var ArrayCollection The preferenceMappings that refer to this preference
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="preference", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -53,21 +67,15 @@ class Preference
     private $preferenceMappings;
 
     /**
-     * @var bool If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
-     *
-     * @ORM\Column(name="newsletter", type="boolean")
-     */
-    private $isNewsletter;
-
-    /**
      * Creates a new mailing preference.
      *
-     * @param string $name The name for this mailing preference.
-     * @param string $attribute The SendInBlue attribute that corresponds to this mailing preference
+     * @param string $name The name of this mailing preference that will be shown on the account page
+     * @param string $description The description of this mailing preference that will be shown on the account page
+     * @param string $attribute The attribute name of this mailing preference in SendInBlue
      * @param bool $defaultValue The default preference value of this mailing preference for each user
      * @param bool $isNewsletter If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
      */
-    public function __construct($name=null, $attribute=null, $defaultValue=false, $isNewsletter=false) {
+    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false, $isNewsletter=false) {
     }
 
     /**
@@ -84,6 +92,13 @@ class Preference
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription() {
+        return $this->description;
     }
 
     /**
@@ -135,6 +150,17 @@ class Preference
     }
 
     /**
+     * @param string $description
+     *
+     * @return self
+     */
+    public function setDescription(string $description) {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
      * @param string $attribute
      *
      * @return self
@@ -163,7 +189,7 @@ class Preference
      *
      * @return $this
      */
-    public function setNewsletter(bool $isNewsletter)
+    public function setIsNewsletter(bool $isNewsletter)
     {
         $this->isNewsletter = $isNewsletter;
 

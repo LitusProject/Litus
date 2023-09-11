@@ -26,16 +26,20 @@
             <table class="full_width manage">
                 <tr>
                     <th>Display Name</th>
+                    <th>Description</th>
                     <th>SIB Attribute</th>
                     <th>Default Preference</th>
+                    <th>Newsletter</th>
                     <th width="70px">Action</th>
                 </tr>
 
                 {% for preference in preferences %}
                     <tr class="item item-{{ preference.getId() }}">
                         <td>{{ preference.getName() }}</td>
+                        <td>{{ preference.getDescription() }}</td>
                         <td>{{ preference.getAttribute() }}</td>
                         <td>{{ preference.getDefaultValue() ? "Yes" : "No" }}</td>
+                        <td>{{ preference.isNewsletter() ? "Yes" : "No" }}</td>
                         <td class="actions">
                             {% if hasAccess('mail_admin_preference', 'delete') %}
                                 <a href="#" class="delete" data-id="{{ preference.getId() }}" data-name="{{ preference.getName() }}">Delete</a>
@@ -95,8 +99,10 @@
                         if (this.type === 'item') {
                             $('#preference_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                             row.append('<td>' + this.preference + '</td>')
+                                .append('<td>' + this.description + '</td>')
                                 .append('<td>' + this.attribute + '</td>')
                                 .append('<td>' + this.default_value + '</td>')
+                                .append('<td>' + this.is_newsletter + '</td>')
                                 .append(
                                     $('<td>', {'class': 'actions'})
                                         .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))

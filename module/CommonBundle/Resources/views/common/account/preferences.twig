@@ -32,7 +32,8 @@
             {% for preferenceMapping in preferenceMappings %}
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"  class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}
+                        <b><input type="checkbox"  class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}</b>
+                        <p {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getDescription() }}</p>
                     </label>
                 </div>
             {% endfor %}
