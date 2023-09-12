@@ -73,7 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $categorypage = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\CategoryPage')
                 ->findOneByCategory($category);
-            if(!$categorypage) {
+            if(!$categorypage or $categorypage == $this->getCategoryPage()) {
                 $categoryOptions[$category->getId()] = $category->getName();
             }
         }
