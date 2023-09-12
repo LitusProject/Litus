@@ -1,13 +1,8 @@
 .vtk-navbar {
-  position: sticky;
-  top: -2px;
   width: 100vw;
   max-width: 100%;
   background-color: white;
   height: 90px;
-  // -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
-  // box-shadow: 0 3px 12px rgba(82, 71, 71, 0.13);
-  z-index: 1000;
   margin-top: -1px;
   border-bottom: 1px solid whitesmoke;
 }
@@ -173,10 +168,18 @@
   border-radius: 50%;
 }
 
+.vtk-sticky {
+  position: sticky;
+  top: -2px;
+  width: 100vw;
+  max-width: 100%;
+  z-index: 1000;
+  margin-top: -1px;
+}
+
 .vtk-primary-navbar {
   background-color: whitesmoke;
-  padding: 8px 0px;
-  border-bottom: 3px solid whitesmoke;
+  padding: 5px 0px;
 }
 
 .vtk-primary-menuitem {
