@@ -254,7 +254,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             ->getConfigValue('page.frame_poster_path');
 
         $image = new Imagick($file['tmp_name']);
-        $image->thumbnailImage(760, 400, true);
+        $image->thumbnailImage(600, 400, true);
 
         if ($frame->getPoster() != '' || $frame->getPoster() !== null) {
             $fileName = '/' . $frame->getPoster();
