@@ -3,9 +3,13 @@
 namespace MailBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
+use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Entity\Preference;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client as HttpClient;
 use Psr\Http\Message\StreamInterface;
+use SendinBlue\Client\Configuration;
+use SendinBlue\Client\Api\AccountApi;
 
 class PreferenceController extends \MailBundle\Component\Controller\AdminController
 {
@@ -46,12 +50,6 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                         'The SIB Attribute can only contain alphanumeric characters and underscore(_).'
                     );
                 }
-                else if (strncmp($preference->getName(), "newsletter_", 11) === 1) {
-                    $this->flashMessenger()->error(
-                        'Error',
-                        'The SIB Attribute cannot start with "newsletter_", as this will be automatically appended in front of it.'
-                    );
-                }
                 else {
                     $this->getEntityManager()->persist($preference);
                     $this->getEntityManager()->flush();
@@ -61,8 +59,19 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('mail.enable_sib_api');
                     if ($enableSibApi == "1") {
-                        $this->sibAddAttribute($preference->getAttribute());
-                        $this->sibUpdateAllUsers($preference->getAttribute(), $preference->getDefaultValue());
+                        $sibApiHelper = new SibApiHelper($this->getEntityManager());
+
+                        // create attribute
+//                        $sibApiHelperResponse = $sibApiHelper->createAttribute($preference->getAttribute());
+//                        if (!$sibApiHelperResponse->success) {
+//                            $this->flashMessenger()->error(
+//                                'Error',
+//                                'Exception when calling Sendinblue AttributesApi->createAttribute: ' . $e->getMessage()
+//                            );
+//                        }
+
+                        // assign default value of preference to sib attribute for all sib contacts
+                        $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
                     }
 
                     $this->flashMessenger()->success(
@@ -193,7 +202,12 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
      */
     public function sibAddAttribute(string $name) {
         $api = $this->sibGetAPI();
-        $client = new \GuzzleHttp\Client();
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $api);
+
+        $apiInstance = new AccountApi(
+            new HttpClient(),
+            $config
+        );
 
         $response = $client->request('POST', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
             'body' => '{"type":"boolean"}',
@@ -224,134 +238,6 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                 'content-type' => 'application/json',
             ],
         ]);
-    }
-
-    /**
-     * Updates an attribute of a SendInBlue contact to a value, or leaves it unchanged if
-     * the new value is the same as the old value.
-     *
-     * @param int $id
-     * @param string $attributeName
-     * @param bool $value
-     * @return void
-     * @throws GuzzleException
-     */
-    public function updateContact(int $id, string $attributeName, bool $value) {
-        $api = $this->sibGetAPI();
-        $client = new \GuzzleHttp\Client();
-        $value = $value ? "true" : "false";
-        $client->request('POST', 'https://api.sendinblue.com/v3/contacts/batch', [
-            'body' => '{"contacts":[{"attributes":{"'.$attributeName.'":'.$value.'},"id":'.$id.'}]}',
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $api,
-                'content-type' => 'application/json',
-            ],
-        ]);
-    }
-
-    /**
-     * Returns an array containing all the positions of $needle in $haystack.
-     *
-     * @param string $haystack
-     * @param string $needle
-     * @return array
-     */
-    public function strPosAll($haystack, $needle) {
-        $s = 0;
-        $i = 0;
-        while(is_integer($i)) {
-            $i = mb_stripos($haystack, $needle, $s);
-            if(is_integer($i)) {
-                $aStrPos[] = $i;
-                $s = $i + mb_strlen($needle);
-            }
-        }
-        if(isset($aStrPos)) return $aStrPos;
-        else return array();
-    }
-
-    /**
-     * Returns an array containing al the ids of SendInBlue contacts.
-     *
-     * @return array
-     * @throws GuzzleException
-     */
-    public function getAllUserIds() {
-        $offset = 0;
-        $limit = 1000;
-        $ids = $this->getUserIds($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
-        while (count($ids)%1000 == 0) { // take next thousand, as long as they exist
-            $offset += 1000;
-            $ids = array_merge($ids, $this->getUserIds($offset, $limit));
-        }
-        return $ids;
-    }
-
-    /**
-     * Returns a StreamInterface object which contains information of all SendInBlue contacts that are
-     * between $offset and $limit in the SendInBlue contact list.
-     *
-     * @param int $offset
-     * @param int $limit
-     * @return StreamInterface
-     * @throws GuzzleException
-     */
-    public function getUserBatch(int $offset, int $limit) {
-        $api = $this->sibGetAPI();
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://api.sendinblue.com/v3/contacts?limit='.$limit.'&offset='.$offset.'&sort=desc', [
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $api,
-            ],
-        ]);
-        return $response->getBody();
-    }
-
-    /**
-     * Returns an array containing all ids of SendInBlue contacts that are between $offset and $limit in the SendInBlue contact list.
-     *
-     * @param int $offset
-     * @param int $limit
-     * @return array
-     * @throws GuzzleException
-     */
-    public function getUserIds(int $offset, int $limit)
-    {
-        $batch = $this->getUserBatch($offset, $limit);
-        $idsPos = $this->strPosAll($batch, "\"id"); // code to subtract id's from all user information
-        $ids = array();
-        foreach ($idsPos as $pos) {
-            $beginPos = $pos + 5;
-            $endPos = strpos($batch, ",", $beginPos);
-            $ids[] = intval(mb_substr($batch, $beginPos, $endPos - $beginPos));
-        }
-        return $ids;
-    }
-
-    /**
-     * Updates all SendInBlue contacts' attribute with name $attributeName to a value, or leaves it unchanged if
-     * the new value is the same as the old value.
-     *
-     * @param string $attributeName
-     * @param bool $value
-     * @return void
-     * @throws GuzzleException
-     */
-    public function sibUpdateAllUsers(string $attributeName, bool $value) {
-        set_time_limit(900); // increase php timeout limit
-        $ids = $this->getAllUserIds();
-        foreach($ids as $id) {
-            $this->updateContact($id, $attributeName, $value);
-        }
-        set_time_limit(90); // set back to default php timeout limit
-    }
-
-    public function sibGetAPI() {
-        return $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.sib_api');
     }
 
 }
