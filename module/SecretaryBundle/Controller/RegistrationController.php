@@ -735,35 +735,62 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         if ($academic === null) {
             return new ViewModel();
         }
+        $email = $academic->getPersonalEmail();
+        $sibApiHelper = new SibApiHelper($this->getEntityManager());
 
-        $data = $this->getRequest()->getPost()->toArray();
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost()->toArray();
 
-        if (isset($data['preference_mappings_true'])) {
-            foreach ($data['preference_mappings_true'] as $id) {
-                $preferenceMapping = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
-                    ->findOnebyId($id);
-                $preferenceMapping->setValue(true);
-                $this->getEntityManager()->persist($preferenceMapping);
+            $subscribedPreferences = array();
+            if (isset($data['preference_mappings_true'])) {
+                foreach ($data['preference_mappings_true'] as $id) {
+                    $preferenceMapping = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                        ->findOnebyId($id);
+                    $subscribedPreferences[] = $preferenceMapping;
+                }
+            }
+
+            $notSubscribedPreferences = array();
+            if (isset($data['preference_mappings_false'])) {
+                foreach ($data['preference_mappings_false'] as $id) {
+                    $preferenceMapping = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                        ->findOnebyId($id);
+                    $notSubscribedPreferences[] = $preferenceMapping;
+                }
+            }
+
+            $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
+            $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
+
+            if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success) {
+                $this->flashMessenger()->success(
+                    'Error',
+                    'Something went wrong when updating your preferences. Please feel free to reach out to us.'
+                );
+            }
+            else {
+                foreach ($subscribedPreferences as $prefMap) {
+                    $prefMap->setValue(true);
+                    $this->getEntityManager()->persist($prefMap);
+                    $this->getEntityManager()->flush();
+                }
+                foreach ($notSubscribedPreferences as $prefMap) {
+                    $prefMap->setValue(false);
+                    $this->getEntityManager()->persist($prefMap);
+                    $this->getEntityManager()->flush();
+                }
+
+                $this->getEntityManager()->persist($academic);
                 $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'Your preferences have been successfully saved!'
+                );
             }
         }
-
-        if (isset($data['preference_mappings_false'])) {
-            foreach ($data['preference_mappings_false'] as $id) {
-                $preferenceMapping = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
-                    ->findOnebyId($id);
-                $preferenceMapping->setValue(false);
-                $this->getEntityManager()->persist($preferenceMapping);
-                $this->getEntityManager()->flush();
-            }
-        }
-
-        $this->getEntityManager()->persist($academic);
-        $this->getEntityManager()->flush();
-
-        $this->updateSibAttributes($academic);
 
         $this->redirect()->toRoute(
             'secretary_registration',
@@ -771,11 +798,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 'action' => 'preferences',
             )
         );
-        return new ViewModel(
-            array(
-                'result' => (object) array('status' => 'success'),
-            )
-        );
+        return new ViewModel();
     }
 
     public function completeAction()

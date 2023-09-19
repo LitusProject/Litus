@@ -135,11 +135,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 //        }
 
         $preferenceMappings = $academic->getPreferenceMappings();
-        $sections = $this->getEntityManager()
+        $preferences = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Preference')
             ->findAll();
 
-        $this->syncPreferenceMappings($academic, $preferenceMappings, $sections);
+        $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -825,9 +825,9 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
      * @param $sections
      * @return void
      */
-    private function syncPreferenceMappings($academic, $preferenceMappings, $sections) {
-        if ($sections != null) {
-            foreach ($sections as $section) {
+    private function syncPreferenceMappings($academic, $preferenceMappings, $preferences) {
+        if ($preferences != null) {
+            foreach ($preferences as $section) {
                 // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
                 if (!($section->inPreferencesMappings($preferenceMappings))) {
                     $prefToAdd = new PreferenceMapping($academic, $section, $section->getDefaultValue());
@@ -840,7 +840,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if ($preferenceMappings != null ) {
             foreach ($preferenceMappings as $preferenceMapping) {
                 // possible that sections are removed in admin that are still in academic's preferences -> remove those
-                if (!($preferenceMapping->inPreferences($sections))) {
+                if (!($preferenceMapping->inPreferences($preferences))) {
                     $academic->removePreferenceMapping($preferenceMapping);
                     $this->getEntityManager()->remove($preferenceMapping);
                     $this->getEntityManager()->flush();
