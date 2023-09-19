@@ -34,6 +34,9 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
 
+            //No spaces in name to create valide url for categoryPage
+            $translationData['name'] = str_replace(' ', '-', $translationData['name']);
+
             if ($translation !== null) {
                 $translation->setName($translationData['name']);
             } else {

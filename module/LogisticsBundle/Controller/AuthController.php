@@ -48,7 +48,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
         }
 
         $this->redirect()->toRoute(
-            'logistics_index',
+            'logistics_catalog',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -89,7 +89,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
             );
 
             $code = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\User\Shibboleth\Code')
+                ->getRepository('CommonBundle\Repository\User\Shibboleth\Code')
                 ->findLastByUniversityIdentification($this->getParam('identification'));
 
             if ($code !== null) {
@@ -111,7 +111,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             );
                         } else {
                             $this->redirect()->toRoute(
-                                'logistics_index'
+                                'logistics_catalog'
                             );
                         }
 

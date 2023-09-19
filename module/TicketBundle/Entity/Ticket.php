@@ -505,10 +505,11 @@ class Ticket
      */
     public function getPrice()
     {
+        $option_or_event = $this->getOption() ?? $this->getEvent();
         if ($this->isMember() === true) {
-            $price = $this->getOption()->getPriceMembers();
+            $price = $option_or_event->getPriceMembers();
         } else {
-            $price = $this->getOption()->getPriceNonMembers();
+            $price = $option_or_event->getPriceNonMembers();
         }
 
         return number_format($price / 100, 2);
@@ -598,7 +599,7 @@ class Ticket
         $message = $mailData[$language->getAbbrev()]['content'];
         $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
 
-        $mailAddress = $entityManager
+        $mailAddress = $this->getEvent()->getMailFrom() ? : $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.subscription_mail');
 
@@ -646,7 +647,10 @@ class Ticket
             ->setFrom($mailAddress, $mailName)
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject)
-            ->addBcc('it@vtk.be')
+            ->addBcc($entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail'),
+                'System Administrator')
             ->addBcc($mailAddress);
 
         if (getenv('APPLICATION_ENV') != 'development') {

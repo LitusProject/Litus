@@ -136,7 +136,7 @@
                         {% endif %}
                         <td>{{ ticket.getPayId() }}</td>
                         <td>{{ ticket.getOrderId() }}</td>
-                        <td>{{ ticket.getPrice() }}</td>
+                        <td>€{{ ticket.getPrice() }}</td>
                         <td class="bookDate">{{ dateLocalized(ticket.getBookDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td class="soldDate">{{ dateLocalized(ticket.getSoldDate(), 'd/MM/YYYY HH:mm') }}</td>
                         <td class="qrCode">{% if ticket.getQrCode() %}&times;{% endif %}</td>

@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
+use Laminas\Mail\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
@@ -13,6 +14,7 @@ use LogisticsBundle\Entity\Request;
 /**
  * CatalogController
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
@@ -128,7 +130,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                             ->findOneById($articleId);
 
                         $oldAmount = $mapped[$articleId]?: 0;
-                        error_log($oldAmount);
                         $booking = new Map($newOrder, $article, $formValue, $oldAmount);
 
                         $this->getEntityManager()->persist($booking);
@@ -167,6 +168,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 'isPraesidium'  => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'articles'      => $allArticles,
                 'categories'    => Article::$POSSIBLE_CATEGORIES,
+                'units'         => $this->getAllActiveUnits($articles),
                 'form'          => $form,
                 'searchForm'    => $searchForm,
                 'order'         => $order,
@@ -308,7 +310,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
 
-        // Gets last order for every request
+        // Gets all orders for request
         $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
 
         return new ViewModel(
@@ -534,6 +536,26 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @return array
      */
+    private function getAllActiveUnits($articles)
+    {
+        $unitsArray = array();
+        foreach ($articles as $article) {
+            if ($article->getUnit()) {
+                $unitsArray[] = $article->getUnit()->getName();
+            }
+        }
+        $unitsArray = array_unique($unitsArray);
+
+        if (count($unitsArray) == 0) {
+            throw new RuntimeException('There needs to be at least one unit');
+        }
+
+        return $unitsArray;
+    }
+
+    /**
+     * @return array
+     */
     private function getOpenRequestsByAcademic(Academic $academic)
     {
         $unhandledRequests = $this->getEntityManager()
@@ -551,15 +573,19 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function getOpenRequestsByUnit($unit)
     {
-        $unhandledRequests = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findAllUnhandledByUnit($unit);
+        $activeOrders = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order')
+            ->findAllActiveByUnit($unit);
 
-        $handledRejects = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findActiveRejectsByUnit($unit);
+        $requests = array();
+        foreach ($activeOrders as $activeOrder) {
+            $request = $activeOrder->getRequest();
+            if (!($request->isRemoved()) and !(in_array($request, $requests, true))) {
+                $requests[] = $activeOrder->getRequest();
+            }
+        }
 
-        return array_merge($handledRejects, $unhandledRequests);
+        return $requests;
     }
 
     /**
@@ -657,6 +683,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 ->getConfigValue('logistics.order_request')
         );
 
+        $reviewLink = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('logistics.order_link') . $order->getId();
+
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
@@ -664,8 +694,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $mail->setEncoding('UTF-8')
             ->setBody(
                 str_replace(
-                    array('{{ name }}', '{{ type }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                    array($order->getName(), $request->getRequestType(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                    array('{{ name }}', '{{ person }}', '{{ end }}', '{{ start }}', '{{ link }}'),
+                    array($order->getName(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i'), $reviewLink),
                     $message
                 )
             )
@@ -703,25 +733,51 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 ->getConfigValue('logistics.order_alert_mail')
         );
 
+        $reviewLink = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.order_link') . $order->getId();
+
         $message = $mailData['content'];
         $subject = $mailData['subject'];
 
+        $alertMailArray = array();
         foreach ($mappings as $map) {
             $alertMail = $map->getArticle()->getAlertMail();
+            if (!($alertMail == 'logistiek@vtk.be')) {
+                if ($alertMailArray[$alertMail]) {
+                    $alertMailArray[$alertMail][] = $map;
+                } else {
+                    $alertMailArray[$alertMail] = array($map);
+                }
+            }
+        }
+
+        foreach ($alertMailArray as $alertMail => $mappings) {
             if ($alertMail != Null && $alertMail !== '') {
+                $articleBody = '';
+                foreach ($mappings as $map) {
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . str_repeat(" ", 25 - strlen($map->getArticle()->getName())) . "aantal: " . $map->getAmount() . "\r\n";
+                }
+                error_log($articleBody);
+                $headers = new Headers();
+                $headers->addHeaders(
+                    array(
+                        'Content-Type' => 'text/plain',
+                    )
+                );
+
                 $mail = new Message();
-                $mail->setEncoding('UTF-8')
+                $mail->setEncoding('UTF-8')->setHeaders($headers)
                     ->setBody(
                         str_replace(
-                            array('{{ name }}', '{{ article }}', '{{ amount }}', '{{ person }}', '{{ end }}', '{{ start }}'),
-                            array($order->getName(), $map->getArticle()->getName(), $map->getAmount(), $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
+                            array('{{ name }}', '{{ article }}', '{{link}}', '{{ person }}', '{{ end }}', '{{ start }}'),
+                            array($order->getName(), $articleBody, $reviewLink, $order->getCreator()->getFullName(), $order->getEndDate()->format('d/m/Y H:i'), $order->getStartDate()->format('d/m/Y H:i')),
                             $message
                         )
                     )
                     ->setFrom($mailAddress, $mailName)
-                    ->addTo($map->getArticle()->getAlertMail(), $mailName)
-                    ->setSubject(str_replace(array('{{ name }}', '{{ article }}'), array($order->getName(), $map->getArticle()->getName()), $subject));
-
+                    ->addTo($map->getArticle()->getAlertMail(), $map->getArticle()->getUnit()->getName())
+                    ->setSubject(str_replace(array('{{ name }}',), array($order->getName(),), $subject));
 
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);

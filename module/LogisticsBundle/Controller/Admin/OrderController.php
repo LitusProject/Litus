@@ -34,6 +34,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $reviewingUnit = $academic->getUnit($this->getCurrentAcademicYear());
+
         $order = $this->getOrderEntity();
         if ($order === null) {
             return new ViewModel();
@@ -55,19 +62,61 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             $oldOrder = $lastOrders[$orderIndex + 1];
         }
 
-        $orderForm = $this->getForm(
-            'logistics_admin_order_review',
-            array(
-                'order' => $order,
-            )
-        );
-
         $articleForm = $this->getForm(
             'logistics_admin_order_orderArticleMap_review',
             array(
                 'articles' => $articles,
             )
         );
+        if ($this->getRequest()->isPost()) {
+            $orderForm->setData($this->getRequest()->getPost());
+
+            if ($orderForm->isValid()) {
+                $newOrder = $orderForm->hydrateObject(
+                    $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName())
+                );
+                $newOrder->review();
+                $this->getEntityManager()->persist($newOrder);
+
+                $request = $order->getRequest();
+                $request->handled();
+
+                if ($this->getRequest()->isPost()) {
+                    $articleForm->setData($this->getRequest()->getPost());
+
+                    if ($articleForm->isValid()) {
+                        foreach ($articles as $mapping) {
+                            $newMapping = $articleForm->hydrateObject(new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount()));
+                            if ($mapping->getAmount() == $mapping->getOldAmount()) {
+                                $newMapping->setStatus('goedgekeurd');
+                            } else {
+                                $newMapping->setStatus('herzien');
+                            }
+                            $this->getEntityManager()->persist($newMapping);
+                        }
+
+                        $this->getEntityManager()->flush();
+
+                        //        $this->sendMailToContact($request);
+                        $this->flashMessenger()->success(
+                            'Success',
+                            'The order was succesfully reviewed.'
+                        );
+
+                        $this->redirect()->toRoute(
+                            'logistics_admin_request',
+                            array(
+                                'action' => 'manage',
+                            )
+                        );
+
+                        return new ViewModel();
+                    }
+                }
+            }
+        }
+
+
 
         return new ViewModel(
             array(
@@ -477,59 +526,59 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function conflictingAction()
-    {
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Article')
-            ->findAll();
-
-        $conflicts = array();
-
-        foreach ($articles as $article) {
-            $mappings = array();
-            $allmaps = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllActiveByArticleQuery($article)->getResult();
-
-            foreach ($allmaps as $map) {
-                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
-                    array_push($mappings, $map);
-                }
-            }
-
-            $max = $article->getAmountAvailable();
-            $allOverlap = array();
-
-            foreach ($mappings as $map) {
-                $overlapping_maps = $this->findOverlapping($mappings, $map);
-
-                foreach ($overlapping_maps as $overlap) {
-                    if (!in_array($overlap, $allOverlap)) {
-                        array_push($allOverlap, $overlap);
-                    }
-                }
-            }
-
-            $total = 0;
-            foreach ($allOverlap as $overlap) {
-                $total += $overlap->getAmount();
-            }
-            if ($total > $max) {
-                $conflict = array(
-                    'article'  => $article,
-                    'mappings' => $allOverlap,
-                    'total'    => $total
-                );
-                array_push($conflicts, $conflict);
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'conflicts' => $conflicts,
-            )
-        );
-    }
+//    public function conflictingAction()
+//    {
+//        $articles = $this->getEntityManager()
+//            ->getRepository('LogisticsBundle\Entity\Article')
+//            ->findAll();
+//
+//        $conflicts = array();
+//
+//        foreach ($articles as $article) {
+//            $mappings = array();
+//            $allmaps = $this->getEntityManager()
+//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+//                ->findAllActiveByArticleQuery($article)->getResult();
+//
+//            foreach ($allmaps as $map) {
+//                if ($map->getOrder()->getEndDate() > new DateTime() && !$map->getOrder()->isRemoved()) {
+//                    array_push($mappings, $map);
+//                }
+//            }
+//
+//            $max = $article->getAmountAvailable();
+//            $allOverlap = array();
+//
+//            foreach ($mappings as $map) {
+//                $overlapping_maps = $this->findOverlapping($mappings, $map);
+//
+//                foreach ($overlapping_maps as $overlap) {
+//                    if (!in_array($overlap, $allOverlap)) {
+//                        array_push($allOverlap, $overlap);
+//                    }
+//                }
+//            }
+//
+//            $total = 0;
+//            foreach ($allOverlap as $overlap) {
+//                $total += $overlap->getAmount();
+//            }
+//            if ($total > $max) {
+//                $conflict = array(
+//                    'article'  => $article,
+//                    'mappings' => $allOverlap,
+//                    'total'    => $total
+//                );
+//                array_push($conflicts, $conflict);
+//            }
+//        }
+//
+//        return new ViewModel(
+//            array(
+//                'conflicts' => $conflicts,
+//            )
+//        );
+//    }
 
     public function deleteArticleAction()
     {

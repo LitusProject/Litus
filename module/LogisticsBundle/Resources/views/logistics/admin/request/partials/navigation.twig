@@ -3,6 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('logistics_admin_request', 'conflicting') %}
+                <li><a {% if 'conflicting' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "conflicting"}) }}">Conflicting</a></li>
+            {% endif %}
             {% if hasAccess('logistics_admin_request', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}

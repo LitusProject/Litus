@@ -18,7 +18,7 @@
                             </p>
                             <p>
                                 <a href="#" class="review-order" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
-                                    &rarr; Review Order
+                                    &rarr; Review Order Info
                                 </a>
                             </p>
                         </div>
@@ -103,10 +103,11 @@
                     {#     Table header       #}
                     <thead>
                     <tr>
-                        <th style="width: 20%">Name</th>
-                        <th style="width: 20%">Category</th>
+                        <th style="width: 15%">Name</th>
+                        <th style="width: 15%">Unit</th>
+                        <th style="width: 15%">Category</th>
                         <th style="width: 20%">Comments</th>
-                        <th style="width: 20%">Status</th>
+                        <th style="width: 15%">Status</th>
                         <th style="width: 10%">Old amount</th>
                         <th style="width: 10%">New amount</th>
                         {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
@@ -118,6 +119,7 @@
                     {% for mapping in articles %}
                                 <tr class="item item-{{ mapping.getId() }}">
                                     <td>{{ mapping.getArticle().getName() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getArticle().getCategory() }}</td>
                                     <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
                                             {{ mapping.getArticle().getAdditionalInfo() }}{% endif %}</td>
@@ -181,7 +183,7 @@
         {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
             <div class="row" style="margin-top: 30px; text-align: center">
                 <div style="width: 230px; margin: auto">
-                    <a class="edit" style="margin: 6px" href="{{ url('logistics_admin_order', {"action" : 'review', "id" : order.getId()}) }}">
+                    <a class="edit review" style="margin: 6px" href="#" data-id="{{ order.getId() }}">
                         <b style="padding-left: 5px">Review</b>
                     </a>
                     <a class="accept_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action": "approve", "id": order.getId()}) }}">
@@ -200,15 +202,15 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <span>Litus Admin</span>
-                    /Review Order
+                    /Review Order Info
                 </div>
                 <div class="modal-body" style="padding-left: 20%">
                     <h1>Order: <b class="orderName"></b></h1>
                     <div>{{ forms.renderForm(orderForm) }}</div>
-                    <div class="footer" style="margin-top:15px">
-                        <button class="edit">Review</button>
-                        <button class="cancel" data-dismiss="modal">Close</button>
-                    </div>
+{#                    <div class="footer" style="margin-top:15px">#}
+{#                        <button class="edit">Review</button>#}
+{#                        <button class="cancel" data-dismiss="modal">Close</button>#}
+{#                    </div>#}
                 </div>
             </div>
         </div>
@@ -227,9 +229,29 @@
                         {{ forms.renderForm(articleForm) }}
                     </div>
                     {#                    <div>{{ forms.renderForm(articleForm) }}</div>#}
-                    <div class="footer" style="margin-top:15px">
-                        <button class="edit">Review</button>
-                        <button class="cancel" data-dismiss="modal">Close</button>
+{#                    <div class="footer" style="margin-top:15px">#}
+{#                        <button class="edit">Review</button>#}
+{#                        <button class="cancel" data-dismiss="modal">Close</button>#}
+{#                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="reviewAll" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Review Order
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to <b>review</b> the order?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
             </div>
@@ -242,6 +264,7 @@
         $(document).ready(function () {
             $('.review-order').click(openReviewOrderModal);
             $('.item .review-article').click(openReviewArticleModal);
+            $('.review').click(reviewAllModal);
         });
 
         function openReviewOrderModal(e) {
@@ -278,6 +301,31 @@
                 reviewArticle.modal('hide');
             });
             reviewArticle.modal();
+        }
+
+        function reviewAllModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            console.log('review');
+            var reviewAll = $('#reviewAll');
+
+            var id = $this.data('id');
+
+            reviewAll.find('.edit').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_order', {"action": "review"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        // $('.article_removed_success').removeClass('hide');
+                        // $('.item-' + id).remove();
+                        reviewAll.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            reviewAll.modal();
+{#        {{ url('logistics_admin_order', {"action" : 'review', "id" : order.getId()}) }}#}
         }
 
         function errorRemove() {

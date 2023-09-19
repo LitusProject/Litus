@@ -1037,7 +1037,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setFrom($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
-            ->addBcc('it@vtk.be')
+            ->addBcc($this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail'),
+                'System Administrator')
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
 
         if (getenv('APPLICATION_ENV') != 'development') {

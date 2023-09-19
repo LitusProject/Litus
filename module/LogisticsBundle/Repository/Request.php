@@ -52,46 +52,6 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function findAllUnhandledByUnit(UnitEntity $unit)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('r')
-            ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.editOrder', 'o')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('r.handled', 'FALSE'),
-                    $query->expr()->eq('o.unit', ':unit'),
-                    $query->expr()->eq('o.removed', 'FALSE')
-                )
-            )
-            ->setParameter('unit', $unit->getId())
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function findUnhandledRequestsByOrder(OrderEntity $order)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('r')
-            ->from('LogisticsBundle\Entity\Request', 'r')
-            ->where(
-                $query->expr()->andx(
-                    $query->expr()->eq('r.handled', 'FALSE'),
-                    $query->expr()->eq('r.editOrder', ':order')
-                )
-            )
-            ->setParameter('order', $order->getId())
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findAllUnhandledByAcademic(Academic $academic)
@@ -99,23 +59,23 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->join('r.referencedOrder', 'ro')
-            ->leftJoin('r.editOrder', 'o')
+//            ->join('r.referencedOrder', 'ro')
+//            ->leftJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->orX(
                     $query->expr()->andx(
                         $query->expr()->eq('r.handled', 'FALSE'),
                         $query->expr()->eq('r.removed', 'FALSE'),
-                        $query->expr()->isNull('r.editOrder'),
-                        $query->expr()->eq('ro.removed', 'FALSE'),
-                        $query->expr()->eq('ro.creator', ':academic')
+//                        $query->expr()->isNull('r.editOrder'),
+//                        $query->expr()->eq('ro.removed', 'FALSE'),
+                        $query->expr()->eq('r.creator', ':academic')
                     ),
                     $query->expr()->andx(
                         $query->expr()->eq('r.handled', 'FALSE'),
                         $query->expr()->eq('r.removed', 'FALSE'),
-                        $query->expr()->isNotNull('r.editOrder'),
-                        $query->expr()->eq('o.removed', 'FALSE'),
-                        $query->expr()->eq('o.creator', ':academic')
+//                        $query->expr()->isNotNull('r.editOrder'),
+//                        $query->expr()->eq('o.removed', 'FALSE'),
+                        $query->expr()->eq('r.creator', ':academic')
                     )
                 )
             )
@@ -133,14 +93,14 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.editOrder', 'o')
+//            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
                     $query->expr()->eq('r.removed', 'FALSE'),
-                    $query->expr()->eq('o.approved', 'FALSE'),
-                    $query->expr()->eq('o.removed', 'FALSE'),
-                    $query->expr()->eq('o.creator', ':academic')
+//                    $query->expr()->eq('o.approved', 'FALSE'),
+//                    $query->expr()->eq('o.removed', 'FALSE'),
+                    $query->expr()->eq('r.creator', ':academic')
                 )
             )
             ->setParameter('academic', $academic->getId())
@@ -235,14 +195,14 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
             ->from('LogisticsBundle\Entity\Request', 'r')
-            ->innerJoin('r.editOrder', 'o')
+//            ->innerJoin('r.editOrder', 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
                     $query->expr()->eq('r.removed', 'FALSE'),
-                    $query->expr()->eq('o.approved', 'FALSE'),
-                    $query->expr()->eq('o.removed', 'FALSE'),
-                    $query->expr()->eq('o.unit', ':unit')
+//                    $query->expr()->eq('o.approved', 'FALSE'),
+//                    $query->expr()->eq('o.removed', 'FALSE'),
+//                    $query->expr()->eq('o.unit', ':unit')
                 )
             )
             ->setParameter('unit', $unit->getId())

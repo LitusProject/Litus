@@ -65,6 +65,11 @@ class ScannerController extends \CommonBundle\Component\Controller\ActionControl
 
         $this->getEntityManager()->flush();
 
+        $this->flashMessenger()->success(
+            'Success',
+            'All scans have been deleted.'
+        );
+
         $this->redirect()->toRoute(
             'fak_admin_scanner',
             array(

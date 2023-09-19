@@ -57,10 +57,10 @@
   padding: 160px 0px;
   background: linear-gradient(
       0deg,
-      rgba(50, 50, 50, 0.6),
-      rgba(50, 50, 50, 0.6)
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.3)
     ),
-    url(../_site/img/br-bg.png);
+    url(../_site/img/br-img.jpg);
   background-position: center;
   background-size: cover;
 }
@@ -116,7 +116,7 @@
 }
 
 .frame-poster-big {
-  height: 200px;
+  aspect-ratio: 3 / 2;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -124,8 +124,7 @@
 }
 
 .frame-poster-small {
-  height: 140px;
-  //background-image: url(https://picsum.photos/400);
+  aspect-ratio: 3 / 2;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -261,7 +260,8 @@
     -ms-flex-line-pack: flex-start;
   }
 
-  .frame-grid,
+  .frame-grid-big,
+  .frame-grid-small,
   .calendar-grid {
     display: grid;
     grid-template-columns: 1fr;

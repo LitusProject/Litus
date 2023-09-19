@@ -65,9 +65,9 @@
             <div class="col-md-4" style="padding-right: 3%; padding-top: 10px;">
                 {#     Personal info  #}
                 <div class="info-content">
-                    <p>Contact: &emsp;&ensp;&ensp;<b>{{ order.getContact() }}</b></p>
+                    <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
                     {% if order.getUnit() %}
-                        <p>Unit: <b>{{ order.getUnit().getName() }}</b></p>
+                        <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
                     {% endif %}
                     <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
                 </div>
@@ -82,33 +82,19 @@
                         <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
                     {% endif %}
                 </div>
-{#       Old edit order block         #}
-{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-{#                    <div class="title"><b>Edit Order</b></div>#}
-{#                    <div class="content">#}
-{#                        <p>#}
-{#                            <i>Hit the link below to edit this order!<br>(This will generate a new request!)</i>#}
-{#                        </p>#}
-{#                        <p>#}
-{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">#}
-{#                                Edit Order#}
-{#                            </a>#}
-{#                        </p>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
 
             {#     Article body       #}
             <div class="col-md-8" style="padding-left: 50px">
-                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px">
+                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px; overflow: auto; max-height: 330px">
                     <div class="table-condensed">
                         <table class="table mappings">
                             {#     Table header       #}
                             <tr>
                                 <th style="width: 25%">{{ Translate('Name') }}</th>
-                                <th style="width: 25%">{{ Translate('Category') }}</th>
+                                <th style="width: 25%">{{ Translate('Unit') }}</th>
                                 <th style="width: 20%">{{ Translate('Status') }}</th>
-                                <th style="width: 20%">{{ Translate('Comments') }}</th>
+                                <th style="width: 20%">{{ Translate('Description') }}</th>
                                 <th style="width: 10%">{{ Translate('Amount') }}</th>
                             </tr>
 
@@ -119,9 +105,9 @@
                                     {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
                                     {% else %}style="background-color: #fae3e3"{% endif %}>
                                     <td>{{ mapping.getArticle().getName() }}</td>
-                                    <td>{{ mapping.getArticle().getCategory() }}</td>
+                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getStatus() }}</td>
-                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 0 %}
+                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 1 %}
                                             <a rel="popover" data-original-title="{{ translate('Comments') }}"
                                                data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
                                                data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
@@ -132,20 +118,6 @@
                         </table>
                     </div>
                 </div>
-{#       Old edit article block         #}
-{#                <div class="help-block" style="background-color: #D2D0F5; text-align: center; padding: 10px">#}
-{#                    <div class="title"><b>Edit Articles</b></div>#}
-{#                    <div class="content">#}
-{#                        <p>#}
-{#                            <i>Hit the link below to edit the articles of this order!<br>(This will generate a new request!)</i>#}
-{#                        </p>#}
-{#                        <p>#}
-{#                            <a class="btn btn-primary btn-sm" href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">#}
-{#                                &rarr; Edit Articles#}
-{#                            </a>#}
-{#                        </p>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
         </div>
 
@@ -178,7 +150,7 @@
                             <td class="hidden-xs item-{{ lastOrder.getId() }}-status">{{ translate(lastOrder.getStatus()) }}</td>
                             <td class="actions">
                                 {% if lastOrders[0].getId() != lastOrder.getId() and not lastOrders[0].isRemoved() and not lastOrders[0].isCanceled() %}
-                                    <a href="{{ url('logistics_catalog',{ 'action': 'editOrder', 'order': lastOrder.getId() }) }}" class="btn btn-warning btn-sm edit">
+                                    <a href="#" class="btn btn-warning btn-sm edit revert" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
                                         {{ translate('Revert') }}
                                     </a>
                                 {% endif %}
@@ -208,7 +180,21 @@
         </div>
     </div>
 
-    {#      Modals voor requests te cancelen/verwijderen      #}
+    {#      Modals voor requests te cancelen/verwijderen/reverten      #}
+    <div class="modal fade" id="revertRequest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('This function is coming soon!') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="cancelRequest">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -256,10 +242,36 @@
             {#    Display remarks when hovering    #}
             $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
-            {#    Open modals for cancel/remove request    #}
+            {#    Open modals for cancel/remove/revert request    #}
+            $('.item .revert').click(openRevertRequest);
             $('.item .cancel').click(openCancelRequest);
             $('.item .delete').click(openRemoveRequest);
         });
+
+        function openRevertRequest(e) {
+            // Gets the object bound to the modal: an order
+            var $this = $(this);
+            e.preventDefault();
+            var revertRequest = $('#revertRequest');
+            var id = $this.data('id');
+            var name = $(this).data('name');
+            revertRequest.find('.orderName').html(name);
+            {#revertRequest.find('.confirm').unbind('click').click(function () {#}
+            {#    $.post('{{ url('logistics_catalog', {"action": "revertRequest"})}}' + id, function (data) {#}
+            {#        if (data && 'success' == data.status) {#}
+            {#            $('.flashmessage').addClass('hide');#}
+            {#            $('.item-' + id + '-status').html("Canceled");#}
+            {#            $('#infoStatus').html("Canceled");#}
+            {#            $('.item .cancel').remove();#}
+            {#            $('#cancelRequest').modal('hide');#}
+            {#            location.reload();#}
+            {#        } else {#}
+            {#            errorCancel();#}
+            {#        }#}
+            {#    }, 'json').error(errorCancel);#}
+            {#});#}
+            revertRequest.modal();
+        }
 
         function openCancelRequest(e) {
             // Gets the object bound to the modal: an order

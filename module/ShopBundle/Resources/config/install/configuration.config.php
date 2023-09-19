@@ -67,16 +67,6 @@ return array(
         'description' => 'The URL of the shop',
     ),
     array(
-        'key'         => 'shop.main_page_text',
-        'value'       => serialize(
-            array(
-                'nl' => 'nederlandse tekst',
-                'en' => 'engelse tekst',
-            )
-        ),
-        'description' => 'The text for the shop',
-    ),
-    array(
         'key'         => 'shop.enable_winner',
         'value'       => 1,
         'description' => 'Enable the winner column when exporting a sales session to csv',

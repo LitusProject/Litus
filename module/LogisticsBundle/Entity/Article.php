@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Entity;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -128,50 +129,42 @@ class Article
     private $alertMail;
 
     /**
+     * @var Unit The unit which has to be mailed when the article gets booked
+     *
+    * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
+    * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
+    */
+    private $unit;
+
+    /**
      * @static
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
-        # Posten: hier moet automatisch mail adres aan toegevoegd worden
-        'acti'                   => 'Activiteiten',
-        'logistiek'              => 'Logistiek',
-        'sport'                  => 'Sport',
-        'fak'                    => 'Fak',
-        'cultuur'                => 'Cultuur',
-        'communicatie'           => 'Communicatie',
-//        'cursusdienst'           => 'Cursusdienst',       Idee om later toe te voegen (bv. labojassen)
-        'br'                     => 'BR',
-        'it'                     => 'IT',
-        'theokot'                => 'Theokot',
-        'secri'                  => 'Secri',
-        'vice'                   => 'Vice',
-        'praeses'                => 'Praeses',
-        'beheer'                 => 'Beheer',
+        ''                       => '',
+        'allerlei'                  => 'Allerlei',
+        'archief'                   => 'Archief',
+        'banners&vlaggen'           => 'Banners & vlaggen',
+        'BR&Dev'                    => 'BR & Dev',
+        'cantus'                    => 'Cantus',
+        'decoratie'                 => 'Decoratie',
+        'elektriciteit'             => 'Elektriciteit',
+        'licht&geluid'              => 'Licht & geluid',
+        'fak'                       => 'Fak',
+        'keuken'                    => 'Keuken',
+        'kledij'                    => 'Kledij',
+        'kuisproducten'             => 'Kuisproducten',
+        'secrimateriaal'            => 'Secrimateriaal',
+        'the game'                  => 'The game',
+        'touw&tape'                 => 'Touw & tape',
+        'veiligheid&signalisatie'   => 'Veiligheid & signalisatie',
+        'verf'                      => 'Verf',
+        'vuur'                      => 'Vuur',
+        'werkmateriaal'             => 'Werkmateriaal',
 
-        # Flesserke: hier moet automatisch materiaal naar toe gebracht worden uit het Flesserke systeem
-        'Flesserke'              => 'Flesserke',
-
-        # Andere
-        'EHBO'                   => 'EHBO',     # EHBO mailadres aan toevoegen
-        'geluid'                 => 'Geluid',
-        'kabels'                 => 'Kabels',
-        'hand'                   => 'Handgereedschap',
-        'kledij'                 => 'Werkkledij',
-        'materiaal'              => 'Materiaal',
-        'sanitair'               => 'Sanitair',
-        'electronica'            => 'Electronica',
-        'vastmaken'              => 'Vastmaken & CO',
-        'bouwen'                 => 'Bouwen',
-        'lijm en silicoon'       => 'Lijmen & Siliconen',
-        'verf'                   => 'Verven & CO',
-        'stof'                   => 'Stof',
-        'verkleed'               => 'Verkleedkledij',
-        'varia'                  => 'Varia',
-        'huis'                   => 'Huishoudelijk',
-        'glazen'                 => 'Glazen',
-        'elektriciteitskabels'   => 'Elektriciteitskabels',
-        'kook'                   => 'Kookgerief',
-        'corona'                 => 'Coronaproofing',
+        # Flesserke en EHBO: hier moet automatisch materiaal naar toe gebracht worden
+        'flesserke'                 => 'Flesserke',
+        'ehbo'                      => 'EHBO',
     );
 
     /**
@@ -179,9 +172,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'internal' => 'Internal',
-        'external' => 'External',
-        'private'  => 'Private',
+        'post'          => 'Post',
+        'praesidium'    => 'Praesidium',
+        'greatervtk'    => 'Greater VTK',
+        'members'       => 'Members',
     );
 
     /**
@@ -225,6 +219,8 @@ class Article
     public function setSpot($spot)
     {
         $this->spot = $spot;
+
+        return $this;
     }
 
     /**
@@ -241,6 +237,25 @@ class Article
     public function setAlertMail($alertMail)
     {
         $this->alertMail = $alertMail;
+
+        return $this;
+    }
+
+    /**
+     * @return Unit
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param Unit $unit
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+
         return $this;
     }
 
@@ -315,6 +330,8 @@ class Article
     public function setAmountOwned($amountOwned)
     {
         $this->amountOwned = $amountOwned;
+
+        return $this;
     }
 
     /**
@@ -331,6 +348,8 @@ class Article
     public function setAmountAvailable($amountAvailable)
     {
         $this->amountAvailable = $amountAvailable;
+
+        return $this;
     }
 
     /**
@@ -355,6 +374,8 @@ class Article
     public function setVisibility($visibility)
     {
         $this->visibility = $visibility;
+
+        return $this;
     }
 
     /**
@@ -379,6 +400,8 @@ class Article
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -395,6 +418,8 @@ class Article
     public function setLocation($location)
     {
         $this->location = $location;
+
+        return $this;
     }
 
     /**
@@ -411,6 +436,8 @@ class Article
     public function setWarranty($warranty)
     {
         $this->warranty = $warranty;
+
+        return $this;
     }
 
     /**
@@ -427,6 +454,8 @@ class Article
     public function setRent($rent)
     {
         $this->rent = $rent;
+
+        return $this;
     }
 
     /**
@@ -451,6 +480,8 @@ class Article
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -467,6 +498,8 @@ class Article
     public function setDateUpdated($dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
     }
 
     /**

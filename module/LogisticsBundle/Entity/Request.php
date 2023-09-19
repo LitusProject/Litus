@@ -61,65 +61,9 @@ class Request
      */
     private $contact;
 
-//    START
     /**
-     * @var string The type of the request
-     *
-     * @ORM\Column(type="text", nullable=true)
+     * //     * @param Academic $contact
      */
-    private $requestType;
-
-    /**
-     * @var Order The order this is associated with
-     *
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="referenced_order", referencedColumnName="id", nullable=true)
-     */
-    private $referencedOrder;
-
-    /**
-     * @var Order The new order
-     *
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Order")
-     * @ORM\JoinColumn(name="edit_order", referencedColumnName="id", nullable=true)
-     */
-    private $editOrder;
-
-    /**
-     * @var string The type of the request
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $rejectMessage;
-
-    /**
-     * @var string The type of the request
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $flag;
-
-    /**
-     * @static
-     * @var array All the possible requests allowed
-     */
-    public static $possibleRequests = array(
-        'edit'        => 'edit',
-        'edit reject' => 'edit reject',
-        'add'         => 'add',
-        'delete'      => 'delete',
-    );
-//  END
-
-    /**
-//     * @param Academic   $contact
-//     * @param Order      $order
-//     * @param string     $requestType
-//     * @param Order|null $editOrder
-     */
-//    WISSELEN
-//
-//    public function __construct(Academic $contact, Order $order, $requestType, Order $editOrder = null)
     public function __construct(Academic $contact)
     {
         $this->creationTime = new DateTime();
@@ -127,11 +71,6 @@ class Request
         $this->removed = false;
         $this->canceled = false;
         $this->contact = $contact;
-//        START
-//        $this->referencedOrder = $order;
-//        $this->setRequestType($requestType);
-//        $this->editOrder = $editOrder;
-//        END
     }
 
     /**
@@ -230,7 +169,7 @@ class Request
     }
 
     /**
-     * @param  Academic $contact
+     * @param Academic $contact
      * @return Request
      */
     public function setContact($contact)
@@ -239,6 +178,7 @@ class Request
 
         return $this;
     }
+
     /**
      * @return Academic
      */
@@ -246,135 +186,5 @@ class Request
     {
         return $this->contact;
     }
-
-//    START
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        $result = 'pending';
-
-        if ($this->handled) {
-            $result = 'rejected';
-
-            if ($this->getEditOrder()->isApproved()) {
-                $result = 'approved';
-            }
-        } elseif ($this->removed) {
-            $result = 'removed';
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param string $type
-     */
-    private function setRequestType($type)
-    {
-        if (!in_array($type, self::$possibleRequests)) {
-            throw new RuntimeException('The requested type does not exist for the order');
-        }
-
-        $this->requestType = $type;
-    }
-
-    /**
-     * @return Order
-     */
-    public function getOrder()
-    {
-        return $this->referencedOrder;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRejectMessage()
-    {
-        return $this->rejectMessage;
-    }
-
-    /**
-     * @return Order
-     */
-    public function getEditOrder()
-    {
-        return $this->editOrder;
-    }
-
-    /**
-     * @return Order
-     */
-    public function getRecentOrder()
-    {
-        return $this->getEditOrder() ?? $this->getOrder();
-    }
-
-    /**
-     * @return string
-     */
-    public function getRequestType()
-    {
-        return $this->requestType;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFlag()
-    {
-        return $this->flag;
-    }
-
-    /**
-     * @param string $flag
-     * @return self
-     */
-    public function setFlag(string $flag)
-    {
-        $this->flag = $flag;
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function approveRequest()
-    {
-        switch ($this->requestType) {
-            case 'add':
-                $this->getOrder()->approve();
-                break;
-
-            case 'edit' || 'edit reject':
-                $this->getOrder()->remove();
-                $this->getEditOrder()->approve();
-                break;
-
-            case 'delete':
-                $this->getOrder()->remove();
-                break;
-
-            default:
-                break;
-        }
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function rejectRequest($message)
-    {
-        $this->rejectMessage = $message;
-        if ($this->getEditOrder()) {
-            $this->getEditOrder()->reject();
-        } else {
-            $this->getOrder()->reject();
-        }
-        return $this;
-    }
-//    END
 }
+

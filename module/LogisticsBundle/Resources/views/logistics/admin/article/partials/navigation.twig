@@ -6,6 +6,12 @@
             {% if hasAccess('logistics_admin_article', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_article', {"action": "add"}) }}">Add</a></li>
             {% endif %}
+            {% if hasAccess('logistics_admin_article', 'template') %}
+                <li><a {% if 'template' == getParam('action') %} class="active" {% endif %} href="{{ url("logistics_admin_article", {"action": "template"}) }}">Csv template</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_article', 'csv') %}
+                <li><a {% if 'csv' == getParam('action') %} class="active" {% endif %} href="{{ url("logistics_admin_article", {"action": "csv"}) }}">Csv import</a></li>
+            {% endif %}
             {% if hasAccess('logistics_admin_article', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_article', {"action": "manage"}) }}">Manage</a></li>
             {% endif %}

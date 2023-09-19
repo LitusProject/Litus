@@ -39,12 +39,18 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                         'You have been successfully logged in!'
                     );
 
-                    $this->redirect()->toRoute(
-                        'common_index',
-                        array(
-                            'language' => $this->getLanguage()->getAbbrev(),
-                        )
-                    );
+                    if ($this->getParam('redirect') !== null) {
+                        return $this->redirect()->toUrl(
+                            urldecode($this->getParam('redirect'))
+                        );
+                    } else {
+                        $this->redirect()->toRoute(
+                            'common_index',
+                            array(
+                                'language' => $this->getLanguage()->getAbbrev(),
+                            )
+                        );
+                    }
                 } else {
                     $this->flashMessenger()->error(
                         'Error',

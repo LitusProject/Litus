@@ -181,7 +181,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             ->getConfigValue('calendar.poster_path');
 
         $image = new Imagick($file['tmp_name']);
-        $image->thumbnailImage(380, 200, true);
+        $image->thumbnailImage(600, 400, true);
 
         if ($event->getPoster() != '' || $event->getPoster() !== null) {
             $fileName = '/' . $event->getPoster();

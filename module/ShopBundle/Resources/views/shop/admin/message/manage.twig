@@ -1,0 +1,107 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/message/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message full_width message_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The message was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width message_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the message.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <table class="full_width manage">
+
+            <tr>
+                <th >Message</th>
+                <th style="width: 70px">Active</th>
+                <th style="width: 70px">Action</th>
+            </tr>
+
+            {% for message in paginator %}
+                <tr class="item item-{{ message.getId() }}">
+                    <td>{{ message.getContent(language) }}</td>
+                    <td>{% if message.isActive() %}&times;{% endif %}</td>
+                    <td class="actions">
+                        {% if hasAccess('shop_admin_shop_message', 'edit') %}
+                            <a href="{{ url("shop_admin_shop_message", {"action": "edit", "id": message.getId()}) }}" class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('shop_admin_shop_message', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ message.getId() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeMessage" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Message
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following message <b class="message"></b>!<br />
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeMessage = $('#removeMessage');
+            removeMessage.find('.message').html();
+            var id = $this.data('id');
+            removeMessage.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('shop_admin_shop_message', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.message_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeMessage.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeMessage.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.message_removed_error').removeClass('hide');
+            $('#removeMessage').modal('hide');
+        }
+    </script>
+{% endblock %}
