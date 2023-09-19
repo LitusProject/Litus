@@ -4,18 +4,19 @@ namespace CommonBundle\Entity\User;
 
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\ORM\Mapping as ORM;
-use MailBundle\Entity\Section;
+use MailBundle\Entity\Preference;
 
 /**
- * This is the entity for a newsletter preference of a user.
+ * This is the entity that maps a user to a preference. This will store information about whether a user has a
+ * certain preference.
  *
- * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\Preference")
- * @ORM\Table(name="users_preferences")
+ * @ORM\Entity(repositoryClass="CommonBundle\Repository\User\PreferenceMapping")
+ * @ORM\Table(name="users_preference_map")
  */
-class Preference
+class PreferenceMapping
 {
     /**
-     * @var integer The ID of this university status
+     * @var integer The ID of this PreferenceMapping
      *
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,7 +25,7 @@ class Preference
     private $id;
 
     /**
-     * @var Academic The person this newsletter preference belongs to
+     * @var Academic The person this PreferenceMapping belongs to
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic", inversedBy="preferences")
      * @ORM\JoinColumn(name="person", referencedColumnName="id")
@@ -32,15 +33,15 @@ class Preference
     private $person;
 
     /**
-     * @var Section The section that this preference is about
+     * @var Preference The preference that this PreferenceMapping is about
      *
-     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\Section", inversedBy="preferences")
-     * @ORM\JoinColumn(name="section", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="MailBundle\Entity\Preference", inversedBy="preferenceMappings")
+     * @ORM\JoinColumn(name="preference", referencedColumnName="id")
      */
-    private $section;
+    private $preference;
 
     /**
-     * @var bool The boolean that defines the preference
+     * @var bool The boolean that defines the user's preference
      *
      * @ORM\Column(type="boolean")
      */
@@ -48,17 +49,17 @@ class Preference
 
     /**
      * @param Academic $person
-     * @param Section $section
+     * @param Preference $preference
      * @param bool $value
      */
-    public function __construct(Academic $person, Section $section, bool $value = true)
+    public function __construct(Academic $person, Preference $preference, bool $value = true)
     {
         $this->person = $person;
-        $this->section = $section;
+        $this->preference = $preference;
         $this->value = $value;
 
-        $person->addPreference($this);
-        $section->addPreference($this);
+        $person->addPreferenceMapping($this);
+        $preference->addPreferenceMapping($this);
     }
 
 
@@ -79,11 +80,11 @@ class Preference
     }
 
     /**
-     * @return Section
+     * @return Preference
      */
-    public function getSection()
+    public function getPreference()
     {
-        return $this->section;
+        return $this->preference;
     }
 
     /**
@@ -107,13 +108,13 @@ class Preference
     }
 
     /**
-     * @param array $sections
+     * @param array $preferences
      *
      * @return bool
      */
-    public function inSections($sections) {
-        foreach ($sections as $section) {
-            if ($this->getSection()->getName() == $section->getName()) {
+    public function inPreferences($preferences) {
+        foreach ($preferences as $preference) {
+            if ($this->getPreference()->getName() == $preference->getName()) {
                 return true;
             }
         }

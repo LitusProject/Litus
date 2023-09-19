@@ -4,11 +4,11 @@ namespace CommonBundle\Entity\User\Person;
 
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Address;
-use CommonBundle\Entity\User\Preference;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use CommonBundle\Entity\User\PreferenceMapping;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -112,11 +112,11 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $unitMap;
 
     /**
-     * @var ArrayCollection The user's newsletter preferences
+     * @var ArrayCollection The user's preference mapping
      *
-     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\Preference", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $preferences;
+    private $preferenceMappings;
 
     public function __construct()
     {
@@ -125,7 +125,7 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();
         $this->unitMap = new ArrayCollection();
-        $this->preferences = new ArrayCollection();
+        $this->preferenceMappings = new ArrayCollection();
     }
 
     /**
@@ -452,23 +452,23 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  Preference $preference
+     * @param  PreferenceMapping $preferenceMapping
      * @return self
      */
-    public function addPreference(Preference $preference)
+    public function addPreferenceMapping(PreferenceMapping $preferenceMapping)
     {
-        $this->preferences->add($preference);
+        $this->preferenceMappings->add($preferenceMapping);
 
         return $this;
     }
 
     /**
-     * @param  Preference $preference
+     * @param  PreferenceMapping $preferenceMapping
      * @return self
      */
-    public function removePreference(Preference $preference)
+    public function removePreferenceMapping(PreferenceMapping $preferenceMapping)
     {
-        $this->preferences->removeElement($preference);
+        $this->preferenceMappings->removeElement($preferenceMapping);
 
         return $this;
     }
@@ -476,9 +476,9 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @return self
      */
-    public function removeAllPreferences()
+    public function removeAllPreferenceMappings()
     {
-        $this->preferences = new ArrayCollection();
+        $this->preferenceMappings = new ArrayCollection();
 
         return $this;
     }
@@ -486,8 +486,8 @@ class Academic extends \CommonBundle\Entity\User\Person
     /**
      * @return ArrayCollection
      */
-    public function getPreferences()
+    public function getPreferenceMappings()
     {
-        return $this->preferences->toArray();
+        return $this->preferenceMappings->toArray();
     }
 }

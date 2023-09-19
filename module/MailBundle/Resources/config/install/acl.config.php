@@ -8,11 +8,8 @@ return array(
         'mail_admin_bakske' => array(
             'send',
         ),
-        'mail_admin_section' => array(
-            'manage', 'add', 'delete', 'addGroup', 'deleteGroup'
-        ),
-        'mail_admin_group' => array(
-            'groups', 'send',
+        'mail_admin_preference' => array(
+            'manage', 'add', 'edit', 'delete',
         ),
         'mail_admin_list' => array(
             'manage', 'add', 'entries', 'admins', 'delete', 'deleteAdmin', 'deleteAdminRole', 'deleteAllEntries', 'deleteEntry', 'search',

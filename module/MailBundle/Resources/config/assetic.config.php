@@ -17,7 +17,7 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
-        'mail_admin_section' => array(
+        'mail_admin_preference' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

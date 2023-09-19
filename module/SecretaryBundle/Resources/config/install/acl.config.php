@@ -3,7 +3,7 @@
 return array(
     'secretarybundle' => array(
         'secretary_registration' => array(
-            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'preferences', 'savePreferences'
         ),
         'secretary_admin_registration' => array(
             'add', 'barcode', 'cancel', 'edit', 'manage', 'reprint', 'search',
