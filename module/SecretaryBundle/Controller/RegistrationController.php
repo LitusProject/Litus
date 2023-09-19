@@ -145,8 +145,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
 
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
 
         $membershipArticles = array();
@@ -396,8 +396,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
 
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrders = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -773,28 +773,33 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                         'Error',
                         'Something went wrong when updating your preferences. Please feel free to reach out to us.'
                     );
+                    $this->redirect()->toRoute(
+                        'common_account',
+                        array(
+                            'action' => 'profile',
+                        )
+                    );
+                    return new ViewModel();
                 }
             }
-            else {
-                foreach ($subscribedPreferences as $prefMap) {
-                    $prefMap->setValue(true);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-                foreach ($notSubscribedPreferences as $prefMap) {
-                    $prefMap->setValue(false);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-
-                $this->getEntityManager()->persist($academic);
+            foreach ($subscribedPreferences as $prefMap) {
+                $prefMap->setValue(true);
+                $this->getEntityManager()->persist($prefMap);
                 $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'Your preferences have been successfully saved!'
-                );
             }
+            foreach ($notSubscribedPreferences as $prefMap) {
+                $prefMap->setValue(false);
+                $this->getEntityManager()->persist($prefMap);
+                $this->getEntityManager()->flush();
+            }
+
+            $this->getEntityManager()->persist($academic);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success(
+                'Success',
+                'Your preferences have been successfully saved!'
+            );
         }
 
         $this->redirect()->toRoute(
@@ -1022,3 +1027,4 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         return sibApiHelperResponse::successful();
     }
 }
+

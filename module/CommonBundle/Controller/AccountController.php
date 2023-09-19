@@ -221,8 +221,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -546,28 +546,33 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'Error',
                         'Something went wrong when updating your preferences. Please feel free to reach out to us.'
                     );
+                    $this->redirect()->toRoute(
+                        'common_account',
+                        array(
+                            'action' => 'profile',
+                        )
+                    );
+                    return new ViewModel();
                 }
             }
-            else {
-                foreach ($subscribedPreferences as $prefMap) {
-                    $prefMap->setValue(true);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-                foreach ($notSubscribedPreferences as $prefMap) {
-                    $prefMap->setValue(false);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-
-                $this->getEntityManager()->persist($academic);
+            foreach ($subscribedPreferences as $prefMap) {
+                $prefMap->setValue(true);
+                $this->getEntityManager()->persist($prefMap);
                 $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'Your preferences have been successfully saved!'
-                );
             }
+            foreach ($notSubscribedPreferences as $prefMap) {
+                $prefMap->setValue(false);
+                $this->getEntityManager()->persist($prefMap);
+                $this->getEntityManager()->flush();
+            }
+
+            $this->getEntityManager()->persist($academic);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success(
+                'Success',
+                'Your preferences have been successfully saved!'
+            );
         }
 
         $this->redirect()->toRoute(
@@ -642,8 +647,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -689,8 +694,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'result' => array(
                             'status'  => 'success',
                             'profile' => $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -899,3 +904,4 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return sibApiHelperResponse::successful();
     }
 }
+
