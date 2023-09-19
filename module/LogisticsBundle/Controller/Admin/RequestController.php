@@ -392,8 +392,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $overlapping = array();
         foreach ($array as $map) {
             if ($map->getArticle() === $mapping->getArticle()
-                && ($map->getOrder()->getStartDate() >= $start && $map->getOrder()->getStartDate() <= $end
-                || $map->getOrder()->getEndDate() >= $start && $map->getOrder()->getEndDate() <= $end)
+                && ($start <= $map->getOrder()->getStartDate() && $map->getOrder()->getStartDate() <= $end
+                || $start <= $map->getOrder()->getEndDate() && $map->getOrder()->getEndDate() <= $end)
             ) {
                 $overlapping[] = $map;
             }

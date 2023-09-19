@@ -250,7 +250,7 @@
                         Are you sure you want to <b>review</b> the order?
                     </p>
                     <div class="footer">
-                        <button class="delete">Yes</button>
+                        <button class="edit">Yes</button>
                         <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -313,7 +313,19 @@
             var id = $this.data('id');
 
             reviewAll.find('.edit').unbind('click').click(function () {
-                $.post('{{ url('logistics_admin_order', {"action": "review"})}}' + id, function (data) {
+                console.log('click');
+                $.post('{{ url('logistics_admin_order', {"action": "reviewOrder"})}}' + id, function (data) {
+                    console.log(data.status);
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        // $('.article_removed_success').removeClass('hide');
+                        // $('.item-' + id).remove();
+                        reviewAll.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+                $.post('{{ url('logistics_admin_order', {"action": "reviewArticles"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         // $('.article_removed_success').removeClass('hide');
