@@ -7,7 +7,7 @@ use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Entity\User\PreferenceMapping;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
-use CudiBundle\Form\Admin\Sale\Article\View;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Imagick;
 use Laminas\View\Model\ViewModel;
@@ -221,8 +221,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -546,28 +546,33 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'Error',
                         'Something went wrong when updating your preferences. Please feel free to reach out to us.'
                     );
+                    $this->redirect()->toRoute(
+                        'common_account',
+                        array(
+                            'action' => 'profile',
+                        )
+                    );
+                    return new ViewModel();
                 }
             }
-            else {
-                foreach ($subscribedPreferences as $prefMap) {
-                    $prefMap->setValue(true);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-                foreach ($notSubscribedPreferences as $prefMap) {
-                    $prefMap->setValue(false);
-                    $this->getEntityManager()->persist($prefMap);
-                    $this->getEntityManager()->flush();
-                }
-
-                $this->getEntityManager()->persist($academic);
+            foreach ($subscribedPreferences as $prefMap) {
+                $prefMap->setValue(true);
+                $this->getEntityManager()->persist($prefMap);
                 $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'Your preferences have been successfully saved!'
-                );
             }
+            foreach ($notSubscribedPreferences as $prefMap) {
+                $prefMap->setValue(false);
+                $this->getEntityManager()->persist($prefMap);
+                $this->getEntityManager()->flush();
+            }
+
+            $this->getEntityManager()->persist($academic);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success(
+                'Success',
+                'Your preferences have been successfully saved!'
+            );
         }
 
         $this->redirect()->toRoute(
@@ -642,8 +647,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -689,8 +694,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'result' => array(
                             'status'  => 'success',
                             'profile' => $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -763,10 +768,28 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             ->findOnePersonByCode($this->getParam('code'));
 
         if (!($person instanceof Person)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No person was found!'
-            );
+            $code = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Code')
+                ->findOneBy(array('code' => $this->getParam('code')));
+            if (!is_null($code)) {
+                $isExpired = $code->getExpirationTime() < new DateTime();
+                if ($isExpired) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'This code is expired!'
+                    );
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'No person was found!'
+                    );
+                }
+            } else {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'No person was found!'
+                );
+            }
 
             $this->redirect()->toRoute(
                 'common_index'
@@ -881,3 +904,4 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return sibApiHelperResponse::successful();
     }
 }
+
