@@ -6,10 +6,6 @@ use Laminas\View\Model\ViewModel;
 use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Entity\Preference;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client as HttpClient;
-use Psr\Http\Message\StreamInterface;
-use SendinBlue\Client\Configuration;
-use SendinBlue\Client\Api\AccountApi;
 
 class PreferenceController extends \MailBundle\Component\Controller\AdminController
 {
@@ -27,7 +23,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
         return new ViewModel(
             array(
                 'preferences'         => $preferences,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'paginationControl'   => $this->paginator()->createControl(true),
             )
         );
     }
@@ -59,25 +55,42 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('mail.enable_sib_api');
                     if ($enableSibApi == "1") {
+
                         $sibApiHelper = new SibApiHelper($this->getEntityManager());
 
                         // create attribute
-//                        $sibApiHelperResponse = $sibApiHelper->createAttribute($preference->getAttribute());
-//                        if (!$sibApiHelperResponse->success) {
-//                            $this->flashMessenger()->error(
-//                                'Error',
-//                                'Exception when calling Sendinblue AttributesApi->createAttribute: ' . $e->getMessage()
-//                            );
-//                        }
-
-                        // assign default value of preference to sib attribute for all sib contacts
-                        $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
+                        $sibApiHelperResponse = $sibApiHelper->addAttribute($preference->getAttribute());
+                        error_log("addAttribute is done");
+                        if (!$sibApiHelperResponse->success) {
+                            error_log("addAttribute has errored");
+                            $this->flashMessenger()->error(
+                                'Error',
+                                'Exception when calling Sendinblue AttributesApi->createAttribute: ' . $sibApiHelperResponse->exception->getMessage()
+                            );
+                            $this->getEntityManager()->remove($preference);
+                            $this->getEntityManager()->flush();
+                        }
+                        else {
+                            // assign default value for all contacts
+                            $sibApiHelperResponse = $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
+                            error_log("updateAttribute is done");
+                            if (!$sibApiHelperResponse->success) {
+                                error_log("updateAttribute has errored");
+                                $this->flashMessenger()->error(
+                                    'Error',
+                                    'Exception when calling Sendinblue ContactsApi->updateContact: ' . $sibApiHelperResponse->exception->getMessage()
+                                );
+                                $this->getEntityManager()->remove($preference);
+                                $this->getEntityManager()->flush();
+                            }
+                            else {
+                                $this->flashMessenger()->success(
+                                    'Success',
+                                    'The preference was succesfully added!'
+                                );
+                            }
+                        }
                     }
-
-                    $this->flashMessenger()->success(
-                        'Success',
-                        'The preference was succesfully added!'
-                    );
                 }
 
                 $this->redirect()->toRoute(
@@ -191,32 +204,6 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
             return;
         }
         return $preference;
-    }
-
-    /**
-     * Add attribute of type boolean in SendInBlue with name $name.
-     *
-     * @param string $name
-     * @return void
-     * @throws GuzzleException
-     */
-    public function sibAddAttribute(string $name) {
-        $api = $this->sibGetAPI();
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $api);
-
-        $apiInstance = new AccountApi(
-            new HttpClient(),
-            $config
-        );
-
-        $response = $client->request('POST', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
-            'body' => '{"type":"boolean"}',
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $api,
-                'content-type' => 'application/json',
-            ],
-        ]);
     }
 
     /**

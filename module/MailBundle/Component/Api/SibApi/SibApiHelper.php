@@ -4,11 +4,7 @@ namespace MailBundle\Component\Api\SibApi;
 
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Exception\GuzzleException;
-use Ko\Process;
-use Ko\ProcessManager;
-use Laminas\Mail\Message;
 use MailBundle\Controller\Admin\PreferenceController;
-use Psr\Http\Message\StreamInterface;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Api;
 use GuzzleHttp\Client as HttpClient;
@@ -25,73 +21,57 @@ class SibApiHelper extends PreferenceController
         $this->config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $api_key);
     }
 
-    public function createAttribute(string $name) {
+    public function addAttribute(string $attributeName) {
         $attributesApiInstance = new Api\AttributesApi(
             new HttpClient(),
             $this->config
         );
 
         $attributeCategory = "normal";
-        $attributeName = $name;
         $createAttribute = new \SendinBlue\Client\Model\CreateAttribute();
+        $createAttribute->setType('boolean');
 
         try {
-            $this->$attributesApiInstance->createAttribute($attributeCategory, $attributeName, $createAttribute);
+            $attributesApiInstance->createAttribute($attributeCategory, $attributeName, $createAttribute);
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
-            error_log('Exception when calling Sendinblue AttributesApi->createAttribute: ', $e->getMessage());
+            error_log('Exception when calling Sendinblue AttributesApi->createAttribute: ' . $e->getMessage());
             return SibApiHelperResponse::unsuccessful($e);
         }
     }
 
-
     public function updateAttributeForAllContacts(string $attributeName, bool $value) {
-        $manager = new ProcessManager();
-        $manager->fork(function(Process $p) use($attributeName, $value) {
-//            $ids = $this->getAllUserIds();
-//            foreach($ids as $id) {
-//                $this->updateContact($id, $attributeName, $value);
-//            }
-            sleep(10);
-        })->onSuccess(function() use ($attributeName) {
-//            $mail = new Message();
-//            $mail->setBody('Your Sendinblue attribute with name ' . $attributeName . ' has been succesfully created!')
-//                ->setFrom("it@vtk.be", "VTK IT")
-//                ->addTo("it@vtk.be", "VTK IT")
-//                ->setSubject('Sendinblue Attribute created successfully.');
-//
-//            if (getenv('APPLICATION_ENV') != 'development') {
-//                $this->getMailTransport()->send($mail);
-//            }
-            error_log("attribute confirmation mail has been sent");
-        });
-    }
-
-    public function updateAttributeForAllContactsImplementation(string $attributeName, bool $value) {
-        $ids = $this->getAllUserIds();
-        foreach($ids as $id) {
-            $this->updateContact($id, $attributeName, $value);
+        set_time_limit(3000);  // increase php timeout limit
+        $emails = $this->getAllUserEmails();
+        foreach($emails as $email) {
+            $sibApiHelperResponse = $this->updateAttributeForContact($email, $attributeName, $value);
+            if (!$sibApiHelperResponse->success)
+                return $sibApiHelperResponse;
         }
+        set_time_limit(90); // set back to default php timeout limit
+        return SibApiHelperResponse::successful();
     }
 
     /**
      * Updates an attribute of a SendInBlue contact to a value, or leaves it unchanged if
      * the new value is the same as the old value.
      */
-    public function updateAttributeForContact(int $id, string $attributeName, bool $value) {
+    public function updateAttributeForContact(string $email, string $attributeName, bool $value) {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
         );
 
-        $identifier = strval($id); // string | Email (urlencoded) OR ID of the contact
-        $updateContact = new \SendinBlue\Client\Model\UpdateContact();
-        $updateContact->setAttributes(`{ \".$attributeName.\":\".$value.\"}`);
+        $data["email"] = $email;
+        $data["attributes"] = array($attributeName => $value);
+        $data["updateEnabled"] = true;
+        $createContact = new \SendinBlue\Client\Model\CreateContact($data);
+
         try {
-            $apiInstance->updateContact($identifier, $updateContact);
+            $apiInstance->createContact($createContact);
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
-            error_log('Exception when calling Sendinblue ContactsApi->updateContact: ', $e->getMessage());
+            error_log('Exception when calling Sendinblue ContactsApi->createContact: ' . $e->getMessage());
             return SibApiHelperResponse::unsuccessful($e);
         }
     }
@@ -102,15 +82,15 @@ class SibApiHelper extends PreferenceController
      * @return array
      * @throws GuzzleException
      */
-    private function getAllUserIds() {
+    private function getAllUserEmails() {
         $offset = 0;
         $limit = 1000;
-        $ids = $this->getUserIds($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
-        while (count($ids)%1000 == 0) { // take next thousand, as long as they exist
+        $emails = $this->getUserEmails($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
+        while (count($emails)%1000 == 0) { // take next thousand, as long as they exist
             $offset += 1000;
-            $ids = array_merge($ids, $this->getUserIds($offset, $limit));
+            $emails = array_merge($emails, $this->getUserEmails($offset, $limit));
         }
-        return $ids;
+        return $emails;
     }
 
     /**
@@ -121,38 +101,37 @@ class SibApiHelper extends PreferenceController
      * @return array
      * @throws GuzzleException
      */
-    private function getUserIds(int $offset, int $limit)
+    private function getUserEmails(int $offset, int $limit)
     {
         $batch = $this->getUserBatch($offset, $limit);
-        $idsPos = $this->strPosAll($batch, "\"id"); // code to subtract id's from all user information
-        $ids = array();
-        foreach ($idsPos as $pos) {
-            $beginPos = $pos + 5;
-            $endPos = strpos($batch, ",", $beginPos);
-            $ids[] = intval(mb_substr($batch, $beginPos, $endPos - $beginPos));
+        if ($batch !== null) {
+            $emails = array_map(function ($item) {
+                return $item['email'];
+            }, $batch);
+            return $emails;
         }
-        return $ids;
+        else {
+            throw new Exception("Users batch decoding failed.");
+        }
     }
 
     /**
      * Returns a StreamInterface object which contains information of all SendInBlue contacts that are
      * between $offset and $limit in the SendInBlue contact list.
-     *
-     * @param int $offset
-     * @param int $limit
-     * @return StreamInterface
-     * @throws GuzzleException
      */
     private function getUserBatch(int $offset, int $limit) {
-        $api = $this->sibGetAPI();
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://api.sendinblue.com/v3/contacts?limit='.$limit.'&offset='.$offset.'&sort=desc', [
-            'headers' => [
-                'accept' => 'application/json',
-                'api-key' => $api,
-            ],
-        ]);
-        return $response->getBody();
+        $apiInstance = new Api\ContactsApi(
+            new HttpClient(),
+            $this->config
+        );
+
+        try {
+            $result = $apiInstance->getContacts($limit, $offset);
+            return $result->getContacts();
+        } catch (Exception $e) {
+            error_log('Exception when calling Sendinblue ContactsApi->getContacts: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**
@@ -174,6 +153,20 @@ class SibApiHelper extends PreferenceController
         }
         if(isset($aStrPos)) return $aStrPos;
         else return array();
+    }
+
+    public function getContactDetails($id) {
+        $apiInstance = new Api\ContactsApi(
+            new HttpClient(),
+            $this->config
+        );
+
+        try {
+            $result = $apiInstance->getContactInfo($id);
+            error_log($result);
+        } catch (Exception $e) {
+            error_log('Exception when calling ContactsApi->getContactInfo: ' . $e->getMessage());
+        }
     }
 
 }

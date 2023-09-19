@@ -7,7 +7,7 @@ use Exception;
 class SibApiHelperResponse
 {
     public bool $success;
-    public Exception $exception;
+    public ?Exception $exception;
 
     public function __construct(bool $success, Exception $exception = null) {
         $this->success = $success;
