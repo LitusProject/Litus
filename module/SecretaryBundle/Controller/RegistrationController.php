@@ -761,14 +761,19 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 }
             }
 
-            $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
-            $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
+            $enableSibApi = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('mail.enable_sib_api');
+            if ($enableSibApi == "1") {
+                $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
+                $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
 
-            if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success) {
-                $this->flashMessenger()->success(
-                    'Error',
-                    'Something went wrong when updating your preferences. Please feel free to reach out to us.'
-                );
+                if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success) {
+                    $this->flashMessenger()->success(
+                        'Error',
+                        'Something went wrong when updating your preferences. Please feel free to reach out to us.'
+                    );
+                }
             }
             else {
                 foreach ($subscribedPreferences as $prefMap) {
