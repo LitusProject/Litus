@@ -92,6 +92,14 @@ class SibApiHelper extends PreferenceController
         }
     }
 
+    public function createOrUpdateContactWithMultipleAttributes(string $email, array $preferenceMappings, bool $value) {
+        foreach ($preferenceMappings as $prefMap) {
+            $response = $this->createOrUpdateContact($email, $prefMap->getPreference()->getAttribute(), $value);
+            if (!$response->success) return $response;
+        }
+        return SibApiHelperResponse::successful();
+    }
+
     /**
      * Updates an attribute of a SendInBlue contact to a value, or leaves it unchanged if
      * the new value is the same as the old value.

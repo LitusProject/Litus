@@ -6,9 +6,13 @@ use CommonBundle\Component\Authentication\Adapter\Doctrine\Shibboleth as Shibbol
 use CommonBundle\Component\Authentication\Authentication;
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\PreferenceMapping;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
+use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\Mvc\MvcEvent;
 use Laminas\View\Model\ViewModel;
+use MailBundle\Component\Api\SibApi\SibApiHelper;
+use MailBundle\Component\Api\SibApi\SibApiHelperResponse;
 use SecretaryBundle\Entity\Registration;
 
 /**
@@ -704,6 +708,76 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         );
     }
 
+    public function preferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $preferenceMappings = $academic->getPreferenceMappings();
+        $preferences = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Preference')
+            ->findAll();
+
+        $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
+
+        return new ViewModel(
+            array(
+                'preferenceMappings' => $academic->getPreferenceMappings(),
+            )
+        );
+    }
+
+    public function savePreferencesAction()
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return new ViewModel();
+        }
+
+        $data = $this->getRequest()->getPost()->toArray();
+
+        if (isset($data['preference_mappings_true'])) {
+            foreach ($data['preference_mappings_true'] as $id) {
+                $preferenceMapping = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                    ->findOnebyId($id);
+                $preferenceMapping->setValue(true);
+                $this->getEntityManager()->persist($preferenceMapping);
+                $this->getEntityManager()->flush();
+            }
+        }
+
+        if (isset($data['preference_mappings_false'])) {
+            foreach ($data['preference_mappings_false'] as $id) {
+                $preferenceMapping = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                    ->findOnebyId($id);
+                $preferenceMapping->setValue(false);
+                $this->getEntityManager()->persist($preferenceMapping);
+                $this->getEntityManager()->flush();
+            }
+        }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
+
+        $this->updateSibAttributes($academic);
+
+        $this->redirect()->toRoute(
+            'secretary_registration',
+            array(
+                'action' => 'preferences',
+            )
+        );
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function completeAction()
     {
         $academic = $this->getAcademicEntity();
@@ -858,5 +932,65 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
         foreach ($werkendGroups as $werkend) {
             $werkend->addToExcluded($email);
         }
+    }
+
+    /**
+     * Newly added sections in Litus admin are added to account preferences of academic with default value, and
+     * removed sections in Litus admin are removed from account preferences of academic.
+     *
+     * @param Academic $academic
+     * @param ArrayCollection $preferenceMappings
+     * @param $sections
+     * @return void
+     */
+    private function syncPreferenceMappings($academic, $preferenceMappings, $sections) {
+        if ($sections != null) {
+            foreach ($sections as $section) {
+                // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
+                if (!($section->inPreferencesMappings($preferenceMappings))) {
+                    $prefToAdd = new PreferenceMapping($academic, $section, $section->getDefaultValue());
+                    $this->getEntityManager()->persist($prefToAdd);
+                    $this->getEntityManager()->flush();
+                }
+            }
+        }
+
+        if ($preferenceMappings != null ) {
+            foreach ($preferenceMappings as $preferenceMapping) {
+                // possible that sections are removed in admin that are still in academic's preferences -> remove those
+                if (!($preferenceMapping->inPreferences($sections))) {
+                    $academic->removePreferenceMapping($preferenceMapping);
+                    $this->getEntityManager()->remove($preferenceMapping);
+                    $this->getEntityManager()->flush();
+                }
+            }
+        }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * Updates all the SIB attributes to the current values of the Academic's preferences.
+     *
+     * @return sibApiHelperResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function updateSibAttributes($academic)
+    {
+        $sibApiHelper = new SibApiHelper($this->getEntityManager());
+
+        $email = $academic->getPersonalEmail();
+        foreach ($academic->getPreferenceMappings() as $preferenceMapping) {
+            $attributeName = $preferenceMapping->getPreference()->getAttribute();
+            $value = $preferenceMapping->getValue();
+            $sibApiHelperResponse = $sibApiHelper->createOrUpdateContact($email, $attributeName, $value);
+
+            if (!$sibApiHelperResponse->success) {
+                return $sibApiHelperResponse;
+            }
+        }
+
+        return sibApiHelperResponse::successful();
     }
 }

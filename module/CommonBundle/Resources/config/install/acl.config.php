@@ -39,7 +39,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
         ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferenceMappings', 'savePreferenceMappings'
+            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences'
         ),
         'common_session' => array(
             'manage', 'expire',
