@@ -40,11 +40,26 @@ class SibApiHelper extends PreferenceController
         }
     }
 
+    public function deleteAttribute(string $attributeName) {
+        $apiInstance = new Api\AttributesApi(
+            new HttpClient(),
+            $this->config
+        );
+
+        try {
+            $apiInstance->deleteAttribute("normal", $attributeName);
+            return SibApiHelperResponse::successful();
+        } catch (Exception $e) {
+            error_log('Exception when calling Sendinblue AttributesApi->deleteAttribute: ' . $e->getMessage());
+            return SibApiHelperResponse::unsuccessful($e);
+        }
+    }
+
     public function updateAttributeForAllContacts(string $attributeName, bool $value) {
         set_time_limit(3000);  // increase php timeout limit
         $emails = $this->getAllUserEmails();
         foreach($emails as $email) {
-            $sibApiHelperResponse = $this->updateAttributeForContact($email, $attributeName, $value);
+            $sibApiHelperResponse = $this->createOrUpdateContact($email, $attributeName, $value);
             if (!$sibApiHelperResponse->success)
                 return $sibApiHelperResponse;
         }
@@ -52,11 +67,36 @@ class SibApiHelper extends PreferenceController
         return SibApiHelperResponse::successful();
     }
 
+    public function exportContacts() {
+        $apiInstance = new Api\ContactsApi(
+            new HttpClient(),
+            $this->config
+        );
+
+        $preferences = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Preference')
+            ->findAll();
+        $attributes = array_map(function ($preference) {
+                return $preference->getAttribute();
+            }, $preferences);
+        $data['exportAttributes'] =$attributes;
+        $requestContactExport = new \SendinBlue\Client\Model\RequestContactExport($data);
+        $notifyUrl = $requestContactExport->getNotifyUrl();
+
+        try {
+            $apiInstance->requestContactExport($requestContactExport);
+            return SibApiHelperResponse::successful();
+        } catch (Exception $e) {
+            error_log('Exception when calling Sendinblue ContactsApi->requestContactExport: ' . $e->getMessage());
+            return SibApiHelperResponse::unsuccessful($e);
+        }
+    }
+
     /**
      * Updates an attribute of a SendInBlue contact to a value, or leaves it unchanged if
      * the new value is the same as the old value.
      */
-    public function updateAttributeForContact(string $email, string $attributeName, bool $value) {
+    public function createOrUpdateContact(string $email, string $attributeName, bool $value) {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
@@ -71,7 +111,7 @@ class SibApiHelper extends PreferenceController
             $apiInstance->createContact($createContact);
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
-            error_log('Exception when calling Sendinblue ContactsApi->createContact: ' . $e->getMessage());
+            error_log("Exception when calling Sendinblue ContactsApi->createContact with data: Email: " . $email . ", Attribute: " . $attributeName . ", Value: " . $value . ", ErrorMessage: " . $e->getMessage());
             return SibApiHelperResponse::unsuccessful($e);
         }
     }

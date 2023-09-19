@@ -11,6 +11,8 @@ use CudiBundle\Form\Admin\Sale\Article\View;
 use Doctrine\Common\Collections\ArrayCollection;
 use Imagick;
 use Laminas\View\Model\ViewModel;
+use MailBundle\Component\Api\SibApi\SibApiHelper;
+use MailBundle\Component\Api\SibApi\SibApiHelperResponse;
 use SecretaryBundle\Entity\Registration;
 
 /**
@@ -396,7 +398,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 } else {
                     $this->flashMessenger()->success(
                         'SUCCESS',
-                        'Your data was succesfully updated!'
+                        'Your data was successfully updated!'
                     );
 
                     $this->doRedirect();
@@ -487,11 +489,11 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         $preferenceMappings = $academic->getPreferenceMappings();
-        $sections = $this->getEntityManager()
+        $preferences = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Preference')
             ->findAll();
 
-        $this->syncPreferenceMappings($academic, $preferenceMappings, $sections);
+        $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
         return new ViewModel(
             array(
@@ -824,27 +826,24 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     /**
      * Updates all the SIB attributes to the current values of the Academic's preferences.
      *
-     * @return void
+     * @return sibApiHelperResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function updateSibAttributes($academic)
     {
-        $api = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.sib_api');
-        $client = new \GuzzleHttp\Client();
+        $sibApiHelper = new SibApiHelper($this->getEntityManager());
+
         $email = $academic->getPersonalEmail();
         foreach ($academic->getPreferenceMappings() as $preferenceMapping) {
-            $name = $preferenceMapping->getPreference()->getAttribute();
-            $value = $preferenceMapping->getValue()? "true" : "false";
-            $client->request('PUT', 'https://api.sendinblue.com/v3/contacts/'.$email, [
-                'body' => '{"attributes":{"'.$name.'":'.$value.'}}',
-                'headers' => [
-                    'accept' => 'application/json',
-                    'content-type' => 'application/json',
-                    'api-key' => $api,
-                ],
-            ]);
+            $attributeName = $preferenceMapping->getPreference()->getAttribute();
+            $value = $preferenceMapping->getValue();
+            $sibApiHelperResponse = $sibApiHelper->createOrUpdateContact($email, $attributeName, $value);
+
+            if (!$sibApiHelperResponse->success) {
+                return $sibApiHelperResponse;
+            }
         }
+
+        return sibApiHelperResponse::successful();
     }
 }

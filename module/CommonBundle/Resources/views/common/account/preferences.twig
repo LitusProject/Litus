@@ -70,14 +70,15 @@
             $('.preference_checkbox:not(:checked)').each(function () {
                 preference_mappings_false.push($(this).data('id'));
             });
-            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false}, function (data) {
-                if (data && 'success' == data.status) {
-                    $('.flashmessage').removeClass('in');
-                    $('#preferences_saved_success').addClass('in');
-                } else {
-                    errorSave();
-                }
-            }, 'json').error(errorSave);
+            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false},
+                function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#preferences_saved_success').addClass('in');
+                    } else {
+                        errorSave();
+                    }
+                }, 'json').error(errorSave);
         }
 
         function errorSave() {

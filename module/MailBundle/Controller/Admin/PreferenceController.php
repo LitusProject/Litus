@@ -70,25 +70,31 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                             $this->getEntityManager()->remove($preference);
                             $this->getEntityManager()->flush();
                         }
+//                        else {
+//                            // assign default value for all contacts
+//                            $sibApiHelperResponse = $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
+//                            error_log("updateAttribute is done");
+//                            if (!$sibApiHelperResponse->success) {
+//                                error_log("updateAttribute has errored");
+//                                $this->flashMessenger()->error(
+//                                    'Error',
+//                                    'Exception when calling Sendinblue ContactsApi->updateContact: ' . $sibApiHelperResponse->exception->getMessage()
+//                                );
+//                                $this->getEntityManager()->remove($preference);
+//                                $this->getEntityManager()->flush();
+//                            }
+//                            else {
+//                                $this->flashMessenger()->success(
+//                                    'Success',
+//                                    'The preference was succesfully added!'
+//                                );
+//                            }
+//                        }
                         else {
-                            // assign default value for all contacts
-                            $sibApiHelperResponse = $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
-                            error_log("updateAttribute is done");
-                            if (!$sibApiHelperResponse->success) {
-                                error_log("updateAttribute has errored");
-                                $this->flashMessenger()->error(
-                                    'Error',
-                                    'Exception when calling Sendinblue ContactsApi->updateContact: ' . $sibApiHelperResponse->exception->getMessage()
-                                );
-                                $this->getEntityManager()->remove($preference);
-                                $this->getEntityManager()->flush();
-                            }
-                            else {
-                                $this->flashMessenger()->success(
+                            $this->flashMessenger()->success(
                                     'Success',
                                     'The preference was succesfully added!'
                                 );
-                            }
                         }
                     }
                 }
@@ -165,14 +171,26 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($preference);
-        $this->getEntityManager()->flush();
-
         $enableSibApi = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.enable_sib_api');
         if ($enableSibApi == "1") {
-            $this->sibRemoveAttribute($preference->getName());
+            $sibApiHelper = new SibApiHelper($this->getEntityManager());
+            $sibApiHelperResponse = $sibApiHelper->deleteAttribute($preference->getAttribute());
+            if (!$sibApiHelperResponse->success) {
+                $this->flashMessenger()->error(
+                    'Error',
+                    'Exception when calling Sendinblue AttributesApi->deleteAttribute: ' . $sibApiHelperResponse->exception->getMessage()
+                );
+            }
+            else {
+                $this->getEntityManager()->remove($preference);
+                $this->getEntityManager()->flush();
+                $this->flashMessenger()->error(
+                    'Success',
+                    'The preference was successfully deleted in sendinblue!'
+                );
+            }
         }
 
         return new ViewModel(
