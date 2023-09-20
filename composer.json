@@ -32,7 +32,7 @@
         "laminas/laminas-view": "^2.10",
 
         "doctrine/doctrine-orm-module": "@stable",
-        "doctrine/migrations": "^2.0",
+        "doctrine/migrations": "^3.3",
 
         "cboden/ratchet": "^0.4",
         "clue/redis-react": "^2.2",
