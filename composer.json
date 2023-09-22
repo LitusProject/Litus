@@ -39,6 +39,7 @@
         "colinmollenhour/credis": "^1.10",
         "dragonmantank/cron-expression": "^3.1",
         "erusev/parsedown": "^1.7",
+        "sendinblue/api-v3-sdk": "8.4.2",
         "guzzlehttp/guzzle": "v7.8.0",
         "google/apiclient": "^2.12",
         "league/uri-parser": "^1.4",

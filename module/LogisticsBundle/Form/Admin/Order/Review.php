@@ -18,11 +18,13 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
      */
     private $order;
 
+    protected $hydrator = 'LogisticsBundle\Hydrator\Order';
+
     public function init()
     {
         parent::init();
 
-        $this->remove('submit')->addSubmit('', 'hide');
+        $this->remove('submit')->addSubmit('review', 'hide');
 
         if ($this->order !== null) {
             $this->bind($this->order);
@@ -32,6 +34,11 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
                 $this->remove('unit');
             }
         }
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     public function setOrder(Order $order)

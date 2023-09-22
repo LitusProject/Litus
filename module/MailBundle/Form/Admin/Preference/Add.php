@@ -1,13 +1,13 @@
 <?php
 
-namespace MailBundle\Form\Admin\Section;
+namespace MailBundle\Form\Admin\Preference;
 
 /**
- * Add Section
+ * Add Preference
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
-    protected $hydrator = 'MailBundle\Hydrator\Section';
+    protected $hydrator = 'MailBundle\Hydrator\Preference';
 
     public function init()
     {
@@ -17,8 +17,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'     => 'text',
                 'name'     => 'name',
-                'label'    => 'Name',
+                'label'    => 'Display Name',
                 'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'description',
+                'label'    => 'Description',
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -49,43 +65,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'     => 'checkbox',
                 'name'     => 'default_value',
-                'label'    => 'Default Preference'
+                'label'    => 'Default value',
             )
         );
 
         $this->add(
             array(
-                'type'       => 'select',
-                'name'       => 'section_group',
-                'label'      => 'Group',
-                'required'   => false,
-                'attributes' => array(
-                    'options' => $this->createGroupsArray(),
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filter' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
+                'type'     => 'checkbox',
+                'name'     => 'is_newsletter',
+                'label'    => 'Newsletter',
             )
         );
 
-        $this->addSubmit('Add', 'mail_add');
-    }
-
-    public function createGroupsArray() {
-        $groups = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Section\Group')
-            ->findAllQuery()->getResult();
-
-        $groupsArray = array(
-            '' => '',
-        );
-        foreach ($groups as $group){
-            $groupsArray[$group->getId()] = $group->getName();
-        }
-        return $groupsArray;
+        $this->addSubmit('Add', 'preference_add');
     }
 }

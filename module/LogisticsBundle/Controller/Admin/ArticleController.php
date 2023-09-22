@@ -224,17 +224,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $additional_info = $data[8];
                     $internal_comment = $data[9];
 
-                    error_log($name);
-                    error_log($additional_info);
-                    error_log($category);
-                    error_log($amount_owned);
-                    error_log($amount_available);
-                    error_log($visibility);
-                    error_log($status);
-                    error_log($location);
-                    error_log($spot);
-                    error_log($internal_comment);
-
                     $article = new Article();
                     $article->setName($name)->setAdditionalInfo($additional_info)->setUnit($unit)
                         ->setCategory($category)->setAmountOwned($amount_owned)->setAmountAvailable($amount_available)

@@ -5,12 +5,14 @@ namespace CommonBundle\Controller;
 use CommonBundle\Entity\User\Credential;
 use CommonBundle\Entity\User\Person;
 use CommonBundle\Entity\User\Person\Academic;
-use CommonBundle\Entity\User\Preference;
+use CommonBundle\Entity\User\PreferenceMapping;
 use CommonBundle\Entity\User\Status\Organization as OrganizationStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Imagick;
 use Laminas\View\Model\ViewModel;
+use MailBundle\Component\Api\SibApi\SibApiHelper;
+use MailBundle\Component\Api\SibApi\SibApiHelperResponse;
 use SecretaryBundle\Entity\Registration;
 
 /**
@@ -132,12 +134,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 //            }
 //        }
 
-        $preferences = $academic->getPreferences();
-        $sections = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Section')
+        $preferenceMappings = $academic->getPreferenceMappings();
+        $preferences = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Preference')
             ->findAll();
 
-        $this->syncPreferencesSections($academic, $preferences, $sections);
+        $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
         $profileForm = $this->getForm('common_account_profile');
         $profileForm->setAttribute(
@@ -156,17 +158,17 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'academicYear'     => $this->getCurrentAcademicYear(),
-                'organizationYear' => $this->getCurrentAcademicYear(true),
-                'signatureEnabled' => $signatureEnabled,
-                'metaData'         => $metaData,
-                'studies'          => $studies,
-                'subjects'         => $subjects,
-                'profilePath'      => $this->getEntityManager()
+                'academicYear'          => $this->getCurrentAcademicYear(),
+                'organizationYear'      => $this->getCurrentAcademicYear(true),
+                'signatureEnabled'      => $signatureEnabled,
+                'metaData'              => $metaData,
+                'studies'               => $studies,
+                'subjects'              => $subjects,
+                'profilePath'           => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'profileForm'      => $profileForm,
-                'preferences'      => $academic->getPreferences(),
+                'profileForm'           => $profileForm,
+                'preferenceMappings'    => $academic->getPreferenceMappings(),
             )
         );
     }
@@ -219,8 +221,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership') == 1;
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -396,7 +398,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 } else {
                     $this->flashMessenger()->success(
                         'SUCCESS',
-                        'Your data was succesfully updated!'
+                        'Your data was successfully updated!'
                     );
 
                     $this->doRedirect();
@@ -486,18 +488,16 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             return new ViewModel();
         }
 
-        $preferences = $academic->getPreferences();
-        $sections = $this->getEntityManager()
-            ->getRepository('MailBundle\Entity\Section')
+        $preferenceMappings = $academic->getPreferenceMappings();
+        $preferences = $this->getEntityManager()
+            ->getRepository('MailBundle\Entity\Preference')
             ->findAll();
-        error_log(json_encode("TYPE OF sections IN AccountController"));
-        error_log(json_encode(gettype($sections)));
 
-        $this->syncPreferencesSections($academic, $preferences, $sections);
+        $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
         return new ViewModel(
             array(
-                'preferences' => $academic->getPreferences(),
+                'preferenceMappings' => $academic->getPreferenceMappings(),
             )
         );
     }
@@ -508,41 +508,80 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if ($academic === null) {
             return new ViewModel();
         }
+        $email = $academic->getPersonalEmail();
+        $sibApiHelper = new SibApiHelper($this->getEntityManager());
 
-        $data = $this->getRequest()->getPost()->toArray();
+        if ($this->getRequest()->isPost()) {
+            $data = $this->getRequest()->getPost()->toArray();
 
-        if (isset($data['preferences_true'])) {
-            foreach ($data['preferences_true'] as $id) {
-                $preference = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Preference')
-                    ->findOnebyId($id);
-                $preference->setValue(true);
-                $this->getEntityManager()->persist($preference);
+            $subscribedPreferences = array();
+            if (isset($data['preference_mappings_true'])) {
+                foreach ($data['preference_mappings_true'] as $id) {
+                    $preferenceMapping = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                        ->findOnebyId($id);
+                    $subscribedPreferences[] = $preferenceMapping;
+                }
+            }
+
+            $notSubscribedPreferences = array();
+            if (isset($data['preference_mappings_false'])) {
+                foreach ($data['preference_mappings_false'] as $id) {
+                    $preferenceMapping = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                        ->findOnebyId($id);
+                    $notSubscribedPreferences[] = $preferenceMapping;
+                }
+            }
+
+            $enableSibApi = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('mail.enable_sib_api');
+            if ($enableSibApi == "1") {
+                $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
+                $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
+
+                if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success) {
+                    $this->flashMessenger()->success(
+                        'Error',
+                        'Something went wrong when updating your preferences. Please feel free to reach out to us.'
+                    );
+                    $this->redirect()->toRoute(
+                        'common_account',
+                        array(
+                            'action' => 'profile',
+                        )
+                    );
+                    return new ViewModel();
+                }
+            }
+            foreach ($subscribedPreferences as $prefMap) {
+                $prefMap->setValue(true);
+                $this->getEntityManager()->persist($prefMap);
                 $this->getEntityManager()->flush();
             }
-        }
-
-        if (isset($data['preferences_false'])) {
-            foreach ($data['preferences_false'] as $id) {
-                $preference = $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Preference')
-                    ->findOnebyId($id);
-                $preference->setValue(false);
-                $this->getEntityManager()->persist($preference);
+            foreach ($notSubscribedPreferences as $prefMap) {
+                $prefMap->setValue(false);
+                $this->getEntityManager()->persist($prefMap);
                 $this->getEntityManager()->flush();
             }
+
+            $this->getEntityManager()->persist($academic);
+            $this->getEntityManager()->flush();
+
+            $this->flashMessenger()->success(
+                'Success',
+                'Your preferences have been successfully saved!'
+            );
         }
 
-        $this->getEntityManager()->persist($academic);
-        $this->getEntityManager()->flush();
-
-        $this->updateSibAttributes($academic);
-
-        return new ViewModel(
+        $this->redirect()->toRoute(
+            'common_account',
             array(
-                'result' => (object) array('status' => 'success'),
+                'action' => 'profile',
             )
         );
+        return new ViewModel();
     }
 
     public function activateAction()
@@ -608,8 +647,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.profile_path');
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -655,8 +694,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'result' => array(
                             'status'  => 'success',
                             'profile' => $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\General\Config')
-                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                    ->getRepository('CommonBundle\Entity\General\Config')
+                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -811,28 +850,28 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
      * removed sections in Litus admin are removed from account preferences of academic.
      *
      * @param Academic $academic
-     * @param ArrayCollection $preferences
+     * @param ArrayCollection $preferenceMappings
      * @param $sections
      * @return void
      */
-    private function syncPreferencesSections($academic, $preferences, $sections) {
-        if ($sections != null) {
-            foreach ($sections as $section) {
+    private function syncPreferenceMappings($academic, $preferenceMappings, $preferences) {
+        if ($preferences != null) {
+            foreach ($preferences as $section) {
                 // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
-                if (!($section->inPreferences($preferences))) {
-                    $prefToAdd = new Preference($academic, $section, $section->getDefaultValue());
+                if (!($section->inPreferencesMappings($preferenceMappings))) {
+                    $prefToAdd = new PreferenceMapping($academic, $section, $section->getDefaultValue());
                     $this->getEntityManager()->persist($prefToAdd);
                     $this->getEntityManager()->flush();
                 }
             }
         }
 
-        if ($preferences != null ) {
-            foreach ($preferences as $preference) {
+        if ($preferenceMappings != null ) {
+            foreach ($preferenceMappings as $preferenceMapping) {
                 // possible that sections are removed in admin that are still in academic's preferences -> remove those
-                if (!($preference->inSections($sections))) {
-                    $academic->removePreference($preference);
-                    $this->getEntityManager()->remove($preference);
+                if (!($preferenceMapping->inPreferences($preferences))) {
+                    $academic->removePreferenceMapping($preferenceMapping);
+                    $this->getEntityManager()->remove($preferenceMapping);
                     $this->getEntityManager()->flush();
                 }
             }
@@ -845,27 +884,25 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
     /**
      * Updates all the SIB attributes to the current values of the Academic's preferences.
      *
-     * @return void
+     * @return sibApiHelperResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function updateSibAttributes($academic)
     {
-        $api = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('mail.sib_api');
-        $client = new \GuzzleHttp\Client();
+        $sibApiHelper = new SibApiHelper($this->getEntityManager());
+
         $email = $academic->getPersonalEmail();
-        foreach ($academic->getPreferences() as $preference) {
-            $name = $preference->getSection()->getAttribute();
-            $value = $preference->getValue()? "true" : "false";
-            $client->request('PUT', 'https://api.sendinblue.com/v3/contacts/'.$email, [
-                'body' => '{"attributes":{"'.$name.'":'.$value.'}}',
-                'headers' => [
-                    'accept' => 'application/json',
-                    'content-type' => 'application/json',
-                    'api-key' => $api,
-                ],
-            ]);
+        foreach ($academic->getPreferenceMappings() as $preferenceMapping) {
+            $attributeName = $preferenceMapping->getPreference()->getAttribute();
+            $value = $preferenceMapping->getValue();
+            $sibApiHelperResponse = $sibApiHelper->createOrUpdateContact($email, $attributeName, $value);
+
+            if (!$sibApiHelperResponse->success) {
+                return $sibApiHelperResponse;
+            }
         }
+
+        return sibApiHelperResponse::successful();
     }
 }
+
