@@ -52,7 +52,7 @@
     </div>
 
     <div class="vtk-home-technical">
-        <div style="padding: 50px 15px" class="container">
+        <div style="padding: 20px 15px" class="container">
             <div class="row">
                 {% if newsItems|length > 0 %}
                     <div class="col-md-6">
@@ -114,7 +114,9 @@
                         <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
                     </p>
                 {% endif %} #}
-                <div class="col-md-6"><h2>Cudi - {{ translate('Opening Hours') }}</h2>
+                <div class="col-md-6">
+                    <div class="opening_hour_message">
+                    <h2>Cudi - {{ translate('Opening Hours') }}</h2>
                     {% for message in cudi.messages %}
                         <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                         </div>
@@ -128,12 +130,16 @@
                             <p style="float:right">{{ opening.getStart().format('H:i') }}
                                 -{{ opening.getEnd().format('H:i') }}</p></div>
                     {% endfor %}
+                    </div>
                 </div>
-                <div class="col-md-6"><h2>Theokot - {{ translate('Opening Hours') }}</h2>
+                <div class="col-md-6">
+                    <div class="opening_hour_message">
+                    <h2>Theokot - {{ translate('Opening Hours') }}</h2>
                     {% for message in shop.messages %}
                         <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                         </div>
                     {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
