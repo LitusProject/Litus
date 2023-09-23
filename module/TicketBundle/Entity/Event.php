@@ -70,6 +70,13 @@ class Event
     private $active;
 
     /**
+     * @var boolean Flag whether the event booking system is visible in the calendar
+     *
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $visible;
+
+    /**
      * @var boolean Flag whether the tickets are generated
      *
      * @ORM\Column(name="tickets_generated", type="boolean", nullable=true)
@@ -361,6 +368,29 @@ class Event
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        if ($this->activity->getEndDate() < new DateTime()) {
+            return false;
+        }
+
+        return $this->visible;
+    }
+
+    /**
+     * @param  boolean $visible
+     * @return self
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
 
         return $this;
     }

@@ -73,6 +73,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'     => 'checkbox',
+                'name'     => 'visible',
+                'label'    => 'Visible',
+                'required' => false,
+            )
+        );
+
+        $this->add(
+            array(
+                'type'     => 'checkbox',
                 'name'     => 'bookable',
                 'label'    => 'Bookable',
                 'required' => false,

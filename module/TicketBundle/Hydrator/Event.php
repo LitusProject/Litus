@@ -12,7 +12,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      * @static @var string[]
      */
     private static $stdKeys = array(
-        'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
+        'active', 'visible', 'bookable_praesidium', 'bookable', 'number_of_tickets',
         'limit_per_person', 'only_members', 'description', 'qr_enabled', 'mail_from', 'terms_url',
     );
 
