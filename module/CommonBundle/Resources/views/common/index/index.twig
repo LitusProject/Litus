@@ -159,7 +159,7 @@
                             <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
                                 <a class="myVtkButton"
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
-                                {% if event.hasTicket(entityManager) == true %}
+                                {% if event.hasTicket(entityManager) == true and event.getTicket(entityManager).isVisible() %}
                                     <a class="myVtkButton"
                                        href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
@@ -180,7 +180,7 @@
                             <div class="vtk-flex-horizontal" style="position: absolute; bottom: -10px">
                                 <a class="myVtkButton"
                                    href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Read More') }}</a>
-                                {% if event.hasTicket(entityManager) == true %}
+                                {% if event.hasTicket(entityManager) == true and event.getTicket(entityManager).isVisible() %}
                                     <a class="myVtkButton"
                                        href="{{ url('ticket', {'id': event.getTicket(entityManager).getRandId()}) }}">{{ translate('Buy Tickets') }}</a>
                                 {% endif %}
