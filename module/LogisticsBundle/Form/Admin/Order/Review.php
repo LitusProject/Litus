@@ -24,7 +24,7 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
     {
         parent::init();
 
-        $this->remove('submit')->addSubmit('review', 'hide');
+        $this->remove('submit')->addSubmit('orderReview', 'orderSubmit hide');
 
         if ($this->order !== null) {
             $this->bind($this->order);
