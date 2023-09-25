@@ -34,6 +34,8 @@
                     <th width="120px">Category</th>
                     <th width="100px">Parent</th>
                     <th width="120px">Author</th>
+                    <th style="width:80px">Has poster</th>
+                    <th style="width:50px">Active</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -47,6 +49,8 @@
                         <th width="120px">Category</th>
                         <th width="100px">Parent</th>
                         <th width="120px">Author</th>
+                        <th style="width:80px">Has poster</th>
+                        <th style="width:50px">Active</th>
                         <th width="70px">Actions</th>
                     </tr>
                 </thead>
@@ -58,6 +62,11 @@
                             <td>{{ page.getCategory().getName(language) }}</td>
                             <td>{{ page.getParent().getTitle(language) }}</td>
                             <td>{{ page.getCreationPerson().getFullName() }}</td>
+                            <td>{% if page.getPoster() %}
+                                    &times;
+                                {% endif %}
+                            </td>
+                            <td>{% if page.isActive() %}&times;{% endif %}</td>
                             <td class="actions">
                                 {% if page.canBeEditedBy(authenticatedPerson) %}
                                     {% if hasAccess('page_admin_page', 'edit') %}
@@ -170,6 +179,8 @@
                             .append('<td>' + this.category + '</td>')
                             .append('<td>' + this.parent + '</td>')
                             .append('<td>' + this.author + '</td>')
+                            .append('<td>' + this.poster + '</td>')
+                            .append('<td>' + this.active + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );

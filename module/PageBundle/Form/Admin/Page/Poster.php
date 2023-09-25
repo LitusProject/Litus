@@ -9,7 +9,7 @@ namespace PageBundle\Form\Admin\Page;
  */
 class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
-    const FILE_SIZE = '20MB';
+    const FILE_SIZE = '30MB';
 
     public function init()
     {

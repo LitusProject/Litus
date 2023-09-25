@@ -314,23 +314,23 @@
 
             reviewAll.find('.edit').unbind('click').click(function () {
                 console.log('click');
-                $.post('{{ url('logistics_admin_order', {"action": "reviewOrder"})}}' + id, function (data) {
-                    console.log(data.status);
-                    if (data && 'success' == data.status) {
+                $.post('{{ url('logistics_admin_order', {"action": "reviewOrder"})}}' + id, function (orderData) {
+                    console.log(orderData.status);
+                    if (orderData && 'success' == orderData.status) {
                         $('.flashmessage').addClass('hide');
                         // $('.article_removed_success').removeClass('hide');
                         // $('.item-' + id).remove();
                         reviewAll.modal('hide');
-                    } else {
-                        errorRemove();
-                    }
-                }, 'json').error(errorRemove);
-                $.post('{{ url('logistics_admin_order', {"action": "reviewArticles"})}}' + id, function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').addClass('hide');
-                        // $('.article_removed_success').removeClass('hide');
-                        // $('.item-' + id).remove();
-                        reviewAll.modal('hide');
+                        $.post('{{ url('logistics_admin_order', {"action": "reviewArticles"})}}' + id, function (data) {
+                            if (data && 'success' == data.status) {
+                                $('.flashmessage').addClass('hide');
+                                // $('.article_removed_success').removeClass('hide');
+                                // $('.item-' + id).remove();
+                                reviewAll.modal('hide');
+                            } else {
+                                errorRemove();
+                            }
+                        }, 'json').error(errorRemove);
                     } else {
                         errorRemove();
                     }
