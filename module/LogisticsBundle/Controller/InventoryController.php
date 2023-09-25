@@ -15,9 +15,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 ->findAllNotZeroQuery(),
             $this->getParam('page')
         );
-
-        $presentDate = date('');
-
+        
         return new ViewModel(
             array(
                 'paginator'         => $paginator,

@@ -19,11 +19,11 @@
         {% endif %}
     </div>
 
-    {% if authenticatedPerson is null %}
-        <div>{{ translate('Please login to view Flesserke.') }}</div>
-    {% elseif not hasAccess('logistics_inventory', 'index') %}
-        <div>{{ translate('You have no access to Flesserke.') }}<br>{{ translate('To ask for access send a mail to it@vtk.be') }}</div>
-    {% else %}
+{#    {% if authenticatedPerson is null %}#}
+{#        <div>{{ translate('Please login to view Flesserke.') }}</div>#}
+{#    {% elseif not hasAccess('logistics_inventory', 'index') %}#}
+{#        <div>{{ translate('You have no access to Flesserke.') }}<br>{{ translate('To ask for access send a mail to it@vtk.be') }}</div>#}
+{#    {% else %}#}
         <div id="controller_action">
 
 {#        <div id="article_search" style="display:none;">#}
@@ -124,7 +124,7 @@
                 </div>
             </div>
         </div>
-    {%  endif %}
+{#    {%  endif %}#}
 {% endblock %}
 
 {% block content_script %}
