@@ -48,6 +48,8 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
                     ),
                 )
             );
+
+            $this->addSubmit('articleReview', 'articleSubmit hide');
         }
     }
 

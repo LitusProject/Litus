@@ -32,7 +32,6 @@
                 <tr>
                     <th>Title</th>
                     <th width="120px">Category</th>
-                    <th width="100px">Parent</th>
                     <th width="120px">Author</th>
                     <th style="width:80px">Has poster</th>
                     <th style="width:50px">Active</th>
@@ -47,7 +46,6 @@
                     <tr>
                         <th>Title</th>
                         <th width="120px">Category</th>
-                        <th width="100px">Parent</th>
                         <th width="120px">Author</th>
                         <th style="width:80px">Has poster</th>
                         <th style="width:50px">Active</th>
@@ -60,7 +58,6 @@
                         <tr class="item item-{{ page.getId() }}">
                             <td>{{ page.getTitle(language) }}</td>
                             <td>{{ page.getCategory().getName(language) }}</td>
-                            <td>{{ page.getParent().getTitle(language) }}</td>
                             <td>{{ page.getCreationPerson().getFullName() }}</td>
                             <td>{% if page.getPoster() %}
                                     &times;
@@ -177,7 +174,6 @@
                         $('#page_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.title + '</td>')
                             .append('<td>' + this.category + '</td>')
-                            .append('<td>' + this.parent + '</td>')
                             .append('<td>' + this.author + '</td>')
                             .append('<td>' + this.poster + '</td>')
                             .append('<td>' + this.active + '</td>')

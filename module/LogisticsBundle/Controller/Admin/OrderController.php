@@ -69,6 +69,57 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             )
         );
 
+        if ($this->getRequest()->isPost()) {
+            if ($this->getRequest()->getPost()->toArray()['submit'] == 'orderReview') {
+                $this->initAjax();
+                $orderForm = $this->getForm('logistics_admin_order_review');
+                $orderForm->setData($this->getRequest()->getPost());
+                if ($orderForm->isValid()) {
+                    error_log('Valid: order form');
+                    if ($this->getLastOrderByRequest($order->getRequest())->isReviewed()) {
+                        error_log('existed');
+                        $orderForm->hydrateObject(
+                            $this->recreateOrder(
+                                $this->getLastOrderByRequest($order->getRequest()),
+                                $academic->getUnit($this->getCurrentAcademicYear())->getName())
+                        );
+                    } else {
+                        error_log('didnt exist');
+                        $newOrder = $orderForm->hydrateObject(
+                            $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName())
+                        );
+                        $newOrder->review();
+                        $this->getEntityManager()->persist($newOrder);
+                    }
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The request was succesfully reviewed.'
+                    );
+                    return new ViewModel(
+                        array(
+                            'result' => (object)array('status' => 'success'),
+                        )
+                    );
+//                    return new ViewModel(
+//                        array(
+//                            'result' => (object)array('status' => json_encode($this->getRequest()->getPost())),
+//                        )
+//                    );
+                }
+            } elseif ($this->getRequest()->getPost()->toArray()['submit'] == 'articleReview') {
+                $articleForm->setData($this->getRequest()->getPost());
+                if ($orderForm->isValid()) {
+                    error_log('Valid: article form');
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The request was succesfully reviewed.'
+                    );
+                }
+            }
+        }
+
         return new ViewModel(
             array(
                 'order'         => $order,
@@ -103,7 +154,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($this->getRequest()->isPost()) {
             error_log('post');
             $orderForm->setData($this->getRequest()->getPost());
-            error_log($this->getRequest()->getPost()[0]);
+            error_log(json_encode($this->getRequest()->getPost()));
 
             if ($orderForm->isValid()) {
                 error_log('valid');
