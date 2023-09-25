@@ -314,40 +314,37 @@
 
             reviewAll.find('.edit').unbind('click').click(function () {
                 var reviewOrder = $('#review-order');
-                var orderSubmit = reviewOrder.find('.orderSubmit');
-                console.log(orderSubmit);
-                orderSubmit.click();
-                if ('success' == orderData.status) {
-                    var reviewArticle = $('#review-article');
-                    var articleSubmit = reviewArticle.find('.articleSubmit');
-                    console.log(articleSubmit);
-                    articleSubmit.click();
+                const orderBody = {
+                    "name":reviewOrder.find('#order_review_name').val(),
+                    "contact":reviewOrder.find('#order_review_contact').val(),
+                    "unit":reviewOrder.find('#order_review_unit').val(),
+                    "email":reviewOrder.find('#order_review_email').val(),
+                    "location":reviewOrder.find('#order_review_location').val(),
+                    "start_date":reviewOrder.find('#order_review_start_date').val(),
+                    "end_date":reviewOrder.find('#order_review_end_date').val(),
+                    "description":reviewOrder.find('#order_review_description').val(),
+                    "internal_comment":reviewOrder.find('#order_review_internal_comment').val(),
+                    "external_comment":reviewOrder.find('#order_review_external_comment').val(),
+                    "submit":"orderReview"
                 }
-                console.log('click');
-            {#    $.post('{{ url('logistics_admin_order', {"action": "reviewOrder"})}}' + id, function (orderData) {#}
-            {#        console.log(orderData.status);#}
-            {#        if (orderData && 'success' == orderData.status) {#}
-            {#            $('.flashmessage').addClass('hide');#}
-            {#            // $('.article_removed_success').removeClass('hide');#}
-            {#            // $('.item-' + id).remove();#}
-            {#            reviewAll.modal('hide');#}
-            {#            $.post('{{ url('logistics_admin_order', {"action": "reviewArticles"})}}' + id, function (data) {#}
-            {#                if (data && 'success' == data.status) {#}
-            {#                    $('.flashmessage').addClass('hide');#}
-            {#                    // $('.article_removed_success').removeClass('hide');#}
-            {#                    // $('.item-' + id).remove();#}
-            {#                    reviewAll.modal('hide');#}
-            {#                } else {#}
-            {#                    errorRemove();#}
-            {#                }#}
-            {#            }, 'json').error(errorRemove);#}
-            {#        } else {#}
-            {#            errorRemove();#}
-            {#        }#}
-            {#    }, 'json').error(errorRemove);#}
+
+                $.post('{{ url('logistics_admin_order', {"action": "reviewOrder"})}}' + id, orderBody, function (orderData) {
+                    console.log(orderData.status);
+                    if (orderData && 'success' == orderData.status) {
+                        $('.flashmessage').addClass('hide');
+                        // $('.article_removed_success').removeClass('hide');
+                        // $('.item-' + id).remove();
+                        reviewAll.modal('hide');
+
+                        var reviewArticle = $('#review-article');
+                        var articleSubmit = reviewArticle.find('.articleSubmit');
+                        articleSubmit.click();
+                    } else {
+                    errorRemove();
+                    }
+                }, 'json').error(errorRemove);
             });
             reviewAll.modal();
-{#        {{ url('logistics_admin_order', {"action" : 'review', "id" : order.getId()}) }}#}
         }
 
         function errorRemove() {

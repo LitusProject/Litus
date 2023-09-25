@@ -24,6 +24,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'name',
                 'label'    => 'Order Name',
                 'required' => true,
+                'attributes' => array(
+                    'id' => 'order_review_name',
+                ),
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -47,6 +50,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'     => 'text',
                 'name'     => 'contact',
                 'label'    => 'Contact Name',
+                'attributes' => array(
+                    'id' => 'order_review_contact',
+                ),
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -66,6 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'options' => $this->createUnitsArray(),
+                    'id' => 'order_review_unit',
                 ),
             )
         );
@@ -76,6 +83,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'email',
                 'label'    => 'Email',
                 'required' => true,
+                'attributes' => array(
+                    'id' => 'order_review_email',
+                ),
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
@@ -99,6 +109,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'options' => $this->createLocationsArray(),
+                    'id' => 'order_review_location',
                 ),
             )
         );
@@ -109,6 +120,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'start_date',
                 'label'    => 'Start Date',
                 'required' => true,
+                'attributes' => array(
+                    'id' => 'order_review_start_date',
+                ),
             )
         );
 
@@ -118,6 +132,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'     => 'end_date',
                 'label'    => 'End Date',
                 'required' => true,
+                'attributes' => array(
+                    'id' => 'order_review_end_date',
+                ),
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
@@ -141,6 +158,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'    => 'Description',
                 'attributes' => array(
                     'style'       => 'height: 20px;',
+                    'id' => 'order_review_description',
                 ),
                 'required' => false,
                 'options'  => array(
@@ -160,6 +178,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'   => 'Internal Comment',
                 'attributes' => array(
                     'style'       => 'height: 30px;',
+                    'id' => 'order_review_internal_comment',
                 ),
                 'options' => array(
                     'input' => array(
@@ -178,6 +197,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'   => 'External Comment',
                 'attributes' => array(
                     'style'       => 'height: 30px;',
+                    'id' => 'order_review_external_comment',
                 ),
                 'options' => array(
                     'input' => array(
