@@ -21,33 +21,35 @@
 
     {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view Flesserke.') }}</div>
+    {% elif not hasAccess('logistics_inventory', 'index') %}
+        <div>{{ translate('You have no access to Flesserke.') }}<br>{{ translate('To ask for access send a mail to it@vtk.be') }}</div>
     {% else %}
         <div id="controller_action">
 
-        <div id="article_search" style="display:none;">
-            <div style="padding:4px;text-align:right">
-                Search:
-                <select id="searchField">
-                    <option value="name">Name</option>
-                    <option value="location">Barcode</option>
-                    <option value="status">Amount</option>
-                </select>
-                is
-                <input type="text" id="searchString" size="30" />
-            </div>
+{#        <div id="article_search" style="display:none;">#}
+{#            <div style="padding:4px;text-align:right">#}
+{#                Search:#}
+{#                <select id="searchField">#}
+{#                    <option value="name">Name</option>#}
+{#                    <option value="location">Barcode</option>#}
+{#                    <option value="status">Amount</option>#}
+{#                </select>#}
+{#                is#}
+{#                <input type="text" id="searchString" size="30" />#}
+{#            </div>#}
 
-            <table class="table table-striped inventory">
-                <tr>
-                    <th style="width: 30%">Name</th>
-                    <th style="width: 20%">Barcode</th>
-                    <th style="width: 15%">Amount</th>
-                    <th style="width: 15%">Expiry Date</th>
-                    {% if hasAccess('logistics_inventory', 'reserve') %}
-                        <th style="width: 15%">Actions</th>
-                    {% endif %}
-                </tr>
-            </table>
-        </div>
+{#            <table class="table table-striped inventory">#}
+{#                <tr>#}
+{#                    <th style="width: 30%">Name</th>#}
+{#                    <th style="width: 20%">Barcode</th>#}
+{#                    <th style="width: 15%">Amount</th>#}
+{#                    <th style="width: 15%">Expiry Date</th>#}
+{#                    {% if hasAccess('logistics_inventory', 'reserve') %}#}
+{#                        <th style="width: 15%">Actions</th>#}
+{#                    {% endif %}#}
+{#                </tr>#}
+{#            </table>#}
+{#        </div>#}
 
         <div id="default_page">
             <table class="table table-striped inventory" id="sortTable">

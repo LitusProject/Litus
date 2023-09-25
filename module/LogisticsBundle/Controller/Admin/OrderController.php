@@ -85,7 +85,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     public function reviewOrderAction()
     {
         $this->initAjax();
-
+        error_log('Order form');
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();
@@ -98,44 +98,59 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $orderForm = $this->getForm('logistics_admin_order_review', $order);
+        $orderForm = $this->getForm('logistics_admin_order_review');
 
         if ($this->getRequest()->isPost()) {
+            error_log('post');
             $orderForm->setData($this->getRequest()->getPost());
-
-            return new ViewModel(
-                array(
-                    'result' => (object)array('status' => json_encode($this->getRequest()->getPost())),
-                )
-            );
-
-
+            error_log($this->getRequest()->getPost()[0]);
 
             if ($orderForm->isValid()) {
-
+                error_log('valid');
                 $newOrder = $this->recreateOrder($orderForm->getOrder(), $academic->getUnit($this->getCurrentAcademicYear())->getName());
-//                $newOrder = $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName());
                 $newOrder->review();
+
                 $this->getEntityManager()->persist($newOrder);
-
-                $request = $order->getRequest();
-                $request->handled();
-
                 $this->getEntityManager()->flush();
 
-                //        $this->sendMailToContact($request);
                 $this->flashMessenger()->success(
                     'Success',
                     'The request was succesfully reviewed.'
                 );
-
-
                 return new ViewModel(
                     array(
-                        'result' => (object)array('status' => 'success'),
+                        'result' => (object)array('status' => json_encode($this->getRequest()->getPost())),
                     )
                 );
             }
+            error_log('exit');
+
+
+//            if ($orderForm->isValid()) {
+//
+//                $newOrder = $this->recreateOrder($orderForm->getOrder(), $academic->getUnit($this->getCurrentAcademicYear())->getName());
+////                $newOrder = $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName());
+//                $newOrder->review();
+//                $this->getEntityManager()->persist($newOrder);
+//
+//                $request = $order->getRequest();
+//                $request->handled();
+//
+//                $this->getEntityManager()->flush();
+//
+//                //        $this->sendMailToContact($request);
+//                $this->flashMessenger()->success(
+//                    'Success',
+//                    'The request was succesfully reviewed.'
+//                );
+//
+//
+//                return new ViewModel(
+//                    array(
+//                        'result' => (object)array('status' => 'success'),
+//                    )
+//                );
+//            }
         }
 
         return new ViewModel();
@@ -165,6 +180,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($this->getRequest()->isPost()) {
             $postData = $this->getRequest()->getPost();
+            error_log('Article form');
             error_log(print_r($postData));
             $newOrder = $this->getLastOrderByRequest($order->getRequest());
 
