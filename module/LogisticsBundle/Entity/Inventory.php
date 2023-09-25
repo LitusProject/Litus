@@ -119,7 +119,7 @@ class Inventory
     /**
      * @var DateTime The expiry date
      *
-     * @ORM\Column(name="expiry_date", type="DateTime", nullable=true)
+     * @ORM\Column(name="expiry_date_", type="DateTime", nullable=true)
      */
     private $expiryDate_;
 
