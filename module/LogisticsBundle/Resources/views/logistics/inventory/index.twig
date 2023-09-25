@@ -21,7 +21,7 @@
 
     {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view Flesserke.') }}</div>
-    {% elif not hasAccess('logistics_inventory', 'index') %}
+    {% elseif not hasAccess('logistics_inventory', 'index') %}
         <div>{{ translate('You have no access to Flesserke.') }}<br>{{ translate('To ask for access send a mail to it@vtk.be') }}</div>
     {% else %}
         <div id="controller_action">
