@@ -91,7 +91,7 @@
             </div>
         {% endif %}
 
-        {% if info_form and hasAccess('ticket_admin_event', 'clearVisitors')%}
+        {% if hasAccess('ticket_admin_event', 'clearVisitors')%}
             <div class="sidebox">
                 <div class="title">Clear Visitors</div>
                 <div class="content">
