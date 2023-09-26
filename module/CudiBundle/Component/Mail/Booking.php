@@ -81,13 +81,17 @@ class Booking
             ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addBcc(
+            ->setSubject($subject);
+
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+            $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
-            ->setSubject($subject);
+            );
+        }
 
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -168,13 +172,17 @@ class Booking
             ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addBcc(
+            ->setSubject($subject);
+
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+            $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
-            ->setSubject($subject);
+            );
+        }
 
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -259,13 +267,17 @@ class Booking
             ->setBody(str_replace('{{ bookings }}', $list, str_replace('{{ openingHours }}', $openingHourText, $message)))
             ->setFrom($mailAddress, $mailName)
             ->addTo($person->getEmail(), $person->getFullName())
-            ->addBcc(
+            ->setSubject($subject);
+
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+            $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('system_administrator_mail'),
                 'System Administrator'
-            )
-            ->setSubject($subject);
+            );
+        }
 
         $sendMailsToCudi = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')

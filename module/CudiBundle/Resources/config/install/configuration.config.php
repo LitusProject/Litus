@@ -419,6 +419,11 @@ VTK Cudi
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
     ),
     array(
+        'key'         => 'cudi.booking_mails_to_sysadmin',
+        'value'       => '1',
+        'description' => 'Send the cudi booking mails (assigned, expired, warning) to the sytem administrator address',
+    ),
+    array(
         'key'         => 'cudi.location',
         'value'       => serialize(
             array(
