@@ -301,6 +301,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             $item->category = $page->getCategory() ? $page->getCategory()->getName($this->getLanguage()) : '';
             $item->parent = $page->getParent() ? $page->getParent()->getTitle($this->getLanguage()) : '';
             $item->author = $page->getCreationPerson()->getFullName();
+            $item->poster = $page->getPoster();
+            $item->author = $page->isActive();
             $result[] = $item;
         }
 

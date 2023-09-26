@@ -16,8 +16,7 @@ class Edit extends \LogisticsBundle\Form\Inventory\Inventory
     {
         parent::init();
 
-        $nameField = $this->get('name');
-        $nameField->setRequired();
+        $nameField = $this->get('name')->setRequired();
 
 //        $this->remove('unit')->remove('perUnit');
 

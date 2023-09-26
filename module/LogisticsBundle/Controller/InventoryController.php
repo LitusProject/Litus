@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Controller;
 
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Inventory;
 
@@ -15,8 +16,6 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                 ->findAllNotZeroQuery(),
             $this->getParam('page')
         );
-
-        $presentDate = date('');
 
         return new ViewModel(
             array(

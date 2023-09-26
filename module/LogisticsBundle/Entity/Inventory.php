@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -114,6 +115,13 @@ class Inventory
      * @ORM\Column(name="expiry_date", type="string", nullable=true)
      */
     private $expiryDate;
+
+    /**
+     * @var DateTime The expiry date
+     *
+     * @ORM\Column(name="expiry_date_", type="DateTime", nullable=true)
+     */
+    private $expiryDate_;
 
     /**
      * Inventory constructor
