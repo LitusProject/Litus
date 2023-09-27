@@ -23,7 +23,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         // Gets last order for every request
         $lastOrders = array();
         foreach ($requests as $request) {
-            $lastOrders[] = $this->getLastOrderByRequest($request);
+            if ($this->getLastOrderByRequest($request)) {
+                $lastOrders[] = $this->getLastOrderByRequest($request);
+            }
         }
 
         return new ViewModel(
@@ -429,10 +431,11 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
      */
     private function getLastOrderByRequest($request)                  // Gets the most recent order
     {
-        $order = $this->getEntityManager()
+        $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
-        return current($order);                                       // Gets the first element of an array
+        array_pop($orders);                                     // pop dummy order
+        return current($orders);                                       // Gets the first element of an array
     }
 
     /**
