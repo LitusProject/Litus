@@ -104,10 +104,13 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                                 }
                                 $total += $formValue - $oldAmount;
                                 $this->getEntityManager()->persist($booking);
-                                $this->getEntityManager()->flush();
+
                             }
                         }
                     }
+                    $this->getEntityManager()->flush();
+
+                    //        $this->sendMailToContact($request);
 
                     if ($total == 0) {
                         $this->flashMessenger()->warn(
@@ -115,8 +118,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                             'You have not reviewed any articles!'
                         );
                     } else {
-                        $this->getEntityManager()->flush();
-
                         $this->flashMessenger()->success(
                             'Success',
                             'The request was successfully reviewed.'
@@ -176,10 +177,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->getEntityManager()->persist($newOrder);
                 $this->getEntityManager()->flush();
 
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The request was succesfully reviewed.'
-                );
                 return new ViewModel(
                     array(
                         'result' => (object)array('status' => 'success'),
@@ -187,7 +184,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 );
             }
         }
-
         return new ViewModel();
     }
 
@@ -197,6 +193,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($academic === null) {
             return new ViewModel();
         }
+        $reviewingUnit = $academic->getUnit($this->getCurrentAcademicYear());
 
         $order = $this->getOrderEntity();
         if ($order === null) {
@@ -211,28 +208,41 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $newOrder = $this->recreateOrder($order, $academic->getUnit($this->getCurrentAcademicYear())->getName());
-        $newOrder->approve();
         $this->getEntityManager()->persist($newOrder);
 
         $request = $order->getRequest();
-        $request->handled();
+
 
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
         foreach ($mappings as $mapping) {
-            $newMapping = new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount());
-            $newMapping->setStatus('goedgekeurd');
-            $this->getEntityManager()->persist($newMapping);
+            $article = $mapping->getArticle();
+            if ($article->getUnit() === $reviewingUnit) {
+                $newMapping = new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount());
+                $newMapping->setStatus('goedgekeurd');
+                $this->getEntityManager()->persist($newMapping);
+            }
+        }
+
+        if ($this->isAllMappingsApproved($newOrder)) {
+            $newOrder->approve();
+            $request->handled();
+            $this->flashMessenger()->success(
+                'Success',
+                'The request was successfully approved.'
+            );
+        } else {
+            $newOrder->review();
+            $this->flashMessenger()->success(
+                'Success',
+                'The articles were successfully approved.'
+            );
         }
 
         $this->getEntityManager()->flush();
 
 //        $this->sendMailToContact($request);
-        $this->flashMessenger()->success(
-            'Success',
-            'The request was succesfully approved.'
-        );
 
         $this->redirect()->toRoute(
             'logistics_admin_request',
@@ -250,6 +260,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         if ($academic === null) {
             return new ViewModel();
         }
+        $reviewingUnit = $academic->getUnit($this->getCurrentAcademicYear());
 
         $order = $this->getOrderEntity();
         if ($order === null) {
@@ -268,24 +279,37 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($newOrder);
 
         $request = $order->getRequest();
-        $request->handled();
 
         $mappings = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
         foreach ($mappings as $mapping) {
-            $newMapping = new OrderArticleMap($newOrder, $mapping->getArticle(), $mapping->getAmount(), $mapping->getAmount());
-            $newMapping->setStatus('afgewezen');
-            $this->getEntityManager()->persist($newMapping);
+            $article = $mapping->getArticle();
+            if ($article->getUnit() === $reviewingUnit) {
+                $newMapping = new OrderArticleMap($newOrder, $article, $mapping->getAmount(), $mapping->getAmount());
+                $newMapping->setStatus('afgewezen');
+                $this->getEntityManager()->persist($newMapping);
+            }
+        }
+
+        if ($this->isAllMappingsRejected($newOrder)) {
+            $newOrder->reject();
+            $request->handled();
+            $this->flashMessenger()->success(
+                'Success',
+                'The request was successfully rejected.'
+            );
+        } else {
+            $newOrder->review();
+            $this->flashMessenger()->success(
+                'Success',
+                'The articles were successfully rejected.'
+            );
         }
 
         $this->getEntityManager()->flush();
 
 //        $this->sendMailToContact($request);
-        $this->flashMessenger()->success(
-            'Success',
-            'The request was succesfully rejected.'
-        );
 
         $this->redirect()->toRoute(
             'logistics_admin_request',
@@ -767,6 +791,40 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         # $new->setNeedsRide($order->needsRide());
 
         return $new;
+    }
+
+    /**
+     * @param Order $order
+     * @return boolean
+     */
+    private function isAllMappingsApproved($order)
+    {
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($mappings as $mapping) {
+            if (!$mapping->isApproved()) {
+                return False;
+            }
+        }
+        return True;
+    }
+
+    /**
+     * @param Order $order
+     * @return boolean
+     */
+    private function isAllMappingsRejected($order)
+    {
+        $mappings = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($mappings as $mapping) {
+            if (!$mapping->isRejected()) {
+                return False;
+            }
+        }
+        return True;
     }
 
     /**

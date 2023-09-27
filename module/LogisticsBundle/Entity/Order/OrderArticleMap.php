@@ -179,4 +179,20 @@ class OrderArticleMap
     {
         $this->status = $status;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isApproved()
+    {
+        return $this->status == 'goedgekeurd';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRejected()
+    {
+        return $this->status == 'afgewezen';
+    }
 }
