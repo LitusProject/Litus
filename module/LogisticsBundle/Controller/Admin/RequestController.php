@@ -76,14 +76,14 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     public function conflictingAction()
     {
-        $requests = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Request')
-            ->findNewRequests();
+        $requests = $this->getUnhandledRequests();
 
         // Gets last order for every request
         $lastOrders = array();
         foreach ($requests as $request) {
-            $lastOrders[] = $this->getLastOrderByRequest($request);
+            if ($this->getLastOrderByRequest($request)) {
+                $lastOrders[] = $this->getLastOrderByRequest($request);
+            }
         }
 
         $mappings = array();
