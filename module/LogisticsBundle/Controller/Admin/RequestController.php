@@ -18,7 +18,24 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 {
     public function manageAction()
     {
-        $requests = $this->getOpenRequests();
+        $requests = $this->getUnhandledRequests();
+
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrders[] = $this->getLastOrderByRequest($request);
+        }
+
+        return new ViewModel(
+            array(
+                'requests'    => $lastOrders,
+            )
+        );
+    }
+
+    public function approvedAction()
+    {
+        $requests = $this->getHandledRequests();
 
         // Gets last order for every request
         $lastOrders = array();
@@ -73,8 +90,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
                 ->findAllByOrderQuery($order)->getResult());
         }
-        $conflicts = array();
 
+        $conflicts = array();
         // Loop over all made mappings
         foreach ($mappings as $map) {
             // Find overlaps
@@ -357,16 +374,21 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     /**
      * @return array
      */
-    private function getOpenRequests()
+    private function getUnhandledRequests()
     {
-        $unhandledRequests = $this->getEntityManager()
+        return $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
             ->findAllUnhandled();
-        $handledRejects = $this->getEntityManager()
+    }
+
+    /**
+     * @return array
+     */
+    private function getHandledRequests()
+    {
+        return $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
             ->findAllHandled();
-
-        return array_merge($unhandledRequests, $handledRejects);
     }
 
     /**
