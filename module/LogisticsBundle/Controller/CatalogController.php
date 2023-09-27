@@ -607,10 +607,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function getLastOrderByRequest($request)                  // Gets the most recent order
     {
-        $order = $this->getEntityManager()
+        $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
-        return current($order);                                       // Gets the first element of an array
+        return current($orders);                                       // Gets the first element of an array
     }
 
     /**
@@ -619,10 +619,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      */
     private function getFirstOrderByRequest($request)                // Gets the oldest order, by default an empty order
     {
-        $order = $this->getEntityManager()
+        $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
-        return end($order);                                    // Gets the last element of an array
+        return end($orders);                                    // Gets the last element of an array
     }
 
     /**

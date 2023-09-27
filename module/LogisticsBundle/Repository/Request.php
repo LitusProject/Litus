@@ -132,7 +132,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return ArrayCollection
      */
-    public function findAllApprovedHandled()
+    public function findAllHandled()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('r')
