@@ -404,6 +404,11 @@ VTK Cudi
         'description' => 'Flag whether to send the catalog update mails.',
     ),
     array(
+        'key'         => 'cudi.catalog_update_mail_to_sysadmin',
+        'value'       => '1',
+        'description' => 'Flag whether to send the catalog update mails tot sysadmin.',
+    ),
+    array(
         'key'         => 'cudi.sale_light_version',
         'value'       => '0',
         'description' => 'Flag whether to show the light version of the sale app (no queue)',

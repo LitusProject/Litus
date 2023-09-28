@@ -253,13 +253,17 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($subscription->getPerson()->getEmail(), $subscription->getPerson()->getFullName())
                     ->addCc($mailAddress, $mailName)
-                    ->addBcc(
+                    ->setSubject($mailSubject);
+
+                if($this->getEntityManager()->getRepository('Common\Entity\General\Config')
+                        ->getConfigValue('cudi.catalog_update_mail_to_sysadmin')){
+                    $mail->addBcc(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')
                             ->getConfigValue('system_administrator_mail'),
                         'System Administrator'
-                    )
-                    ->setSubject($mailSubject);
+                    );
+                }
 
                 if ($sendMails) {
                     $this->getMailTransport()
