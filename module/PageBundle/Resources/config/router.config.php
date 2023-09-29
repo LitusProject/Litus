@@ -124,7 +124,7 @@ return array(
         'page' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/page[/parent/:parent][/name/:name][/:action[/:poster_name]][/]',
+                'route'       => '[/:language]/page[/parent/:parent][/:name][/:action[/:poster_name]][/]',
                 'constraints' => array(
                     'parent'   => '[a-zA-Z0-9_-]*',
                     'name'     => '[a-zA-Z0-9_-]*',
