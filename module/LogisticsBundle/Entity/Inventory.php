@@ -116,12 +116,12 @@ class Inventory
      */
     private $expiryDate;
 
-    /**
-     * @var DateTime The expiry date
-     *
-     * @ORM\Column(name="expiry_date_", type="DateTime", nullable=true)
-     */
-    private $expiryDate_;
+//    /**
+//     * @var DateTime The expiry date
+//     *
+//     * @ORM\Column(name="expiry_date_", type="DateTime", nullable=true)
+//     */
+//    private $expiryDate_;
 
     /**
      * Inventory constructor
