@@ -116,30 +116,62 @@
                 {% endif %} #}
                 <div class="col-md-6">
                     <div class="opening_hour_message">
-                    <h2>Cudi - {{ translate('Opening Hours') }}</h2>
-                    {% for message in cudi.messages %}
-                        <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
-                        </div>
-                    {% endfor %}
-                    {#                    {% if cudi.openingHours|length == 0 %}#}
-                    {#                        <b>{{ translate('Cudi is currently closed.') }}</b>#}
-                    {#                    {% endif %}#}
-                    {% for opening in cudi.openingHours %}
-                        <div>
-                            <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
-                            <p style="float:right">{{ opening.getStart().format('H:i') }}
-                                -{{ opening.getEnd().format('H:i') }}</p></div>
-                    {% endfor %}
+                        <h2>Cudi - {{ translate('Opening Hours') }}</h2>
+                        {% for message in cudi.messages %}
+                            <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
+                            </div>
+                        {% endfor %}
+                        {#                    {% if cudi.openingHours|length == 0 %}#}
+                        {#                        <b>{{ translate('Cudi is currently closed.') }}</b>#}
+                        {#                    {% endif %}#}
+                        {% for opening in cudi.openingHours %}
+                            <div>
+                                <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
+                                <p style="float:right">{{ opening.getStart().format('H:i') }}
+                                    -{{ opening.getEnd().format('H:i') }}</p></div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="opening_hour_message">
-                    <h2>Theokot - {{ translate('Opening Hours') }}</h2>
-                    {% for message in shop.messages %}
-                        <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
-                        </div>
-                    {% endfor %}
+                        <h2>Theokot - {{ translate('Opening Hours') }}</h2>
+                        {% for message in shop.messages %}
+                            <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
+                            </div>
+                        {% endfor %}
                     </div>
+                </div>
+            </div>
+            <div class="row container_24h" style="">
+                    <div class="buttons_24h">
+                        <a class="button_24h hidden-xs"  style="margin-right: 20%"
+                           href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>
+                        <a class="button_24h hidden-sm hidden-xs"
+                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('24h Run') }}</a>
+                        <a class="button_24h"
+                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>
+{#                        <a class="button_24h"#}
+{#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
+                        <div style="float: right; width: 200px;">
+                            <ul id="countdown">
+                                <li id="days">
+                                    <div class="number">00</div>
+                                    <div class="label-c">D</div>
+                                </li>
+                                <li id="hours">
+                                    <div class="number">00</div>
+                                    <div class="label-c">H</div>
+                                </li>
+                                <li id="minutes">
+                                    <div class="number">00</div>
+                                    <div class="label-c">M</div>
+                                </li>
+                                <li id="seconds">
+                                    <div class="number">00</div>
+                                    <div class="label-c">S</div>
+                                </li>
+                            </ul>
+                        </div>
                 </div>
             </div>
         </div>
@@ -306,5 +338,95 @@
                 $(this).attr('src', $(this).data('url'));
             });
         });
+
+        /* --------------------------
+        * GLOBAL VARS
+        * -------------------------- */
+        // The date you want to count down to
+        var targetDate = new Date("2023/10/24 20:00:00");
+
+        // Other date related variables
+        var days;
+        var hrs;
+        var min;
+        var sec;
+
+        /* --------------------------
+         * ON DOCUMENT LOAD
+         * -------------------------- */
+        $(function() {
+            // Calculate time until launch date
+            timeToLaunch();
+            // Transition the current countdown from 0
+            numberTransition('#days .number', days, 1000, 'swing');
+            numberTransition('#hours .number', hrs, 1000, 'swing');
+            numberTransition('#minutes .number', min, 1000, 'swing');
+            numberTransition('#seconds .number', sec, 1000, 'swing');
+            // Begin Countdown
+            setTimeout(countDownTimer,1001);
+
+            console.log('klaar');
+        });
+
+        /* --------------------------
+         * FIGURE OUT THE AMOUNT OF
+           TIME LEFT BEFORE LAUNCH
+         * -------------------------- */
+        function timeToLaunch(){
+            // Get the current date
+            var currentDate = new Date();
+
+            // Find the difference between dates
+            var diff = Math.abs(Math.floor((currentDate - targetDate)/1000));
+
+            // Check number of days until target
+            days = Math.floor(diff/(24*60*60));
+            sec = diff - days * 24*60*60;
+
+            // Check number of hours until target
+            hrs = Math.floor(sec/(60*60));
+            sec = sec - hrs * 60*60;
+
+            // Check number of minutes until target
+            min = Math.floor(sec/(60));
+            sec = sec - min * 60;
+        }
+
+        /* --------------------------
+         * DISPLAY THE CURRENT
+           COUNT TO LAUNCH
+         * -------------------------- */
+        function countDownTimer(){
+
+            // Figure out the time to launch
+            timeToLaunch();
+
+            // Write to countdown component
+            $( "#days .number" ).text(days);
+            $( "#hours .number" ).text(hrs);
+            $( "#minutes .number" ).text(min);
+            $( "#seconds .number" ).text(sec);
+
+            // Repeat the check every second
+            setTimeout(countDownTimer,1000);
+        }
+
+        /* --------------------------
+         * TRANSITION NUMBERS FROM 0
+           TO CURRENT TIME UNTIL LAUNCH
+         * -------------------------- */
+        function numberTransition(id, endPoint, transitionDuration, transitionEase){
+            // Transition numbers from 0 to the final number
+            $({numberCount: $(id).text()}).animate({numberCount: endPoint}, {
+                duration: transitionDuration,
+                easing:transitionEase,
+                step: function() {
+                    $(id).text(Math.floor(this.numberCount));
+                },
+                complete: function() {
+                    $(id).text(this.numberCount);
+                }
+            });
+        }
     </script>
 {% endblock %}
