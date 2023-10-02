@@ -27,7 +27,7 @@
 
     <div class="pageBanner" style="background-image: url(
         {% if page.getPoster() %}
-            {{ url('page',{'action':'poster', 'name':page.getCategory().getName(language), 'poster_name': page.getPoster()}) }}
+            {{ url('page',{'action':'poster', 'poster_name': page.getPoster()}) }}
 {#            {{ "../../../../_page/posters/" ~ page.getPoster() }}#}
     {# TODO: this is extremely ugly... #}
         {% else %}
