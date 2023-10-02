@@ -326,10 +326,15 @@
 
   .button_24h {
     display: inline-block;
-    margin-left: 20px;
+    @media (max-width: 575.98px) {
+      margin-left: 0;
+    }
+    @media (min-width: 575.98px) {
+      margin-left: 20px;
+    }
     margin-right: 10px;
     min-height: 46px;
-    padding: 14px 25px;
+    padding: 14px 20px;
     z-index: 100;
     background-color: @color-blue;
     font-size: 13px;
@@ -345,6 +350,16 @@
   .button_24h:hover {
     background-color: @color-blue;
     color: @color-yellow;
+  }
+}
+
+.countdown_container {
+  float: right;
+  @media (max-width: 575.98px) {
+    width: 170px;
+  }
+  @media (min-width: 575.98px) {
+    width: 200px;
   }
 }
 
