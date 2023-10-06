@@ -36,7 +36,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         // Gets last order for every request
         $lastOrders = array();
         foreach ($requests as $request) {
-            $lastOrders[] = $this->getLastOrderByRequest($request);
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder)
+            $lastOrders[] = $lastOrder;
         }
 
         return new ViewModel(
@@ -112,7 +114,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 );
 
                 $allArticles[] = $articleInfo;
-            } elseif ($art->isGreaterVtkVisibility() && $academic->isInWorkingGroup()) {
+            } elseif ($art->isGreaterVtkVisibility() && ($academic->isInWorkingGroup() || $academic->isPraesidium($this->getCurrentAcademicYear()))) {
                 $articleInfo = array(
                     'article' => $art,
                     'mapped'  => $mapped[$art->getId()] ?? 0,
@@ -660,6 +662,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
+        array_pop($orders);                                     // pop dummy order
         return current($orders);                                       // Gets the first element of an array
     }
 
