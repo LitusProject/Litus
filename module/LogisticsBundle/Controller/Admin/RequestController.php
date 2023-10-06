@@ -22,9 +22,11 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         // Gets last order for every request
         $lastOrders = array();
+        $now = new DateTime();
         foreach ($requests as $request) {
-            if ($this->getLastOrderByRequest($request)) {
-                $lastOrders[] = $this->getLastOrderByRequest($request);
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder && $lastOrder->getEndDate() >= $now) {
+                $lastOrders[] = $lastOrder;
             }
         }
 
@@ -41,8 +43,12 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         // Gets last order for every request
         $lastOrders = array();
+        $now = new DateTime();
         foreach ($requests as $request) {
-            $lastOrders[] = $this->getLastOrderByRequest($request);
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder->getEndDate() >= $now) {
+                $lastOrders[] = $lastOrder;
+            }
         }
 
         return new ViewModel(
@@ -52,24 +58,53 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
-    public function viewAction()
+    // gets all requests till next monday
+    public function comingAction()
     {
-        $order = $this->getOrderEntity();
-        if ($order === null) {
-            return new ViewModel();
+        $requests = $this->getAllRequests();
+
+        $now = new DateTime();
+        $nextMonday = new DateTime();
+        $nextMonday->modify('next monday');
+        $interval = $now->diff($nextMonday);
+        if ($interval->days <= 3) {
+            $nextMonday->modify('next monday');
         }
 
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($order)->getResult();
-
-        $lastOrders = $this->getAllOrdersByRequest($order->getRequest());
+        // Gets last order for every request
+        $lastOrders = array();
+        foreach ($requests as $request) {
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder && $now <= $lastOrder->getStartDate() && $lastOrder->getStartDate() <= $nextMonday) {
+                $lastOrders[] = $lastOrder;
+            }
+        }
 
         return new ViewModel(
             array(
-                'order' => $order,
-                'articles' => $articles,
-                'lastOrders' => $lastOrders,
+                'requests'    => $lastOrders,
+            )
+        );
+
+    }
+
+    public function oldAction()
+    {
+        $requests = $this->getAllRequests();
+
+        // Gets last order for every request
+        $lastOrders = array();
+        $now = new DateTime();
+        foreach ($requests as $request) {
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder && $lastOrder->getEndDate() < $now) {
+                $lastOrders[] = $lastOrder;
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'requests'    => $lastOrders,
             )
         );
     }
@@ -78,10 +113,12 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     {
         $requests = $this->getUnhandledRequests();
 
+        $now = new DateTime();
         // Gets last order for every request
         $lastOrders = array();
         foreach ($requests as $request) {
-            if ($this->getLastOrderByRequest($request)) {
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder && $lastOrder->getEndDate() >= $now) {
                 $lastOrders[] = $this->getLastOrderByRequest($request);
             }
         }
@@ -122,154 +159,6 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel(
             array(
                 'conflicts' => $conflicts,
-            )
-        );
-    }
-
-//        $request = $this->getRequestEntity();
-//        if ($request === null) {
-//            return new ViewModel();
-//        }
-//
-//        $newOrder = $request->getEditOrder();
-//        $oldOrder = $request->getOrder();
-//
-//        $mappings = array();
-//
-//        if ($newOrder === null) {
-//            $newMaps = $this->getEntityManager()
-//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-//                ->findAllByOrderQuery($oldOrder)->getResult();
-//        } else {
-//            $oldMaps = $this->getEntityManager()
-//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-//                ->findAllByOrderQuery($oldOrder)->getResult();
-//            $newMaps = $this->getEntityManager()
-//                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-//                ->findAllByOrderQuery($newOrder)->getResult();
-//
-//            foreach ($oldMaps as $map) {
-//                $id = $map->getArticle()->getId();
-//                $mappings[$id] = array(
-//                    'name' => $map->getArticle()->getName(),
-//                    'old'  => $map->getAmount(),
-//                    'new'  => 0,
-//                );
-//            }
-//        }
-//
-//        foreach ($newMaps as $map) {
-//            $id = $map->getArticle()->getId();
-//            if (array_key_exists($id, $mappings)) {
-//                $mappings[$id]['new'] = $map->getAmount();
-//            } else {
-//                $mappings[$id] = array(
-//                    'name' => $map->getArticle()->getName(),
-//                    'new'  => $map->getAmount(),
-//                    'old'  => 0,
-//                );
-//            }
-//        }
-//
-//        $diffs = array(
-//            'Name'        => array($oldOrder->getName()),
-//            'Location'    => array($oldOrder->getLocation()->getName()),
-//            'Creator'     => array($oldOrder->getCreator()->getFullName()),
-//            'Contact'     => array($oldOrder->getContact()),
-//            'Start Date'  => array($oldOrder->getStartDate()->format('d/m/Y H:i')),
-//            'End Date'    => array($oldOrder->getEndDate()->format('d/m/Y H:i')),
-//            'Description' => array($oldOrder->getDescription()),
-//        );
-//        if ($newOrder !== null) {
-//            $diffs['Name'][] = $newOrder->getName();
-//            $diffs['Location'][] = $newOrder->getLocation()->getName();
-//            $diffs['Creator'][] = $newOrder->getCreator()->getFullName();
-//            $diffs['Contact'][] = $newOrder->getContact();
-//            $diffs['Start Date'][] = $newOrder->getStartDate()->format('d/m/Y H:i');
-//            $diffs['End Date'][] = $newOrder->getEndDate()->format('d/m/Y H:i');
-//            $diffs['Description'][] = $newOrder->getDescription();
-//        }
-//
-//        return new ViewModel(
-//            array(
-//                'request'  => $request,
-//                'newOrder' => $newOrder,
-//                'oldOrder' => $oldOrder,
-//                'diffs'    => $diffs,
-//                'mappings' => $mappings,
-//            )
-//        );
-//    }
-//
-//    public function approveAction()
-//    {
-//        $request = $this->getRequestEntity();
-//        if ($request === null) {
-//            return new ViewModel();
-//        }
-//
-//        $request->approveRequest();
-//        $request->handled();
-//        $request->setRemoved(true);
-//
-//        $this->getEntityManager()->flush();
-//
-//        $this->sendMailToContact($request);
-//        $this->flashMessenger()->success(
-//            'Success',
-//            'The request was succesfully approved.'
-//        );
-//
-//        $this->redirect()->toRoute(
-//            'logistics_admin_request',
-//            array(
-//                'action' => 'manage',
-//            )
-//        );
-//
-//        return new ViewModel();
-//    }
-
-    public function rejectAction()
-    {
-        $request = $this->getRequestEntity();
-        if ($request === null) {
-            return new ViewModel();
-        }
-
-        $form = $this->getForm('logistics_admin_request_reject');
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $formData = $form->getData();
-
-                $request->rejectRequest($formData['reject_reason']);
-                $request->handled();
-
-                $this->getEntityManager()->flush();
-
-                $this->sendMailToContact($request, true);
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The request was succesfully rejected.'
-                );
-
-                $this->redirect()->toRoute(
-                    'logistics_admin_request',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-            }
-        }
-
-        return new ViewModel(
-            array(
-                'form'    => $form,
-                'request' => $request,
             )
         );
     }
@@ -391,6 +280,14 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         return $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
             ->findAllHandled();
+    }
+
+    /**
+     * @return array
+     */
+    private function getAllRequests()
+    {
+        return array_merge($this->getHandledRequests(), $this->getUnhandledRequests());
     }
 
     /**

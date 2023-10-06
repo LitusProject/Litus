@@ -3,11 +3,17 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('logistics_admin_request', 'coming') %}
+                <li><a {% if 'coming' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "coming"}) }}">Coming week</a></li>
+            {% endif %}
             {% if hasAccess('logistics_admin_request', 'conflicting') %}
                 <li><a {% if 'conflicting' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "conflicting"}) }}">Conflicting</a></li>
             {% endif %}
             {% if hasAccess('logistics_admin_request', 'approved') %}
                 <li><a {% if 'approved' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "approved"}) }}">Approved</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_request', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "old"}) }}">Old</a></li>
             {% endif %}
             {% if hasAccess('logistics_admin_request', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_request', {"action": "manage"}) }}">Manage</a></li>

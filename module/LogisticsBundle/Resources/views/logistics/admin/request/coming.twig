@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/request/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1><b>Requests</b></h1>
+        <table class="full_width manage">
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Unit</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th style="width: 70px">Action</th>
+            </tr>
+
+            {% for request in requests %}
+                <tr class="item item-{{ request.getId() }}">
+                    <td>{{ request.getName() }}</td>
+                    <td>{{ request.getContact() }}</td>
+                    <td>{{ request.getUnit().getName() }}</td>
+                    <td>{{ request.getStartDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ request.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td >{{ request.getStatus() }}</td> {# class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}" #}
+                    <td class="actions">
+                        {% if hasAccess('logistics_admin_order', 'view') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}
