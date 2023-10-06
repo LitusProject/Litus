@@ -20,9 +20,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     {
         $requests = $this->getUnhandledRequests();
 
+        $now = new DateTime();
         // Gets last order for every request
         $lastOrders = array();
-        $now = new DateTime();
         foreach ($requests as $request) {
             $lastOrder = $this->getLastOrderByRequest($request);
             if ($lastOrder && $lastOrder->getEndDate() >= $now) {
@@ -41,9 +41,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     {
         $requests = $this->getHandledRequests();
 
+        $now = new DateTime();
         // Gets last order for every request
         $lastOrders = array();
-        $now = new DateTime();
         foreach ($requests as $request) {
             $lastOrder = $this->getLastOrderByRequest($request);
             if ($lastOrder->getEndDate() >= $now) {

@@ -369,6 +369,38 @@ class Article
     }
 
     /**
+     * @return bool
+     */
+    public function isPostVisibility()
+    {
+        return $this->visibility == 'post';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPraesidiumVisibility()
+    {
+        return $this->visibility == 'praesidium';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGreaterVtkVisibility()
+    {
+        return $this->visibility == 'greatervtk';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMemberVisibility()
+    {
+        return $this->visibility == 'members';
+    }
+
+    /**
      * @param string $visibility
      */
     public function setVisibility($visibility)

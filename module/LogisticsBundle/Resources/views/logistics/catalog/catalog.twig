@@ -100,11 +100,13 @@
                                 {% endif %}
 
                                 {% for map in articles %}
-                                    {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category %}
+                                    {% set available = map['article'].getAmountAvailable() - map['orderedAmount'] %}
+                                    {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category
+                                    and available > 0%}
                                         <tr class="{% if map['mapped'] > 0 %}success{% endif %} {{ unit }} {{ category }} hide">
                                             <td>{{ map['article'].getName() }}</td>
                                             <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
-                                            <td class="hidden-xs">{{ map['article'].getAmountAvailable() }}</td>
+                                            <td class="hidden-xs">{{ available }}</td>
                                             <td class="hidden-xs">
                                                 {% if map['article'].getAdditionalInfo()|length > 1 %}
                                                     <a rel="popover" data-original-title="{{ translate('Comments') }}" data-content="

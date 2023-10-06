@@ -78,8 +78,11 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $mapped[$map->getArticle()->getId()] = 0;
             }
 
-            $mapped[$map->getArticle()->getId()] += $map->getAmount();
+            if ($map->isApproved()) {
+                $mapped[$map->getArticle()->getId()] += $map->getAmount();
+            }
         }
+
         $allArticles = array();
         if ($academic->isPraesidium($this->getCurrentAcademicYear())) {
             $articles = $this->getEntityManager()
@@ -92,12 +95,40 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         foreach ($articles as $art) {
-            $articleInfo = array(
-                'article' => $art,
-                'mapped'  => $mapped[$art->getId()] ?? 0,
-            );
+            if ($art->isPostVisibility() && $academic->isPraesidium($this->getCurrentAcademicYear())
+                && $art->getUnit() == $academic->getUnit($this->getCurrentAcademicYear())) {
+                $articleInfo = array(
+                    'article' => $art,
+                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
+                );
 
-            $allArticles[] = $articleInfo;
+                $allArticles[] = $articleInfo;
+            } elseif ($art->isPraesidiumVisibility() && $academic->isPraesidium($this->getCurrentAcademicYear())) {
+                $articleInfo = array(
+                    'article' => $art,
+                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
+                );
+
+                $allArticles[] = $articleInfo;
+            } elseif ($art->isGreaterVtkVisibility() && $academic->isInWorkingGroup()) {
+                $articleInfo = array(
+                    'article' => $art,
+                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
+                );
+
+                $allArticles[] = $articleInfo;
+            } else {
+                $articleInfo = array(
+                    'article' => $art,
+                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
+                );
+
+                $allArticles[] = $articleInfo;
+            }
         }
 
         $form = $this->getForm(
@@ -482,6 +513,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         return $academic;
     }
 
+
+
     /**
      * @return Order|null
      */
@@ -586,6 +619,23 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         return $requests;
+    }
+
+    /**
+     * @return array
+     */
+    private function findOverlappingAcceptedAmount($article, $order)
+    {
+        $maps = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllOverlappingByOrderArticleQuery($article, $order)->getResult();
+        $total = 0;
+        foreach ($maps as $map) {
+            if ($map->isApproved()) {
+                $total += $map->getAmount();
+            }
+        }
+        return $total;
     }
 
     /**

@@ -30,6 +30,12 @@
                         {% if hasAccess('logistics_admin_order', 'view') %}
                             <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
                         {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'approve') and not request.isApproved() %}
+                            <a href="{{ url('logistics_admin_order', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'reject') and not request.isApproved() %}
+                            <a href="{{ url('logistics_admin_order', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
