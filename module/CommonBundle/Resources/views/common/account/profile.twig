@@ -155,27 +155,28 @@
 
         <div style="height: 80px"></div>
 
-{#        <div class="contentBlock">#}
-{#            <div class="headingHolder">#}
-{#                <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>#}
-{#            </div>#}
+        {% if preferencesEnabled %}
+            <div class="contentBlock">
+                <div class="headingHolder">
+                    <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>
+                </div>
 
-{#            <div style="height: 15px"></div>#}
-{#            {% for preferenceMapping in preferenceMappings %}#}
-{#                <div>#}
-{#                    <div class="accountInfo" style="display: inline-block">{{preferenceMapping.getPreference().getName()}}</div>#}
-{#                    <div style="display: inline-block">{{ preferenceMapping.getValue() ? "Yes" : "No" }}&nbsp;</div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#            <div style="height: 30px"></div>#}
+                <div style="height: 15px"></div>
+                {% for preferenceMapping in preferenceMappings %}
+                    <div>
+                        <div class="accountInfo" style="display: inline-block">{{preferenceMapping.getPreference().getName()}}</div>
+                        <div style="display: inline-block">{{ preferenceMapping.getValue() ? "Yes" : "No" }}&nbsp;</div>
+                    </div>
+                {% endfor %}
+                <div style="height: 30px"></div>
 
-{#            <div class="buttonHolder">#}
-{#                <a class="myVtkButton" href="{{ url('common_account', {'action': 'preferences'}) }}">{{ translate('Edit Preferences') }}</a>#}
-{#            </div>#}
+                <div class="buttonHolder">
+                    <a class="myVtkButton" href="{{ url('common_account', {'action': 'preferences'}) }}">{{ translate('Edit Preferences') }}</a>
+                </div>
 
-{#        </div>#}
-
-{#        <div style="height: 80px"></div>#}
+            </div>
+            <div style="height: 80px"></div>
+        {% endif %}
 
         <div class="contentBlock">
             <div class="headingHolder">

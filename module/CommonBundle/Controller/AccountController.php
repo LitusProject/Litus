@@ -168,6 +168,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'profileForm'           => $profileForm,
+                'preferencesEnabled'    => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'preferenceMappings'    => $academic->getPreferenceMappings(),
             )
         );
@@ -497,6 +498,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
+                'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'preferenceMappings' => $academic->getPreferenceMappings(),
             )
         );
