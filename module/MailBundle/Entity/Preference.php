@@ -53,13 +53,6 @@ class Preference
     private $defaultValue;
 
     /**
-     * @var bool If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
-     *
-     * @ORM\Column(name="is_newsletter", type="boolean")
-     */
-    private $isNewsletter;
-
-    /**
      * @var ArrayCollection The preferenceMappings that refer to this preference
      *
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="preference", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -73,9 +66,8 @@ class Preference
      * @param string $description The description of this mailing preference that will be shown on the account page
      * @param string $attribute The attribute name of this mailing preference in SendInBlue
      * @param bool $defaultValue The default preference value of this mailing preference for each user
-     * @param bool $isNewsletter If set, this preference is used by users to indicate if they want a certain subject to be present in their personalized newsletter or not
      */
-    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false, $isNewsletter=false) {
+    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false) {
     }
 
     /**
@@ -126,26 +118,14 @@ class Preference
     }
 
     /**
-     * @return bool
-     */
-    public function isNewsletter()
-    {
-        return $this->isNewsletter;
-    }
-
-    /**
      * @param string $name
      *
      * @return self
      */
     public function setName(string $name)
     {
-        if ($this->isNewsletter) {
-            $this->name = "newsletter_" . $name;
-        }
-        else {
-            $this->name = $name;
-        }
+        $this->name = $name;
+
         return $this;
     }
 
@@ -180,26 +160,6 @@ class Preference
     public function setDefaultValue(bool $defaultValue)
     {
         $this->defaultValue = $defaultValue;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $isNewsletter
-     *
-     * @return $this
-     */
-    public function setIsNewsletter(bool $isNewsletter)
-    {
-        $this->isNewsletter = $isNewsletter;
-
-        // when newsletter is set, name should always start with "newsletter_"
-        if ( $isNewsletter && !(strncmp($this->name, "newsletter_", 11) === 0)) {
-            $this->name = "newsletter_" . $this->name;
-        }
-        if ( !$isNewsletter && strncmp($this->name, "newsletter_", 11) === 0) {
-            $this->name = substr($this->name, 11);
-        }
 
         return $this;
     }

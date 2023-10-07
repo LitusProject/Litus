@@ -40,74 +40,30 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
 
                 // sendinblue attribute character checking
                 // TODO: put in form validator
-                if(!preg_match('/^[A-Za-z0-9_]+$/',$preference->getAttribute())) {
+                if (!preg_match('/^[A-Za-z0-9_]+$/', $preference->getAttribute())) {
                     $this->flashMessenger()->error(
                         'Error',
                         'The SIB Attribute can only contain alphanumeric characters and underscore(_).'
                     );
-                }
-                else {
+                } else {
                     $this->getEntityManager()->persist($preference);
                     $this->getEntityManager()->flush();
-
-                    // config value that indicates if the api should be used or skipped (for local development)
-                    $enableSibApi = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('mail.enable_sib_api');
-                    if ($enableSibApi == "1") {
-
-                        $sibApiHelper = new SibApiHelper($this->getEntityManager());
-
-                        // create attribute
-                        $sibApiHelperResponse = $sibApiHelper->addAttribute($preference->getAttribute());
-                        error_log("addAttribute is done");
-                        if (!$sibApiHelperResponse->success) {
-                            error_log("addAttribute has errored");
-                            $this->flashMessenger()->error(
-                                'Error',
-                                'Exception when calling Sendinblue AttributesApi->createAttribute: ' . $sibApiHelperResponse->exception->getMessage()
-                            );
-                            $this->getEntityManager()->remove($preference);
-                            $this->getEntityManager()->flush();
-                        }
-//                        else {
-//                            // assign default value for all contacts
-//                            $sibApiHelperResponse = $sibApiHelper->updateAttributeForAllContacts($preference->getAttribute(), $preference->getDefaultValue());
-//                            error_log("updateAttribute is done");
-//                            if (!$sibApiHelperResponse->success) {
-//                                error_log("updateAttribute has errored");
-//                                $this->flashMessenger()->error(
-//                                    'Error',
-//                                    'Exception when calling Sendinblue ContactsApi->updateContact: ' . $sibApiHelperResponse->exception->getMessage()
-//                                );
-//                                $this->getEntityManager()->remove($preference);
-//                                $this->getEntityManager()->flush();
-//                            }
-//                            else {
-//                                $this->flashMessenger()->success(
-//                                    'Success',
-//                                    'The preference was succesfully added!'
-//                                );
-//                            }
-//                        }
-                        else {
-                            $this->flashMessenger()->success(
-                                    'Success',
-                                    'The preference was succesfully added!'
-                                );
-                        }
-                    }
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The preference was succesfully added!'
+                    );
                 }
-
-                $this->redirect()->toRoute(
-                    'mail_admin_preference',
-                    array(
-                        'action' => 'manage',
-                    )
-                );
-
-                return new ViewModel();
             }
+
+            $this->redirect()->toRoute(
+                'mail_admin_preference',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return new ViewModel();
+
         }
 
         return new ViewModel(

@@ -69,14 +69,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'     => 'checkbox',
-                'name'     => 'is_newsletter',
-                'label'    => 'Newsletter',
-            )
-        );
-
         $this->addSubmit('Add', 'preference_add');
     }
 }
