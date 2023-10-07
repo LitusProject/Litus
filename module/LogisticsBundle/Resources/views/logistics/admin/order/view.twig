@@ -307,15 +307,14 @@
             var $this = $(this);
 
             e.preventDefault();
-            console.log('review');
             var reviewAll = $('#reviewAll');
 
             var id = $this.data('id');
 
             reviewAll.find('.edit').unbind('click').click(function () {
                 var reviewOrder = $('#review-order');
+                 // TODO look if csrf is needed!
                 const orderBody = {
-                    "csrf":,
                     "name":reviewOrder.find('#order_review_name').val(),
                     "contact":reviewOrder.find('#order_review_contact').val(),
                     "unit":reviewOrder.find('#order_review_unit').val(),
