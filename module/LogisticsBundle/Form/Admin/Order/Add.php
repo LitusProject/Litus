@@ -110,6 +110,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'attributes' => array(
                     'options' => $this->createLocationsArray(),
                     'id' => 'order_review_location',
+                    '<data-help>' => 'If you don\'t see your location as a possible option, put it in the description (be as complete as possible).',
                 ),
             )
         );
