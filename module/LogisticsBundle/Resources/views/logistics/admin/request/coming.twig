@@ -5,9 +5,25 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    <aside>
+{#        {% if hasAccess('logistics_admin_order', 'export') %}#}
+            <div class="sidebox" style="margin-top: 35px">
+                <div class="title">Material lists</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to download the material lists for next week!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_order', {"action": "export"}) }}">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+{#        {% endif %}#}
+    </aside>
+
     <div id="controller_action">
-        <h1><b>Requests</b></h1>
-        <table class="full_width manage">
+        <h1><b>Requests</b></h1><br>
+        <table class="{#{% if not hasAccess('logistics_admin_order', 'export') %}fullwidth{% endif %}#} manage">
             <tr>
                 <th>Name</th>
                 <th>Contact</th>

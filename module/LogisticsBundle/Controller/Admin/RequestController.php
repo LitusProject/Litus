@@ -2,8 +2,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
@@ -86,6 +88,44 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
 
+    }
+
+    public function exportAction()
+    {
+        $requests = $this->getAllRequests();
+
+        $now = new DateTime();
+        $nextMonday = new DateTime();
+        $nextMonday->modify('next monday');
+        $interval = $now->diff($nextMonday);
+        if ($interval->days <= 3) {
+            $nextMonday->modify('next monday');
+        }
+
+        // Gets last order for every request
+        foreach ($requests as $request) {
+            $lastOrder = $this->getLastOrderByRequest($request);
+            if ($lastOrder && $now <= $lastOrder->getStartDate() && $lastOrder->getStartDate() <= $nextMonday) {
+                $file = new TmpFile();
+                $document = new PdfGenerator($this->getEntityManager(), $lastOrder, $file);
+                $document->generate();
+
+                $headers = new Headers();
+                $headers->addHeaders(
+                    array(
+                        'Content-Disposition' => 'attachment; filename="' . $lastOrder->getName() . '.pdf"',
+                        'Content-Type'        => 'application/pdf',
+                    )
+                );
+                $this->getResponse()->setHeaders($headers);
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     public function oldAction()
