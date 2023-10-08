@@ -85,28 +85,40 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                     $total = 0;
 
-                    foreach ($formData as $formKey => $formValue) {
-                        $mappingId = substr($formKey, 8, strlen($formKey));
-                        if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
-                            $oldMapping = $this->getEntityManager()
-                                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                                ->findOneById($mappingId);
-                            $article = $oldMapping->getArticle();
+                    foreach ($articles as $oldMapping) {
+                        $id = $oldMapping->getId();
+                        $amount = '0';
+                        $comment = '';
+                        foreach ($formData as $formKey => $formValue) {
+                            $split = explode("-", $formKey);
+                            $input = $split[0];
+                            $type = $split[1];
+                            $mappingId = $split[2];
 
-                            if ($article->getUnit() === $reviewingUnit) {
-                                $oldAmount = $oldMapping->getAmount();
-
-                                $booking = new OrderArticleMap($newOrder, $article, $formValue, $oldAmount);
-                                if ($oldAmount == $formValue) {
-                                    $booking->setStatus('goedgekeurd');
+                            if ($input == 'article' && $mappingId == $id) {
+                                if ($type == 'amount') {
+                                    $amount = $formValue;
                                 } else {
-                                    $booking->setStatus('herzien');
+                                    $comment = $formValue;
                                 }
-                                $total += $formValue - $oldAmount;
-                                $this->getEntityManager()->persist($booking);
-
                             }
                         }
+
+                        $article = $oldMapping->getArticle();
+                        $oldAmount = $oldMapping->getAmount();
+
+                        if ($article->getUnit() === $reviewingUnit) {
+                            $booking = new OrderArticleMap($newOrder, $article, $amount, $oldAmount, $comment);
+                            if ($oldAmount == $formValue) {
+                                $booking->setStatus('goedgekeurd');
+                            } else {
+                                $booking->setStatus('herzien');
+                            }
+                            $total += $formValue - $oldAmount;
+                        } else {
+                            $booking = new OrderArticleMap($newOrder, $article, $oldAmount, $oldAmount);
+                        }
+                        $this->getEntityManager()->persist($booking);
                     }
                     $this->getEntityManager()->flush();
 

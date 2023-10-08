@@ -28,12 +28,12 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'     => 'text',
-                    'name'     => 'article-' . $mapping->getId(),
+                    'name'     => 'article-amount-' . $mapping->getId(),
                     'label'    => 'Amount',
                     'value'    => $mapping->getAmount(),
                     'attributes' => array(
                         'class'       => 'input-very-mini',
-                        'id'          => 'article-' . $mapping->getId(),
+                        'id'          => 'article-amount-' . $mapping->getId(),
                     ),
                     'required' => true,
                     'options'  => array(
@@ -43,6 +43,26 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
                             ),
                             'validators' => array(
                                 array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'textarea',
+                    'name'     => 'article-comment-' . $mapping->getId(),
+                    'label'    => 'Comment',
+                    'value'    => $mapping->getComment(),
+                    'attributes' => array(
+                        'style'       => 'height: 30px;',
+                        'id'          => 'article-comment-' . $mapping->getId(),
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
                             ),
                         ),
                     ),

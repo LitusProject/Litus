@@ -9,7 +9,7 @@
     <div id="controller_action" style="width:inherit;">
         {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
             <aside style="margin-top: 32px">
-                {% if hasAccess('logistics_admin_order', 'review') %}
+                {% if hasAccess('logistics_admin_order', 'reviewOrder') %}
                     <div class="sidebox">
                         <div class="title">Edit Order Info</div>
                         <div class="content">
@@ -183,7 +183,7 @@
         {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
             <div class="row" style="margin-top: 30px; text-align: center">
                 <div style="width: 230px; margin: auto">
-                    {% if hasAccess('logistics_admin_order', 'review') %}
+                    {% if hasAccess('logistics_admin_order', 'reviewOrder') %}
                         <a class="edit review" style="margin: 6px" href="#" data-id="{{ order.getId() }}">
                             <b style="padding-left: 5px">Review</b>
                         </a>
@@ -295,13 +295,15 @@
             var id = $this.data('id');
             var name = $this.data('name');
             var oldAmount = $this.data('content');
-            var input = reviewArticle.find('#article-' + id)
+            var input_amount = reviewArticle.find('#article-amount-' + id);
+            var input_comment = reviewArticle.find('#article-comment-' + id);
             reviewArticle.find('.articleName').html(name);
 
             // Hide all labels and inputs
             reviewArticle.find('.form-group').addClass('hide');
             // Unhide input and label for article
-            input.closest('.form-group').removeClass('hide');
+            input_amount.closest('.form-group').removeClass('hide');
+            input_comment.closest('.form-group').removeClass('hide');
 
             reviewArticle.find('.edit').unbind('click').click(function () {
                 reviewArticle.modal('hide');

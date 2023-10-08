@@ -9,7 +9,7 @@
         </div>
         <div class="pull-right" style="margin-top: 30px;">
             {% if order.getExternalComment() %}
-                <a rel="popover" style="float: right; background-color: #ed1a1a; padding: 10px"
+                <a rel="popover" style="float: right; background-color: #ed1a1a; padding: 10px; font-size: 12px"
                    data-original-title="{{ translate('Logistics remark') }}"
                    data-content="<span class='badge badge-info'></span> {{ order.getExternalComment() }}<br/>"
                    data-placement="left" class="label label-warning">{{ translate('Logistics remark') }}</a>
@@ -94,7 +94,7 @@
                                 <th style="width: 25%">{{ Translate('Name') }}</th>
                                 <th style="width: 25%">{{ Translate('Unit') }}</th>
                                 <th style="width: 20%">{{ Translate('Status') }}</th>
-                                <th style="width: 20%">{{ Translate('Description') }}</th>
+                                <th style="width: 20%">{{ Translate('Comment') }}</th>
                                 <th style="width: 10%">{{ Translate('Amount') }}</th>
                             </tr>
 
@@ -107,9 +107,10 @@
                                     <td>{{ mapping.getArticle().getName() }}</td>
                                     <td>{{ mapping.getArticle().getUnit().getName() }}</td>
                                     <td>{{ mapping.getStatus() }}</td>
-                                    <td>{% if mapping.getArticle().getAdditionalInfo()|length > 1 %}
-                                            <a rel="popover" data-original-title="{{ translate('Comments') }}"
-                                               data-content="<span class='badge badge-info'></span> {{ mapping.getArticle().getAdditionalInfo() }}<br/>"
+                                    <td>{% if mapping.getComment()|length > 0 %}
+                                            <a rel="popover" style="background-color: #ed1a1a;"
+                                               data-original-title="{{ translate('Comments') }}"
+                                               data-content="<span class='badge badge-info'></span> {{ mapping.getComment() }}<br/>"
                                                data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
                                         {% endif %}</td>
                                     <td>{{ mapping.getAmount() }}</td>

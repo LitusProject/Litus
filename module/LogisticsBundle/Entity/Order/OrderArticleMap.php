@@ -59,6 +59,13 @@ class OrderArticleMap
     private $status;
 
     /**
+     * @var string comment about this Article-request in this order, used when review is done
+     *
+     * @ORM\Column(name="comment", type="text", options={"default" = ""}, nullable=true)
+     */
+    private $comment;
+
+    /**
      * @static
      * @var array All the possible statuses allowed
      */
@@ -85,14 +92,17 @@ class OrderArticleMap
      * @param Order   $order
      * @param Article $article
      * @param integer $amount
-     * @param int $oldAmount
+     * @param integer $oldAmount
+     * @param string  $comment
      */
-    public function __construct(Order $order, Article $article, $amount, $oldAmount=0)
+    public function __construct(Order $order, Article $article, $amount, $oldAmount=0, $comment='')
     {
         $this->referencedOrder = $order;
         $this->referencedArticle = $article;
         $this->amount = $amount;
         $this->oldAmount = $oldAmount;
+        $this->comment = $comment;
+
         if ($article->getStatusKey() === 'ok') {
             $this->status = 'aangevraagd';
         } else {
@@ -178,6 +188,22 @@ class OrderArticleMap
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
     }
 
     /**
