@@ -168,9 +168,6 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
 
         if ($this->getParam('redirect') !== null) {
             $shibbolethUrl .= '%26redirect=' . urlencode($this->getParam('redirect'));
-            $this->getSentryClient()->logMessage('shiburl: ' . $shibbolethUrl);
-        }else {
-            $this->getSentryClient()->logMessage("no redirect param");
         }
 
         $server = $this->getRequest()->getServer();
