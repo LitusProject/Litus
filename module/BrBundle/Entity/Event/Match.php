@@ -28,11 +28,11 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Match
+ * Connection
  *
  * @author Belian Callaerts <belian.callaerts@vtk.be>
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Match")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Connection")
  * @ORM\Table(name="br_events_matches", uniqueConstraints={@ORM\UniqueConstraint(name="map_subscription_unique",columns={"companymap", "subscription"})})
  */
 class Match

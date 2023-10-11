@@ -2,7 +2,7 @@
 
 namespace BrBundle\Controller\Corporate;
 
-use BrBundle\Entity\Match;
+use BrBundle\Entity\Connection;
 use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Wave;
@@ -458,7 +458,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findInterestedByCompany($person->getCompany());
 
         $allWaves = $this->getEntityManager()

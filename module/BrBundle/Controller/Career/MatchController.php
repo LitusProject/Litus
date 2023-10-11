@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Match;
+use BrBundle\Entity\Connection;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
 use BrBundle\Entity\Match\Wave;
@@ -44,7 +44,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findByStudent($person);
 
         $bannerText = $this->getEntityManager()
@@ -88,7 +88,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findByStudentAndWave($person, $wave);
 
         $profiles = $this->getEntityManager()
@@ -425,8 +425,8 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
     {
         $this->initAjax();
 
-        $match = $this->getMatchEntity();
-        if ($match === null) {
+        $m = $this->getMatchEntity();
+        if ($m === null) {
             return new ViewModel();
         }
 
@@ -436,15 +436,15 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         if ($firstInterestedMailEnabled) {
             $interested = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
-                ->countInterestedByCompany($match->getCompany());
+                ->getRepository('BrBundle\Entity\Connection')
+                ->countInterestedByCompany($m->getCompany());
 
             if ($interested == 0) {
-                $this->sendMailToCompanyAction($match->getCompany());
+                $this->sendMailToCompanyAction($m->getCompany());
             }
         }
 
-        $match->setInterested(true);
+        $m->setInterested(true);
 
         $this->getEntityManager()->flush();
 
@@ -482,13 +482,13 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
     }
 
     /**
-     * @return Match|null
+     * @return Connection|null
      */
     private function getMatchEntity()
     {
-        $match = $this->getEntityById('BrBundle\Entity\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Connection', 'match');
 
-        if (!($match instanceof Match)) {
+        if (!($m instanceof Connection)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No match was found!'
@@ -504,7 +504,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return;
         }
 
-        return $match;
+        return $m;
     }
 
     private function isMasterStudent($person)

@@ -20,11 +20,11 @@
 
 namespace BrBundle\Entity\Match\Wave;
 
-use BrBundle\Entity\Match;
+use BrBundle\Entity\Connection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Wave\WaveMatcheeMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Wave\WaveMatcheeMap")
  * @ORM\Table(name="br_match_companywave_match_map")
  */
 class WaveMatchMap
@@ -41,27 +41,27 @@ class WaveMatchMap
     /**
      *@var CompanyWave The company wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\CompanyWave")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Wave\CompanyWave")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="cascade")
      */
     private $companywave;
 
     /**
-     * @var Match The match
+     * @var Connection The match
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Connection")
      * @ORM\JoinColumn(name="match", referencedColumnName="id", onDelete="cascade")
      */
-    private $match;
+    private $connection;
 
     /**
-     * @param Match       $match
+     * @param Connection       $connection
      * @param CompanyWave $wave
      */
-    public function __construct(Match $match, CompanyWave $wave)
+    public function __construct(Connection $connection, CompanyWave $wave)
     {
         $this->companywave = $wave;
-        $this->match = $match;
+        $this->connection = $connection;
     }
 
     /**
@@ -73,11 +73,11 @@ class WaveMatchMap
     }
 
     /**
-     * @return Match
+     * @return Connection
      */
     public function getMatch()
     {
-        return $this->match;
+        return $this->connection;
     }
 
     /**
