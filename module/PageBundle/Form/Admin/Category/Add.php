@@ -33,6 +33,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
+        $this->add(
+            array(
+                'type'    => 'text',
+                'name'    => 'order_number',
+                'label'   => 'Ordering Number',
+                'options' => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'category_add');
     }
 

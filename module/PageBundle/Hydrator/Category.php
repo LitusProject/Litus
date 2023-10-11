@@ -29,6 +29,10 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setParent(null);
         }
 
+        if ($data['order_number'] != '') {
+            $object->setOrderNumber($data['order_number']);
+        }
+
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
 
@@ -71,6 +75,7 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['parent'] = $object->getParent() ? $object->getParent()->getId() : '';
+        $data['order_number'] = $object->getOrderNumber() ?? '';
 
         return $data;
     }
