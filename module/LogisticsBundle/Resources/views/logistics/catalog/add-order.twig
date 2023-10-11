@@ -12,7 +12,10 @@
 
         </div>
     </div>
-    <div>{{ translate("If you don't see your location as a possible option, put it in the description (be as complete as possible). ") }}</div>
+    <div class="alert alert-info">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate("If you don't see your location as a possible option, put it in the description (be as complete as possible). ") }}
+    </div>
     <br>
     {{ forms.renderForm(form) }}
 {% endblock %}
