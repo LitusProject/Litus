@@ -2,7 +2,7 @@
 
 return array(
     'Logistics'                                                                                                                                                                                                                                 => 'Logistiek',
-    'Van'                                                                                                                                                                                                                                       => 'Kar',
+    'Transport'                                                                                                                                                                                                                                 => 'Transport',
 
     'January'                                                                                                                                                                                                                                   => 'Januari',
     'February'                                                                                                                                                                                                                                  => 'Februari',

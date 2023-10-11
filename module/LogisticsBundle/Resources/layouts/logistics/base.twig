@@ -34,7 +34,7 @@
                         {% endif %}
                         {% if hasAccess('logistics_index', 'index') %}
                             <li {% if 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
+                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Transport') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_piano', 'index') %}
