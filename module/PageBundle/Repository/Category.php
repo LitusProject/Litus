@@ -18,6 +18,7 @@ class Category extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->eq('c.active', 'true')
             )
+            ->orderBy('c.orderNumber', 'ASC')
             ->getQuery();
     }
 
@@ -25,6 +26,6 @@ class Category extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         return $this->getEntityManager()
             ->getRepository('PageBundle\Entity\Category')
-            ->findBy(array('parent' => $parent, 'active' => true));
+            ->findBy(array('parent' => $parent, 'active' => true), array('orderNumber' => 'ASC'));
     }
 }

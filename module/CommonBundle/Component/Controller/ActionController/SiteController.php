@@ -233,13 +233,6 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
             $menu[$activeItem]['active'] = true;
         }
 
-        $sort = array();
-        foreach ($menu as $key => $value) {
-            $sort[$key] = $value['title'] ?? $value['name'];
-        }
-
-        array_multisort($sort, $menu);
-
         return $menu;
     }
 

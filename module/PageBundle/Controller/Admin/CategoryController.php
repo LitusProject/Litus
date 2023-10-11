@@ -19,7 +19,8 @@ class CategoryController extends \CommonBundle\Component\Controller\ActionContro
             $this->getParam('page'),
             array(
                 'active' => true,
-            )
+            ),
+            array('orderNumber' => 'ASC')
         );
 
         return new ViewModel(
