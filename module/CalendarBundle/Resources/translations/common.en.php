@@ -10,5 +10,5 @@ return array(
     'First years Calendar' => 'First years Calendar',
     'International Calendar' => 'International Calendar',
     'There are no upcoming first year events.' => 'There are no upcoming first year events.',
-    'There are no upcoming international events.' => 'There are no upcoming international events.',
+    'There are no upcoming International events.' => 'There are no upcoming International events.',
 );
