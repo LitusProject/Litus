@@ -247,7 +247,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
     public function internationalCalendarAction(){
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
-            ->findAllEerstejaarsAndActiveAndNotHidden();
+            ->findAllInternationalAndActiveAndNotHidden();
 
         $calendarItems = array();
         foreach ($events as $event) {
