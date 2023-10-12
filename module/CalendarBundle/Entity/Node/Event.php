@@ -77,6 +77,20 @@ class Event extends \CommonBundle\Entity\Node
     private $isCareer;
 
     /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_eerstejaars", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isEerstejaars;
+
+    /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_international", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isInternational;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -325,6 +339,46 @@ class Event extends \CommonBundle\Entity\Node
     public function setIsCareer($isCareer)
     {
         $this->isCareer = $isCareer;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEerstejaars()
+    {
+        return $this->isEerstejaars;
+    }
+
+    /**
+     * @param boolean $isEerstejaars
+     *
+     * @return self
+     */
+    public function setIsEerstejaars($isEerstejaars)
+    {
+        $this->isEerstejaars = $isEerstejaars;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInternational()
+    {
+        return $this->isInternational;
+    }
+
+    /**
+     * @param boolean $isInternational
+     *
+     * @return self
+     */
+    public function setIsInternational($isInternational)
+    {
+        $this->isInternational = $isInternational;
 
         return $this;
     }
