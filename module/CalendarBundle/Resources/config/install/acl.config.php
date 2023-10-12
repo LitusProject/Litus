@@ -9,7 +9,7 @@ return array(
             'export', 'manage',
         ),
         'calendar' => array(
-            'export', 'month', 'overview', 'poster', 'view',
+            'export', 'month', 'overview', 'poster', 'view', 'eerstejaarsCalendar', 'internationalCalendar'
         ),
     ),
 );
