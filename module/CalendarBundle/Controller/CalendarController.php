@@ -226,6 +226,42 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    public function eerstejaarsCalendarAction(){
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllEerstejaarsAndActiveAndNotHidden();
+
+        $calendarItems = array();
+        foreach ($events as $event) {
+            $calendarItems[$event->getId()] = $event;
+        }
+
+        return new ViewModel(
+            array(
+                'entityManager' => $this->getEntityManager(),
+                'calendarItems' => $calendarItems,
+            )
+        );
+    }
+
+    public function internationalCalendarAction(){
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllEerstejaarsAndActiveAndNotHidden();
+
+        $calendarItems = array();
+        foreach ($events as $event) {
+            $calendarItems[$event->getId()] = $event;
+        }
+
+        return new ViewModel(
+            array(
+                'entityManager' => $this->getEntityManager(),
+                'calendarItems' => $calendarItems,
+            )
+        );
+    }
+
     /**
      * @return Event|null
      */
