@@ -1,10 +1,8 @@
 name: PHP
 
 on:
-  pull_request: {}
-  push:
-    branches:
-      - master
+  - pull_request
+  - push
 
 jobs:
   lint:
@@ -13,18 +11,39 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: cs2pr
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        uses: litusproject/composer-install-action@main
+        run: >
+          composer install \
+            --no-interaction \
+            --no-progress \
+            --prefer-dist
 
       - name: Run PHP_CodeSniffer
-        if: ${{ always() }}
-        uses: litusproject/php-codesniffer-action@main
+        if: always()
+        run: ./vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
 
       - name: Run PHPStan
-        if: ${{ always() }}
-        uses: litusproject/phpstan-action@main
+        if: always()
+        run: ./vendor/bin/phpstan analyse --error-format=github --no-progress
 
   test:
     name: Test
@@ -32,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
 
       - name: Bring up containers
         run: docker-compose up -d
