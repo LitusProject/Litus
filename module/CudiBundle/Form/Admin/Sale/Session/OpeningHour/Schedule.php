@@ -7,7 +7,7 @@ use DatePeriod;
 use DateTime;
 
 /**
- * Add Order
+ * Add multiple opening hours at once
  *
  * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
@@ -53,10 +53,10 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
      */
     private function createDaysArray()
     {
-        $dt = new DateTime();                   // create DateTime object with current time
-        $dt->setISODate($dt->format('o'), $dt->format('W') + 1);        // set object to Monday on next week
-        $periods = new DatePeriod($dt, new DateInterval('P1D'), 3);      // get all 1day periods from Monday to +6 days
-        $days = iterator_to_array($periods);    // convert DatePeriod object to array
+        $dt = new DateTime();                                                           // create DateTime object with current time
+        $dt->setISODate($dt->format('o'), $dt->format('W') + 1);     // set object to Monday on next week
+        $periods = new DatePeriod($dt, new DateInterval('P1D'), 3);   // get all 1day periods from Monday to +6 days
+        $days = iterator_to_array($periods);                                           // convert DatePeriod object to array
         // $days[0] is Monday, ..., $days[3] is Thursday
         // to format selected date do: $days[1]->format('Y-m-d');
 

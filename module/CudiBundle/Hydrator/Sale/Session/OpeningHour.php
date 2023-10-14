@@ -13,8 +13,8 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = array(
-            'start'       => $object->getStart()->format('d/m/Y H:i'),
-            'end'         => $object->getEnd()->format('d/m/Y H:i'),
+            'start_date'       => $object->getStart()->format('d/m/Y H:i'),
+            'end_date'         => $object->getEnd()->format('d/m/Y H:i'),
             'tab_content' => array(),
         );
 
@@ -32,9 +32,9 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             $object = new OpeningHourEntity($this->getPersonEntity());
         }
-
-        $object->setStart(self::loadDateTime($data['start']))
-            ->setEnd(self::loadDateTime($data['end']));
+        error_log(json_encode($data));
+        $object->setStart(self::loadDateTime($data['start_date']))
+            ->setEnd(self::loadDateTime($data['end_date']));
 
         foreach ($this->getLanguages() as $language) {
             $abbrev = $language->getAbbrev();

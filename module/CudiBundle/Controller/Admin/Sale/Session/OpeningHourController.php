@@ -5,6 +5,7 @@ namespace CudiBundle\Controller\Admin\Sale\Session;
 use DateTime;
 use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Laminas\View\Model\ViewModel;
+use ShiftBundle\Hydrator;
 
 /**
  * OpeningHourController
@@ -126,9 +127,12 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     public function scheduleAction()
     {
         $form = $this->getForm('cudi_sale_session_opening-hour_schedule');
+        $registrationForm = $this->getForm('shift_registration-shift_schedule');
 
-        $monday = new DateTime();                                                   // create DateTime object with current time
-        $monday->setISODate($monday->format('o'), $monday->format('W') + 1);        // set object to Monday on next week
+        $now = (new DateTime())->format('d/m/Y H:i');
+
+        $monday = new DateTime();                                                                   // create DateTime object with current time
+        $monday->setISODate($monday->format('o'), $monday->format('W') + 1);     // set object to Monday on next week
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -138,17 +142,49 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                 foreach ($formData as $formKey => $formValue) {
                     $split = explode("_", $formKey);
                     if ($split[0] == 'interval' && $formValue) {
-                        $date = $split[2];  // for readability create extra variables, could also just plug it in $data array
                         $startHour = explode('-', $split[1])[0];
                         $endHour = explode('-', $split[1])[1];
+                        $startDate = $split[2] . ' ' . $startHour;
+                        $endDate = $split[2] . ' ' . $endHour;
 
                         $data = array();
-                        $data["start"] = $date . ' ' . $startHour;
-                        $data["end"] = $date . ' ' . $endHour;
+                        $data["start_date"] = $startDate;
+                        $data["end_date"] = $endDate;
 
                         $this->getEntityManager()->persist(
                             $form->getHydrator()->hydrate($data)
                         );
+
+                        $count = 0;
+                        $startHour_ = $startHour;       // creating dummy variable that is updated
+                        $signoutDate = (DateTime::createFromFormat('d/m/Y', $split[2]))->modify('+1 day')->format('d/m/Y') . ' 00:00';
+
+                        while ($count != 5 && $startHour_ != $endHour) {
+                            $nextTime = $this->calculateNextTime($startHour_);
+                            $registration = array(
+                                'unit' => 1,
+                                'event' => '',
+                                'location' => 1,
+                                'start_date' => $split[2] . ' ' . $startHour_,
+                                'end_date' => $split[2] . ' ' . $nextTime,
+                                'visible_date' => $now,
+                                'signout_date' => $signoutDate,
+                                'nb_registered' => 50,
+                                'name' => 'Boekenverkoop',
+                                'description' => 'Kom je boeken ophalen ;)',
+                                'ticket_needed' => true,
+                                'members_only' => false,
+                                'members_visible' => true,
+                                'final_signin_date' => $startDate,
+                                'is_cudi_timeslot' => true,
+                            );
+                            $this->getEntityManager()->persist(
+                                $registrationForm->getHydrator()->hydrate($registration)
+                            );
+
+                            $startHour_ = $nextTime;
+                            $count += 1;
+                        }
                     }
                 }
 
@@ -221,5 +257,22 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         }
 
         return $openingHour;
+    }
+
+    /**
+     * @return string
+     */
+    private function calculateNextTime($time)
+    {
+        $hour = explode(':', $time)[0];
+        $minute = explode(':', $time)[1];
+        if ($minute == '00') {
+            $minute = '30';
+        } else {
+            $hour = strval($hour + 1);
+            $minute = '00';
+        }
+
+        return $hour . ':' . $minute;
     }
 }
