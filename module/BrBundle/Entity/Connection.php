@@ -12,12 +12,12 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * This is a Match between a student and a Company.
+ * This is a Connection between a student and a Company. Formerly known as Match, but due to php8 this isn't allowed.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Match")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection")
  * @ORM\Table(name="br_match")
  */
-class Match
+class Connection
 {
     /**
      * @var integer The profile's ID
@@ -31,7 +31,7 @@ class Match
     /**
      * @var CompanyMatcheeMap The company-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Connection\MatcheeMap\CompanyMatcheeMap")
      * @ORM\JoinColumn(name="company", referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyMatchee;
@@ -39,7 +39,7 @@ class Match
     /**
      * @var StudentMatcheeMap The student-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Connection\MatcheeMap\StudentMatcheeMap")
      * @ORM\JoinColumn(name="student", referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentMatchee;
@@ -54,7 +54,7 @@ class Match
     /**
      * @var Wave\WaveMatchMap The match's wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\WaveMatchMap")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Wave\WaveMatchMap")
      * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true, onDelete="set null")
      */
     private $wave;

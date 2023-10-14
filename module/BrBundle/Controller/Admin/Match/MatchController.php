@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Admin\Match;
 
 use BrBundle\Entity\Company;
-use BrBundle\Entity\Match;
+use BrBundle\Entity\Connection;
 use BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap;
 use BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap;
 use CommonBundle\Entity\User\Person;
@@ -21,7 +21,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
     public function manageAction()
     {
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findAll();
 
         usort(
@@ -48,24 +48,24 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
     public function viewAction()
     {
-        $match = $this->getMatchEntity();
-        if ($match === null) {
+        $m = $this->getMatchEntity();
+        if ($m === null) {
             return new ViewModel();
         }
 
-        $student = $match->getStudentMatchee()->getStudent();
-        $company = $match->getCompanyMatchee()->getCompany();
+        $student = $m->getStudentMatchee()->getStudent();
+        $company = $m->getCompanyMatchee()->getCompany();
 
         $studentStudentFeatures = array();
         $companyStudentFeatures = array();
         // THE STUDENT FEATURES
-        foreach ($match->getStudentMatchee()->getStudentProfile()->getFeatures() as $feature) {
+        foreach ($m->getStudentMatchee()->getStudentProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $studentStudentFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach ($match->getCompanyMatchee()->getStudentProfile()->getFeatures() as $feature) {
+        foreach ($m->getCompanyMatchee()->getStudentProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
@@ -79,13 +79,13 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $studentCompanyFeatures = array();
         $companyCompanyFeatures = array();
         // THE COMPANY FEATURES
-        foreach ($match->getStudentMatchee()->getCompanyProfile()->getFeatures() as $feature) {
+        foreach ($m->getStudentMatchee()->getCompanyProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
             $studentCompanyFeatures[$feature->getFeature()->getId()] = $feat;
         }
-        foreach ($match->getCompanyMatchee()->getCompanyProfile()->getFeatures() as $feature) {
+        foreach ($m->getCompanyMatchee()->getCompanyProfile()->getFeatures() as $feature) {
             $feat = (object) array();
             $feat->name = $feature->getFeature()->getName();
             $feat->importance = $feature->getImportance();
@@ -98,7 +98,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'match'                  => $match,
+                'match'                  => $m,
                 'student'                => $student,
                 'company'                => $company,
                 'studentStudentFeatures' => $studentStudentFeatures,
@@ -137,12 +137,12 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
 
         foreach ($allStudents as $student) {
             foreach ($allCompanies as $company) {
-                $map = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
+                $map = $this->getEntityManager()->getRepository('BrBundle\Entity\Connection')
                     ->findOneByStudentAndCompany($student, $company);
                 if ($map === null) {
-                    $match = $this->generateMatch($student, $company);
-                    if ($match !== null) {
-                        $this->getEntityManager()->persist($match);
+                    $m = $this->generateMatch($student, $company);
+                    if ($m !== null) {
+                        $this->getEntityManager()->persist($m);
                     }
                 }
             }
@@ -210,7 +210,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * @param Person  $student
      * @param Company $company
-     * @return Match|null
+     * @return Connection|null
      * @throws ORMException
      */
     private function generateMatch(Person $student, Company $company)
@@ -255,26 +255,26 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $this->getEntityManager()->persist($studentMatchee);
 
 
-        return new Match($studentMatchee, $companyMatchee);
+        return new Connection($studentMatchee, $companyMatchee);
     }
 
     public function deleteAction()
     {
         $this->initAjax();
 
-        $match = $this->getMatchEntity();
-        if ($match === null) {
+        $m = $this->getMatchEntity();
+        if ($m === null) {
             return new ViewModel();
         }
-        $this->getEntityManager()->remove($match);
+        $this->getEntityManager()->remove($m);
 
         $this->getEntityManager()->flush();
-        $this->getEntityManager()->remove($match->getCompanyMatchee());
-        $this->getEntityManager()->remove($match->getStudentMatchee());
+        $this->getEntityManager()->remove($m->getCompanyMatchee());
+        $this->getEntityManager()->remove($m->getStudentMatchee());
         $this->getEntityManager()->flush();
-        if (!is_null($match->getWave())) {
-            $match->getWave()->getWave()->removeMatch($match);
-            $this->getEntityManager()->remove($match->getWave());
+        if (!is_null($m->getWave())) {
+            $m->getWave()->getWave()->removeMatch($m);
+            $this->getEntityManager()->remove($m->getWave());
             $this->getEntityManager()->flush();
         }
 
@@ -288,7 +288,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
     public function deleteAllAction()
     {
         $allMatches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findAll();
         foreach ($allMatches as $currentMatch)
         {
@@ -308,13 +308,13 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
     }
 
     /**
-     * @return Match|null
+     * @return Connection|null
      */
     private function getMatchEntity()
     {
-        $match = $this->getEntityById('BrBundle\Entity\Match');
+        $m = $this->getEntityById('BrBundle\Entity\Connection');
 
-        if (!($match instanceof Match)) {
+        if (!($m instanceof Connection)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No match was found!'
@@ -330,7 +330,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
             return;
         }
 
-        return $match;
+        return $m;
     }
 
     public function sendMailToCompaniesAction(array $companies)

@@ -252,12 +252,12 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
 
         $matches = array();
         foreach ($maps as $m) {
-            $match = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
+            $m = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Connection')
                 ->findOneByCompanyMatchee($m);
 
-            if (!is_null($match)) {
-                $matches[] = $match;
+            if (!is_null($m)) {
+                $matches[] = $m;
             }
         }
 
@@ -277,18 +277,18 @@ class WaveController extends \CommonBundle\Component\Controller\ActionController
         $sizeMM = count($matches);
 
         while ($i < $sizeMM && $n < $nb) {
-            $match = $matches[$i];
+            $m = $matches[$i];
 
-            if (!is_null($match->getWave())) {
+            if (!is_null($m->getWave())) {
                 $i += 1;
                 continue;
             }
             $n += 1;
-            $map = new Wave\WaveMatchMap($match, $cw);
+            $map = new Wave\WaveMatchMap($m, $cw);
             $this->getEntityManager()->persist($map);
             $cw->addMatch($map);
-            $match->setWave($map);
-            $match->setInterested(true);
+            $m->setWave($map);
+            $m->setInterested(true);
             $i += 1;
         }
 

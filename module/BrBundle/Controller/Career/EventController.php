@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\Match;
+use BrBundle\Entity\Event\Connection;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
@@ -295,26 +295,26 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 // If company is at event
                 if ($companyMap != null) {
                     // Check whether match already exists
-                    $match = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Event\Match')
+                    $m = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Event\Connection')
                         ->findByMapAndSubscription($companyMap, $subscription);
 
-                    if ($match == null) {
-                        $match = new Match($companyMap, $subscription);
+                    if ($m == null) {
+                        $m = new Connection($companyMap, $subscription);
                         $this->getEntityManager()->persist(
-                            $match
+                            $m
                         );
                         $this->getEntityManager()->flush();
                         $duplicate = false;
                     } else {
-                        $match = $match[0];
+                        $m = $m[0];
                         $duplicate = true;
                     }
                     
                     return new ViewModel(
                         array(
                             'event'     => $event,
-                            'match'     => $match,
+                            'match'     => $m,
                             'duplicate' => $duplicate,
                         )
                     );
@@ -439,7 +439,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
+            ->getRepository('BrBundle\Entity\Event\Connection')
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
@@ -496,7 +496,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
+            ->getRepository('BrBundle\Entity\Event\Connection')
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
@@ -537,12 +537,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $this->initAjax();
 
         $event = $this->getEventEntity();
-        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
         $data = json_decode($this->getRequest()->getContent());
         $new_note = $data->{'note'};
 
-        $match->setNotes($new_note);
+        $m->setNotes($new_note);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -555,9 +555,9 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     public function getNotesAction()
     {
         $this->initAjax();
-        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
-        $old_note = $match->getNotes();
+        $old_note = $m->getNotes();
 
         return new ViewModel(
             array(
@@ -569,12 +569,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     public function removeMatchAction()
     {
         $this->initAjax();
-        $match = $this->getMatchEntity();
-        if ($match === null) {
+        $m = $this->getMatchEntity();
+        if ($m === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($match);
+        $this->getEntityManager()->remove($m);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -709,14 +709,14 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     }
 
     /**
-     * @return Match|null
+     * @return Connection|null
      */
     private function getMatchEntity()
     {
         $event = $this->getEventEntity();
-        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
-        if (!($match instanceof Match)) {
+        if (!($m instanceof Connection)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No match was found!'
@@ -733,6 +733,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return;
         }
 
-        return $match;
+        return $m;
     }
 }

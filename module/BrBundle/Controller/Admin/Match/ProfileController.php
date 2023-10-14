@@ -49,14 +49,14 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap')
                 ->findByStudent($studentMap->getStudent());
             foreach ($maps as $map) {
-                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
+                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Connection')
                     ->findOneByStudentMatchee($map);
             }
         } elseif (!is_null($companyMap)) {
             $maps = $this->getEntityManager()->getRepository('BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap')
                 ->findByCompany($companyMap->getCompany());
             foreach ($maps as $map) {
-                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Match')
+                $matches[] = $this->getEntityManager()->getRepository('BrBundle\Entity\Connection')
                     ->findOneByCompanyMatchee($map);
             }
         }
@@ -145,7 +145,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 //                        $id = substr($key, strlen('feature_'));
 //                        $map = new ProfileFeatureMap(
 //                            $this->getEntityManager()
-//                                ->getRepository('BrBundle\Entity\Match\Feature')
+//                                ->getRepository('BrBundle\Entity\Connection\Feature')
 //                                ->findOneById($id),$profile, $val);
 //                        $this->getEntityManager()->persist($map);
 //                        $profile->addFeature($map);
@@ -257,11 +257,11 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match')
+            ->getRepository('BrBundle\Entity\Connection')
             ->findAllByProfile($profile);
 
-        foreach ($matches as $match) {
-            $this->getEntityManager()->remove($match);
+        foreach ($matches as $m) {
+            $this->getEntityManager()->remove($m);
         }
 
         $this->getEntityManager()->remove($profile);
@@ -284,7 +284,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         foreach ($allCompanyProfiles as $companyProfile)
         {
             $matches = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
+                ->getRepository('BrBundle\Entity\Connection')
                 ->findAllByProfile($companyProfile);
 
             foreach ($matches as $match) {
@@ -314,7 +314,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 
         foreach ($allStudentProfiles as $studentProfile) {
             $matches = $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Match')
+                ->getRepository('BrBundle\Entity\Connection')
                 ->findAllByProfile($studentProfile);
 
             foreach ($matches as $match) {

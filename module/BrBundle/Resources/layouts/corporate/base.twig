@@ -126,7 +126,7 @@
                         {% if hasAccess('br_corporate_match', 'overview') %}
                             <div class="vtk-menuitem-holder br">
                                 <a {% if 'overview' == getParam('action') and 'br_corporate_match' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %} href="{{ url("br_corporate_match", {"action": "overview", "language": language.getAbbrev()}) }}">
-                                    {{ translate('Match') }}
+                                    {{ translate('Connection') }}
                                 </a>
                             </div>
                         {% endif %}

@@ -20,17 +20,17 @@
 
 namespace BrBundle\Entity\Match;
 
-use BrBundle\Entity\Match;
+use BrBundle\Entity\Connection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\MatcheeMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\MatcheeMap")
  * @ORM\Table(name="br_match_matchee_map")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *     "student_matchee_map"="BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap",
- *     "company_matchee_map"="BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap"
+ *     "student_matchee_map"="BrBundle\Entity\Connection\MatcheeMap\StudentMatcheeMap",
+ *     "company_matchee_map"="BrBundle\Entity\Connection\MatcheeMap\CompanyMatcheeMap"
  * })
  */
 abstract class MatcheeMap
@@ -47,7 +47,7 @@ abstract class MatcheeMap
     /**
      *@var Profile The company-profile of this matchee
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Profile")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Profile")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyProfile;
@@ -55,15 +55,15 @@ abstract class MatcheeMap
     /**
      *@var Profile The student-profile of this matchee
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Profile")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Profile")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentProfile;
 
     /**
-     * @var Match The match
+     * @var Connection The match
      *
-     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Connection")
      * @ORM\JoinColumn(name="match", referencedColumnName="id", onDelete="cascade")
      */
     private $match;
@@ -103,7 +103,7 @@ abstract class MatcheeMap
     }
 
     /**
-     * @return Match
+     * @return Connection
      */
     public function getMatch()
     {
