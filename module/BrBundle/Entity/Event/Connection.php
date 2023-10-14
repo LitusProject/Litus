@@ -29,7 +29,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Connection
- *
+ * Formerly known as Match, but due to php8 this isn't allowed.
  * @author Belian Callaerts <belian.callaerts@vtk.be>
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Connection")
