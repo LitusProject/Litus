@@ -127,6 +127,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     public function scheduleAction()
     {
         $form = $this->getForm('cudi_sale_session_opening-hour_schedule');
+        $shiftForm = $this->getForm('shift_shift_schedule');
         $registrationForm = $this->getForm('shift_registration-shift_schedule');
 
         $now = (new DateTime())->format('d/m/Y H:i');
@@ -147,6 +148,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                         $startDate = $split[2] . ' ' . $startHour;
                         $endDate = $split[2] . ' ' . $endHour;
 
+                        // OPENING HOURS
                         $data = array();
                         $data["start_date"] = $startDate;
                         $data["end_date"] = $endDate;
@@ -155,6 +157,32 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             $form->getHydrator()->hydrate($data)
                         );
 
+                        // SHIFTS
+                        $reward = $startHour == '12:30'? 2: 1;
+
+                        $shift = array(
+                            'name'                  => 'Boekjes verkopen',
+                            'description'           => 'Kom helpen met boeken verkopen. Leer nieuwe mensen kennen en kom de sfeer opsnuiven.
+(Er is altijd begeleiding dus wees niet bang als je voor de eerste keer komt ;))',
+                            'manager'               => false,
+                            'unit'                  => 1,
+                            'event'                 => '',
+                            'location'              => 1,
+                            'start_date'            => $startDate,
+                            'end_date'              => $endDate,
+                            'nb_responsibles'       => 1,
+                            'nb_volunteers'         => $formData['volunteers_' . $startHour . '-' . $endHour . '_' . $split[2]],
+                            'nb_volunteers_min'     => $formData['volunteers-min_' . $startHour . '-' . $endHour . '_' . $split[2]],
+                            'reward'                => $reward,
+                            'handled_on_event'      => false,
+                            'ticket_needed'         => false,
+                            'points'                => 0,
+                        );
+                        $this->getEntityManager()->persist(
+                            $shiftForm->getHydrator()->hydrate($shift)
+                        );
+
+                        // REGISTRATION SHIFTS
                         $count = 0;
                         $startHour_ = $startHour;       // creating dummy variable that is updated
                         $signoutDate = (DateTime::createFromFormat('d/m/Y', $split[2]))->modify('+1 day')->format('d/m/Y') . ' 00:00';

@@ -27,6 +27,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'type'       => 'checkbox',
                     'name'       => 'interval_12:30-14:00_' . $day->format('d/m/Y'),
                     'label'      => $day->format('l') . ' 12:30 - 14:00',
+                    'required' => true,
                     'attributes' => array(
                         'id' => 'interval_12:30-14:00_' . $day->format('d/m/Y'),
                     ),
@@ -35,11 +36,96 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
 
             $this->add(
                 array(
+                    'type'     => 'text',
+                    'name'     => 'volunteers_12:30-14:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Volunteers',
+                    'attributes' => array(
+                        'value' => '0',
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'volunteers-min_12:30-14:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Min. Volunteers',
+                    'attributes' => array(
+                        'value' => '0',
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
                     'type'       => 'checkbox',
                     'name'       => 'interval_18:00-19:00_' . $day->format('d/m/Y'),
-                    'label'      => $day->format('l') . ' 18:00 - 19:00',
+                    'label'      => '18:00 - 19:00',
+                    'required' => true,
                     'attributes' => array(
                         'id' => 'interval_18:00-19:00_' . $day->format('d/m/Y'),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'volunteers_18:00-19:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Volunteers',
+                    'attributes' => array(
+                        'value' => '0',
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'volunteers-min_18:00-19:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Min. Volunteers',
+                    'attributes' => array(
+                        'value' => '0',
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
                     ),
                 )
             );
