@@ -145,7 +145,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
 //                        $id = substr($key, strlen('feature_'));
 //                        $map = new ProfileFeatureMap(
 //                            $this->getEntityManager()
-//                                ->getRepository('BrBundle\Entity\Connection\Feature')
+//                                ->getRepository('BrBundle\Entity\Match\Feature')
 //                                ->findOneById($id),$profile, $val);
 //                        $this->getEntityManager()->persist($map);
 //                        $profile->addFeature($map);

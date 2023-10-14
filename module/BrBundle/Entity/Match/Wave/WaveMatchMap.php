@@ -24,7 +24,7 @@ use BrBundle\Entity\Connection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Wave\WaveMatcheeMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Wave\WaveMatcheeMap")
  * @ORM\Table(name="br_match_companywave_match_map")
  */
 class WaveMatchMap
@@ -41,7 +41,7 @@ class WaveMatchMap
     /**
      *@var CompanyWave The company wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Wave\CompanyWave")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\CompanyWave")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="cascade")
      */
     private $companywave;

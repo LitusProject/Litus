@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a profile for a company. The company will use this to save company traits,
  * the student will use this to indicate which traits they desire in future employers.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Profile\CompanyProfile")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile\CompanyProfile")
  * @ORM\Table(name="br_match_profile_companyprofile")
  */
 class CompanyProfile extends Profile

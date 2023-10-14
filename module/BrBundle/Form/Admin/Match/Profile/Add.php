@@ -136,7 +136,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 //    private function getFeatureNames()
 //    {
 //        $featureNames = array();
-//        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Connection\Feature')->findAll() as $feature) {
+//        foreach ($this->getEntityManager()->getRepository('BrBundle\Entity\Match\Feature')->findAll() as $feature) {
 //            if ($feature->getType() == 'company' || is_null($feature->getType()))
 //                $featureNames[$feature->getId()] = $feature->getName();
 //        }

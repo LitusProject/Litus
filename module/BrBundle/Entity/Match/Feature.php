@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is a profile for a student or company.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Feature")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Feature")
  * @ORM\Table(name="br_match_feature")
  */
 class Feature
@@ -32,7 +32,7 @@ class Feature
     /**
      * @var ArrayCollection The bonusses of this feature
      *
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Connection\Feature", inversedBy="theirBonus", indexBy="id")
+     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Match\Feature", inversedBy="theirBonus", indexBy="id")
      * @ORM\JoinTable(
      *      name="br_match_feature_bonus_map",
      *      joinColumns={@ORM\JoinColumn(name="bonus1", referencedColumnName="id")},
@@ -43,14 +43,14 @@ class Feature
 
     /**
      * The features that have this as bonus.
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Connection\Feature", mappedBy="myBonus")
+     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Match\Feature", mappedBy="myBonus")
      */
     private $theirBonus;
 
     /**
      * @var ArrayCollection The malusses of this feature
      *
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Connection\Feature", inversedBy="theirMalus", indexBy="id")
+     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Match\Feature", inversedBy="theirMalus", indexBy="id")
      * @ORM\JoinTable(
      *      name="br_match_feature_malus_map",
      *      joinColumns={@ORM\JoinColumn(name="malus1", referencedColumnName="id")},
@@ -61,7 +61,7 @@ class Feature
 
     /**
      * The features that have this as malus.
-     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Connection\Feature", mappedBy="myMalus")
+     * @ORM\ManyToMany(targetEntity="BrBundle\Entity\Match\Feature", mappedBy="myMalus")
      */
     private $theirMalus;
 

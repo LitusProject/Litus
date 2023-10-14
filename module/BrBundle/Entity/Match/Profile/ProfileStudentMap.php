@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is a profile for a student. The student will use this to save student traits,
  * the company will use this to indicate which traits they desire in future employees.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Profile\ProfileStudentMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile\ProfileStudentMap")
  * @ORM\Table(name="br_match_profile_student_map")
  */
 class ProfileStudentMap
@@ -53,7 +53,7 @@ class ProfileStudentMap
     /**
      * @var Profile The profile
      *
-     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Connection\Profile")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
      * @ORM\JoinColumn(name="profile", referencedColumnName="id", unique=false, onDelete="CASCADE")
      */
     private $profile;

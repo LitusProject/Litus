@@ -37,7 +37,7 @@ class Feature extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 //    {
 //        $query = $this->getEntityManager()->createQueryBuilder();
 //        $bonus2 = $query->select('b.id')
-//            ->from('BrBundle\Entity\Connection\Feature', 'f')
+//            ->from('BrBundle\Entity\Match\Feature', 'f')
 //            ->innerJoin('f.bonus2', 'b')
 //            ->where(
 //                $query->expr()->eq('m.bonus2', ':feature')

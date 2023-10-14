@@ -27,7 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is a map between a feature and a profile.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Profile\ProfileFeatureMap")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile\ProfileFeatureMap")
  * @ORM\Table(
  *     name="br_match_profile_feature_map",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="profile_feature_map_feature_profile", columns={"feature", "profile"})}
@@ -47,7 +47,7 @@ class ProfileFeatureMap
     /**
      * @var Feature
      *
-     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Connection\Feature")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Feature")
      * @ORM\JoinColumn(name="feature", referencedColumnName="id", onDelete="CASCADE")
      */
     private $feature;
@@ -55,7 +55,7 @@ class ProfileFeatureMap
     /**
      * @var Profile
      *
-     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Connection\Profile")
+     * @ORM\ManyToOne(targetEntity="\BrBundle\Entity\Match\Profile")
      * @ORM\JoinColumn(name="profile", referencedColumnName="id", onDelete="CASCADE")
      */
     private $profile;

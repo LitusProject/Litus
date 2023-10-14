@@ -28,7 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is a wave for a company.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Wave\CompanyWave")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Wave\CompanyWave")
  * @ORM\Table(name="br_match_companywave")
  */
 class CompanyWave
@@ -53,7 +53,7 @@ class CompanyWave
     /**
      * @var ArrayCollection The company's top matches in this wave
      *
-     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Connection\Wave\WaveMatchMap", mappedBy="companywave")
+     * @ORM\OneToMany(targetEntity="\BrBundle\Entity\Match\Wave\WaveMatchMap", mappedBy="companywave")
      * @ORM\JoinColumn(name="matches", referencedColumnName="id")
      */
     private $matches;
@@ -61,7 +61,7 @@ class CompanyWave
     /**
      * @var Wave The wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Wave")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave")
      * @ORM\JoinColumn(name="wave", referencedColumnName="id", onDelete="cascade")
      */
     private $wave;

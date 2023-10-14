@@ -10,13 +10,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * This is a profile for a student or company.
  *
- * @ORM\Entity(repositoryClass="BrBundle\Repository\Connection\Profile")
+ * @ORM\Entity(repositoryClass="BrBundle\Repository\Match\Profile")
  * @ORM\Table(name="br_match_profile")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
  * @ORM\DiscriminatorMap({
- *     "company_profile"="BrBundle\Entity\Connection\Profile\CompanyProfile",
- *     "student_profile"="BrBundle\Entity\Connection\Profile\StudentProfile"
+ *     "company_profile"="BrBundle\Entity\Match\Profile\CompanyProfile",
+ *     "student_profile"="BrBundle\Entity\Match\Profile\StudentProfile"
  * })
  */
 abstract class Profile
@@ -33,7 +33,7 @@ abstract class Profile
     /**
      * @var ArrayCollection The members of this group
      *
-     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Connection\Profile\ProfileFeatureMap", mappedBy="profile")
+     * @ORM\OneToMany(targetEntity="BrBundle\Entity\Match\Profile\ProfileFeatureMap", mappedBy="profile")
      */
     private $features;
 

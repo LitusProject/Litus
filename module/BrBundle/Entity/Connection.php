@@ -31,7 +31,7 @@ class Connection
     /**
      * @var CompanyMatcheeMap The company-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Connection\MatcheeMap\CompanyMatcheeMap")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\CompanyMatcheeMap")
      * @ORM\JoinColumn(name="company", referencedColumnName="id", onDelete="CASCADE")
      */
     private $companyMatchee;
@@ -39,7 +39,7 @@ class Connection
     /**
      * @var StudentMatcheeMap The student-matchee's profiles
      *
-     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Connection\MatcheeMap\StudentMatcheeMap")
+     * @ORM\OneToOne(targetEntity="\BrBundle\Entity\Match\MatcheeMap\StudentMatcheeMap")
      * @ORM\JoinColumn(name="student", referencedColumnName="id", onDelete="CASCADE")
      */
     private $studentMatchee;
@@ -54,7 +54,7 @@ class Connection
     /**
      * @var Wave\WaveMatchMap The match's wave
      *
-     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Connection\Wave\WaveMatchMap")
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Match\Wave\WaveMatchMap")
      * @ORM\JoinColumn(name="wave", referencedColumnName="id", nullable=true, onDelete="set null")
      */
     private $wave;
