@@ -35,7 +35,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Event\Connection")
  * @ORM\Table(name="br_events_matches", uniqueConstraints={@ORM\UniqueConstraint(name="map_subscription_unique",columns={"companymap", "subscription"})})
  */
-class Match
+class Connection
 {
     /**
      * @var integer The ID of the location

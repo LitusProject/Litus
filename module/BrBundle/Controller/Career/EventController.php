@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\Match;
+use BrBundle\Entity\Event\Connection;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
@@ -296,11 +296,11 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 if ($companyMap != null) {
                     // Check whether match already exists
                     $m = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Event\Match')
+                        ->getRepository('BrBundle\Entity\Event\Connection')
                         ->findByMapAndSubscription($companyMap, $subscription);
 
                     if ($m == null) {
-                        $m = new Match($companyMap, $subscription);
+                        $m = new Connection($companyMap, $subscription);
                         $this->getEntityManager()->persist(
                             $m
                         );
@@ -439,7 +439,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
+            ->getRepository('BrBundle\Entity\Event\Connection')
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
@@ -496,7 +496,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
+            ->getRepository('BrBundle\Entity\Event\Connection')
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
@@ -537,7 +537,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $this->initAjax();
 
         $event = $this->getEventEntity();
-        $m = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
         $data = json_decode($this->getRequest()->getContent());
         $new_note = $data->{'note'};
@@ -555,7 +555,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     public function getNotesAction()
     {
         $this->initAjax();
-        $m = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
         $old_note = $m->getNotes();
 
@@ -709,14 +709,14 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     }
 
     /**
-     * @return Match|null
+     * @return Connection|null
      */
     private function getMatchEntity()
     {
         $event = $this->getEventEntity();
-        $m = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
-        if (!($m instanceof Match)) {
+        if (!($m instanceof Connection)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No match was found!'

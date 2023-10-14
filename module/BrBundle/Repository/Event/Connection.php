@@ -19,7 +19,7 @@ class Connection extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
-            ->from('BrBundle\Entity\Event\Match', 'm')
+            ->from('BrBundle\Entity\Event\Connection', 'm')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->eq('m.companyMap', ':companyMap'),
@@ -36,7 +36,7 @@ class Connection extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
-            ->from('BrBundle\Entity\Event\Match', 'm')
+            ->from('BrBundle\Entity\Event\Connection', 'm')
             ->where(
                 $query->expr()->eq('m.companyMap', ':companyMap')
             )
@@ -49,7 +49,7 @@ class Connection extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
-            ->from('BrBundle\Entity\Event\Match', 'm')
+            ->from('BrBundle\Entity\Event\Connection', 'm')
             ->join('m.companyMap', 'c')
             ->where(
                 $query->expr()->eq('c.event', ':event')

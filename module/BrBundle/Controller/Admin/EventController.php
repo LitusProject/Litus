@@ -252,7 +252,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         $matchesCount = count(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Event\Match')
+                ->getRepository('BrBundle\Entity\Event\Connection')
                 ->findAllByEvent($event)
         );
 
