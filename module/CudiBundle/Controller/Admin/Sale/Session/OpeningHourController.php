@@ -148,19 +148,14 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                         $startDate = $split[2] . ' ' . $startHour;
                         $endDate = $split[2] . ' ' . $endHour;
 
-                        // OPENING HOURS
-                        $data = array();
-                        $data["start_date"] = $startDate;
-                        $data["end_date"] = $endDate;
-
-                        $this->getEntityManager()->persist(
-                            $form->getHydrator()->hydrate($data)
-                        );
-
-                        // SHIFTS
                         $reward = $startHour == '12:30'? 2: 1;
+                        $signoutDate = (DateTime::createFromFormat('d/m/Y', $split[2]))->modify('+1 day')->format('d/m/Y') . ' 00:00';
 
-                        $shift = array(
+                        $data = array(
+                            // OPENING HOURS
+                            'start_date' => $startDate,
+                            'end_date' => $endDate,
+                            // SHIFTS
                             'name'                  => 'Boekjes verkopen',
                             'description'           => 'Kom helpen met boeken verkopen. Leer nieuwe mensen kennen en kom de sfeer opsnuiven.
 (Er is altijd begeleiding dus wees niet bang als je voor de eerste keer komt ;))',
@@ -168,46 +163,45 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'unit'                  => 1,
                             'event'                 => '',
                             'location'              => 1,
-                            'start_date'            => $startDate,
-                            'end_date'              => $endDate,
-                            'nb_responsibles'       => 1,
+                            'nb_responsibles'       => 0,
                             'nb_volunteers'         => $formData['volunteers_' . $startHour . '-' . $endHour . '_' . $split[2]],
                             'nb_volunteers_min'     => $formData['volunteers-min_' . $startHour . '-' . $endHour . '_' . $split[2]],
                             'reward'                => $reward,
                             'handled_on_event'      => false,
                             'ticket_needed'         => false,
                             'points'                => 0,
+                            // REGISTRATION SHIFTS
+                            'visible_date' => $now,
+                            'signout_date' => $signoutDate,
+                            'nb_registered' => 50,
+                            'members_only' => false,
+                            'members_visible' => true,
+                            'final_signin_date' => $startDate,
+                            'is_cudi_timeslot' => true,
                         );
+
+                        // OPENING HOURS
                         $this->getEntityManager()->persist(
-                            $shiftForm->getHydrator()->hydrate($shift)
+                            $form->getHydrator()->hydrate($data)
+                        );
+                        // SHIFTS
+                        $this->getEntityManager()->persist(
+                            $shiftForm->getHydrator()->hydrate($data)
                         );
 
                         // REGISTRATION SHIFTS
+                        $data['name'] = 'Boekenverkoop';
+                        $data['description'] = 'Kom je boeken ophalen ;)';
+                        $data['ticket_needed'] = true;
                         $count = 0;
                         $startHour_ = $startHour;       // creating dummy variable that is updated
-                        $signoutDate = (DateTime::createFromFormat('d/m/Y', $split[2]))->modify('+1 day')->format('d/m/Y') . ' 00:00';
-
                         while ($count != 5 && $startHour_ != $endHour) {
                             $nextTime = $this->calculateNextTime($startHour_);
-                            $registration = array(
-                                'unit' => 1,
-                                'event' => '',
-                                'location' => 1,
-                                'start_date' => $split[2] . ' ' . $startHour_,
-                                'end_date' => $split[2] . ' ' . $nextTime,
-                                'visible_date' => $now,
-                                'signout_date' => $signoutDate,
-                                'nb_registered' => 50,
-                                'name' => 'Boekenverkoop',
-                                'description' => 'Kom je boeken ophalen ;)',
-                                'ticket_needed' => true,
-                                'members_only' => false,
-                                'members_visible' => true,
-                                'final_signin_date' => $startDate,
-                                'is_cudi_timeslot' => true,
-                            );
+                            $data['start_date'] = $split[2] . ' ' . $startHour_;
+                            $data['end_date'] = $split[2] . ' ' . $nextTime;
+
                             $this->getEntityManager()->persist(
-                                $registrationForm->getHydrator()->hydrate($registration)
+                                $registrationForm->getHydrator()->hydrate($data)
                             );
 
                             $startHour_ = $nextTime;

@@ -32,7 +32,6 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             $object = new OpeningHourEntity($this->getPersonEntity());
         }
-        error_log(json_encode($data));
         $object->setStart(self::loadDateTime($data['start_date']))
             ->setEnd(self::loadDateTime($data['end_date']));
 
