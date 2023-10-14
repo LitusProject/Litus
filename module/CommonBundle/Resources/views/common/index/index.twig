@@ -39,14 +39,49 @@
         </div>
     {% endfor %}
 
-    <div class="vtk-home-header">
-        <div class="vtk-home-image">
-            <div class="container" style="text-align: center">
-                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>
-                <div class="vtk-home-titleDecoration"></div>
-                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner
-                    in crime since 1920</h2>
-                <div style="height: 100px"></div>
+{#    <div class="vtk-home-header">#}                   {#banner 24ul#}
+{#        <div class="vtk-home-image">#}
+{#            <div class="container" style="text-align: center">#}
+{#                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>#}
+{#                <div class="vtk-home-titleDecoration"></div>#}
+{#                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner#}
+{#                    in crime since 1920</h2>#}
+{#                <div style="height: 100px"></div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    <div class="vtk-home-header">                   {#banner 24ul#}
+        <div class="row container_24h">
+            <div class="buttons_24h">
+                <a class="button_24h hidden-xs"  style="margin-right: 20%"
+                   href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>
+                <a class="button_24h hidden-sm hidden-xs"
+                   href="/page/24-urenloop/">{{ translate('24h Run') }}</a>
+                {#                        <a class="button_24h"#}
+                {#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>#}
+                {#                        <a class="button_24h"#}
+                {#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
+                <div class="countdown_container">
+                    <ul id="countdown">
+                        <li id="days">
+                            <div class="number">00</div>
+                            <div class="label-c">D</div>
+                        </li>
+                        <li id="hours">
+                            <div class="number">00</div>
+                            <div class="label-c">H</div>
+                        </li>
+                        <li id="minutes">
+                            <div class="number">00</div>
+                            <div class="label-c">M</div>
+                        </li>
+                        <li id="seconds">
+                            <div class="number">00</div>
+                            <div class="label-c">S</div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -142,38 +177,38 @@
                     </div>
                 </div>
             </div>
-            <div class="row container_24h" style="">
-                    <div class="buttons_24h">
-                        <a class="button_24h hidden-xs"  style="margin-right: 20%"
-                           href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>
-                        <a class="button_24h hidden-sm hidden-xs"
-                           href="/nl/page/24-urenloop/">{{ translate('24h Run') }}</a>
+{#            <div class="row container_24h">#}
+{#                <div class="buttons_24h">#}
+{#                    <a class="button_24h hidden-xs"  style="margin-right: 20%"#}
+{#                       href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>#}
+{#                    <a class="button_24h hidden-sm hidden-xs"#}
+{#                       href="/page/24-urenloop/">{{ translate('24h Run') }}</a>#}
 {#                        <a class="button_24h"#}
 {#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>#}
 {#                        <a class="button_24h"#}
 {#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
-                        <div class="countdown_container">
-                            <ul id="countdown">
-                                <li id="days">
-                                    <div class="number">00</div>
-                                    <div class="label-c">D</div>
-                                </li>
-                                <li id="hours">
-                                    <div class="number">00</div>
-                                    <div class="label-c">H</div>
-                                </li>
-                                <li id="minutes">
-                                    <div class="number">00</div>
-                                    <div class="label-c">M</div>
-                                </li>
-                                <li id="seconds">
-                                    <div class="number">00</div>
-                                    <div class="label-c">S</div>
-                                </li>
-                            </ul>
-                        </div>
-                </div>
-            </div>
+{#                    <div class="countdown_container">#}
+{#                        <ul id="countdown">#}
+{#                            <li id="days">#}
+{#                                <div class="number">00</div>#}
+{#                                <div class="label-c">D</div>#}
+{#                            </li>#}
+{#                            <li id="hours">#}
+{#                                <div class="number">00</div>#}
+{#                                <div class="label-c">H</div>#}
+{#                            </li>#}
+{#                            <li id="minutes">#}
+{#                                <div class="number">00</div>#}
+{#                                <div class="label-c">M</div>#}
+{#                            </li>#}
+{#                            <li id="seconds">#}
+{#                                <div class="number">00</div>#}
+{#                                <div class="label-c">S</div>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         </div>
     </div>
 
