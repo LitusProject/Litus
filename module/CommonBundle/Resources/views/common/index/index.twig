@@ -163,7 +163,7 @@
                             <div>
                                 <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
                                 <p style="float:right">{{ opening.getStart().format('H:i') }}
-                                    -{{ opening.getEnd().format('H:i') }}</p></div>
+                                    - {{ opening.getEnd().format('H:i') }}</p></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -173,6 +173,12 @@
                         {% for message in shop.messages %}
                             <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                             </div>
+                        {% endfor %}
+                        {% for opening in shop.openingHours %}
+                            <div>
+                                <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }}</p>
+                                <p style="float:right">{{ opening.getStartDate().format('H:i') }}
+                                    - {{ opening.getEndDate().format('H:i') }}</p></div>
                         {% endfor %}
                     </div>
                 </div>

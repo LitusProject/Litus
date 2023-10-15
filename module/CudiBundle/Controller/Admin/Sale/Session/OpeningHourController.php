@@ -5,12 +5,12 @@ namespace CudiBundle\Controller\Admin\Sale\Session;
 use DateTime;
 use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Laminas\View\Model\ViewModel;
-use ShiftBundle\Hydrator;
 
 /**
  * OpeningHourController
  *
  * @author Kristof Mariën <kristof.marien@litus.cc>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class OpeningHourController extends \CudiBundle\Component\Controller\ActionController
 {
@@ -56,7 +56,6 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                error_log(json_encode($form->getData()));
                 $this->getEntityManager()->persist(
                     $form->hydrateObject()
                 );

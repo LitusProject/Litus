@@ -18,6 +18,9 @@ return array(
             'logistics_catalog' => array(
                 'overview',
             ),
+            'logistics_inventory' => array(
+                'index',
+            ),
         ),
     ),
 );

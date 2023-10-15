@@ -20,5 +20,8 @@ return array(
         'shop_admin_shop_message' => array(
             'manage', 'delete', 'add', 'edit',
         ),
+        'shop_admin_shop_openinghour' => array(
+            'add', 'edit', 'schedule', 'delete', 'manage', 'old',
+        ),
     ),
 );

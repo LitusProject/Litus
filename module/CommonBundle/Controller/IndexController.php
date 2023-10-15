@@ -214,11 +214,9 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P14D');
 
-        $messages = $this->getEntityManager()
+        $cudi['messages'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\Message')
             ->findAllActive();
-
-        $cudi['messages'] = $messages;
 
         return $cudi;
     }
@@ -278,7 +276,10 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->getConfigValue('shop.url_reservations'),
             'messages' => $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Session\Message')
-                ->findAllActive()
+                ->findAllActive(),
+            'openingHours' => $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Session\OpeningHour')
+                ->findPeriodFromNow('P14D'),
         );
     }
 

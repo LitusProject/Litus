@@ -1,0 +1,19 @@
+<header id="controller_header">
+    <div class="title"><span class="clock">Opening Hours</span></div>
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('shop_admin_shop_openinghour', 'schedule') %}
+                <li><a {% if 'add' == getParam('schedule') %} class="active" {% endif %} href="{{ url('shop_admin_shop_openinghour', {"action": "schedule"}) }}">Schedule</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_openinghour', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url('shop_admin_shop_openinghour', {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_openinghour', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %} href="{{ url('shop_admin_shop_openinghour', {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_openinghour', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('shop_admin_shop_openinghour', {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

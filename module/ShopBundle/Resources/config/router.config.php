@@ -103,6 +103,23 @@ return array(
                 ),
             ),
         ),
+        'shop_admin_shop_openinghour' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/shop/openinghours[/:action[/page/:page][/:id]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'shop_admin_shop_openinghour',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'shop' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -126,6 +143,7 @@ return array(
         'shop_admin_shop_reservation'           => 'ShopBundle\Controller\Admin\ReservationController',
         'shop_admin_shop_reservationpermission' => 'ShopBundle\Controller\Admin\ReservationPermissionController',
         'shop_admin_shop_message'               => 'ShopBundle\Controller\Admin\MessageController',
+        'shop_admin_shop_openinghour '          => 'ShopBundle\Controller\Admin\OpeningHourController',
         'shop'                                  => 'ShopBundle\Controller\ShopController',
     ),
 );

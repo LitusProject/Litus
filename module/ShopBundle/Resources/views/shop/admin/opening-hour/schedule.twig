@@ -1,0 +1,12 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/opening-hour/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <h1>Week: <b>{{ nextMonday.format('l d/m') }}</b> - <b>{{ nextMonday.modify('next thursday').format('l d/m') }}</b></h1>
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
