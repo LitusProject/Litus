@@ -11,15 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="BrBundle\Repository\Company\Request")
  * @ORM\Table(name="br_companies_requests")
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="inheritance_type", type="string")
- * @ORM\DiscriminatorMap({
- *     "internship"="BrBundle\Entity\Company\Request\Internship",
- *     "vacancy"="BrBundle\Entity\Company\Request\Vacancy",
- *     "student_job"="BrBundle\Entity\Company\Request\StudentJob"
- * })
  */
-abstract class Request
+class Request
 {
     /**
      * @var request's ID
@@ -53,13 +46,61 @@ abstract class Request
     private $handled;
 
     /**
-     * @param Corporate $contact
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="text", nullable=true)
      */
-    public function __construct(Corporate $contact)
+    private $requestType;
+
+    /**
+     * @var Job
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
+     * @ORM\JoinColumn(name="job", referencedColumnName="id")
+     */
+    private $job;
+
+    /**
+     * @var Job
+     *
+     * @ORM\ManyToOne(targetEntity="BrBundle\Entity\Company\Job")
+     * @ORM\JoinColumn(name="edit_job", referencedColumnName="id", nullable=true)
+     */
+    private $editJob;
+
+    /**
+     * @var string The type of the request
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $rejectMessage;
+
+    /**
+     * @static
+     * @var array All the possible requests allowed
+     */
+
+    public static $possibleRequests = array(
+        'edit'        => 'edit',
+        'edit reject' => 'edit reject',
+        'add'         => 'add',
+    );
+
+    /**
+     * @param Job       $job
+     * @param string    $requestType
+     * @param Corporate $contact
+     * @param Job|null  $editJob
+     */
+    public function __construct(Job $job, $requestType, Corporate $contact, Job $editJob = null)
     {
         $this->creationTime = new DateTime();
         $this->contact = $contact;
         $this->handled = false;
+
+        $this->job = $job;
+        $this->setRequestType($requestType);
+        $this->editJob = $editJob;
     }
 
     /**
@@ -126,22 +167,84 @@ abstract class Request
     }
 
     /**
-     * @return null
+     * @param string $type
      */
-    abstract public function approveRequest();
+    private function setRequestType($type)
+    {
+        if (!in_array($type, self::$possibleRequests)) {
+            throw new RuntimeException('The requested type does not exist for the vacancy requests');
+        }
+
+        $this->requestType = $type;
+    }
 
     /**
      * @return null
      */
-    abstract public function rejectRequest($message);
+    public function approveRequest()
+    {
+        switch ($this->requestType) {
+            case 'add':
+                $this->getJob()->approve();
+                break;
+
+            case 'edit':
+                $this->getJob()->approve();
+                $this->getEditJob()->remove();
+                break;
+
+            case 'edit reject':
+                $this->getJob()->approve();
+
+                $editJob = $this->getEditJob();
+                if ($editJob !== null) {
+                    $editJob->remove();
+                }
+
+                break;
+
+            default:
+                break;
+        }
+    }
 
     /**
-     * @return \BrBundle\Entity\Company\Job
+     * @return null
      */
-    abstract public function getJob();
+    public function rejectRequest($message)
+    {
+        $this->rejectMessage = $message;
+    }
+
+    /**
+     * @return Job
+     */
+    public function getJob()
+    {
+        return $this->job;
+    }
+
+    /**
+     * @return Job
+     */
+    public function getEditJob()
+    {
+        return $this->editJob ?? $this->job;
+    }
 
     /**
      * @return string
      */
-    abstract public function getRejectMessage();
+    public function getRejectMessage()
+    {
+        return $this->rejectMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestType()
+    {
+        return $this->requestType;
+    }
 }
