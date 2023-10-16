@@ -215,6 +215,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                     $shiftForm->getHydrator()->hydrate($data)
                 );
 
+                $data['nb_volunteers'] = 2;
+                $data['nb_volunteers_min'] = 1;
                 $data['start_date'] = $endDate . ' 00:15';
                 $data['end_date'] = $endDate . ' 01:00';
                 $data['reward'] = 1;
@@ -225,6 +227,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
                 $data['name'] = 'Opbouwen';
                 $data['description'] = 'Wat tafels en stoelen klaar zetten voor de cantus';
+                $data['nb_volunteers'] = 4;
+                $data['nb_volunteers_min'] = 3;
                 $data['start_date'] = $startDate . ' 19:00';
                 $data['end_date'] = $startDate . ' 20:00';
 
