@@ -161,7 +161,7 @@
                         {#                    {% endif %}#}
                         {% for opening in cudi.openingHours %}
                             <div>
-                                <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
+                                <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}  ({{ opening.getComment() }})</p>
                                 <p style="float:right">{{ opening.getStart().format('H:i') }}
                                     - {{ opening.getEnd().format('H:i') }}</p></div>
                         {% endfor %}
@@ -176,7 +176,7 @@
                         {% endfor %}
                         {% for opening in shop.openingHours %}
                             <div>
-                                <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }}</p>
+                                <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }}  ({{ opening.getComment() }})</p>
                                 <p style="float:right">{{ opening.getStartDate().format('H:i') }}
                                     - {{ opening.getEndDate().format('H:i') }}</p></div>
                         {% endfor %}
