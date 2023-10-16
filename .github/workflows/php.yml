@@ -30,6 +30,20 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      - name: Restore PHP_CodeSniffer cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpcs-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-phpcs-
+
+      - name: Restore PHPStan cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-phpstan-
+
       - name: Install Composer dependencies
         run: >
           composer install \
@@ -39,11 +53,32 @@ jobs:
 
       - name: Run PHP_CodeSniffer
         if: always()
-        run: ./vendor/bin/phpcs -q --report=checkstyle | cs2pr --graceful-warnings
+        run: >
+          ./vendor/bin/phpcs \
+            -q \
+            --cache=${{ runner.temp }}/phpcs \
+            --report=checkstyle \
+            | cs2pr --graceful-warnings
+
+      - name: Save PHP_CodeSniffer cache
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpcs-${{ hashFiles('**/composer.lock') }}
 
       - name: Run PHPStan
         if: always()
+        env:
+          PHPSTAN_TMP_DIR: ${{ runner.temp }}/phpstan
         run: ./vendor/bin/phpstan analyse --error-format=github --no-progress
+
+      - name: Save PHPStan cache
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: ${{ runner.temp }}/phpstan
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}
 
   test:
     name: Test

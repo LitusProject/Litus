@@ -1,5 +1,7 @@
+includes:
+    - phpstan.neon.php
+
 parameters:
-    tmpDir: phpstan/
     level: 1
     paths:
         - bin/
