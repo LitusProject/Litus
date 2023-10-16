@@ -129,6 +129,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options' => array(
                                 'm' => 'M',
                                 'f' => 'F',
+                                'x' => 'X',
                             ),
                         ),
                     ),
