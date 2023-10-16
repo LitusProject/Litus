@@ -49,7 +49,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
     public function addAction()
     {
-        $form = $this->getForm('shop_session_opening-hour_add');
+        $form = $this->getForm('shop_admin_session_opening-hour_add');
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -91,7 +91,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $form = $this->getForm('shop_session_opening-hour_edit', $openingHour);
+        $form = $this->getForm('shop_admin_session_opening-hour_edit', $openingHour);
 
         if ($this->getRequest()->isPost()) {
             $form->setData($this->getRequest()->getPost());
@@ -124,7 +124,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
     public function scheduleAction()
     {
-        $form = $this->getForm('shop_session_opening-hour_schedule');
+        $form = $this->getForm('shop_admin_session_opening-hour_schedule');
         $shiftForm = $this->getForm('shift_shift_schedule');
 
         $monday = new DateTime();                                                                   // create DateTime object with current time
@@ -169,32 +169,34 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                         );
 
                         // SHIFTS
-                        // Broodjes smeren
-                        $data['name'] = 'Broodjes smeren';
-                        $data['description'] = 'Kom broodjes smeren! (gratis degustaties inbegrepen)';
-                        $data['start_date'] = $split[2] . ' 10:30';
-                        $data['end_date'] = $split[2] . ' 12:30';
-                        $this->getEntityManager()->persist(
-                            $shiftForm->getHydrator()->hydrate($data)
-                        );
-                        // Broodjes verkopen
-                        $data['name'] = 'Broodjes verkopen';
-                        $data['description'] = 'Kom broodjes verkopen en geniet van een zelfgemaakt broodje en de geweldige shiftersvoorzieningen!';
-                        $data['start_date'] = $split[2] . ' 12:30';
-                        $data['end_date'] = $split[2] . ' 14:00';
-                        $this->getEntityManager()->persist(
-                            $shiftForm->getHydrator()->hydrate($data)
-                        );
-                        // Namiddagverkoop
-                        $data['name'] = 'Namiddagverkoop';
-                        $data['description'] = 'Help ons met de laatste broodjes te verkopen, maak en paar croques en geniet van een mooie namiddag.';
-                        $data['start_date'] = $split[2] . ' 14:00';
-                        $data['end_date'] = $split[2] . ' 16:00';
-                        $data['nb_volunteers'] = 2;
-                        $data['nb_volunteers_min'] = 0;
-                        $this->getEntityManager()->persist(
-                            $shiftForm->getHydrator()->hydrate($data)
-                        );
+                        if ($formData['shift_' . $split[2]]) {
+                            // Broodjes smeren
+                            $data['name'] = 'Broodjes smeren';
+                            $data['description'] = 'Kom broodjes smeren! (gratis degustaties inbegrepen)';
+                            $data['start_date'] = $split[2] . ' 10:30';
+                            $data['end_date'] = $split[2] . ' 12:30';
+                            $this->getEntityManager()->persist(
+                                $shiftForm->getHydrator()->hydrate($data)
+                            );
+                            // Broodjes verkopen
+                            $data['name'] = 'Broodjes verkopen';
+                            $data['description'] = 'Kom broodjes verkopen en geniet van een zelfgemaakt broodje en de geweldige shiftersvoorzieningen!';
+                            $data['start_date'] = $split[2] . ' 12:30';
+                            $data['end_date'] = $split[2] . ' 14:00';
+                            $this->getEntityManager()->persist(
+                                $shiftForm->getHydrator()->hydrate($data)
+                            );
+                            // Namiddagverkoop
+                            $data['name'] = 'Namiddagverkoop';
+                            $data['description'] = 'Help ons met de laatste broodjes te verkopen, maak en paar croques en geniet van een mooie namiddag.';
+                            $data['start_date'] = $split[2] . ' 14:00';
+                            $data['end_date'] = $split[2] . ' 16:00';
+                            $data['nb_volunteers'] = 2;
+                            $data['nb_volunteers_min'] = 0;
+                            $this->getEntityManager()->persist(
+                                $shiftForm->getHydrator()->hydrate($data)
+                            );
+                        }
                     }
                 }
 
@@ -269,20 +271,4 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
         return $openingHour;
     }
 
-    /**
-     * @return string
-     */
-    private function calculateNextTime($time)
-    {
-        $hour = explode(':', $time)[0];
-        $minute = explode(':', $time)[1];
-        if ($minute == '00') {
-            $minute = '30';
-        } else {
-            $hour = strval($hour + 1);
-            $minute = '00';
-        }
-
-        return $hour . ':' . $minute;
-    }
 }
