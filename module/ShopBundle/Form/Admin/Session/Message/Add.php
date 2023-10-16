@@ -51,7 +51,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                 'type'     => 'textarea',
                 'name'     => 'bottomContent',
                 'label'    => 'Bottom Message',
-                'required' => true,
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
