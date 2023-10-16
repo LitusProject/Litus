@@ -143,7 +143,7 @@ return array(
         'shop_admin_shop_reservation'           => 'ShopBundle\Controller\Admin\ReservationController',
         'shop_admin_shop_reservationpermission' => 'ShopBundle\Controller\Admin\ReservationPermissionController',
         'shop_admin_shop_message'               => 'ShopBundle\Controller\Admin\MessageController',
-        'shop_admin_shop_openinghour '          => 'ShopBundle\Controller\Admin\OpeningHourController',
+        'shop_admin_shop_openinghour'          => 'ShopBundle\Controller\Admin\OpeningHourController',
         'shop'                                  => 'ShopBundle\Controller\ShopController',
     ),
 );

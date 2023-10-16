@@ -26,10 +26,11 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
-                    'label'      => $day->format('l') . ' 12:30 - 14:00',
+                    'label'      => $day->format('l') . ' 10:30-18:00',
                     'required' => true,
                     'attributes' => array(
-                        'id' => 'interval_12:30-14:00_' . $day->format('d/m/Y'),
+                        'id' => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
+                        'value' => 1,
                     ),
                 )
             );
@@ -38,7 +39,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                 array(
                     'type'       => 'checkbox',
                     'name'       => 'shift_' . $day->format('d/m/Y'),
-                    'label'      => 'Shift needed',
+                    'label'      => 'Shifts needed',
                     'required'   => false,
                     'attributes' => array(
                         'id'        => 'shift_' . $day->format('d/m/Y'),
