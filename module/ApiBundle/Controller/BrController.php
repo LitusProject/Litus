@@ -300,7 +300,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      *      "first_name": "first name"
      *      "last_name": "last name"
      *      "email": "email"
-     *      "sex": "m/f/null"
+     *      "sex": "m/f/x/null"
      *      "company": "company id"
      * }
      */

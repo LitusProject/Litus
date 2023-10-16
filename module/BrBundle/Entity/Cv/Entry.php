@@ -67,7 +67,7 @@ class Entry
     private $birthday;
 
     /**
-     * @var string The persons sex ('m' or 'f')
+     * @var string The persons sex ('m', 'f' or 'x')
      *
      * @ORM\Column(type="string", length=1, nullable=true)
      */
