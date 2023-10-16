@@ -7,7 +7,7 @@
                 <li><a {% if 'calendar_admin_calendar_registration' == getParam('controller') %} class="active" {% endif %} href="{{ url('calendar_admin_calendar_registration', {"action": "manage"}) }}">Registration</a></li>
             {% endif %}
             {% if hasAccess('calendar_admin_calendar', 'add') %}
-                <li><a {% if 'add' == getParam('action') and 'calendar_admin_calendar' == getParam('controller') %} class="active" {% endif %} href="{{ url('calendar_admin_calendar', {"action": "add"}) }}">Add</a></li>
+                <li><a {% if ('add' == getParam('action') or 'template' == getParam('action')) and 'calendar_admin_calendar' == getParam('controller') %} class="active" {% endif %} href="{{ url('calendar_admin_calendar', {"action": "add"}) }}">Add</a></li>
             {% endif %}
             {% if hasAccess('calendar_admin_calendar', 'old') %}
                 <li>

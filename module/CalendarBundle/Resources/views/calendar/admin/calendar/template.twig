@@ -6,15 +6,15 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <aside>
-        {% if hasAccess('calendar_admin_calendar', 'template') %}
+        {% if hasAccess('calendar_admin_calendar', 'add') %}
             <div class="sidebox" style="margin-top: 35px">
-                <div class="title">Cantus template</div>
+                <div class="title">Go back</div>
                 <div class="content">
                     <p>
-                        <i>Please hit the link below to add a Waaiberg cantus from the template! This ensures all shifts are made automatically.</i>
+                        <i>Please hit the link below to go back to the normal add function!</i>
                     </p>
                     <p>
-                        <a href="{{ url('calendar_admin_calendar', {"action": "template"}) }}">&rarr; Template</a>
+                        <a href="{{ url('calendar_admin_calendar', {"action": "add"}) }}">&rarr; Add</a>
                     </p>
                 </div>
             </div>
