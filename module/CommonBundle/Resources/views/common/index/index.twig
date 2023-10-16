@@ -171,7 +171,7 @@
                     <div class="opening_hour_message">
                         <h2>Theokot - {{ translate('Opening Hours') }}</h2>
                         {% for message in shop.messages %}
-                            <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
+                            <div style="white-space: pre-wrap;">{{ message.getTopContent(language) }}
                             </div>
                         {% endfor %}
                         {% for opening in shop.openingHours %}
@@ -179,6 +179,10 @@
                                 <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }}</p>
                                 <p style="float:right">{{ opening.getStartDate().format('H:i') }}
                                     - {{ opening.getEndDate().format('H:i') }}</p></div>
+                        {% endfor %}
+                        {% for message in shop.messages %}
+                            <div style="white-space: pre-wrap;">{{ message.getBottomContent(language) }}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>

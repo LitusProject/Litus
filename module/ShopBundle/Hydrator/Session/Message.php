@@ -18,11 +18,12 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 
             if (isset($data['tab_content'])
                 && isset($data['tab_content']['tab_' . $abbrev])
-                && isset($data['tab_content']['tab_' . $abbrev]['content'])
+                && (isset($data['tab_content']['tab_' . $abbrev]['topContent'])
+                || isset($data['tab_content']['tab_' . $abbrev]['bottomContent']))
             ) {
-                $object->setContent($language, $data['tab_content']['tab_' . $abbrev]['content']);
+                $object->setContent($language, $data['tab_content']['tab_' . $abbrev]['topContent'], $data['tab_content']['tab_' . $abbrev]['bottomContent']);
             } else {
-                $object->setContent($language, null);
+                $object->setContent($language, null, null);
             }
         }
 
@@ -44,7 +45,8 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()] = array(
-                'content' => $object->getContent($language, false),
+                'topContent' => $object->getTopContent($language, false),
+                'bottomContent' => $object->getBottomContent($language, false),
             );
         }
 

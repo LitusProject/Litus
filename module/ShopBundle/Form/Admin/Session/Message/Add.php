@@ -9,6 +9,7 @@ use CommonBundle\Entity\General\Language;
  * Add message
  *
  * @author Robbe Serry <robbe.serry@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 {
@@ -32,8 +33,24 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $container->add(
             array(
                 'type'     => 'textarea',
-                'name'     => 'content',
-                'label'    => 'Message',
+                'name'     => 'topContent',
+                'label'    => 'Top Message',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $container->add(
+            array(
+                'type'     => 'textarea',
+                'name'     => 'bottomContent',
+                'label'    => 'Bottom Message',
                 'required' => true,
                 'options'  => array(
                     'input' => array(

@@ -119,12 +119,27 @@ class Message
      * @param  Language $language
      * @return string
      */
-    public function getContent(Language $language, $allowFallback = true)
+    public function getTopContent(Language $language, $allowFallback = true)
     {
         $translation = $this->getTranslation($language, $allowFallback);
 
         if ($translation !== null) {
-            return $translation->getContent();
+            return $translation->getTopContent();
+        }
+
+        return '';
+    }
+
+    /**
+     * @param  Language $language
+     * @return string
+     */
+    public function getBottomContent(Language $language, $allowFallback = true)
+    {
+        $translation = $this->getTranslation($language, $allowFallback);
+
+        if ($translation !== null) {
+            return $translation->getBottomContent();
         }
 
         return '';
@@ -132,22 +147,24 @@ class Message
 
     /**
      * @param  Language    $language
-     * @param string|null $content
+     * @param string|null $topContent
+     * @param string|null $bottomContent
      * @return self
      */
-    public function setContent(Language $language, string $content = null)
+    public function setContent(Language $language, string $topContent = null, string $bottomContent = null)
     {
         $translation = $this->getTranslation($language, false);
 
-        if ($content === null) {
+        if ($topContent === null && $bottomContent === null) {
             if ($translation !== null) {
                 $this->translations->removeElement($translation);
             }
         } else {
             if ($translation === null) {
-                $this->translations->add(new Translation($this, $language, $content));
+                $this->translations->add(new Translation($this, $language, $topContent, $bottomContent));
             } else {
-                $translation->setContent($content);
+                $translation->setTopContent($topContent);
+                $translation->setBottomContent($bottomContent);
             }
         }
 

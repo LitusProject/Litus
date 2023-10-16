@@ -21,14 +21,16 @@
         <table class="full_width manage">
 
             <tr>
-                <th >Message</th>
+                <th>Top Message</th>
+                <th>Bottom Message</th>
                 <th style="width: 70px">Active</th>
                 <th style="width: 70px">Action</th>
             </tr>
 
             {% for message in paginator %}
                 <tr class="item item-{{ message.getId() }}">
-                    <td>{{ message.getContent(language) }}</td>
+                    <td>{{ message.getTopContent(language) }}</td>
+                    <td>{{ message.getBottomContent(language) }}</td>
                     <td>{% if message.isActive() %}&times;{% endif %}</td>
                     <td class="actions">
                         {% if hasAccess('shop_admin_shop_message', 'edit') %}

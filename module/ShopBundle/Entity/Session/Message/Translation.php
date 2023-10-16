@@ -40,22 +40,30 @@ class Translation
     private $language;
 
     /**
-     * @var string The content of this translation
+     * @var string The top content of this translation: comes above the opening hours on the front page
      *
      * @ORM\Column(type="text")
      */
-    private $content;
+    private $topContent;
+
+    /**
+     * @var string The bottom content of this translation: comes under the opening hours on the front page
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $bottomContent;
 
     /**
      * @param Message $message
      * @param Language    $language
      * @param string      $content
      */
-    public function __construct(Message $message, Language $language, $content)
+    public function __construct(Message $message, Language $language, $topContent, $bottomContent)
     {
         $this->message = $message;
         $this->language = $language;
-        $this->content = $content;
+        $this->topContent = $topContent;
+        $this->bottomContent = $bottomContent;
     }
 
     /**
@@ -85,9 +93,9 @@ class Translation
     /**
      * @return string
      */
-    public function getContent()
+    public function getTopContent()
     {
-        return $this->content;
+        return $this->topContent;
     }
 
     /**
@@ -95,9 +103,29 @@ class Translation
      *
      * @return self
      */
-    public function setContent($content)
+    public function setTopContent($content)
     {
-        $this->content = $content;
+        $this->topContent = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBottomContent()
+    {
+        return $this->bottomContent;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return self
+     */
+    public function setBottomContent($content)
+    {
+        $this->bottomContent = $content;
 
         return $this;
     }
