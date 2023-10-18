@@ -25,8 +25,8 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th width="70px">Active</th>
-                    <th width="70px">Actions</th>
+                    <th style="width:70px">Active</th>
+                    <th style="width:70px">Actions</th>
                 </tr>
             </thead>
 
@@ -50,6 +50,39 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        {% if workgroups %}
+            <h1>Workgroups</h1>
+            <table class="manage">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width:70px">Active</th>
+                    <th style="width:70px">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for workgroup in workgroups %}
+                    <tr class="item item-{{ workgroup.getId() }}">
+                        <td>{{ workgroup.getName() }}</td>
+                        <td>{% if workgroup.isActive() %}&times;{% endif %}</td>
+                        <td class="actions">
+                            {% if hasAccess('common_admin_unit', 'members') %}
+                                <a href="{{ url('common_admin_unit', {"action": "members", "id": workgroup.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
+                            {% endif %}
+                            {% if hasAccess('common_admin_unit', 'edit') %}
+                                <a href="{{ url('common_admin_unit', {"action": "edit", "id": workgroup.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('common_admin_unit', 'delete') %}
+                                <a href="#" data-id="{{ workgroup.getId() }}" data-name="{{ workgroup.getName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
 
         <h1>Empty Units</h1>
          <table class="manage">

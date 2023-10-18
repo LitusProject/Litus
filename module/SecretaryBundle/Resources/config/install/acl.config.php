@@ -18,7 +18,7 @@ return array(
             'add', 'delete', 'manage', 'search', 'update',
         ),
         'secretary_admin_working_group' => array(
-            'manage', 'add', 'delete', 'search',
+            'manage', 'delete',
         ),
         'secretary_admin_pull' => array(
             'manage', 'add', 'delete', 'edit',

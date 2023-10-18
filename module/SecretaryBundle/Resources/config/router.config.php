@@ -102,7 +102,7 @@ return array(
         'secretary_admin_working_group' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/]',
+                'route'       => '/admin/secretary/workinggroup[/:action[/:id][/:field/:string][/page/:page]][/:academicyear][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

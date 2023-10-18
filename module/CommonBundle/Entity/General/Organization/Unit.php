@@ -92,6 +92,13 @@ class Unit
      */
     private $active;
 
+    /**
+     * @var boolean Whether or not this unit is a workgroup
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $workgroup;
+
     public function __construct()
     {
         $this->active = true;
@@ -285,5 +292,21 @@ class Unit
     public function deactivate()
     {
         $this->active = false;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isWorkgroup()
+    {
+        return $this->workgroup;
+    }
+
+    /**
+     * @return void
+     */
+    public function setWorkgroup($workgroup)
+    {
+        $this->workgroup = $workgroup;
     }
 }

@@ -114,7 +114,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 );
 
                 $allArticles[] = $articleInfo;
-            } elseif ($art->isGreaterVtkVisibility() && ($academic->isInWorkingGroup() || $academic->isPraesidium($this->getCurrentAcademicYear()))) {
+            } elseif ($art->isGreaterVtkVisibility() && ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
+                    || $academic->isPraesidium($this->getCurrentAcademicYear()))) {
                 $articleInfo = array(
                     'article' => $art,
                     'mapped'  => $mapped[$art->getId()] ?? 0,

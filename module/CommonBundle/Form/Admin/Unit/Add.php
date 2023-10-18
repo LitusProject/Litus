@@ -121,6 +121,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'workgroup',
+                'label'      => 'Workgroup',
+                'attributes' => array(
+                    'data-help' => 'Flag whether this unit is a workgroup.',
+                ),
+            )
+        );
+
         $this->addSubmit('Add', 'unit_add');
 
         if ($this->unit !== null) {

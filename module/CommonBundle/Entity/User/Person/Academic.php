@@ -68,13 +68,6 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $noMail;
 
     /**
-     * @var boolean Is user in a working group
-     *
-     * @ORM\Column(name="is_in_workinggroup", type="boolean", options={"default" = false}, nullable=true)
-     */
-    private $isInWorkingGroup;
-
-    /**
      * @var Address The primary address of the academic
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
@@ -243,22 +236,20 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  boolean $isInWorkingGroup
-     * @return self
-     */
-    public function setIsInWorkingGroup($isInWorkingGroup)
-    {
-        $this->isInWorkingGroup = $isInWorkingGroup;
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
-    public function isInWorkingGroup()
+    public function isInWorkingGroup(AcademicYearEntity $academicYear)
     {
-        return $this->isInWorkingGroup;
+        $workgroup = false;
+        if ($this->getAllUnits($academicYear)) {
+            foreach ($this->getAllUnits($academicYear) as $unit) {
+                if ($unit->isWorkgroup()){
+                    $workgroup = true;
+                }
+            }
+        }
+
+        return $workgroup;
     }
 
     /**
@@ -406,6 +397,22 @@ class Academic extends \CommonBundle\Entity\User\Person
         }
 
         return null;
+    }
+
+    /**
+     * @param  AcademicYearEntity $academicYear
+     * @return array
+     */
+    public function getAllUnits(AcademicYearEntity $academicYear)
+    {
+        $units = array();
+        foreach ($this->unitMap as $map) {
+            if ($map->getAcademicYear() == $academicYear) {
+                $units[] = $map->getUnit();
+            }
+        }
+
+        return $units;
     }
 
     /**

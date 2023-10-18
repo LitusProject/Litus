@@ -32,28 +32,33 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $units = $this->getEntityManager()
+        $unitsWithMembers = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAll();
 
-        $unitsWithMembers = array();
-        foreach ($units as $key => $unit) {
+        $units = array();
+        $workgroups = array();
+        foreach ($unitsWithMembers as $key => $unit) {
             $members = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
                 ->findBy(array('unit' => $unit, 'academicYear' => $academicYear));
 
-            if (isset($members[0])) {
-                array_push($unitsWithMembers, $unit);
-                unset($units[$key]);
+            if (!isset($members[0])) {
+                $units[] = $unit;
+                unset($unitsWithMembers[$key]);
+            } elseif ($unit->isWorkgroup()) {
+                $workgroups[] = $unit;
+                unset($unitsWithMembers[$key]);
             }
         }
 
         return new ViewModel(
             array(
-                'unitsWithMembers'   => $unitsWithMembers,
-                'emptyUnits'         => $units,
-                'activeAcademicYear' => $academicYear,
-                'academicYears'      => $academicYears,
+                'unitsWithMembers'      => $unitsWithMembers,
+                'emptyUnits'            => $units,
+                'workgroups'            => $workgroups,
+                'activeAcademicYear'    => $academicYear,
+                'academicYears'         => $academicYears,
             )
         );
     }

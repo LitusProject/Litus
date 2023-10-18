@@ -166,42 +166,4 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         return $persons;
     }
-
-    /**
-     * @param  string $name
-     * @return \Doctrine\ORM\Query
-     */
-    public function findAllWorkingGroupMembersByNameQuery($name)
-    {
-        $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('p')
-            ->from('CommonBundle\Entity\User\Person\Academic', 'p')
-            ->where(
-                $query->expr()->andX(
-                    $query->expr()->andX(
-                        $query->expr()->orX(
-                            $query->expr()->like(
-                                $query->expr()->concat(
-                                    $query->expr()->lower($query->expr()->concat('p.firstName', "' '")),
-                                    $query->expr()->lower('p.lastName')
-                                ),
-                                ':name'
-                            ),
-                            $query->expr()->like(
-                                $query->expr()->concat(
-                                    $query->expr()->lower($query->expr()->concat('p.lastName', "' '")),
-                                    $query->expr()->lower('p.firstName')
-                                ),
-                                ':name'
-                            ),
-                            $query->expr()->like('p.universityIdentification', ':name')
-                        ),
-                        $query->expr()->eq('p.canLogin', 'true')
-                    ),
-                    $query->expr()->eq('p.isInWorkingGroup', 'true')
-                )
-            )
-            ->setParameter('name', '%' . strtolower($name) . '%')
-            ->getQuery();
-    }
 }
