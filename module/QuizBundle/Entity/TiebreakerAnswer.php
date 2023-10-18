@@ -45,7 +45,7 @@ class TiebreakerAnswer
     /**
      * @var integer The tiebreaker answer
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="integer")
      */
     private $answer;
 

@@ -40,7 +40,7 @@ class Tiebreaker
     /**
      * @var integer The correct answer to this tiebreaker
      *
-     * @ORM\Column(name="correct_answer", type="smallint")
+     * @ORM\Column(name="correct_answer", type="integer")
      */
     private $correctAnswer;
 
