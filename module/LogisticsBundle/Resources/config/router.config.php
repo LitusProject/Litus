@@ -234,7 +234,7 @@ return array(
         'logistics_catalog' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/:action[/:order][/request/:request][/page/:page]][/]',
+                'route'       => '[/:language]/logistics[/catalog][/:action[/:order][/request/:request][/page/:page]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'order'    => '[0-9]*',
