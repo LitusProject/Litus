@@ -26,7 +26,7 @@ return array(
         'logistics_admin_inventory' => array(
             'add', 'manage',
         ),
-        'logistics_index' => array(
+        'logistics_transport' => array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),
         'logistics_lease' => array(

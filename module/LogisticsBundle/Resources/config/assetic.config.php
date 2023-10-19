@@ -95,7 +95,7 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
-        'logistics_index' => array(
+        'logistics_transport' => array(
             '@common_jquery',
             '@common_jqueryui',
             '@common_remote_typeahead',

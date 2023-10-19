@@ -140,10 +140,10 @@ return array(
                 ),
             ),
         ),
-        'logistics_index' => array(
+        'logistics_transport' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics[/:action][/date/:date][/:id][/]',
+                'route'       => '[/:language]/logistics/transport[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
@@ -151,7 +151,7 @@ return array(
                     'id'       => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'index',
                 ),
             ),
@@ -180,7 +180,7 @@ return array(
                     'token'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'export',
                 ),
             ),
@@ -194,7 +194,7 @@ return array(
                     'end'   => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'fetch',
                 ),
             ),
@@ -251,7 +251,7 @@ return array(
         'logistics_catalog_typeahead' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/:order]/typeahead[/:string][/]',
+                'route'       => '[/:language]/logistics[/:order]/typeahead[/:string][/]',
                 'constraints' => array(
                     'order'    => '[0-9]*',
                     'language' => '(en|nl)',
@@ -291,7 +291,7 @@ return array(
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
-        'logistics_index'                   => 'LogisticsBundle\Controller\IndexController',
+        'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
         'logistics_lease'                   => 'LogisticsBundle\Controller\LeaseController',
