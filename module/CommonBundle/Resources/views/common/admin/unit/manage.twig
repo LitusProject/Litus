@@ -36,6 +36,9 @@
                         <td>{{ unit.getName() }}</td>
                         <td>{% if unit.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
+                            {% if hasAccess('common_admin_unit', 'template') %}
+                                <a href="{{ url('common_admin_unit', {"action": "template", "id": unit.getId()}) }}" class="file_edit">Template</a>
+                            {% endif %}
                             {% if hasAccess('common_admin_unit', 'members') %}
                                 <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
                             {% endif %}
@@ -68,6 +71,9 @@
                         <td>{{ workgroup.getName() }}</td>
                         <td>{% if workgroup.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
+                            {% if hasAccess('common_admin_unit', 'template') %}
+                                <a href="{{ url('common_admin_unit', {"action": "template", "id": unit.getId()}) }}" class="file_edit">Template</a>
+                            {% endif %}
                             {% if hasAccess('common_admin_unit', 'members') %}
                                 <a href="{{ url('common_admin_unit', {"action": "members", "id": workgroup.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
                             {% endif %}
@@ -100,6 +106,9 @@
                         <td>{{ unit.getName() }}</td>
                         <td>{% if unit.isActive() %}&times;{% endif %}</td>
                         <td class="actions">
+                            {% if hasAccess('common_admin_unit', 'template') %}
+                                <a href="{{ url('common_admin_unit', {"action": "template", "id": unit.getId()}) }}" class="file_edit">Template</a>
+                            {% endif %}
                             {% if hasAccess('common_admin_unit', 'members') %}
                                 <a href="{{ url('common_admin_unit', {"action": "members", "id": unit.getId(), "academicyear": activeAcademicYear.getCode()}) }}" class="unit_member_edit">Members</a>
                             {% endif %}

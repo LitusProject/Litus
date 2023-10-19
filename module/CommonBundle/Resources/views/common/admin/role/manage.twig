@@ -18,6 +18,19 @@
         </div>
     </div>
 
+    <div class="flashmessage success_message full_width members_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The members were successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width members_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the members.</p>
+        </div>
+    </div>
+
     <div id="controller_action">
         <table class="manage">
             <thead>
@@ -74,6 +87,30 @@
         </div>
     </div>
 
+    <div class="modal hide fade" id="removeMembers" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Members
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete all the members from roles linked to units!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if hasAccess('common_admin_role', 'prune') %}
         <aside>
             <div class="sidebox">
@@ -89,12 +126,31 @@
             </div>
         </aside>
     {% endif %}
+
+    {% if hasAccess('common_admin_role', 'deleteAllMembers') %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Delete Members</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to delete all members from the roles linked to units!</i>
+                    </p>
+                    <p>
+                        <a href="#" class="delete-members">
+                            &rarr; Delete Members
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .delete').click(openModal);
+            $('.delete-members').click(openDeleteMembersModal);
         });
 
         function openModal(e) {
@@ -121,10 +177,37 @@
             removeRole.modal();
         }
 
+        function openDeleteMembersModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeMembers = $('#removeMembers');
+            removeMembers.find('.cancel').one('click', function () {
+                removeMembers.modal('hide');
+            });
+            removeMembers.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('common_admin_role', {"action": "deleteAllMembers"})}}', function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.members_removed_success').removeClass('hide');
+                        removeMembers.modal('hide');
+                    } else {
+                        errorRemoveMembers();
+                    }
+                }, 'json').error(errorRemoveMembers);
+            });
+            removeMembers.modal();
+        }
+
         function errorRemove() {
             $('.flashmessage').addClass('hide');
             $('.role_removed_error').removeClass('hide');
             $('#removeRole').modal('hide');
+        }
+
+        function errorRemoveMembers() {
+            $('.flashmessage').addClass('hide');
+            $('.members_removed_error').removeClass('hide');
+            $('#removeMembers').modal('hide');
         }
     </script>
 {% endblock %}

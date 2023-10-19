@@ -7,7 +7,7 @@ namespace LogisticsBundle\Form\Admin\Article;
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class Edit extends \LogisticsBundle\Form\Admin\Article\Add
+class Edit extends \CommonBundle\Form\Admin\Unit\Add
 {
     public function init()
     {

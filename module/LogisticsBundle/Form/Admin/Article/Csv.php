@@ -1,7 +1,11 @@
 <?php
 
 namespace LogisticsBundle\Form\Admin\Article;
-
+/**
+ * The form used to add articles via CSV .
+ *
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
+ */
 class Csv extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILE_SIZE = '10MB';
@@ -60,7 +64,7 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->addSubmit('Add', 'article_csv');
+        $this->addSubmit('Add', 'article_csv file_add');
     }
 
     /**

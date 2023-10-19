@@ -24,13 +24,13 @@ return array(
             'typeahead',
         ),
         'common_admin_role' => array(
-            'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune',
+            'add', 'edit', 'delete', 'deleteMember', 'deleteAllMembers', 'manage', 'members', 'prune',
         ),
         'common_admin_session' => array(
             'expire',
         ),
         'common_admin_unit' => array(
-            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune', 'csv'
+            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune', 'csv', 'csvUpload', 'template',
         ),
         'common_admin_visit' => array(
             'manage', 'search',

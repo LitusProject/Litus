@@ -185,6 +185,37 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         );
     }
 
+    // This function deletes all members belonging to a role belonging to a unit, like this each year the roles can be
+    // updated more easily
+    public function deleteAllMembersAction()
+    {
+        $this->initAjax();
+
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAll();
+
+        foreach ($units as $unit) {
+            $roles = $unit->getRoles();
+            foreach ($roles as $role) {
+                $users = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person')
+                    ->findAllByRole($role);
+                foreach ($users as $user) {
+                    $user->removeRole($role);
+                }
+            }
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function pruneAction()
     {
         $roles = $this->getEntityManager()
