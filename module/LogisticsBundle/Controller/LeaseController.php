@@ -236,7 +236,7 @@ class LeaseController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 'No person was authenticated!'
             );
 
-            $this->redirect()->toRoute('logistics_catalog');
+            $this->redirect()->toRoute('logistics_transport');
 
             return;
         }

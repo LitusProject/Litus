@@ -24,7 +24,7 @@
                     <ul class="nav navbar-nav">
                         {% if hasAccess('logistics_catalog', 'overview') %}
                             <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
+                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Requests') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_inventory', 'index') %}
