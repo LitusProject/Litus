@@ -7,6 +7,7 @@ use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use ShopBundle\Entity\Reservation;
+use ShopBundle\Entity\Reservation\Ban;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -84,43 +85,61 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $reservation->setNoShow(!$reservation->getNoShow());
-        $blacklisted = false;
-        $blacklistAvoided = false;
+        $ban = new Ban();
+        $ban->SetPerson($reservation->getPerson());
+        $ban->setStartTimestamp(time());
+        $ban->setEndTimestamp(time() + (7 * 24 * 60 * 60));
+        error_log("after ban");
 
-        $this->getEntityManager()->persist($reservation);
+        $this->getEntityManager()->persist($ban);
         $this->getEntityManager()->flush();
+        error_log("after flush");
 
-        if ($reservation->getNoShow()) {
-            $maxNoShows = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.maximal_no_shows');
-            $currentNoShows = $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Reservation')
-                ->getNoShowSessionCount($reservation->getPerson());
-            if ($currentNoShows >= $maxNoShows) {
-                $reservationPermission = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
-                    ->find($reservation->getPerson());
-                if ($reservationPermission) {
-                    $blacklistAvoided = $reservationPermission->getReservationsAllowed();
-                } else {
-                    $blacklisted = true;
-                    $reservationPermission = new ReservationPermission();
-                    $reservationPermission->setPerson($reservation->getPerson());
-                    $reservationPermission->setReservationsAllowed(false);
-                    $this->getEntityManager()->persist($reservationPermission);
-                    $this->getEntityManager()->flush();
-                }
-            }
-        }
+
+//        $this->initAjax();
+//
+//        $reservation = $this->getReservationEntity();
+//        if ($reservation === null) {
+//            return new ViewModel();
+//        }
+//
+//        $reservation->setNoShow(!$reservation->getNoShow());
+//        $blacklisted = false;
+//        $blacklistAvoided = false;
+//
+//        $this->getEntityManager()->persist($reservation);
+//        $this->getEntityManager()->flush();
+//
+//        if ($reservation->getNoShow()) {
+//            $maxNoShows = $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('shop.maximal_no_shows');
+//            $currentNoShows = $this->getEntityManager()
+//                ->getRepository('ShopBundle\Entity\Reservation')
+//                ->getNoShowSessionCount($reservation->getPerson());
+//            if ($currentNoShows >= $maxNoShows) {
+//                $reservationPermission = $this->getEntityManager()
+//                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
+//                    ->find($reservation->getPerson());
+//                if ($reservationPermission) {
+//                    $blacklistAvoided = $reservationPermission->getReservationsAllowed();
+//                } else {
+//                    $blacklisted = true;
+//                    $reservationPermission = new ReservationPermission();
+//                    $reservationPermission->setPerson($reservation->getPerson());
+//                    $reservationPermission->setReservationsAllowed(false);
+//                    $this->getEntityManager()->persist($reservationPermission);
+//                    $this->getEntityManager()->flush();
+//                }
+//            }
+//        }
 
         return new ViewModel(
             array(
                 'result' => array(
                     'status'           => 'success',
-                    'blacklisted'      => $blacklisted,
-                    'blacklistAvoided' => $blacklistAvoided,
+//                    'blacklisted'      => $blacklisted,
+//                    'blacklistAvoided' => $blacklistAvoided,
                 ),
             )
         );

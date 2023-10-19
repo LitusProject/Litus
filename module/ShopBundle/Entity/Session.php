@@ -37,7 +37,7 @@ class Session
     private $endDate;
 
     /**
-     * @var DateTime The end date for reservations for this sales session
+     * @var DateTime|null The end date for reservations for this sales session
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
