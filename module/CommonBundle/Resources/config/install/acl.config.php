@@ -24,7 +24,7 @@ return array(
             'typeahead',
         ),
         'common_admin_role' => array(
-            'add', 'edit', 'delete', 'deleteMember', 'deleteAllMembers', 'manage', 'members', 'prune',
+            'add', 'edit', 'delete', 'deleteMember', 'manage', 'members', 'prune',
         ),
         'common_admin_session' => array(
             'expire',
