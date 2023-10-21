@@ -48,7 +48,10 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
         }
 
         $this->redirect()->toRoute(
-            'logistics_catalog'
+            'logistics_catalog',
+            array(
+                'language' => $this->getLanguage()->getAbbrev(),
+            )
         );
 
         return new ViewModel();
@@ -108,7 +111,10 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             );
                         } else {
                             $this->redirect()->toRoute(
-                                'logistics_catalog'
+                                'logistics_catalog',
+                                array(
+                                    'language' => $this->getLanguage()->getAbbrev(),
+                                )
                             );
                         }
 

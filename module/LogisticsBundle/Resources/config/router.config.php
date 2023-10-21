@@ -234,7 +234,7 @@ return array(
         'logistics_catalog' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/:action[/:order][/request/:request][/page/:page]][/]',
+                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'order'    => '[0-9]*',
@@ -291,11 +291,11 @@ return array(
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
+        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
         'logistics_lease'                   => 'LogisticsBundle\Controller\LeaseController',
-        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
         'logistics_inventory'               => 'LogisticsBundle\Controller\InventoryController',
     ),
 );
