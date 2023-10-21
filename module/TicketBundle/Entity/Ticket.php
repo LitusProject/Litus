@@ -607,6 +607,10 @@ class Ticket
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.subscription_mail_name');
 
+        $noreplyAddress = $entityManager
+            ->getRepository('CpmmonBundle\Entity\General\Config')
+            ->getConfifValue('system_no-reply_mail');
+
         $url = $controller->url()
             ->fromRoute(
                 'ticket',
@@ -644,7 +648,8 @@ class Ticket
         $mail = new Message();
         $mail->setEncoding('UTF-8')
             ->setBody($newMessage)
-            ->setFrom($mailAddress, $mailName)
+            ->setFrom($noreplyAddress, $mailName)
+            ->setReplyTo($mailAddress, $mailName)
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject)
             ->addBcc($entityManager
