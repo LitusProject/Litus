@@ -1005,8 +1005,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getConfigValue('ticket.confirmation_email_from');
 
         $noreplyAddress = $this->getEntityManager()
-            ->getRepository('CpmmonBundle\Entity\General\Config')
-            ->getConfifValue('system_no-reply_mail');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_no-reply_mail');
 
         if ($ticket->getPerson()) {
             $person = $ticket->getPerson();

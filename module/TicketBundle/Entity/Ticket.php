@@ -608,8 +608,8 @@ class Ticket
             ->getConfigValue('ticket.subscription_mail_name');
 
         $noreplyAddress = $entityManager
-            ->getRepository('CpmmonBundle\Entity\General\Config')
-            ->getConfifValue('system_no-reply_mail');
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_no-reply_mail');
 
         $url = $controller->url()
             ->fromRoute(
