@@ -113,6 +113,28 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByDateQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.dateUpdated', 'DESC')
+            ->getQuery();
+    }
+
+    /**
      * @param  CompanyEntity $company
      * @param  string        $type
      * @return \Doctrine\ORM\Query

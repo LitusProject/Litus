@@ -45,6 +45,17 @@ class Vacancy extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->add(
             array(
                 'type'       => 'select',
+                'name'       => 'jobType',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => array_merge(array('all' => 'All'), Company\Job::$possibleTypes),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'select',
                 'name'       => 'sector',
                 'required'   => true,
                 'attributes' => array(

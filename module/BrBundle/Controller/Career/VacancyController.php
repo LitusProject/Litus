@@ -18,7 +18,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByTypeByDateQuery('vacancy');
+            ->findAllActiveByDateQuery();
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -30,12 +30,13 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
 
+                $jobType = $formData['jobType'] == 'all' ? null : $formData['sector'];
                 $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
 
                 if ($formData['searchType'] == 'company') {
-                    $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeQuery($jobType, $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'vacancy') {
                     $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'mostRecent') {
