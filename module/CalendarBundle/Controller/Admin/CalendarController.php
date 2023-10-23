@@ -88,7 +88,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
 
     public function templateAction()
     {
-        $form = $this->getForm('calendar_event_add');
+        $form = $this->getForm('calendar_event_schedule');
         $shiftForm = $this->getForm('shift_shift_add');
 
         if ($this->getRequest()->isPost()) {
@@ -104,6 +104,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $data = array(
                     'manager'               => false,
                     'unit'                  => 3,
+                    'edit_roles'            => array('activiteiten',),
                     'event'                 => $event->getId(),
                     'location'              => 2,
                     'nb_responsibles'       => 0,

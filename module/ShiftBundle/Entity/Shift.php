@@ -186,14 +186,14 @@ class Shift
     private $points;
 
     /**
-     * @var boolean Wheter or not the reward is payed at the event itself
+     * @var boolean Whether the reward is payed at the event itself
      *
      * @ORM\Column(name="handled_on_event", type="boolean")
      */
     private $handledOnEvent;
 
     /**
-     * @var boolean wheter or not a ticket is needed to do the shift
+     * @var boolean whether a ticket is needed to do the shift
      *
      * @ORM\Column(name="ticket_needed", type="boolean",options={"default" = false})
      */

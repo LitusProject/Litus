@@ -126,8 +126,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     public function scheduleAction()
     {
         $form = $this->getForm('cudi_sale_session_opening-hour_schedule');
-        $shiftForm = $this->getForm('shift_shift_schedule');
-        $registrationForm = $this->getForm('shift_registration-shift_schedule');
+        $shiftForm = $this->getForm('shift_shift_add');
+        $registrationForm = $this->getForm('shift_registration-shift_add');
 
         $now = (new DateTime())->format('d/m/Y H:i');
 
@@ -160,6 +160,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 (Er is altijd begeleiding dus wees niet bang als je voor de eerste keer komt ;))',
                             'manager'               => false,
                             'unit'                  => 1,
+                            'edit_roles'            => array('cursusdienst',),
                             'event'                 => '',
                             'location'              => 1,
                             'nb_responsibles'       => 0,
