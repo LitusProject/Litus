@@ -89,48 +89,33 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        // Retrieve configuration details
         $noShowConfig = $this->getNoShowConfig();
 
-        $noShowEmails = $noShowConfig->getEmailDictionary();
-        $noShowBanDays = $noShowConfig->getBanDaysDictionary();
-
-        // Send email
-        // todo: use system no-reply
-//        $mailAddress = $this->getEntityManager()
-//            ->getRepository('CommonBundle\Entity\General\Config')
-//            ->getConfigValue('br.student_job_mail');
-//
-//        $mailName = $this->getEntityManager()
-//            ->getRepository('CommonBundle\Entity\General\Config')
-//            ->getConfigValue('br.student_job_mail_name');
-//
-//        $link = $this->getEntityManager()
-//            ->getRepository('CommonBundle\Entity\General\Config')
-//            ->getConfigValue('br.student_job_link');
-//
-//        $mail = new Message();
-//        $mail->setBody($link)
-//            ->setFrom($mailAddress, $mailName)
-//            ->addTo($mailAddress, $mailName)
-//            ->setSubject('New student Job Request ' . $person->getCompany()->getName());
-//
-//        if (getenv('APPLICATION_ENV') != 'development') {
-//            $this->getMailTransport()->send($mail);
-//        }
+        // Get past amount of warnings
+        $pastWarningCount = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation\Ban')
+            ->findAllByPersonQuery($reservation->getPerson())
+            ->getResult();
+        $warningCount = $pastWarningCount + 1;
 
         // Create ban
-//        $currentTime = new DateTime();
-//
-//        $interval = DateInterval::createFromDateString('1 week');
-//        $nextTime = $currentTime->add($interval);
-//
-//        $ban = new Ban($reservation->getPerson(), $currentTime, $nextTime);
-//
-//        $this->getEntityManager()->persist($ban);
-//        $this->getEntityManager()->flush($ban);
+        $banStartTimestamp = new DateTime();
 
+        $banIntervalStr = $noShowConfig->getBanInterval($warningCount);
+        $banInterval = DateInterval::createFromDateString($banIntervalStr);
+        $banEndTimestamp = $banStartTimestamp->add($banInterval);
 
+        $ban = new Ban($reservation->getPerson(), $banStartTimestamp, $banEndTimestamp);
+
+        $this->getEntityManager()->persist($ban);
+        $this->getEntityManager()->flush($ban);
+
+        // Send email
+        $mail = $noShowConfig->getEmail($reservation->getPerson(), $warningCount);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
 
         return new ViewModel(
             array(

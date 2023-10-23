@@ -3,6 +3,7 @@
 namespace ShopBundle\Component\NoShow;
 
 use CommonBundle\Entity\User\Person;
+use Nette\NotImplementedException;
 
 class NoShowConfig {
     /**
@@ -27,21 +28,11 @@ class NoShowConfig {
         }
     }
 
-    /**
-     * @return array Returns a dictionary with the emails for each warning
-     */
-    public function getEmailDictionary() {
-        return $this->emailDictionary;
+    public function getBanInterval(int $banCount) {
+        throw new NotImplementedException();
     }
 
-    /**
-     * @return array Returns a dictionary with the amount of ban days for each warning
-     */
-    public function getBanDaysDictionary() {
-        return $this->banDaysDictionary;
-    }
-
-    public function createBan(Person $person, int $warningCount) {
-
+    public function getEmail(Person $person, int $banCount) {
+        throw new NotImplementedException();
     }
 }

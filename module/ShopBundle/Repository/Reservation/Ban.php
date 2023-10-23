@@ -2,6 +2,8 @@
 
 namespace ShopBundle\Repository\Reservation;
 
+use CommonBundle\Entity\User\Person;
+
 /**
  * Ban
  *
@@ -18,7 +20,29 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
 
         return $query->select('b')
-            ->from('ShopBundle\Entity\Reservation\Permission', 'b')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
             ->getQuery();
+    }
+
+    /**
+     * @param Person $person
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByPersonQuery(Person $person)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder->select('count(s.id)')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b');
+
+        $where = $query->expr()->eq('r.person', ':person');
+
+        $query->where(
+            $query->expr()->andX(
+                $query->expr()->lt('s.startDate', ':now'),
+                $where
+            )
+        );
+
+        return $query->getQuery();
     }
 }

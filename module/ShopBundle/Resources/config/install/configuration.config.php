@@ -8,8 +8,8 @@ return array(
     ),
     array(
         'key'         => 'shop.email',
-        'value'       => '',
-        'description' => 'The name of the shop',
+        'value'       => 'theokot@vtk.be',
+        'description' => 'The email of the shop',
     ),
     array(
         'key'         => 'shop.reservation_threshold',
@@ -79,6 +79,54 @@ return array(
     array(
         'key'         => 'shop.no_show_configuration',
         'value'       => 'no-show configuration goes here',
+        'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
+    ),
+    array(
+        'key'         => 'shop.no_show_configuration',
+        'value'       => serialize(
+            array(
+                '1' => array(
+                    'subject' => 'VTK Theokot Warning',
+                    'content' => 'Dear {{ name }},
+
+You forgot your sandwich for the first time. Ban of 3 days.
+
+Kind regards,
+
+Theokot',
+                ),
+                '2' => array(
+                    'subject' => 'VTK Theokot Warning',
+                    'content' => 'Dear {{ name }},
+
+You forgot your sandwich for the second time. Ban of 1 week.
+
+Kind regards,
+
+Theokot',
+                ),
+                '3' => array(
+                    'subject' => 'VTK Theokot Warning',
+                    'content' => 'Dear {{ name }},
+
+You forgot your sandwich for the third time. Ban of 3 weeks.
+
+Kind regards,
+
+Theokot',
+                ),
+                '4' => array(
+                    'subject' => 'VTK Theokot Warning',
+                    'content' => 'Dear {{ name }},
+
+You forgot your sandwich for the fourth time. Permanent ban.
+
+Kind regards,
+
+Theokot',
+                ),
+            )
+        ),
         'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
     ),
 );
