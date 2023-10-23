@@ -7,6 +7,11 @@ return array(
         'description' => 'The name of the shop',
     ),
     array(
+        'key'         => 'shop.email',
+        'value'       => '',
+        'description' => 'The name of the shop',
+    ),
+    array(
         'key'         => 'shop.reservation_threshold',
         'value'       => 'P1D',
         'description' => 'The maximal interval before the beginning of a sales session reservations can be made',
@@ -70,5 +75,10 @@ return array(
         'key'         => 'shop.enable_winner',
         'value'       => 1,
         'description' => 'Enable the winner column when exporting a sales session to csv',
+    ),
+    array(
+        'key'         => 'shop.no_show_configuration',
+        'value'       => 'no-show configuration goes here',
+        'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
     ),
 );

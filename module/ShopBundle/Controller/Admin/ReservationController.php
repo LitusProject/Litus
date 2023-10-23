@@ -4,8 +4,12 @@ namespace ShopBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateInterval;
+use DateTime;
 use Laminas\Http\Headers;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Component\NoShow\NoShowConfig;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Ban;
 use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
@@ -85,61 +89,53 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $ban = new Ban();
-        $ban->SetPerson($reservation->getPerson());
-        $ban->setStartTimestamp(time());
-        $ban->setEndTimestamp(time() + (7 * 24 * 60 * 60));
-        error_log("after ban");
+        // Retrieve configuration details
+        $noShowConfig = $this->getNoShowConfig();
 
-        $this->getEntityManager()->persist($ban);
-        $this->getEntityManager()->flush();
-        error_log("after flush");
+        $noShowEmails = $noShowConfig->getEmailDictionary();
+        $noShowBanDays = $noShowConfig->getBanDaysDictionary();
 
-
-//        $this->initAjax();
+        // Send email
+        // todo: use system no-reply
+//        $mailAddress = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('br.student_job_mail');
 //
-//        $reservation = $this->getReservationEntity();
-//        if ($reservation === null) {
-//            return new ViewModel();
+//        $mailName = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('br.student_job_mail_name');
+//
+//        $link = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('br.student_job_link');
+//
+//        $mail = new Message();
+//        $mail->setBody($link)
+//            ->setFrom($mailAddress, $mailName)
+//            ->addTo($mailAddress, $mailName)
+//            ->setSubject('New student Job Request ' . $person->getCompany()->getName());
+//
+//        if (getenv('APPLICATION_ENV') != 'development') {
+//            $this->getMailTransport()->send($mail);
 //        }
+
+        // Create ban
+//        $currentTime = new DateTime();
 //
-//        $reservation->setNoShow(!$reservation->getNoShow());
-//        $blacklisted = false;
-//        $blacklistAvoided = false;
+//        $interval = DateInterval::createFromDateString('1 week');
+//        $nextTime = $currentTime->add($interval);
 //
-//        $this->getEntityManager()->persist($reservation);
-//        $this->getEntityManager()->flush();
+//        $ban = new Ban($reservation->getPerson(), $currentTime, $nextTime);
 //
-//        if ($reservation->getNoShow()) {
-//            $maxNoShows = $this->getEntityManager()
-//                ->getRepository('CommonBundle\Entity\General\Config')
-//                ->getConfigValue('shop.maximal_no_shows');
-//            $currentNoShows = $this->getEntityManager()
-//                ->getRepository('ShopBundle\Entity\Reservation')
-//                ->getNoShowSessionCount($reservation->getPerson());
-//            if ($currentNoShows >= $maxNoShows) {
-//                $reservationPermission = $this->getEntityManager()
-//                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
-//                    ->find($reservation->getPerson());
-//                if ($reservationPermission) {
-//                    $blacklistAvoided = $reservationPermission->getReservationsAllowed();
-//                } else {
-//                    $blacklisted = true;
-//                    $reservationPermission = new ReservationPermission();
-//                    $reservationPermission->setPerson($reservation->getPerson());
-//                    $reservationPermission->setReservationsAllowed(false);
-//                    $this->getEntityManager()->persist($reservationPermission);
-//                    $this->getEntityManager()->flush();
-//                }
-//            }
-//        }
+//        $this->getEntityManager()->persist($ban);
+//        $this->getEntityManager()->flush($ban);
+
+
 
         return new ViewModel(
             array(
                 'result' => array(
                     'status'           => 'success',
-//                    'blacklisted'      => $blacklisted,
-//                    'blacklistAvoided' => $blacklistAvoided,
                 ),
             )
         );
@@ -290,5 +286,20 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                     ->getRepository('ShopBundle\Entity\Reservation')
                     ->getAllReservationsByPersonAndSalesSessionQuery($this->getParam('string'), $this->getSalesSessionEntity());
         }
+    }
+
+    private function getNoShowConfig()
+    {
+        $noShowConfigJson = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('shop.no_show_configuration');
+
+        if ($noShowConfigJson === null) {
+            error_log('Error parsing the configuration file.');
+        }
+
+        $noShowConfig = new NoShowConfig($noShowConfigJson);
+
+        return $noShowConfig;
     }
 }

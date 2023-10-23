@@ -34,7 +34,7 @@ class Ban
     /**
      * @var DateTime The timestamp at which the ban starts
      *
-     * @ORM\Column(type="datetime")
+     *
      */
     private $startTimestamp;
 
@@ -45,14 +45,23 @@ class Ban
      */
     private $endTimestamp;
 
-    public function __construct() {
-    }
-
     /**
      * @return Person The person this ban applies to
      */
     public function GetPerson() {
         return $this->person;
+    }
+
+    /**
+     * @param Person $person The person this ban belongs to
+     * @param DateTime $startTimestamp The timestamp at which the ban starts
+     * @param DateTime|null $endTimestamp The timestamp at which the ban ends (null if it does not end)
+     */
+    public function __construct(Person $person, DateTime $startTimestamp, DateTime $endTimestamp=null)
+    {
+        $this->person = $person;
+        $this->startTimestamp = $startTimestamp;
+        $this->endTimestamp = $endTimestamp;
     }
 
     /**
