@@ -57,7 +57,7 @@
 
         <div>{{ translate('Please login to view car rides.') }}</div>
     {% else %}
-        {% if hasAccess('logistics_index', 'export') %}
+        {% if hasAccess('logistics_transport', 'export') %}
             <div class="pull-right" style="line-height: 50px">
                 <div class="btn-group">
                     <a class="btn btn-default" href="{{ url('logistics_export') }}"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
@@ -76,7 +76,7 @@
 
         <div id="calendar"></div>
 
-        {% if hasAccess('logistics_index', 'add') %}
+        {% if hasAccess('logistics_transport', 'add') %}
             <div id="reservationForm" class="hide">
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}
@@ -94,13 +94,13 @@
 
             $('#calendar').logisticsCalendar({
                 fetchUrl: '{{ url('logistics_reservation_fetch') }}',
-                moveUrl: '{{ url('logistics_index', {'action': 'move'}) }}',
-                addUrl: '{{ url('logistics_index', {'action': 'add'}) }}',
-                editUrl: '{{ url('logistics_index', {'action': 'edit'}) }}',
-                deleteUrl: '{{ url('logistics_index', {'action': 'delete'}) }}',
+                moveUrl: '{{ url('logistics_transport', {'action': 'move'}) }}',
+                addUrl: '{{ url('logistics_transport', {'action': 'add'}) }}',
+                editUrl: '{{ url('logistics_transport', {'action': 'edit'}) }}',
+                deleteUrl: '{{ url('logistics_transport', {'action': 'delete'}) }}',
                 passengerTypeaheadUrl: '{{ url("common_admin_academic_typeahead", {}) }}',
-                editable: {% if hasAccess('logistics_index', 'add') %}true{% else %}false {% endif %},
-                deletable: {% if hasAccess('logistics_index', 'delete') %}true{% else %}false {% endif %},
+                editable: {% if hasAccess('logistics_transport', 'add') %}true{% else %}false {% endif %},
+                deletable: {% if hasAccess('logistics_transport', 'delete') %}true{% else %}false {% endif %},
                 form: $('#reservationForm'),
                 monthNames: [
                     '{{ translate('January') }}',

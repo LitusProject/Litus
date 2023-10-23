@@ -13,7 +13,7 @@ use LogisticsBundle\Entity\Token;
 /**
  * @author Niels Avonds <niels.avonds@litus.cc>
  */
-class IndexController extends \LogisticsBundle\Component\Controller\LogisticsController
+class TransportController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
     public function indexAction()
     {

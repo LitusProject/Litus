@@ -203,6 +203,11 @@ VTK',
         'description' => 'The mail address of system administrator',
     ),
     array(
+        'key'         => 'system_no-reply_mail',
+        'value'       => 'no-reply@vtk.be',
+        'description' => 'The no-reply mail address',
+    ),
+    array(
         'key'         => 'fallback_language',
         'value'       => 'nl',
         'description' => 'The abbreviation of the language that will be used of no other translation is present',

@@ -3,8 +3,10 @@
 namespace CommonBundle\Controller\Admin;
 
 use CommonBundle\Component\Acl\Acl;
+use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\Acl\Action;
 use CommonBundle\Entity\Acl\Role;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\User\Person;
 use Laminas\View\Model\ViewModel;
 
@@ -80,14 +82,39 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             return new ViewModel();
         }
 
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
+        }
+
         $members = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findAllByRole($role);
 
+        $units = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+            ->findAll();
+        $unitMembers = array();
+        foreach ($units as $unit) {
+            $unitRoles = $unit->getRoles();
+            foreach ($unitRoles as $unitRole) {
+                if ($unitRole == $role) {
+                    $unitMembers = array_unique(array_merge(
+                        $unitMembers,
+                        $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                        ->findBy(array('unit' => $unit, 'academicYear' => $academicYear))
+                    ),
+                        SORT_REGULAR);
+                }
+            }
+        }
+
         return new ViewModel(
             array(
-                'role'    => $role,
-                'members' => $members,
+                'role'          => $role,
+                'members'       => $members,
+                'unitMembers'   => $unitMembers,
             )
         );
     }
@@ -268,6 +295,41 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
         }
 
         return $person;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
+    {
+        if ($this->getParam('academicyear') === null) {
+            return $this->getCurrentAcademicYear();
+        }
+
+        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
+
+        if (!($academicYear instanceof AcademicYearEntity)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'common_admin_unit',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
     }
 
     /**

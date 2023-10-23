@@ -140,10 +140,10 @@ return array(
                 ),
             ),
         ),
-        'logistics_index' => array(
+        'logistics_transport' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics[/:action][/date/:date][/:id][/]',
+                'route'       => '[/:language]/logistics/transport[/:action][/date/:date][/:id][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'language' => '(en|nl)',
@@ -151,7 +151,7 @@ return array(
                     'id'       => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'index',
                 ),
             ),
@@ -180,7 +180,7 @@ return array(
                     'token'    => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'export',
                 ),
             ),
@@ -194,7 +194,7 @@ return array(
                     'end'   => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_index',
+                    'controller' => 'logistics_transport',
                     'action'     => 'fetch',
                 ),
             ),
@@ -234,7 +234,7 @@ return array(
         'logistics_catalog' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '[/:language]/logistics/catalog[/:action[/:order][/request/:request][/page/:page]][/]',
+                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
                 'constraints' => array(
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'order'    => '[0-9]*',
@@ -291,11 +291,11 @@ return array(
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
-        'logistics_index'                   => 'LogisticsBundle\Controller\IndexController',
+        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
+        'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
         'logistics_lease'                   => 'LogisticsBundle\Controller\LeaseController',
-        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
         'logistics_inventory'               => 'LogisticsBundle\Controller\InventoryController',
     ),
 );

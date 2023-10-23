@@ -1004,6 +1004,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.confirmation_email_from');
 
+        $noreplyAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_no-reply_mail');
+
         if ($ticket->getPerson()) {
             $person = $ticket->getPerson();
             $fullName = $person->getFullName();
@@ -1034,7 +1038,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $mail->setEncoding('UTF-8')
             ->setBody(str_replace(array('{{ fullname }}', '{{ event }}', '{{ option }}', '{{ paylink }}'), array($fullName, $eventName, $optionString, $payLink), $mailBody))
-            ->setFrom($mailFrom)
+            ->setFrom($noreplyAddress)
+            ->setReplyTo($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
             ->addBcc($this->getEntityManager()

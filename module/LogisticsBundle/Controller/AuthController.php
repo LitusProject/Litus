@@ -111,7 +111,10 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             );
                         } else {
                             $this->redirect()->toRoute(
-                                'logistics_catalog'
+                                'logistics_catalog',
+                                array(
+                                    'language' => $this->getLanguage()->getAbbrev(),
+                                )
                             );
                         }
 

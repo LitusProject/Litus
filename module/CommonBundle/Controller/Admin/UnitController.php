@@ -18,6 +18,7 @@ use Laminas\View\Model\ViewModel;
  * UnitController
  *
  * @author Pieter Maene <pieter.maene@litus.cc>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class UnitController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -408,6 +409,142 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
         );
 
         return new ViewModel();
+    }
+
+    public function csvUploadAction()
+    {
+        $form = $this->getForm('common_unit_csv');
+
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
+        }
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $membersArray = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 10000, ',');
+
+                while ($data !== false) {
+                    $membersArray[] = $data;
+                    $data = fgetcsv($open, 10000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+
+                array_shift($membersArray);                 // Remove header
+                $total = count($membersArray);
+                foreach ($membersArray as $data) {
+                    if (in_array(null, array_slice($data, 0, 3))) {
+                        error_log('fail');
+                        continue;
+                    }
+
+                    $name = $data[0];
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($data[1]);
+                    $unit = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                        ->findOneById($data[2]);
+                    $description = $data[3];
+                    $coordinator = $data[4]?:0;
+
+                    $repositoryCheck = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap\Academic')
+                        ->findOneBy(
+                            array(
+                                'unit'         => $unit,
+                                'academic'     => $academic,
+                                'academicYear' => $academicYear,
+                            )
+                        );
+
+                    if ($repositoryCheck === null) {
+                        $member = new UnitMapAcademic($academic, $academicYear, $unit, $coordinator, $description);
+
+                        $this->getEntityManager()->persist($member);
+                    }
+
+                    $count += 1;
+                }
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . '/' . $total . ' members imported'
+                );
+
+                $this->redirect()->toRoute(
+                    'common_admin_unit',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function templateAction()
+    {
+        $file = new CsvFile();
+
+        $unit = $this->getUnitEntity();
+
+        $heading = array(
+            'name',
+            'r-number',
+            'unit id',
+            'description',
+            'coordinator (bool)',
+        );
+
+        $results = array();
+        $results[] = array(
+            '',
+            '',
+            $unit->getId(),
+            '',
+            '',
+        );
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="unit_members_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     /**

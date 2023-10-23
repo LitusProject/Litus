@@ -201,7 +201,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 $unit = $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                     ->findOneById($formData['unit']);
-                error_log($unit->getName());
 
                 array_shift($articleArray);                 // Remove header
                 foreach ($articleArray as $data) {

@@ -50,8 +50,8 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             'action'         => 'index',
             'controller'     => 'common_index',
 
-            'auth_route'     => 'logistics_index',
-            'redirect_route' => 'logistics_index',
+            'auth_route'     => 'logistics_catalog',
+            'redirect_route' => 'logistics_catalog',
         );
     }
 

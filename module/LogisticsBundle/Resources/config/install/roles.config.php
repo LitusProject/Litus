@@ -6,7 +6,7 @@ return array(
         'parents' => array(
         ),
         'actions' => array(
-            'logistics_index' => array(
+            'logistics_transport' => array(
                 'fetch', 'index',
             ),
             'logistics_auth' => array(

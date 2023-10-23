@@ -24,7 +24,7 @@
                     <ul class="nav navbar-nav">
                         {% if hasAccess('logistics_catalog', 'overview') %}
                             <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
+                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Requests') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_inventory', 'index') %}
@@ -32,9 +32,9 @@
                                 <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Flesserke') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_index', 'index') %}
-                            <li {% if 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Transport') }}</a>
+                        {% if hasAccess('logistics_transport', 'index') %}
+                            <li {% if 'logistics_transport' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("logistics_transport", {"language": language.getAbbrev()}) }}">{{ translate('Transport') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_piano', 'index') %}
@@ -45,12 +45,6 @@
 {#                        {% if hasAccess('logistics_lease', 'index') %}#}
 {#                            <li {% if 'logistics_lease' == getParam('controller') %}class="active"{% endif %}>#}
 {#                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>#}
-{#                            </li>#}
-{#                        {% endif %}#}
-
-{#                        {% if hasAccess('logistics_inventory', 'add') %}#}
-{#                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>#}
-{#                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev(), 'action': 'add'}) }}">{{ translate('Flesserke Form') }}</a>#}
 {#                            </li>#}
 {#                        {% endif %}#}
                     </ul>
