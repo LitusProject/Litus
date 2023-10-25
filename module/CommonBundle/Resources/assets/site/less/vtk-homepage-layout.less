@@ -92,16 +92,17 @@
 }
 
 .fadeElement {
+  display: inline-block;
   opacity: 0;
   transition: all 2.5s;
 }
 
 .fadeElement.leftFade {
-  transform: translate(-15vw, 0);
+  transform: translate(-15vw, 0) rotate(5deg);
 }
 
 .fadeElement.rightFade {
-  transform: translate(15vw, 0);
+  transform: translate(15vw, 0) rotate(-5deg);
 }
 
 .fadeElement.visible {
