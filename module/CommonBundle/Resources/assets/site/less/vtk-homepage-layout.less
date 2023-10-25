@@ -91,6 +91,24 @@
   margin-bottom: 17px;
 }
 
+.fadeElement {
+  opacity: 0;
+  transition: all 2.5s;
+}
+
+.fadeElement.leftFade {
+  transform: translate(-30vh, 0);
+}
+
+.fadeElement.rightFade {
+  transform: translate(30vh, 0);
+}
+
+.fadeElement.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
 .category-title:hover {
   color: @color-yellow
 }

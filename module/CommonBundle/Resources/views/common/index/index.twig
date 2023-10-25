@@ -149,7 +149,7 @@
                         <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
                     </p>
                 {% endif %} #}
-                <div class="col-md-6">
+                <div class="col-md-6 fadeElement leftFade">
                     <div class="opening_hour_message">
                         <h2>Cudi - {{ translate('Opening Hours') }}</h2>
                         {% for message in cudi.messages %}
@@ -167,7 +167,7 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 fadeElement rightFade">
                     <div class="opening_hour_message">
                         <h2>Theokot - {{ translate('Opening Hours') }}</h2>
                         {% for message in shop.messages %}
@@ -382,6 +382,21 @@
             $('.profileImagePreloaded').each(function () {
                 $(this).attr('src', $(this).data('url'));
             });
+        });
+
+        $(document).on("scroll", function() {
+            var pageTop = $(document).scrollTop();
+            var pageBottom = pageTop + $(window).height();
+            var tags = $(".fadeElement");
+
+            for (var i = 0; i < tags.length; i++) {
+                var tag = tags[i];
+                if ($(tag).position().top < pageBottom) {
+                    $(tag).addClass("visible");
+                } else {
+                    $(tag).removeClass("visible");
+                }
+            }
         });
 
         /* --------------------------
