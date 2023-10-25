@@ -392,10 +392,10 @@
             for (var i = 0; i < tags.length; i++) {
                 var tag = tags[i];
                 if ($(tag).position().top < pageBottom && pageTop < $(tag).position().top) {
-                    $(tag).addClass("visible");
+                    $(tag).addClass("visibleFade");
                     console.log("v");
                 } else {
-                    $(tag).removeClass("visible");
+                    $(tag).removeClass("visibleFade");
                     console.log("i");
                 }
             }
