@@ -230,16 +230,16 @@
         },
         {
             "name": "colinmollenhour/credis",
-            "version": "v1.15.0",
+            "version": "v1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colinmollenhour/credis.git",
-                "reference": "28810439de1d9597b7ba11794ed9479fb6f3de7c"
+                "reference": "5641140e14a9679f5a6f66c97268727f9558b881"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/28810439de1d9597b7ba11794ed9479fb6f3de7c",
-                "reference": "28810439de1d9597b7ba11794ed9479fb6f3de7c",
+                "url": "https://api.github.com/repos/colinmollenhour/credis/zipball/5641140e14a9679f5a6f66c97268727f9558b881",
+                "reference": "5641140e14a9679f5a6f66c97268727f9558b881",
                 "shasum": ""
             },
             "require": {
@@ -271,9 +271,9 @@
             "homepage": "https://github.com/colinmollenhour/credis",
             "support": {
                 "issues": "https://github.com/colinmollenhour/credis/issues",
-                "source": "https://github.com/colinmollenhour/credis/tree/v1.15.0"
+                "source": "https://github.com/colinmollenhour/credis/tree/v1.16.0"
             },
-            "time": "2023-04-18T15:34:23+00:00"
+            "time": "2023-10-26T17:02:51+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
