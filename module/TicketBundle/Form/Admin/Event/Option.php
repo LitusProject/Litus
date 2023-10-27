@@ -46,6 +46,9 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
+                        'validators' => array(
+                            array('name' => 'UrlValid'),
+                        ),
                     ),
                 ),
             )
