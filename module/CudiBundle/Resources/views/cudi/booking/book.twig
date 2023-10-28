@@ -46,7 +46,7 @@
                         <div class="button blue unfilled" {% if not isSubscribed %}style="display: none"{% endif %}><a id="dontKeepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</a></div>
                     {% endif %}
                     {% if hasAccess('cudi_booking', 'search') %}
-                        <div class="button blue unfilled"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
+                        <div class="button blue unfilled" style="margin-top: 5px"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
                     {% endif %}
                 </div>
 
