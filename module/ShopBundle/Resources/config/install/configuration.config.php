@@ -7,9 +7,9 @@ return array(
         'description' => 'The name of the shop',
     ),
     array(
-        'key'         => 'shop.email',
+        'key'         => 'shop.mail',
         'value'       => 'theokot@vtk.be',
-        'description' => 'The email of the shop',
+        'description' => 'The email address of the shop',
     ),
     array(
         'key'         => 'shop.reservation_threshold',
@@ -82,51 +82,85 @@ return array(
         'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
     ),
     array(
-        'key'         => 'shop.no_show_configuration',
+        'key'         => 'shop.no_show_config',
         'value'       => serialize(
             array(
                 '1' => array(
-                    'subject' => 'VTK Theokot Warning',
-                    'content' => 'Dear {{ name }},
+                    'mail_subject' => 'VTK Theokot Warning',
+                    'mail_content' => '(English version below)
 
-You forgot your sandwich for the first time. Ban of 3 days.
+Dag {{ name }}
 
-Kind regards,
+Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Hierdoor moeten we op het einde van de dag jouw broodje gratis weggeven, of nog erger, weggooien. Bovendien werd dit item speciaal voor jou gereserveerd, waardoor andere studenten de kans op een lekker broodje mislopen.
 
-Theokot',
+Bij deze ontvang je een mail als waarschuwing: als dit nog een keer gebeurt, verlies je het privilege om een broodje en/of slaatje in het Theokot te bestellen gedurende 1 week.
+
+Noot: we snappen volledig dat het kan gebeuren dat je onverwachts je bestelling niet kan afhalen. We stellen één van volgende oplossingen voor:
+- Geef je r-nummer door aan je vrienden, die dan zelf het broodje en/of slaatje komen afhalen.
+- Stuur een mail naar theokot@vtk.be, dan kunnen wij dit broodje/slaatje nog aan iemand anders verkopen.
+- Stuur een bericht naar Theokot_ (Instagram), Theokot (Facebook) of een privébericht naar één van de verantwoordelijken (te vinden op https://vtk.be/praesidium).
+
+Het team hoopt op je begrip.
+Groentjes, het Theokotteam
+
+ENGLISH VERSION
+
+Dear {{ name }},
+
+You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
+
+We are sending this email as a warning: if this happens again, you will lose the privilege of ordering a sandwich and/or salad at Theokot for a period of 1 week.
+
+Please note that we fully understand that unexpected circumstances may prevent you from collecting your order. We offer one of the following solutions:
+- Share your R-number with friends so that they can collect the sandwich and/or salad on your behalf.
+- Send an email to theokot@vtk.be so that we can sell the sandwich/salad to someone else.
+- Send a message to Theokot_ (Instagram), Theokot (Facebook), or a private message to one of the responsible individuals (found at https://vtk.be/praesidium).
+
+The team hopes for your understanding.
+Best regards,
+The Theokot Team',
+                    'ban_days' => 0
                 ),
                 '2' => array(
-                    'subject' => 'VTK Theokot Warning',
-                    'content' => 'Dear {{ name }},
+                    'mail_subject' => 'VTK Theokot Warning',
+                    'mail_content' => '(English version below)
 
-You forgot your sandwich for the second time. Ban of 1 week.
+Dag {{ name }}
 
-Kind regards,
+Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Hierdoor moeten we op het einde van de dag jouw broodje gratis weggeven, of nog erger, weggooien. Bovendien werd dit item speciaal voor jou gereserveerd, waardoor andere studenten de kans op een lekker broodje mislopen.
 
-Theokot',
+Het is helaas de tweede keer dat dit gebeurt. Hierdoor verlies je het privilege om een broodje/slaatje te bestellen voor 1 week. 
+Je bent uiteraard altijd nog welkom om croques, worstenbroodjes, drankjes... te kopen. 
+
+Het team hoopt op je begrip.
+Groentjes, het Theokotteam
+
+ENGLISH VERSION
+
+Dag {{ name }}
+
+You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
+
+Unfortunately, this is the second time this has happened. As a consequence, you will lose the privilege of ordering a sandwich/salad for 1 week. However, you are still welcome to purchase croques, sausage rolls, beverages, and more.
+
+The team hopes for your understanding.
+Best regards,
+The Theokot Team
+',
+                    'ban_days' => 7
                 ),
-                '3' => array(
-                    'subject' => 'VTK Theokot Warning',
-                    'content' => 'Dear {{ name }},
-
-You forgot your sandwich for the third time. Ban of 3 weeks.
-
-Kind regards,
-
-Theokot',
-                ),
-                '4' => array(
-                    'subject' => 'VTK Theokot Warning',
-                    'content' => 'Dear {{ name }},
-
-You forgot your sandwich for the fourth time. Permanent ban.
-
-Kind regards,
-
-Theokot',
-                ),
-            )
-        ),
-        'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
+    ),
+),
+        'description' => 'Holds a no-show warning email, for each amount of warnings the user has',
+    ),
+    array(
+        'key'         => 'shop.no-reply_mail',
+        'value'       => 'no-reply-theokot@vtk.be',
+        'description' => 'The shop no-reply email address',
+    ),
+    array(
+        'key'         => 'shop.no-reply_mail_name',
+        'value'       => 'VTK Theokot',
+        'description' => 'The signature name for shop no-reply mails',
     ),
 );

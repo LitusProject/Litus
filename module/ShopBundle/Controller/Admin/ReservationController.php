@@ -275,15 +275,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
     private function getNoShowConfig()
     {
-        $noShowConfigJson = $this->getEntityManager()
+        $noShowConfigData = unserialize($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.no_show_configuration');
+                ->getConfigValue('shop.no_show_config'));
 
-        if ($noShowConfigJson === null) {
-            error_log('Error parsing the configuration file.');
-        }
-
-        $noShowConfig = new NoShowConfig($noShowConfigJson);
+        $noShowConfig = new NoShowConfig($noShowConfigData);
 
         return $noShowConfig;
     }
