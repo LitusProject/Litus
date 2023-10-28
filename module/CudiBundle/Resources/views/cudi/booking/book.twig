@@ -32,7 +32,13 @@
     {% else %}
 
     {# Content #}
-    <div class="container"> 
+    <div class="container">
+
+        <div class="alert alert-info notification">
+            <a class="close" data-dismiss="alert">&times;</a>
+            {{ translate('To edit subjects visible here, go to') }}
+            <a href="{{ url('common_account', {'action' : 'profile'}) }}" style="color: #FFD400FF">{{ translate('profile') }}</a>
+        </div>
 
         <div class="spacer40"></div>
         <div class="flexHorizontal">

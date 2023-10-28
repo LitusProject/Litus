@@ -95,5 +95,6 @@ return array(
     'You currently have no personal retails!'                                                                                                                                     => 'You currently have no personal retails!',
     'You successfully deleted the retail!'                                                                                                                                        => 'You successfully deleted the retail!',
 
-
+    'To edit subjects here, go to'                                                                                                                                                => 'To edit subject here, go to',
+    'Profile'                                                                                                                                                                     => 'Profile',
 );
