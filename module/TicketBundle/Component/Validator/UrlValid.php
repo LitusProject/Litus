@@ -60,13 +60,15 @@ class UrlValid extends \CommonBundle\Component\Validator\AbstractValidator
         $this->setValue($value);
 
         if (!is_string($value)) {
+            $this->error(self::NOT_VALID);
             return false;
         }
 
-        if(str_contains($value,'&') or str_contains($value,'+') or str_contains($value,'.') or str_contains($value,'#'))
+        if(str_contains($value,'&') or str_contains($value,'+') or str_contains($value,'.') or str_contains($value,'#')){
+            $this->error(self::NOT_VALID);
+            return false;
+        }
 
-        $this->error(self::NOT_VALID);
-
-        return false;
+        return true;
     }
 }
