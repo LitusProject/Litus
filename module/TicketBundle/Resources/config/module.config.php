@@ -42,6 +42,7 @@ return Config::create(
                 'payid'             => Component\Validator\PayId::class,
                 'payId'             => Component\Validator\PayId::class,
                 'PayId'             => Component\Validator\PayId::class,
+                'UrlValid'          => Component\Validator\UrlValid::class,
             ),
         ),
     )
