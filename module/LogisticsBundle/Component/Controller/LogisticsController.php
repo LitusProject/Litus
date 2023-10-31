@@ -79,4 +79,27 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
 
         return $shibbolethUrl;
     }
+
+    /**
+     * @return array|null
+     */
+    protected function getFathomInfo()
+    {
+        $enableFathom = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.enable_fathom');
+
+        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+            return null;
+        }
+
+        return array(
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_url'),
+            'site_id' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_site_id'),
+        );
+    }
 }

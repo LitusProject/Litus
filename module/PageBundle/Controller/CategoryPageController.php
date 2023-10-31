@@ -71,8 +71,9 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         return new ViewModel(
             array(
                 'category_page' => $page,
-                'big_frames' => $result_big,
-                'small_frames' => $result_small,
+                'big_frames'    => $result_big,
+                'small_frames'  => $result_small,
+                'fathom'        => $this->getFathomInfo(),
             )
         );
     }

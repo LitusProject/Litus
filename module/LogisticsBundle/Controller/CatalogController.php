@@ -44,6 +44,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         return new ViewModel(
             array(
                 'lastOrders'    => $lastOrders,
+                'fathom'        => $this->getFathomInfo(),
             )
         );
     }
