@@ -101,13 +101,7 @@ return array(
         'br_corporate_cv' => array(
             'downloadArchive', 'grouped', 'list', 'search', 'pdf',
         ),
-        'br_corporate_internship' => array(
-            'overview', 'add', 'delete', 'edit',
-        ),
         'br_corporate_vacancy' => array(
-            'overview', 'add', 'delete', 'edit',
-        ),
-        'br_corporate_student_job' => array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_company' => array(

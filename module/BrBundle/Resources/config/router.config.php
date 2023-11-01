@@ -566,38 +566,6 @@ return array(
                 ),
             ),
         ),
-        'br_corporate_internship' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/corporate/internship[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_corporate_internship',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
-        'br_corporate_student_job' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/corporate/studentjob[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_corporate_student_job',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
         'br_corporate_company' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -694,8 +662,6 @@ return array(
         'br_corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
         'br_corporate_jobfair'        => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'        => 'BrBundle\Controller\Corporate\VacancyController',
-        'br_corporate_internship'     => 'BrBundle\Controller\Corporate\InternshipController',
-        'br_corporate_student_job'    => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'        => 'BrBundle\Controller\Corporate\CompanyController',
         'br_corporate_match'          => 'BrBundle\Controller\Corporate\MatchController',
 
