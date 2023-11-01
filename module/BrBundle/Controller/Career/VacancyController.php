@@ -49,7 +49,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $query,
             $this->getParam('page')
         );
-        
+
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
