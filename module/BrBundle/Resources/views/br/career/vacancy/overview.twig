@@ -68,8 +68,26 @@
 
             <div class="br-spacer"></div>  
 
-            <div><h4 style="margin-bottom: 0px">{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</h4></div>
-           
+{#            <div><h4 style="margin-bottom: 0px">{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</h4>#}
+{#                <div>#}
+{#                    <h6 style="margin-top: 5px">{{ translate(vacancy.getTypeName()) }}</h6>#}
+{#                </div>#}
+{#            </div>#}
+
+            <div class="vacancyHeader">
+                <div class="vacancyFlexCenter">
+                    <h4 style="margin-bottom: 0px">{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</h4>
+                    <p style="font-size: 1em; margin-bottom: 0px">{{ translate(vacancy.getTypeName()) }} | {{ vacancy.getCity() }}
+                    <p style="font-size: 1em; margin-bottom: 0px">Sector: {{ vacancy.getSector() }}
+                    <p style="font-size: 1em; margin-bottom: 0px">{{ translate('Last updated') }}: {{ vacancy.getLastUpdateDate().format('d/m/Y') }}
+                </div>
+                <div class="flexStretch">
+                </div>
+                <div class="buttons" style="text-align: right;padding-top: 5px">
+                    {{ self.buttons(entityManager, authenticatedPerson, shift, accordionName) }}
+                </div>
+            </div>
+
         </a>   
 
         {# <tr>

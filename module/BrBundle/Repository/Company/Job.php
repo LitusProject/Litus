@@ -175,13 +175,19 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
 
         if ($sector !== null) {
             $query->andWhere(
@@ -204,8 +210,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('v.name', 'ASC')
             ->getQuery();
@@ -226,13 +231,20 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
         if ($sector !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
@@ -253,8 +265,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.dateUpdated', 'DESC')
             ->getQuery();
     }
@@ -274,13 +285,19 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
 
         if ($sector !== null) {
             $query->andWhere(
@@ -303,8 +320,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();
     }

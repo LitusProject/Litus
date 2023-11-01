@@ -17,6 +17,7 @@ return array(
     'Company'                                                                                                                                                                          => 'Company',
     'Vacancy'                                                                                                                                                                          => 'Vacancy',
     'Internship'                                                                                                                                                                       => 'Internship',
+    'Student Job'                                                                                                                                                                      => 'Student Job',
     'Internship Fair'                                                                                                                                                                  => 'Internship Fair',
     'Most Recent'                                                                                                                                                                      => 'Most Recent',
     'All'                                                                                                                                                                              => 'All',
@@ -39,4 +40,5 @@ return array(
     'View the time table for the busses here'                                                                                                                                          => 'View the time table for the buses here',
     'There are no upcoming Career events.'                                                                                                                                             => 'There are no upcoming Career events.',
     'Career Calendar'                                                                                                                                                                  => 'Career Calendar',
+    'Last updated'                                                                                                                                                                     => 'Last updated',
 );
