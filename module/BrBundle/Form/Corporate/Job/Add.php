@@ -44,6 +44,18 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
+                'type'       => 'select',
+                'name'       => 'type',
+                'label'      => 'Type',
+                'required'   => true,
+                'attributes' => array(
+                    'options' => Company\Job::$possibleTypes,
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'     => 'date',
                 'name'     => 'start_date',
                 'label'    => 'Start Date',

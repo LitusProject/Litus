@@ -14,7 +14,7 @@ use BrBundle\Entity\Company\Job as JobEntity;
 class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param  integer $id
+     * @param integer $id
      * @return \BrBundle\Entity\Company\Request
      */
     public function findRequestById($id)
@@ -56,10 +56,10 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param string $type
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findAllUnhandledByCompany(CompanyEntity $company, string $type)
+    public function findAllUnhandledByCompany(CompanyEntity $company, $type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('r')
+        $query->select('r')
             ->from('BrBundle\Entity\Company\Request', 'r')
             ->innerJoin('r.job', 'j')
             ->where(
@@ -67,11 +67,17 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('r.handled', 'FALSE'),
                     $query->expr()->eq('j.company', ':company'),
                     $query->expr()->eq('j.removed', 'FALSE'),
-                    $query->expr()->eq('j.type', ':type'),
                 )
+            );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('j.type', ':type')
             )
-            ->setParameter('company', $company->getId())
-            ->setParameter('type', $type)
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('company', $company->getId())
             ->getQuery()
             ->getResult();
     }
@@ -81,10 +87,10 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param string $type
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function findRejectsByCompany(CompanyEntity $company, string $type)
+    public function findRejectsByCompany(CompanyEntity $company, $type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('r')
+        $query->select('r')
             ->from('BrBundle\Entity\Company\Request', 'r')
             ->innerJoin('r.job', 'j')
             ->where(
@@ -93,11 +99,17 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->eq('j.approved', 'FALSE'),
                     $query->expr()->eq('j.removed', 'FALSE'),
                     $query->expr()->eq('j.company', ':company'),
-                    $query->expr()->eq('j.type', ':type'),
                 )
+            );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('j.type', ':type')
             )
-            ->setParameter('company', $company->getId())
-            ->setParameter('type', type)
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('company', $company->getId())
             ->getQuery()
             ->getResult();
     }

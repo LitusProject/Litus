@@ -3,7 +3,7 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Company\Job;
-use BrBundle\Entity\Company\Request\Internship;
+use BrBundle\Entity\Company\Request;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 
@@ -72,7 +72,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
 
                 $this->getEntityManager()->persist($job);
 
-                $request = new Internship($job, 'add', $person);
+                $request = new Request($job, 'add', $person);
 
                 $this->getEntityManager()->persist($request);
                 $this->getEntityManager()->flush();
@@ -93,7 +93,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                 $mail->setBody($link)
                     ->setFrom($mailAddress, $mailName)
                     ->addTo($mailAddress, $mailName)
-                    ->setSubject('New Vacancy Request ' . $person->getCompany()->getName());
+                    ->setSubject('New Request ' . $person->getCompany()->getName());
 
                 if (getenv('APPLICATION_ENV') != 'development') {
                     $this->getMailTransport()->send($mail);
@@ -168,19 +168,19 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
                     $job->pending();
                     $this->getEntityManager()->persist($job);
 
-                    $request = new Internship($job, 'edit', $person, $oldJob);
+                    $request = new Request($job, 'edit', $person, $oldJob);
                     $this->getEntityManager()->persist($request);
                 } else {
                     $job = $form->hydrateObject($oldJob);
                     $this->getEntityManager()->persist($job);
 
                     $unhandledRequest = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Company\Request\Internship')
+                        ->getRepository('BrBundle\Entity\Company\Request')
                         ->findUnhandledRequestsByJob($oldJob);
 
                     if (count($unhandledRequest) == 0) {
                         $oldRequest = $this->getEntityManager()
-                            ->getRepository('BrBundle\Entity\Company\Request\Internship')
+                            ->getRepository('BrBundle\Entity\Company\Request')
                             ->findOneByJob($oldJob->getId());
 
                         $request = new Internship($job, 'edit reject', $person, $oldRequest->getEditJob());
@@ -253,7 +253,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
         }
 
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Internship')
+            ->getRepository('BrBundle\Entity\Company\Request')
             ->findOneById($request->getId());
 
         $this->getEntityManager()->remove($request);
@@ -273,7 +273,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     {
         $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('internship', $this->getParam('id', 0));
+            ->findOneActiveById($this->getParam('id', 0));
 
         if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
@@ -282,7 +282,7 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
             );
 
             $this->redirect()->toRoute(
-                'br_career_internship',
+                'br_career_vacancy',
                 array(
                     'action' => 'overview',
                 )
@@ -295,22 +295,22 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     }
 
     /**
-     * @return \BrBundle\Entity\Company\Request\Internship|null
+     * @return \BrBundle\Entity\Company\Request|null
      */
     private function getRequestEntity()
     {
         $request = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Internship')
+            ->getRepository('BrBundle\Entity\Company\Request')
             ->findOneById($this->getParam('id', 0));
 
-        if (!($request instanceof Internship)) {
+        if (!($request instanceof Request)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No request was found!'
             );
 
             $this->redirect()->toRoute(
-                'br_career_internship',
+                'br_career_vacancy',
                 array(
                     'action' => 'overview',
                 )
@@ -328,12 +328,12 @@ class InternshipController extends \BrBundle\Component\Controller\CorporateContr
     private function getOpenRequests($company)
     {
         $unhandledRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Internship')
-            ->findAllUnhandledByCompany($company);
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findAllUnhandledByCompany($company, null);
 
         $handledRejects = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Internship')
-            ->findRejectsByCompany($company);
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findRejectsByCompany($company, null);
 
         return array_merge($handledRejects, $unhandledRequests);
     }

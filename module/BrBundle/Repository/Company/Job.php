@@ -139,20 +139,26 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('v')
+        $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
-            ->setParameter('type', $type)
-            ->setParameter('company', $company->getId())
-            ->setParameter('now', new DateTime())
+            ->setParameter('company', $company->getId());
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();
     }

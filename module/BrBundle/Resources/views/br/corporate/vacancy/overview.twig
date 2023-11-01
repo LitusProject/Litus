@@ -60,6 +60,7 @@
                             <td>
                                 <strong>{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</strong>
                                 <br/>
+                                Jobtype: <strong>{{ translate(vacancy.getTypeName()) }}</strong>
                                 <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(vacancy.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                 <br/>
                                 {{ vacancy.getSummary(200)|replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}
@@ -114,6 +115,8 @@
                             </td>
                             <td>
                                 <strong>{{ request.getJob().getCompany().getName() }} - {{ request.getJob().getName() }}</strong>
+                                <br/>
+                                Jobtype: <strong>{{ translate(request.getJob().getTypeName()) }}</strong>
                                 <div class="pull-right hidden-xs">{{ translate('Last Updated') }}: <strong>{{ dateLocalized(request.getJob().getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                 <br/>
                                 {% if request.getStatus() == 'rejected' %}

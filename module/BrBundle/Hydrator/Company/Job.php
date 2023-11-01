@@ -24,6 +24,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
             throw new InvalidObjectException('Cannot create a job');
         }
 
+        $object->setType($data['type']);
         $object->setSector($data['sector']);
         $object->setLocation($data['location']);
         $object->setMaster($data['master']);
@@ -42,8 +43,7 @@ class Job extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        echo '<script>console.log(' . json_encode($data) . ')</script>';
-
+        $data['type'] = $object->getType();
         $data['sector'] = $object->getSectorCode();
         $data['location'] = $object->getLocationCode();
         $data['master'] = $object->getMasterCode();
