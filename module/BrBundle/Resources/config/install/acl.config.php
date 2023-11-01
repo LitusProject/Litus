@@ -68,6 +68,9 @@ return array(
         'br_admin_communication' => array(
             'add', 'manage', 'delete', 'view',
         ),
+        'br_admin_job' => array(
+            'manage',
+        ),
         'br_career_index' => array(
             'index', 'calendar',
         ),

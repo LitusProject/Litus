@@ -243,6 +243,13 @@ return array(
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
         ),
+        'br_admin_job' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'br_corporate_auth' => array(
             '@bootstrap_css',
             '@corporate_css',
