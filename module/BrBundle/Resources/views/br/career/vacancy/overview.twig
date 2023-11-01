@@ -20,6 +20,15 @@
                 </div>
 
                 <div class="well" style="margin-bottom:0px">
+                    <h4>{{ translate('Type') }}</h4>
+                    <div class="form-group">
+                        <div class="input-group">
+                            {{ formElement(vacancySearchForm.get('jobType')) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="well" style="margin-bottom:0px">
                     <h4>{{ translate('Sector') }}</h4>
                     <div class="form-group">
                         <div class="input-group">
@@ -66,13 +75,7 @@
                 <div style="padding: 0px 20px; width: 160px; height: 60px; ">{{ vacancy.getCompany().getName() }}</div>
             {% endif %}
 
-            <div class="br-spacer"></div>  
-
-{#            <div><h4 style="margin-bottom: 0px">{{ vacancy.getCompany().getName() }} - {{ vacancy.getName() }}</h4>#}
-{#                <div>#}
-{#                    <h6 style="margin-top: 5px">{{ translate(vacancy.getTypeName()) }}</h6>#}
-{#                </div>#}
-{#            </div>#}
+            <div class="br-spacer"></div>
 
             <div class="vacancyHeader">
                 <div class="vacancyFlexCenter">

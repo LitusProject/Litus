@@ -30,7 +30,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
 
-                $jobType = $formData['jobType'] == 'all' ? null : $formData['sector'];
+                $jobType = $formData['jobType'] == 'all' ? null : $formData['jobType'];
                 $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
@@ -49,7 +49,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
             $query,
             $this->getParam('page')
         );
-
+        
         $logoPath = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.public_logo_path');
