@@ -115,7 +115,7 @@
                                 {% for internship in internships %}
                                     <tr>
                                         <td>
-                                            <a href="{{ url('br_career_internship', {'action': 'view', 'id': internship.getId() }) }}">
+                                            <a href="{{ url('br_career_vacancy', {'action': 'view', 'id': internship.getId() }) }}">
                                                 <strong>{{ internship.getName() }}</strong>
                                                 <div class="pull-right">{{ translate('Last Updated: ') }}<strong>{{ dateLocalized(internship.getLastUpdateDate(), 'd  MMMM y') }}</strong></div>
                                             </a>

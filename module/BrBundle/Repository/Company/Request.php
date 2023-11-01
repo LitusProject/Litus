@@ -2,6 +2,9 @@
 
 namespace BrBundle\Repository\Company;
 
+use BrBundle\Entity\Company as CompanyEntity;
+use BrBundle\Entity\Company\Job as JobEntity;
+
 /**
  * Request
  *
@@ -11,7 +14,7 @@ namespace BrBundle\Repository\Company;
 class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param  integer $id
+     * @param integer $id
      * @return \BrBundle\Entity\Company\Request
      */
     public function findRequestById($id)
@@ -25,5 +28,108 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('id', $id)
             ->getQuery()
             ->getSingleResult();
+    }
+
+    /**
+     * @param string $type The job type
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findNewRequests(string $type)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('BrBundle\Entity\Company\Request', 'r')
+            ->innerJoin('r.job', 'j')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('j.type', ':type'),
+                )
+            )
+            ->setParameter('type', $type)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param CompanyEntity $company
+     * @param string $type
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findAllUnhandledByCompany(CompanyEntity $company, $type)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('r')
+            ->from('BrBundle\Entity\Company\Request', 'r')
+            ->innerJoin('r.job', 'j')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('j.company', ':company'),
+                    $query->expr()->eq('j.removed', 'FALSE'),
+                )
+            );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('j.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param CompanyEntity $company
+     * @param string $type
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findRejectsByCompany(CompanyEntity $company, $type)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('r')
+            ->from('BrBundle\Entity\Company\Request', 'r')
+            ->innerJoin('r.job', 'j')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'TRUE'),
+                    $query->expr()->eq('j.approved', 'FALSE'),
+                    $query->expr()->eq('j.removed', 'FALSE'),
+                    $query->expr()->eq('j.company', ':company'),
+                )
+            );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('j.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('company', $company->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findUnhandledRequestsByJob(JobEntity $job)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('r')
+            ->from('BrBundle\Entity\Company\Request', 'r')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('r.handled', 'FALSE'),
+                    $query->expr()->eq('r.job', ':job')
+                )
+            )
+            ->setParameter('job', $job->getId())
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -50,8 +50,8 @@
                     <td>{{ request.getCreationTime().format('d/m/Y H:i') }}</td>
                     <td>{{ request.getRequestType()|upper }}</td>
                     <td class="actions">
-                        {% if hasAccess('br_career_internship', 'view') %}
-                            <a href="{{ url('br_career_internship', {"action": "view", "id": request.getEditJob().getId()}) }}" class="view">View</a>
+                        {% if hasAccess('br_career_vacancy', 'view') %}
+                            <a href="{{ url('br_career_vacancy', {"action": "view", "id": request.getEditJob().getId()}) }}" class="view">View</a>
                         {% endif %}
                         {% if hasAccess('br_admin_request', 'approve') %}
                             <a href="{{ url('br_admin_request', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>

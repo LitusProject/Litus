@@ -1,0 +1,179 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/company/job/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+        <div class="flashmessage success_message full_width job_removed_success hide">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The job was successfully removed!</p>
+            </div>
+        </div>
+        <div class="flashmessage error_message full_width job_removed_error hide">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to delete a job.</p>
+            </div>
+        </div>
+
+        <div id="job_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                    <option value="company">Company</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30"/>
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th style="width:300px">Description</th>
+                    <th style="width:120px">Type</th>
+                    <th style="width:120px">Action</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Name</th>
+                    <th style="width:300px">Description</th>
+                    <th style="width:120px">Type</th>
+                    <th style="width:120px">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for job in paginator %}
+                    {% if not job.isRemoved() and job.isApproved() %}
+                        <tr class="item item-{{ job.getId() }}">
+                            <td>{{ job.getCompany().getName() }}</td>
+                            <td>{{ job.getName() }}</td>
+                            <td>{% autoescape false %}{{ job.getSummaryStriped() }}{% endautoescape %}</td>
+                            <td>{{ job.getTypeName() }}</td>
+                            <td class="actions">
+                                <ul>
+                                    {% if hasAccess('br_admin_company_job', 'delete') %}
+                                        <li><a href="#" class="delete" data-id="{{ job.getId() }}"
+                                               data-name="{{ job.getName() }}">Delete</a></li>
+                                    {% endif %}
+                                    {% if hasAccess('br_admin_company_job', 'edit') %}
+                                        <li>
+                                            <a href="{{ url('br_admin_company_job', {"action": "edit", "id": job.getId()}) }}"
+                                               class="edit">Edit</a></li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeJob" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Job
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following job: <b class="jobName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('br_admin_job', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#job_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('br_admin_job', {'action': 'manage'}) }}',
+                url: '{{ url('br_admin_job', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#job_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#job_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.companyName + '</td>')
+                            .append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.summary + '</td>')
+                            .append('<td>' + this.type + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+                        {% if hasAccess('br_admin_company_job', 'delete') %}
+                        actions.append('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>')
+                        {% endif %}
+                        {% if hasAccess('br_admin_company_job', 'edit') %}
+                        actions.append('<a href="{{ url('br_admin_company_job') }}edit/' + this.id + '">Edit</a>')
+                        {% endif %}
+                    });
+                    $('#job_search table').change();
+                    $('.item .delete').unbind('click').click(openModal);
+                },
+                clear: function () {
+                    $('#job_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeJob = $('#removeJob');
+            removeJob.find('.jobName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeJob.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_company_job', {"action": "delete"}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.job_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeJob.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeJob.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.job_removed_error').removeClass('hide');
+            $('#removeJob').modal('hide');
+        }
+    </script>
+{% endblock %}

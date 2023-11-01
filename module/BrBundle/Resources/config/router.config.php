@@ -359,6 +359,23 @@ return array(
                 ),
             ),
         ),
+        'br_admin_job' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/job[/:action[/:id][/page/:page][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9_-]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'br_admin_job',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_career_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -447,38 +464,6 @@ return array(
                 ),
                 'defaults'    => array(
                     'controller' => 'br_career_vacancy',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
-        'br_career_internship' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/career/internship[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_career_internship',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
-        'br_career_student_job' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/career/studentjob[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_career_student_job',
                     'action'     => 'overview',
                 ),
             ),
@@ -598,38 +583,6 @@ return array(
                 ),
             ),
         ),
-        'br_corporate_internship' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/corporate/internship[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_corporate_internship',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
-        'br_corporate_student_job' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/corporate/studentjob[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9_-]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_corporate_student_job',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
         'br_corporate_company' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -703,6 +656,7 @@ return array(
         'br_admin_company_logo'       => 'BrBundle\Controller\Admin\Company\LogoController',
         'br_admin_cv_entry'           => 'BrBundle\Controller\Admin\CvController',
         'br_admin_communication'      => 'BrBundle\Controller\Admin\CommunicationController',
+        'br_admin_job'                => 'BrBundle\Controller\Admin\JobController',
 
         'br_admin_collaborator'       => 'BrBundle\Controller\Admin\CollaboratorController',
         'br_admin_contract'           => 'BrBundle\Controller\Admin\ContractController',
@@ -726,15 +680,11 @@ return array(
         'br_corporate_auth'           => 'BrBundle\Controller\Corporate\AuthController',
         'br_corporate_jobfair'        => 'BrBundle\Controller\Corporate\JobfairController',
         'br_corporate_vacancy'        => 'BrBundle\Controller\Corporate\VacancyController',
-        'br_corporate_internship'     => 'BrBundle\Controller\Corporate\InternshipController',
-        'br_corporate_student_job'    => 'BrBundle\Controller\Corporate\StudentJobController',
         'br_corporate_company'        => 'BrBundle\Controller\Corporate\CompanyController',
         'br_corporate_match'          => 'BrBundle\Controller\Corporate\MatchController',
 
         'br_career_index'             => 'BrBundle\Controller\Career\IndexController',
         'br_career_vacancy'           => 'BrBundle\Controller\Career\VacancyController',
-        'br_career_internship'        => 'BrBundle\Controller\Career\InternshipController',
-        'br_career_student_job'       => 'BrBundle\Controller\Career\StudentJobController',
         'br_career_event'             => 'BrBundle\Controller\Career\EventController',
         'br_career_company'           => 'BrBundle\Controller\Career\CompanyController',
         'br_career_internshipfair'    => 'BrBundle\Controller\Career\InternshipfairController',

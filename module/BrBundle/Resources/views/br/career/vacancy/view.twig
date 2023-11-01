@@ -41,6 +41,13 @@
 
             <div style="display: inline-flex; background-color: whitesmoke; margin-bottom: 30px; padding: 20px" class="br-eventInfoHolder">
 
+                {% if vacancy.getTypeName() %}
+                    <div style="margin-right: 20px">
+                        <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Type') }}</h6>
+                        <p class="br-eventInfoTitle">{{ vacancy.getTypeName() }}</p>
+                    </div>
+                {% endif %}
+
                 {% if vacancy.getMaster() %}
                     <div style="margin-right: 20px">
                         <h6 style="margin-bottom: 0px; opacity: 0.6">{{ translate('Master') }}</h6>
