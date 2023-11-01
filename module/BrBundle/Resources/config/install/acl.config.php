@@ -80,12 +80,6 @@ return array(
         'br_career_vacancy' => array(
             'view', 'overview',
         ),
-        'br_career_internship' => array(
-            'view', 'overview',
-        ),
-        'br_career_student_job' => array(
-            'view', 'overview',
-        ),
         'br_career_internshipfair' => array(
             'view', 'overview', 'file', 'search',
         ),
