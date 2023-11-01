@@ -60,6 +60,58 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param  string $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->like($query->expr()->lower('v.name'), ':name'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $company
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByCompanyQuery($company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($company) . '%')
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
      * @param  string $type
      * @return \Doctrine\ORM\Query
      */

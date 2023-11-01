@@ -362,11 +362,13 @@ return array(
         'br_admin_job' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/job[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/br/job[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9_-]*',
                     'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'br_admin_job',

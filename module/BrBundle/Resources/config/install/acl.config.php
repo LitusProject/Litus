@@ -69,7 +69,7 @@ return array(
             'add', 'manage', 'delete', 'view',
         ),
         'br_admin_job' => array(
-            'manage',
+            'manage', 'search',
         ),
         'br_career_index' => array(
             'index', 'calendar',
