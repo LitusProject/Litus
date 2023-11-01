@@ -14,11 +14,10 @@ use DateTime;
 class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param  string  $type
      * @param  integer $id
      * @return \BrBundle\Entity\Company\Job
      */
-    public function findOneActiveByTypeAndId($type, $id)
+    public function findOneActiveById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('v')
@@ -26,7 +25,6 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->eq('v.id', ':id'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
@@ -34,7 +32,6 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('id', $id)
-            ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->setMaxResults(1)
             ->getQuery()

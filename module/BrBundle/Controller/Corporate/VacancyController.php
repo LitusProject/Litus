@@ -274,7 +274,7 @@ class VacancyController extends \BrBundle\Component\Controller\CorporateControll
     {
         $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id', 0));
+            ->findOneActiveById($this->getParam('id', 0));
 
         if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
