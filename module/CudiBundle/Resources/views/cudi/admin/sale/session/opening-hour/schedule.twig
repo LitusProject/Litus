@@ -18,22 +18,19 @@
         });
 
         function hide(e) {
-            var $this = $(this);
+            const $this = $(this);
 
-            var selector =  $this[0].className.split(' ')[1]
+            const selector =  $this[0].className.split(' ')[1]
             let elements = Array.from(document.getElementsByClassName(selector));
-            elements.shift();
+            elements.shift();                   // Remove first element (checkbox)
             elements.forEach((element) => {
                 let row = $(element).parents('div').first();
                 if (row.hasClass('hide')) {
-                    // console.log($(element).parents('row'));
-                    $(element).parents('div').first().removeClass('hide');
+                    row.removeClass('hide');
                 } else {
-                    $(element).parents('div').first().addClass('hide');
+                    row.addClass('hide');
                 }
             });
-            console.log($(elements[0]).parents('div'))
-            console.log($this[0].className.split(' ')[1]);
         }
     </script>
 {% endblock %}
