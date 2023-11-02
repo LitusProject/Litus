@@ -136,7 +136,7 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                 ->getRepository('ShiftBundle\Entity\RegistrationShift')
                 ->findAllActiveBetweenDates($start_date, $end_date);
 
-            $resultString = $this->getTranslator()->translate('Timeslots from %start% to %end%');//TODO: Dit vertaalt nog niet
+            $resultString = $this->getTranslator()->translate('Timeslots from %start% to %end%');
             $resultString = str_replace('%start%', $start_date->format('d/m/Y'), $resultString);
             $resultString = str_replace('%end%', $end_date->format('d/m/Y'), $resultString);
         }

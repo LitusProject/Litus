@@ -10,3 +10,30 @@
         {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.interval').click(hide);
+        });
+
+        function hide(e) {
+            var $this = $(this);
+
+            var selector =  $this[0].className.split(' ')[1]
+            let elements = Array.from(document.getElementsByClassName(selector));
+            elements.shift();
+            elements.forEach((element) => {
+                let row = $(element).parents('div').first();
+                if (row.hasClass('hide')) {
+                    // console.log($(element).parents('row'));
+                    $(element).parents('div').first().removeClass('hide');
+                } else {
+                    $(element).parents('div').first().addClass('hide');
+                }
+            });
+            console.log($(elements[0]).parents('div'))
+            console.log($this[0].className.split(' ')[1]);
+        }
+    </script>
+{% endblock %}

@@ -29,7 +29,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => $day->format('l') . ' 12:30 - 14:00',
                     'required' => true,
                     'attributes' => array(
-                        'id' => 'interval_12:30-14:00_' . $day->format('d/m/Y'),
+                        'class'     => 'interval select1' . $day->format('d'),
+                        'value'     => 1,
                     ),
                 )
             );
@@ -40,7 +41,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'     => 'volunteers_12:30-14:00_' . $day->format('d/m/Y'),
                     'label'    => 'Volunteers',
                     'attributes' => array(
-                        'value' => '0',
+                        'value'     => '4',
+                        'class'     => 'volunteers select1' . $day->format('d'),
                     ),
                     'options'  => array(
                         'input' => array(
@@ -61,7 +63,30 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'     => 'volunteers-min_12:30-14:00_' . $day->format('d/m/Y'),
                     'label'    => 'Min. Volunteers',
                     'attributes' => array(
-                        'value' => '0',
+                        'value'     => '3',
+                        'class'     => 'volunteers-min select1' . $day->format('d'),
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'nb-registered_12:30-14:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Registries',
+                    'attributes' => array(
+                        'value'     => '50',
+                        'class'     => 'registries select1' . $day->format('d'),
                     ),
                     'options'  => array(
                         'input' => array(
@@ -83,7 +108,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => '18:00 - 19:00',
                     'required' => true,
                     'attributes' => array(
-                        'id' => 'interval_18:00-19:00_' . $day->format('d/m/Y'),
+                        'class'     => 'interval select2' . $day->format('d'),
+                        'value'     => 1,
                     ),
                 )
             );
@@ -94,7 +120,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'     => 'volunteers_18:00-19:00_' . $day->format('d/m/Y'),
                     'label'    => 'Volunteers',
                     'attributes' => array(
-                        'value' => '0',
+                        'value' => '4',
+                        'class'    => 'volunteers select2' . $day->format('d'),
                     ),
                     'options'  => array(
                         'input' => array(
@@ -115,7 +142,30 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'     => 'volunteers-min_18:00-19:00_' . $day->format('d/m/Y'),
                     'label'    => 'Min. Volunteers',
                     'attributes' => array(
-                        'value' => '0',
+                        'value'     => '3',
+                        'class'     => 'volunteers-min select2' . $day->format('d'),
+                    ),
+                    'options'  => array(
+                        'input' => array(
+                            'filters' => array(
+                                array('name' => 'StringTrim'),
+                            ),
+                            'validators' => array(
+                                array('name' => 'Int'),
+                            ),
+                        ),
+                    ),
+                )
+            );
+
+            $this->add(
+                array(
+                    'type'     => 'text',
+                    'name'     => 'nb-registered_18:00-19:00_' . $day->format('d/m/Y'),
+                    'label'    => 'Registries',
+                    'attributes' => array(
+                        'value'     => '50',
+                        'class'     => 'registries select2' . $day->format('d'),
                     ),
                     'options'  => array(
                         'input' => array(
