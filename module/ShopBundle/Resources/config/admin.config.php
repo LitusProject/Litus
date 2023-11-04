@@ -13,6 +13,10 @@ return array(
                     'action' => 'manage',
                     'title'  => 'Sales Sessions',
                 ),
+                'shop_admin_shop_ban' => array(
+                    'action' => 'manage',
+                    'title' => 'Bans',
+                ),
                 'shop_admin_shop_reservationpermission' => array(
                     'action' => 'manage',
                     'title'  => 'Permissions',

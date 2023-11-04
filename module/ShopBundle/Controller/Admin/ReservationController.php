@@ -92,11 +92,10 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $noShowConfig = $this->getNoShowConfig();
 
         // Get past amount of warnings
-        $pastWarningCount = $this->getEntityManager()
+        $warningCount = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation\Ban')
             ->findAllByPersonQuery($reservation->getPerson())
             ->getResult();
-        $warningCount = $pastWarningCount + 1;
 
         // Create ban
         $banStartTimestamp = new DateTime();
@@ -110,7 +109,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $this->getEntityManager()->persist($ban);
         $this->getEntityManager()->flush($ban);
 
-        // Send email
+        // Send warning email
         $mail = $noShowConfig->getEmail($reservation->getPerson(), $warningCount);
 
         if (getenv('APPLICATION_ENV') != 'development') {

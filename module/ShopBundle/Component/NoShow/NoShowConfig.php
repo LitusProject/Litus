@@ -31,13 +31,22 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
     }
 
     public function getBanInterval(int $warningCount) {
+        if ($warningCount >= count($this->banDaysDictionary)) {
+            $warningCount = count($this->banDaysDictionary) - 1;
+        }
         return $this->banDaysDictionary[$warningCount];
     }
 
     public function getEmail(Person $person, int $warningCount) {
+        if ($warningCount >= count($this->banDaysDictionary)) {
+            $warningCount = count($this->banDaysDictionary) - 1;
+        }
+
         $mailSubject = $this->emailDictionary[$warningCount]['subject'];
         $mailContent = $this->emailDictionary[$warningCount]['content'];
+
         $name = $person->getFirstName();
+        $mailContent = str_replace('{{ name }}', $name, $mailContent);
 
         // sender address
         $noreplyAddress = $this->getEntityManager()

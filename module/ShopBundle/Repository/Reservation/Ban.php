@@ -3,6 +3,7 @@
 namespace ShopBundle\Repository\Reservation;
 
 use CommonBundle\Entity\User\Person;
+use DateTime;
 
 /**
  * Ban
@@ -15,12 +16,36 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
-    public function findAllQuery()
+    public function findActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'e')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->isNull('a.endTimestamp'),
+                    $query->expr()->gte('a.endTimestamp', ':now')
+                )
+            )
+            ->setParameter('now', new DateTime())
+            ->getQuery();
+    }
 
-        return $query->select('b')
-            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findOldQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->isNotNull('a.endTimestamp'),
+                    $query->expr()->lt('a.endTimestamp', ':now')
+                )
+            )
+            ->setParameter('now', new DateTime())
             ->getQuery();
     }
 
