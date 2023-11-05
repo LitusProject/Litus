@@ -29,8 +29,9 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => $day->format('l') . ' 10:30-18:00',
                     'required' => true,
                     'attributes' => array(
-                        'id' => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
-                        'value' => 1,
+                        'id'        => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
+                        'value'     => 1,
+                        'class'     => 'interval select' . $day->format('d'),
                     ),
                 )
             );
@@ -44,6 +45,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'id'        => 'shift_' . $day->format('d/m/Y'),
                         'value'     => 1,
+                        'class'     => 'select' . $day->format('d'),
                     ),
                 )
             );
