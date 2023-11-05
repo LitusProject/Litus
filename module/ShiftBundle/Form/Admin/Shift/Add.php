@@ -331,7 +331,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'textarea',
                 'name'       => 'description',
                 'label'      => 'Description',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'rows' => 5,
                 ),
