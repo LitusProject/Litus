@@ -46,7 +46,7 @@ return array(
             '@common_jqueryui_css',
             '@common_remote_typeahead',
         ),
-        'shop_admin_shop_reservationpermission' => array(
+        'shop_admin_shop_ban' => array(
             '@common_jquery',
             '@admin_css',
             '@admin_js',

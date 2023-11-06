@@ -68,10 +68,10 @@ return array(
                 ),
             ),
         ),
-        'shop_admin_shop_reservationpermission' => array(
+        'shop_admin_shop_ban' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shop/reservationpermission[/:action[/:id][/type/:type][/page/:page]][/:field/:string][/]',
+                'route'       => '/admin/shop/ban[/:action[/:id][/type/:type][/page/:page]][/:field/:string][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -81,7 +81,7 @@ return array(
                     'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'shop_admin_shop_reservationpermission',
+                    'controller' => 'shop_admin_shop_ban',
                     'action'     => 'manage',
                 ),
             ),
@@ -141,9 +141,9 @@ return array(
         'shop_admin_shop_salessession'          => 'ShopBundle\Controller\Admin\SalesSessionController',
         'shop_admin_shop_product'               => 'ShopBundle\Controller\Admin\ProductController',
         'shop_admin_shop_reservation'           => 'ShopBundle\Controller\Admin\ReservationController',
-        'shop_admin_shop_reservationpermission' => 'ShopBundle\Controller\Admin\ReservationPermissionController',
+        'shop_admin_shop_ban'                   => 'ShopBundle\Controller\Admin\BanController',
         'shop_admin_shop_message'               => 'ShopBundle\Controller\Admin\MessageController',
-        'shop_admin_shop_openinghour'          => 'ShopBundle\Controller\Admin\OpeningHourController',
+        'shop_admin_shop_openinghour'           => 'ShopBundle\Controller\Admin\OpeningHourController',
         'shop'                                  => 'ShopBundle\Controller\ShopController',
     ),
 );

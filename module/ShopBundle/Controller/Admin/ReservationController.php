@@ -12,7 +12,6 @@ use Laminas\View\Model\ViewModel;
 use ShopBundle\Component\NoShow\NoShowConfig;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Reservation\Ban;
-use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
 use ShopBundle\Entity\Session as SalesSession;
 
 /**

@@ -1,7 +1,7 @@
 {% extends 'admin/base.twig' %}
 
 {% block content %}
-    {% include 'shop/admin/reservation-permission/partials/navigation.twig' %}
+    {% include 'shop/admin/ban/partials/navigation.twig' %}
 
     {% include 'admin/partials/flashMessenger.twig' %}
     <div class="flashmessage success_message full_width ban_removed_success hide">
@@ -54,7 +54,7 @@
                         <td>{{ ban.getStartTimestamp().format('d/m/Y H:i') }}</td>
                         <td>{{ ban.getEndTimestamp().format('d/m/Y H:i') }}</td>
                         <td class="actions">
-                            {% if hasAccess('shop_admin_shop_reservationpermission', 'delete') %}
+                            {% if hasAccess('shop_admin_shop_ban', 'delete') %}
                                 <a href="#" data-id="{{ ban.getPerson().getId() }}" data-name="{{ ban.getPerson.getFullName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
@@ -96,14 +96,14 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            {% if hasAccess('shop_admin_shop_reservationpermission', 'search') %}
+            {% if hasAccess('shop_admin_shop_ban', 'search') %}
             $.searchDatabase({
                 defaultPage: $('#default_page'),
                 searchDiv: $('#ban_search'),
                 searchString: $('#searchString'),
                 searchField: $('#searchField'),
-                searchPage: '{{ url('shop_admin_shop_reservationpermission', {'action': 'manage'}) }}manage/',
-                url: '{{ url('shop_admin_shop_reservationpermission', {'action': 'search'}) }}',
+                searchPage: '{{ url('shop_admin_shop_ban', {'action': 'manage'}) }}manage/',
+                url: '{{ url('shop_admin_shop_ban', {'action': 'search'}) }}',
                 display: function (data) {
                     $('#ban_search table').find('tr.item').remove();
                     $(data).each(function () {
@@ -141,7 +141,7 @@
             });
             var id = $this.data('id');
             removeBan.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('shop_admin_shop_reservationpermission', {"action": "delete"})}}' + id, function (data) {
+                $.post('{{ url('shop_admin_shop_ban', {"action": "delete"})}}' + id, function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.ban_removed_success').removeClass('hide');

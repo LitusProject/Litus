@@ -14,7 +14,7 @@ return array(
         'shop_admin_shop_reservation' => array(
             'salessession', 'csv', 'delete', 'noshow', 'search',
         ),
-        'shop_admin_shop_reservationpermission' => array(
+        'shop_admin_shop_ban' => array(
             'manage', 'old', 'delete', 'add', 'search',
         ),
         'shop_admin_shop_message' => array(
