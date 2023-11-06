@@ -67,4 +67,27 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $query->getQuery();
     }
+
+    public function findActiveByPersonPersonQuery(Person $person)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+
+        $query = $queryBuilder->select('b')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
+            ->where(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->eq('b.person', ':person'),
+                    $queryBuilder->expr()->orX(
+                        $queryBuilder->expr()->isNull('b.endTimestamp'),
+                        $queryBuilder->expr()->gte('b.endTimestamp', ':now')
+                    )
+                )
+            )
+            ->setParameter('person', $person)
+            ->setParameter('now', new DateTime())
+            ->getQuery();
+
+        return $query;
+    }
+
 }

@@ -312,12 +312,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 ));
         }
 
-        $reservationPermission = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Reservation\Permission')
-            ->find($this->getPersonEntity());
+        // if user has no active bans, reservation is allowed
+        $activeBans = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation\Ban')
+            ->findActiveByPersonPersonQuery($this->getPersonEntity())
+            ->getResult();
+//        die(json_encode(count($activeBans)));
 
-        if ($reservationPermission) {
-            return $reservationPermission->getReservationsAllowed();
+        if (count($activeBans) > 0) {
+            return false;
         }
 
         $configRepository = $this->getEntityManager()

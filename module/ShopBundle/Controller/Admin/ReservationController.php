@@ -90,7 +90,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
         $noShowConfig = $this->getNoShowConfig();
 
-        // Get past amount of warnings
+        // Get total amount of warnings for person (past, present and future)
         $warningCount = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation\Ban')
             ->findAllByPersonQuery($reservation->getPerson())
