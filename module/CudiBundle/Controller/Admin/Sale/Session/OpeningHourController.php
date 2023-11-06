@@ -155,9 +155,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'start_date' => $startDate,
                             'end_date' => $endDate,
                             // SHIFTS
-                            'name'                  => 'Boekjes verkopen',
-                            'description'           => 'Kom helpen met boeken verkopen. Leer nieuwe mensen kennen en kom de sfeer opsnuiven.
-(Er is altijd begeleiding dus wees niet bang als je voor de eerste keer komt ;))',
+                            'name'                  => 'Boeken verkopen',
+                            'description'           => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
                             'manager'               => false,
                             'unit'                  => 1,
                             'edit_roles'            => array('cursusdienst',),
