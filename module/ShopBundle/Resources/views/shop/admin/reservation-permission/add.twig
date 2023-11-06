@@ -15,17 +15,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('#person').typeaheadRemote(
-                    {
-                        source: '{{ url('common_admin_academic_typeahead', {})}}',
-                        items: 20,
-                    }
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
             ).change(function (e) {
-                        if ($(this).data('value')) {
-                            $('[name="person[id]"]').val($(this).data('value').id);
-                        } else {
-                            $('[name="person[id]"]').val('');
-                        }
-                    });
+                if ($(this).data('value')) {
+                    $('[name="person[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="person[id]"]').val('');
+                }
+            });
             $('.item .delete').click(openModal);
         });
     </script>

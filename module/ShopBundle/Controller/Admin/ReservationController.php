@@ -104,7 +104,10 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $banInterval = DateInterval::createFromDateString($banIntervalStr);
         $banEndTimestamp = $banStartTimestamp->add($banInterval);
 
-        $ban = new Ban($reservation->getPerson(), $banStartTimestamp, $banEndTimestamp);
+        $ban = new Ban();
+        $ban->setPerson($reservation->getPerson());
+        $ban->setStartTimestamp($banStartTimestamp);
+        $ban->setEndTimestamp($banEndTimestamp);
 
         $this->getEntityManager()->persist($ban);
         $this->getEntityManager()->flush($ban);

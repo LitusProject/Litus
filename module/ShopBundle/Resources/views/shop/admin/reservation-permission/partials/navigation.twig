@@ -11,6 +11,10 @@
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %}
                             href="{{ url("shop_admin_shop_reservationpermission", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}
+            {% if hasAccess('shop_admin_shop_reservationpermission', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_reservationpermission", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>

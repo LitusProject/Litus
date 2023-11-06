@@ -46,15 +46,6 @@ return array(
             '@common_jqueryui_css',
             '@common_remote_typeahead',
         ),
-        'shop_admin_shop_ban' => array(
-            '@common_jquery',
-            '@admin_css',
-            '@admin_js',
-            '@bootstrap_js_transition',
-            '@bootstrap_js_modal',
-            '@common_jquery_form',
-            '@common_remote_typeahead',
-        ),
         'shop_admin_shop_reservationpermission' => array(
             '@common_jquery',
             '@admin_css',

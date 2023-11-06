@@ -8,13 +8,20 @@ class Ban extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doExtract($object = null)
     {
-        return array();
+        if ($object === null) {
+            return array();
+        }
+
+//        $data = $this->stdExtract($object);
+        $data['start_timestamp'] = $object->getStartTimestamp()->format('d/m/Y H:i');
+        $data['end_timestamp'] = $object->getEndTimestamp() ? $object->getEndTimestamp()->format('d/m/Y H:i') : ' ';
+        $data['person']['id'] = $object->getPerson()->getId();
+
+        return $data;
     }
 
     protected function doHydrate(array $data, $object = null)
     {
-        error_log("hydrate");
-
         if ($object === null) {
             $object = new BanEntity();
         }

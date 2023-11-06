@@ -3,7 +3,7 @@
 namespace ShopBundle\Controller\Admin;
 
 use Laminas\View\Model\ViewModel;
-use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
+use ShopBundle\Repository\Reservation\Ban;
 
 /**
  * ReservationPermissionController
@@ -16,8 +16,8 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     {
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Reservation\Permission')
-                ->findAllQuery(),
+                ->getRepository('ShopBundle\Entity\Reservation\Ban')
+                ->findActiveQuery(),
             $this->getParam('page')
         );
 
@@ -29,22 +29,44 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
         );
     }
 
+    public function oldAction()
+    {
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Reservation\Ban')
+                ->findOldQuery(),
+            $this->getParam('page')
+        );
+
+        return new ViewModel(
+            array(
+                'paginator'         => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+            )
+        );
+    }
+
+//    shop_reservationPermission_add
+
     public function addAction()
     {
-        $form = $this->getForm('shop_reservationPermission_add');
+        $form = $this->getForm('shop_reservation_ban_add');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $reservationPermission = $form->hydrateObject();
-                $this->getEntityManager()->persist($reservationPermission);
+                error_log("before hydrate");
+                $ban = $form->hydrateObject();
+                error_log("before persist");
+                $this->getEntityManager()->persist($ban);
+                error_log("before flush");
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
                     'Success',
-                    'The reservation permission was successfully created!'
+                    'The ban was successfully created!'
                 );
 
                 $this->redirect()->toRoute(
@@ -65,37 +87,16 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
         );
     }
 
-    public function togglepermissionAction()
-    {
-        $this->initAjax();
-
-        $reservationPermission = $this->getReservationPermissionEntity();
-        if ($reservationPermission === null) {
-            return new ViewModel();
-        }
-        $reservationPermission->setReservationsAllowed(!$reservationPermission->getReservationsAllowed());
-        $this->getEntityManager()->persist($reservationPermission);
-        $this->getEntityManager()->flush();
-
-        return new ViewModel(
-            array(
-                'result' => array(
-                    'status' => 'success',
-                ),
-            )
-        );
-    }
-
     public function deleteAction()
     {
         $this->initAjax();
 
-        $product = $this->getReservationPermissionEntity();
-        if ($product === null) {
+        $ban = $this->getBanEntity();
+        if ($ban === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($product);
+        $this->getEntityManager()->remove($ban);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -108,54 +109,55 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
     }
 
     /**
-     * @return ReservationPermission|null
+     * @return Ban|null
      */
-    private function getReservationPermissionEntity()
+    private function getBanEntity()
     {
-        $person = $this->getEntityById('CommonBundle\Entity\User\Person');
+        $ban = $this->getEntityById('ShopBundle\Entity\Reservation\Ban');
 
-        $reservationPermission = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Reservation\Permission')
-            ->findOneByPerson($person);
-
-        if (!($reservationPermission instanceof ReservationPermission)) {
+        if (!($ban instanceof Ban)) {
             $this->flashMessenger()->error(
                 'Error',
-                'No reservation permission was found!'
+                'No ban was found!'
             );
 
+            $this->redirect()->toRoute(
+                'shop_admin_shop_reservationpermission',
+                array(
+                    'action' => 'manage',
+                )
+            );
             return;
         }
-
-        return $reservationPermission;
+        return $ban;
     }
 
     public function searchAction()
     {
-        $this->initAjax();
-
-        $numResults = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('search_max_results');
-
-        $reservationPermissions = $this->search()
-            ->setMaxResults($numResults)
-            ->getResult();
-
-        $result = array();
-        foreach ($reservationPermissions as $reservationPermission) {
-            $item = (object) array();
-            $item->id = $reservationPermission->getPerson()->getId();
-            $item->name = $reservationPermission->getPerson()->getFullName();
-            $item->reservationsAllowed = $reservationPermission->getReservationsAllowed();
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
+//        $this->initAjax();
+//
+//        $numResults = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('search_max_results');
+//
+//        $reservationPermissions = $this->search()
+//            ->setMaxResults($numResults)
+//            ->getResult();
+//
+//        $result = array();
+//        foreach ($reservationPermissions as $reservationPermission) {
+//            $item = (object) array();
+//            $item->id = $reservationPermission->getPerson()->getId();
+//            $item->name = $reservationPermission->getPerson()->getFullName();
+//            $item->reservationsAllowed = $reservationPermission->getReservationsAllowed();
+//            $result[] = $item;
+//        }
+//
+//        return new ViewModel(
+//            array(
+//                'result' => $result,
+//            )
+//        );
     }
 
     /**
@@ -163,11 +165,11 @@ class ReservationPermissionController extends \CommonBundle\Component\Controller
      */
     private function search()
     {
-        switch ($this->getParam('field')) {
-            case 'name':
-                return $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
-                    ->findByNameQuery($this->getParam('string'));
-        }
+//        switch ($this->getParam('field')) {
+//            case 'name':
+//                return $this->getEntityManager()
+//                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
+//                    ->findByNameQuery($this->getParam('string'));
+//        }
     }
 }
