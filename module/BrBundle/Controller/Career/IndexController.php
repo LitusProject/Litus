@@ -45,6 +45,7 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'texts'       => $texts,
+                'fathom'      => $this->getFathomInfo(),
             )
         );
     }

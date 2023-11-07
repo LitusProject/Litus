@@ -18,7 +18,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
 
         $query = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findAllActiveByDateQuery();
+            ->findAllActiveByTypeByDateQuery('vacancy');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -30,17 +30,16 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 $repository = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job');
 
-                $jobType = $formData['jobType'] == 'all' ? null : $formData['jobType'];
                 $sector = $formData['sector'] == 'all' ? null : $formData['sector'];
                 $location = $formData['location'] == 'all' ? null : $formData['location'];
                 $master = $formData['master'] == 'all' ? null : $formData['master'];
 
                 if ($formData['searchType'] == 'company') {
-                    $query = $repository->findAllActiveByTypeQuery($jobType, $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeQuery('vacancy', $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'vacancy') {
-                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery($jobType, $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeSortedByJobNameQuery('vacancy', $sector, $location, $master);
                 } elseif ($formData['searchType'] == 'mostRecent') {
-                    $query = $repository->findAllActiveByTypeSortedByDateQuery($jobType, $sector, $location, $master);
+                    $query = $repository->findAllActiveByTypeSortedByDateQuery('vacancy', $sector, $location, $master);
                 }
             }
         }
@@ -60,6 +59,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
                 'paginationControl' => $this->paginator()->createControl(true),
                 'logoPath'          => $logoPath,
                 'vacancySearchForm' => $vacancySearchForm,
+                'fathom'            => $this->getFathomInfo(),
             )
         );
     }
@@ -90,7 +90,7 @@ class VacancyController extends \BrBundle\Component\Controller\CareerController
     {
         $job = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Job')
-            ->findOneActiveById($this->getParam('id', 0));
+            ->findOneActiveByTypeAndId('vacancy', $this->getParam('id', 0));
 
         if (!($job instanceof Job)) {
             $this->flashMessenger()->error(
