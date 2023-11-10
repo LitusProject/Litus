@@ -23,13 +23,22 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
         $this->emailDictionary = [];
         $this->banDaysDictionary = [];
 
-        foreach ($configData as $index) {
-            $this->emailDictionary[$index]['subject'] = $configData[$index]['mail_subject'];
-            $this->emailDictionary[$index]['content'] = $configData[$index]['mail_content'];
-            $this->banDaysDictionary[$index] = $configData[$index]['ban_days'];
+        foreach ($configData as $index => $data) {
+            $index = (int)$index; // This conversion may not be necessary
+
+            $this->emailDictionary[$index]['subject'] = $data['mail_subject'];
+            $this->emailDictionary[$index]['content'] = $data['mail_content'];
+            $this->banDaysDictionary[$index] = $data['ban_days'];
         }
+        error_log(json_encode($this->banDaysDictionary));
     }
 
+    /**
+     * Returns the amount of days of ban for the warningCount.
+     *
+     * @param int $warningCount
+     * @return mixed
+     */
     public function getBanInterval(int $warningCount) {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;
@@ -37,6 +46,13 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
         return $this->banDaysDictionary[$warningCount];
     }
 
+    /**
+     * Returns the warning email when a no-show is assigned to $person.
+     *
+     * @param Person $person
+     * @param int $warningCount
+     * @return Message
+     */
     public function getEmail(Person $person, int $warningCount) {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;

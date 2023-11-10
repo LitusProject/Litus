@@ -21,12 +21,12 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findActiveQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('a')
-            ->from('ShopBundle\Entity\Reservation\Ban', 'a')
+        return $query->select('b')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
             ->where(
                 $query->expr()->orX(
-                    $query->expr()->isNull('a.endTimestamp'),
-                    $query->expr()->gte('a.endTimestamp', ':now')
+                    $query->expr()->isNull('b.endTimestamp'),
+                    $query->expr()->gte('b.endTimestamp', ':now')
                 )
             )
             ->setParameter('now', new DateTime())
@@ -39,12 +39,12 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findOldQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('a')
-            ->from('ShopBundle\Entity\Reservation\Ban', 'a')
+        return $query->select('b')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
             ->where(
                 $query->expr()->andX(
-                    $query->expr()->isNotNull('a.endTimestamp'),
-                    $query->expr()->lt('a.endTimestamp', ':now')
+                    $query->expr()->isNotNull('b.endTimestamp'),
+                    $query->expr()->lt('b.endTimestamp', ':now')
                 )
             )
             ->setParameter('now', new DateTime())
@@ -57,18 +57,25 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      */
     public function findAllByPersonQuery(Person $person)
     {
-        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $query = $queryBuilder->select('count(s.id)')
-            ->from('ShopBundle\Entity\Reservation\Ban', 'b');
-
-        $query->where(
-            $query->expr()->eq('b.person', ':person')
-        );
-
-        return $query->getQuery();
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('count(b.id)')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('b.person', ':person'),
+                )
+            )
+            ->setParameter(':person', $person->getId())
+            ->getQuery();
     }
 
-    public function findActiveByPersonPersonQuery(Person $person)
+    /**
+     * Returns the bans that are currently active for $person, in ascending order.
+     *
+     * @param Person $person
+     * @return \Doctrine\ORM\Query
+     */
+    public function findActiveByPersonQuery(Person $person)
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
 
@@ -85,6 +92,7 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('person', $person)
             ->setParameter('now', new DateTime())
+            ->orderBy('b.endTimestamp', 'ASC')
             ->getQuery();
 
         return $query;

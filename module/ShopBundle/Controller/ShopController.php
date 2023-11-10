@@ -20,11 +20,13 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     public function reserveproductsAction()
     {
         $canReserve = $this->canReserve();
+        $activeBanEnd = $this->getActiveBanEnd();
         if (!$canReserve) {
             return new ViewModel(
                 array(
                     'shopName'   => $this->getShopName(),
                     'canReserve' => $canReserve,
+                    'activeBanEnd' => $activeBanEnd,
                 )
             );
         }
@@ -300,6 +302,19 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    public function getActiveBanEnd() {
+        $activeBans = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation\Ban')
+            ->findActiveByPersonQuery($this->getPersonEntity())
+            ->getResult();
+
+        if (count($activeBans) == 0) {
+            return null;
+        }
+
+        return $activeBans[-1]->getEndTimestamp();
+    }
+
     /**
      * @return bool | \Laminas\Http\Response
      */
@@ -315,9 +330,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         // if user has no active bans, reservation is allowed
         $activeBans = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation\Ban')
-            ->findActiveByPersonPersonQuery($this->getPersonEntity())
+            ->findActiveByPersonQuery($this->getPersonEntity())
             ->getResult();
-//        die(json_encode(count($activeBans)));
 
         if (count($activeBans) > 0) {
             return false;

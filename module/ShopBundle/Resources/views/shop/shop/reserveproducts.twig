@@ -53,7 +53,11 @@
                     {% endif %}
                 </div>
             {% else %}
-                {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+                {% if activeBanEnd != null %}
+                    {{ translate("Helaas ben je je privilege om broodjes te bestellen verloren door ze niet op te halen binnen de aangeduide uren. Je kan terug broodjes bestellen vanaf {{ activeBanEnd.format('d/m/Y H:i') }}. ") }}
+                {% else %}
+                    {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+                {% endif %}
             {% endif %}
         </div>
     </div>

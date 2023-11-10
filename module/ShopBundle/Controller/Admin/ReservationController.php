@@ -94,25 +94,29 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $warningCount = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation\Ban')
             ->findAllByPersonQuery($reservation->getPerson())
-            ->getResult();
+            ->getSingleScalarResult();
 
         // Create ban
-        $banStartTimestamp = new DateTime();
-
         $banIntervalStr = $noShowConfig->getBanInterval($warningCount);
         $banInterval = DateInterval::createFromDateString($banIntervalStr);
-        $banEndTimestamp = $banStartTimestamp->add($banInterval);
+
+        $banStartTimestamp = new DateTime();
+
+        $banEndTimestamp = new DateTime();
+        $banEndTimestamp = $banEndTimestamp->add($banInterval);
 
         $ban = new Ban();
         $ban->setPerson($reservation->getPerson());
         $ban->setStartTimestamp($banStartTimestamp);
         $ban->setEndTimestamp($banEndTimestamp);
 
-        $this->getEntityManager()->persist($ban);
-        $this->getEntityManager()->flush($ban);
+        // TODO re-enable!!
+//        $this->getEntityManager()->persist($ban);
+//        $this->getEntityManager()->flush($ban);
 
         // Send warning email
         $mail = $noShowConfig->getEmail($reservation->getPerson(), $warningCount);
+        error_log("email set");
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
@@ -280,8 +284,6 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.no_show_config'));
 
-        $noShowConfig = new NoShowConfig($noShowConfigData);
-
-        return $noShowConfig;
+        return new NoShowConfig($noShowConfigData);
     }
 }
