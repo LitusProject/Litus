@@ -51,6 +51,7 @@
                     {% endif %}
                 </div>
             {% else %}
+                <div style="margin-top:10px"></div>
                 {% if canReserveResponse.getReason() != null %}
                     {{ translate(canReserveResponse.getReason()) }}
                 {% else %}

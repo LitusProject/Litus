@@ -31,6 +31,6 @@ return array(
     'soldout'                                                                      => 'Dit broodje is jammer genoeg uitverkocht, probeer volgende keer iets vroeger :)',
     'My Sandwiches'                                                                => 'Mijn Broodjes',
     'You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. You will regain your reservation privileges at '    => 'Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Je zal terug toegang krijgen tot het reservatiesysteem op ',
-    'Please refer to the email you received for more information.'                                                                                                              => 'Gelieve de e-mail die u heeft ontvangen te raadplegen voor meer informatie.',
+    'Please refer to the email you received for more information.'                                                                                                              => 'Gelieve de e-mail die je hebt ontvangen te raadplegen voor meer informatie.',
     'Your reservation privileges have been revoked for an indefinite amount of time.'                                                                                           => 'Je toegang tot het reservatiesysteem is voor onbepaalde duur ingetrokken.',
 );
