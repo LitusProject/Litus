@@ -287,8 +287,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     public function sendNoShowEmail(Person $person, int $warningCount) {
         $noShowConfig = $this->getNoShowConfig();
 
-        $mailSubject = $noShowConfig->getEmailContent($person, $warningCount);
-        $mailContent = $noShowConfig->getEmailSubject($warningCount);
+        $mailContent = $noShowConfig->getEmailContent($person, $warningCount);
+        $mailSubject = $noShowConfig->getEmailSubject($warningCount);
 
         // sender address
         $noreplyAddress = $this->getEntityManager()
