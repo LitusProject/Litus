@@ -28,5 +28,8 @@ return array(
     'available'                                                                                                                                                                => 'available',
     'soldout'                                                                                                                                                                  => 'This sandwich is unfortunately sold out, try a little earlier next time :)',
     'My Sandwiches'                                                                                                                                                            => 'My Sandwiches',
+    'You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. You will regain your reservation privileges at '   => 'You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. You will regain your reservation privileges at ',
+    'Please refer to the email you received for more information.'                                                                                                             => 'Please refer to the email you received for more information.',
+    'Your reservation privileges have been revoked for an indefinite amount of time.'                                                                                          => 'Your reservation privileges have been revoked for an indefinite amount of time.',
 );
 

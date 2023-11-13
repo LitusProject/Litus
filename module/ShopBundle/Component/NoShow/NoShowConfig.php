@@ -7,6 +7,10 @@ use CommonBundle\Entity\User\Person;
 use Laminas\Mail\Message;
 use Nette\NotImplementedException;
 
+/**
+ * This class is used to interpret the configuration value that defines the configuration of the no-show system.
+ * The no-show system is used to notify users and create bans when users reserve items and don't pick them up.
+ */
 class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\AdminController {
 
     /**
@@ -46,10 +50,11 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
     }
 
     /**
-     * Returns the warning email when a no-show is assigned to $person.
+     * Returns the warning email content for the warningCount.
      *
      * @param Person $person
      * @param int $warningCount
+     * @return array|string|string[]
      */
     public function getEmailContent(Person $person, int $warningCount) {
         if ($warningCount >= count($this->banDaysDictionary)) {
@@ -64,6 +69,12 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
         return $mailContent;
     }
 
+    /**
+     * Returns the warning email subject for the warningCount.
+     *
+     * @param int $warningCount
+     * @return mixed
+     */
     public function getEmailSubject(int $warningCount) {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;

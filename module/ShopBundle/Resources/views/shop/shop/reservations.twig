@@ -10,7 +10,7 @@
         {% include 'shop/shop/partials/navigation.twig' %}
 
         <div style="text-align: justify;">
-            {% if canReserve %}
+            {% if canReserveResponse.canReserve() %}
                 {{ translate("Below is a list of all your reservations in the shop.") }}
                 <table id="table-reservations" class="table table-condensed table-striped table-hover">
                     <thead>
@@ -47,7 +47,13 @@
                     </tbody>
                 </table>
             {% else %}
-                {{ translate("You cannot reserve items from the shop. Make sure you're logged in. This privilege might require you to do some shifts in the shop as well.") }}
+                {% if canReserveResponse.getReason() != null %}
+                    {{ translate(canReserveResponse.getReason()) }}
+                {% else %}
+                    {{ translate("You can\'t make new reservations. Make sure you are logged in.") }}
+                    <br> <br>
+                    {{ translate("If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.") }}
+                {% endif %}
             {% endif %}
         </div>
     </div>

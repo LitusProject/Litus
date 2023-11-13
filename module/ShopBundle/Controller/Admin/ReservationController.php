@@ -111,7 +111,6 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         $ban->setStartTimestamp($banStartTimestamp);
         $ban->setEndTimestamp($banEndTimestamp);
 
-        // TODO re-enable!!
         $this->getEntityManager()->persist($ban);
         $this->getEntityManager()->flush($ban);
 

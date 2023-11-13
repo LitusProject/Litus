@@ -25,7 +25,7 @@
         </div>
 
         <div style="text-align: justify;">
-            {% if canReserve %}
+            {% if canReserveResponse.canReserve() %}
                 <div style="height: 20px"></div>
                 {{ translate("You can reserve some items from the shop. Be aware that you might lose the permission to reserve items if you don't come and buy your reserved items on the right date.") }}
                 <div style="height: 30px"></div>
@@ -51,9 +51,13 @@
                     {% endif %}
                 </div>
             {% else %}
-                {{ translate("You can\'t make new reservations. Make sure you are logged in.") }}
-                <br> <br>
-                {{ translate("If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.") }}
+                {% if canReserveResponse.getReason() != null %}
+                    {{ translate(canReserveResponse.getReason()) }}
+                {% else %}
+                    {{ translate("You can\'t make new reservations. Make sure you are logged in.") }}
+                    <br> <br>
+                    {{ translate("If you are logged in and you still get this message, unfortunately you are put on the black list because you didn\'t come and buy your reserved items on the right date. This means you won\'t be able to make new reservations. Get in touch with Theokot to solve this.") }}
+                {% endif %}
             {% endif %}
         </div>
     </div>
