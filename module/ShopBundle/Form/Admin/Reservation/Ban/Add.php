@@ -3,9 +3,7 @@
 namespace ShopBundle\Form\Admin\Reservation\Ban;
 
 /**
- * Add Reservation Permission
- *
- * @author Floris Kint <floris.kint@litus.cc>
+ * Add Reservation Ban
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
@@ -40,16 +38,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'start_timestamp',
                 'label'      => 'Start Date',
                 'required'   => true,
-                'attributes' => array(
-                    'placeholder' => 'dd/mm/yyyy hh:mm',
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
+
             )
         );
 
@@ -57,15 +46,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             array(
                 'type'       => 'datetime',
                 'name'       => 'end_timestamp',
-                'label'      => 'Start Date',
+                'label'      => 'End Date',
                 'required'   => true,
-                'attributes' => array(
-                    'placeholder' => 'dd/mm/yyyy hh:mm',
-                ),
-                'options'    => array(
+                'options'  => array(
                     'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_timestamp',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
                         ),
                     ),
                 ),

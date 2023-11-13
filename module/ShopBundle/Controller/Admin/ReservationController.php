@@ -4,6 +4,7 @@ namespace ShopBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
 use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
@@ -115,12 +116,9 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 //        $this->getEntityManager()->flush($ban);
 
         // Send warning email
-        $mail = $noShowConfig->getEmail($reservation->getPerson(), $warningCount);
-        error_log("email set");
+        $this->sendNoShowEmail($reservation->getPerson(), $warningCount);
 
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport()->send($mail);
-        }
+        error_log("warning email sent");
 
         return new ViewModel(
             array(
@@ -285,5 +283,40 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 ->getConfigValue('shop.no_show_config'));
 
         return new NoShowConfig($noShowConfigData);
+    }
+
+    public function sendNoShowEmail(Person $person, int $warningCount) {
+        $noShowConfig = $this->getNoShowConfig();
+
+        $mailSubject = $noShowConfig->getEmailContent($person, $warningCount);
+        $mailContent = $noShowConfig->getEmailSubject($warningCount);
+
+        // sender address
+        $noreplyAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no-reply_mail');
+
+        // bcc and reply address
+        $shopAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.mail');
+
+        // name of the shop
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no-reply_mail_name');
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($mailContent)
+            ->setFrom($noreplyAddress, $mailName)
+            ->setReplyTo($shopAddress, $mailName)
+            ->addTo($person->getEmail(), $person->getFullName())
+            ->setSubject($mailSubject)
+            ->addBcc($shopAddress, $mailName);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
+        }
     }
 }

@@ -84,6 +84,7 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $queryBuilder->expr()->andX(
                     $queryBuilder->expr()->eq('b.person', ':person'),
+                    $queryBuilder->expr()->lte('b.startTimestamp', ':now'),
                     $queryBuilder->expr()->orX(
                         $queryBuilder->expr()->isNull('b.endTimestamp'),
                         $queryBuilder->expr()->gte('b.endTimestamp', ':now')

@@ -30,7 +30,6 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
             $this->emailDictionary[$index]['content'] = $data['mail_content'];
             $this->banDaysDictionary[$index] = $data['ban_days'];
         }
-        error_log(json_encode($this->banDaysDictionary));
     }
 
     /**
@@ -51,43 +50,25 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
      *
      * @param Person $person
      * @param int $warningCount
-     * @return Message
      */
-    public function getEmail(Person $person, int $warningCount) {
+    public function getEmailContent(Person $person, int $warningCount) {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;
         }
 
-        $mailSubject = $this->emailDictionary[$warningCount]['subject'];
         $mailContent = $this->emailDictionary[$warningCount]['content'];
 
         $name = $person->getFirstName();
         $mailContent = str_replace('{{ name }}', $name, $mailContent);
 
-        // sender address
-        $noreplyAddress = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shop.no-reply_mail');
+        return $mailContent;
+    }
 
-        // bcc and reply address
-        $shopAddress = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shop.mail');
+    public function getEmailSubject(int $warningCount) {
+        if ($warningCount >= count($this->banDaysDictionary)) {
+            $warningCount = count($this->banDaysDictionary) - 1;
+        }
 
-        // name of the shop
-        $mailName = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('shop.no-reply_mail_name');
-
-        $mail = new Message();
-        $mail->setEncoding('UTF-8')
-            ->setBody($mailContent)
-            ->setFrom($noreplyAddress, $mailName)
-            ->setReplyTo($shopAddress, $mailName)
-            ->addTo($person->getEmail(), $person->getFullName())
-            ->setSubject($mailSubject)
-            ->addBcc($shopAddress, $mailName);
-
-        return $mail;
+        return $this->emailDictionary[$warningCount]['subject'];
     }
 }

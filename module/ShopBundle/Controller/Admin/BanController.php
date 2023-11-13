@@ -57,11 +57,8 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
             $form->setData($formData);
 
             if ($form->isValid()) {
-                error_log("before hydrate");
                 $ban = $form->hydrateObject();
-                error_log("before persist");
                 $this->getEntityManager()->persist($ban);
-                error_log("before flush");
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
