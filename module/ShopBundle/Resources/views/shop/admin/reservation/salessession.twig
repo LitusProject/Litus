@@ -97,7 +97,7 @@
                     <th>Product</th>
                     <th>Amount</th>
                     <th>Total Price</th>
-                    <th>No-show</th>
+                    <th>Currently Banned</th>
                     <th>Consumed</th>
                     <th>Reward</th>
                     <th width="70px">Actions</th>
@@ -112,7 +112,7 @@
                     <th>Product</th>
                     <th>Amount</th>
                     <th>Total Price</th>
-                    <th>No-show</th>
+                    <th>Currently Banned</th>
                     <th>Consumed</th>
                     <th>Reward</th>
                     <th width="70px">Actions</th>
@@ -126,7 +126,7 @@
                         <td>{{ reservation.getAmount() * reservation.getProduct().getSellPrice() }}</td>
                         <td style="text-align:center"><input id="noshow-{{ reservation.getId() }}" disabled
                                                              type="checkbox"
-                                                             {% if reservation.getNoShow() %}checked{% endif %} /></td>
+                                                             {% if reservation.PersonIsCurrentlyBanned(entityManager, reservation.GetPerson()) %}checked{% endif %} /></td>
                         <td style="text-align:center"><input id="noshow-{{ reservation.getId() }}" disabled
                                                             type="checkbox"
                                                             {% if reservation.getConsumed() %}checked{% endif %} /></td>
@@ -199,7 +199,7 @@
                             .append('<td>' + this.total  + '</td>')
                             .append('<td style="text-align:center"><input id="noshow-' + this.id +
                                   '" disabled type="checkbox"' +
-                                  (this.noShow ? 'checked': '') + '/></td>')
+                                  (this.personBanned ? 'checked': '') + '/></td>')
                             .append('<td style="text-align:center"><input id="noshow-' + this.id +
                                 '" disabled type="checkbox"' +
                                 (this.consumed ? 'checked': '0') + '/></td>')
@@ -211,7 +211,7 @@
                               actions.append(noShowButton = $('<a href="#" class="edit noshow">No-show</a>'));
                               noShowButton.data({
                                     id: this.id,
-                                    name: this.amount + " * " + this.product + " voor " + this.person
+                                    name: this.amount +" * " + this.product + " voor " + this.person
                               });
                         {% endif %}
                         {% if hasAccess('shop_admin_shop_reservation', 'delete') %}
@@ -224,7 +224,7 @@
 
                     });
                     $('#reservation_search table .delete').click(openModal);
-                    $('#reservation_search table .reprint').click(noShow);
+                    $('#reservation_search table .noshow').click(noShow);
                     $('#reservation_search table').change();
                 },
                 clear: function () {

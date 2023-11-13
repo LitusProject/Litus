@@ -57,6 +57,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 'totals'            => $result,
                 'salesSession'      => $salesSession,
                 'totalReservations' => $totalReservations,
+                'entityManager'     => $this->getEntityManager(),
             )
         );
     }
@@ -82,6 +83,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
     public function noshowAction()
     {
+        error_log("no show action");
         $this->initAjax();
 
         $reservation = $this->getReservationEntity();
@@ -116,8 +118,6 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
         // Send warning email
         $this->sendNoShowEmail($reservation->getPerson(), $warningCount);
-
-        error_log("warning email sent");
 
         return new ViewModel(
             array(
@@ -198,7 +198,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $item->product = $reservation->getProduct()->getName();
             $item->amount = $reservation->getAmount();
             $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
-            $item->noShow = $reservation->getNoShow();
+            $item->personBanned = $reservation->PersonIsCurrentlyBanned($this->getEntityManager(), $reservation->getPerson());
             $item->consumed = $reservation->getConsumed();
             $item->reward = $reservation->getReward();
 
@@ -277,9 +277,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
     private function getNoShowConfig()
     {
-        $noShowConfigData = unserialize($this->getEntityManager()
+        $noShowConfigDataSerialized = ($this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.no_show_config'));
+
+        $noShowConfigData = unserialize($noShowConfigDataSerialized);
 
         return new NoShowConfig($noShowConfigData);
     }

@@ -4,6 +4,7 @@ namespace ShopBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use ShopBundle\Entity\Session as SalesSession;
 
@@ -46,13 +47,6 @@ class Reservation
      * @ORM\JoinColumn(name="session", referencedColumnName="id")
      */
     private $salesSession;
-
-    /**
-     * @var boolean Whether the person reserving has not come to get his reservation
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $noShow;
 
     /**
      * @var Person The person who made the reservation
@@ -168,25 +162,6 @@ class Reservation
     }
 
     /**
-     * @param  boolean $noShow
-     * @return self
-     */
-    public function setNoShow($noShow)
-    {
-        $this->noShow = $noShow;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getNoShow()
-    {
-        return $this->noShow;
-    }
-
-    /**
      * @param  DateTime $timestamp
      * @return self
      */
@@ -249,5 +224,24 @@ class Reservation
         $timestamp = new DateTime();
 
         return $timestamp < $this->getSalesSession()->getFinalReservationDate();
+    }
+
+    /**
+     * Whether the person that this reservation is made by is currently banned from making reservations.
+     *
+     * Note: the ban does not necessarily come from this reservation entity. It can come from a no-show action
+     * on other reservation entities, as well as from manually adding Bans.
+     *
+     * @return bool
+     */
+    public function PersonIsCurrentlyBanned(EntityManager $entityManager, Person $person) {
+        $activeBans = $entityManager
+            ->getRepository('ShopBundle\Entity\Reservation\Ban')
+            ->findActiveByPersonQuery($person)
+            ->getResult();
+
+        if (count($activeBans) > 0) return true;
+
+        return false;
     }
 }
