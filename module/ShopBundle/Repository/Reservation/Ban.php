@@ -69,6 +69,25 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByNameQuery(string $name) {
+        $query = $this->getEntityManager()->createQueryBuilder();
+
+        return $query->select('b')
+            ->from('ShopBundle\Entity\Reservation\Ban', 'b')
+            ->join('b.person', 'p')
+            ->where(
+                $query->expr()->orX(
+                    $query->expr()->like($query->expr()->lower($query->expr()->concat('p.firstName', $query->expr()->concat("' '", 'p.lastName'))), ':name'),
+                    $query->expr()->like($query->expr()->lower($query->expr()->concat('p.lastName', $query->expr()->concat("' '", 'p.firstName'))), ':name')
+                )
+            )
+            ->orderBy('p.id', 'ASC')
+            ->addOrderBy('b.startTimestamp', 'DESC')
+            ->addOrderBy('b.endTimestamp', 'DESC')
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->getQuery();
+    }
+
     /**
      * Returns the bans that are currently active for $person, in ascending order.
      *

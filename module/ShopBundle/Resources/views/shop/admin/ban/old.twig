@@ -55,7 +55,7 @@
                         <td>{{ ban.getEndTimestamp().format('d/m/Y H:i') }}</td>
                         <td class="actions">
                             {% if hasAccess('shop_admin_shop_ban', 'delete') %}
-                                <a href="#" data-id="{{ ban.getPerson().getId() }}" data-name="{{ ban.getPerson.getFullName() }}" class="delete">Delete</a>
+                                <a href="#" data-id="{{ ban.getId() }}" data-name="{{ ban.getPerson().getFullName() }}" class="delete">Delete</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -114,10 +114,9 @@
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );
-                        {% if hasAccess('common_admin_faq', 'delete') %}
+                        {% if hasAccess('shop_admin_shop_ban', 'delete') %}
                         actions.append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>'));
                         {% endif %}
-                    )
                     });
                     $('#ban_search .delete').click(openDeleteModal);
                     $('#ban_search table').change();
@@ -132,6 +131,7 @@
         });
 
         function openDeleteModal(e) {
+            console.log('Open delete modal function called');
             var $this = $(this);
             e.preventDefault();
             var removeBan = $('#removeBan');
@@ -157,7 +157,7 @@
 
         function errorRemove(req, text, err) {
             $('.flashmessage').addClass('hide');
-            $('.ban_removed_success').removeClass('hide');
+            $('.ban_removed_error').removeClass('hide');
             $('#removeBan').modal('hide');
         }
     </script>

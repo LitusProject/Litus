@@ -51,9 +51,16 @@ class Ban
     }
 
     /**
+     * @return int
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
      * @return Person The person this ban applies to
      */
-    public function GetPerson() {
+    public function getPerson() {
         return $this->person;
     }
 
@@ -61,7 +68,7 @@ class Ban
      * @param $person
      * @return $this
      */
-    public function SetPerson($person) {
+    public function setPerson($person) {
         $this->person = $person;
 
         return $this;
@@ -115,7 +122,7 @@ class Ban
     /**
      * @return bool Whether the ban is currently active on the user
      */
-    public function IsActive() {
+    public function isActive() {
         // Get the current timestamp
         $currentTimestamp = time();
 

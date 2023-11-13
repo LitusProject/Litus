@@ -2,8 +2,10 @@
 
 namespace ShopBundle\Controller\Admin;
 
+use DateTime;
 use Laminas\View\Model\ViewModel;
 use ShopBundle\Repository\Reservation\Ban;
+use ShopBundle\Entity\Reservation\Ban as BanEntity;
 
 /**
  * BanPermissionController
@@ -89,6 +91,7 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
         $this->initAjax();
 
         $ban = $this->getBanEntity();
+
         if ($ban === null) {
             return new ViewModel();
         }
@@ -106,13 +109,13 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
     }
 
     /**
-     * @return Ban|null
+     * @return BanEntity|null
      */
     private function getBanEntity()
     {
         $ban = $this->getEntityById('ShopBundle\Entity\Reservation\Ban');
 
-        if (!($ban instanceof Ban)) {
+        if (!($ban instanceof BanEntity)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No ban was found!'
@@ -124,37 +127,40 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
                     'action' => 'manage',
                 )
             );
-            return;
+
+            return null;
         }
+
         return $ban;
     }
 
     public function searchAction()
     {
-//        $this->initAjax();
-//
-//        $numResults = $this->getEntityManager()
-//            ->getRepository('CommonBundle\Entity\General\Config')
-//            ->getConfigValue('search_max_results');
-//
-//        $reservationPermissions = $this->search()
-//            ->setMaxResults($numResults)
-//            ->getResult();
-//
-//        $result = array();
-//        foreach ($reservationPermissions as $reservationPermission) {
-//            $item = (object) array();
-//            $item->id = $reservationPermission->getPerson()->getId();
-//            $item->name = $reservationPermission->getPerson()->getFullName();
-//            $item->reservationsAllowed = $reservationPermission->getReservationsAllowed();
-//            $result[] = $item;
-//        }
-//
-//        return new ViewModel(
-//            array(
-//                'result' => $result,
-//            )
-//        );
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $bans = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($bans as $ban) {
+            $item = (object) array();
+            $item->id = $ban->getPerson()->getId();
+            $item->name = $ban->getPerson()->getFullName();
+            $item->startTimestamp = $ban->getStartTimestamp()->format('d/m/Y H:i');
+            $item->endTimestamp = $ban->getEndTimestamp() ? $ban->getEndTimestamp()->format('d/m/Y H:i') : "";
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
 
     /**
@@ -162,11 +168,12 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function search()
     {
-//        switch ($this->getParam('field')) {
-//            case 'name':
-//                return $this->getEntityManager()
-//                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
-//                    ->findByNameQuery($this->getParam('string'));
-//        }
+        error_log($this->getParam('string'));
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Reservation\Ban')
+                    ->findAllByNameQuery($this->getParam('string'));
+        }
     }
 }

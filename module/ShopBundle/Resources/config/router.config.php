@@ -71,7 +71,7 @@ return array(
         'shop_admin_shop_ban' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shop/ban[/:action[/:id][/type/:type][/page/:page]][/:field/:string][/]',
+                'route'       => '/admin/shop/ban[/:action[/:id]][/:field/:string][/type/:type][/page/:page][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

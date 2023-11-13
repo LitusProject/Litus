@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'datetime',
                 'name'       => 'end_timestamp',
                 'label'      => 'End Date',
-                'required'   => true,
+                'required'   => false,
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
