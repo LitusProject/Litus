@@ -38,7 +38,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'start_timestamp',
                 'label'      => 'Start Date',
                 'required'   => true,
-
+                'options' => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             )
         );
 
