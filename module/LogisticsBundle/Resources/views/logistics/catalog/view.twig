@@ -1,7 +1,7 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
+    <a class="btn btn-default grow" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
 
     <div class="page-header" style="overflow: hidden; margin-top: 10px">
         <div style="float:left;">
@@ -40,86 +40,90 @@
 
     <div id="controller_action">
         <div class="row">
-            <div class="col-md-4" style="padding-right: 3%;">
+            <div class="col-md-5" style="padding-right: 100px;">
                 <h1 class="pull-left">{{ translate('Info') }}</h1>
                 {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
-                    <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                    <a class="btn btn-primary pull-right grow" style="margin-top: 25px;"
                        href="{{ url('logistics_catalog', {'action': 'editOrder', 'order': order.getId()}) }}">
                         Update
                     </a>
                 {% endif %}
+
+                {#     Order info body       #}
+                <div style="padding-top: 80px;">
+                    {#     Personal info  #}
+                    <div class="info-content">
+                        <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
+                        {% if order.getUnit() %}
+                            <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
+                        {% endif %}
+                        <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
+                    </div>
+
+                    {#       Order info     #}
+                    <div class="info-content">
+                        <p>Location:        &emsp;&ensp;&nbsp;<b>{{ order.getLocation().getName() }}</b></p>
+                        <p>Start Date:      &emsp;<b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
+                        <p>End Date:        &emsp;&nbsp;<b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
+                        <p>Status:          &emsp;&emsp;&ensp;&nbsp;<b id="infoStatus" {% if order.isCanceled() or order.isRemoved() %} style="color: #882a25"{% endif %}>{{ translate(order.getStatus())}}</b></p>
+                        {% if order.getDescription() != '' %}
+                            <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <div class="col-md-8" style="padding-left: 50px">
+            <div class="col-md-7">
                 <h1 class="pull-left">{{ translate('Articles') }}</h1>
                 {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
-                    <a class="btn btn-primary pull-right" style="margin-top: 25px;"
+                    <a class="btn btn-primary pull-right grow" style="margin-top: 25px;"
                        href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
                         Update
                     </a>
                 {% endif %}
-            </div>
-        </div>
 
-        {#     Order info body       #}
-        <div class="row">
-            <div class="col-md-4" style="padding-right: 3%; padding-top: 10px;">
-                {#     Personal info  #}
-                <div class="info-content">
-                    <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
-                    {% if order.getUnit() %}
-                        <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
-                    {% endif %}
-                    <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
-                </div>
-
-                {#       Order info     #}
-                <div class="info-content">
-                    <p>Location:        &emsp;&ensp;&nbsp;<b>{{ order.getLocation().getName() }}</b></p>
-                    <p>Start Date:      &emsp;<b>{{ order.getStartDate().format('d/m/Y H:i') }}</b></p>
-                    <p>End Date:        &emsp;&nbsp;<b>{{ order.getEndDate().format('d/m/Y H:i') }}</b></p>
-                    <p>Status:          &emsp;&emsp;&ensp;&nbsp;<b id="infoStatus" {% if order.isCanceled() or order.isRemoved() %} style="color: #882a25"{% endif %}>{{ translate(order.getStatus())}}</b></p>
-                    {% if order.getDescription() != '' %}
-                        <p>Description: &ensp;<b>{{ order.getDescription() }}</b></p>
-                    {% endif %}
-                </div>
-            </div>
-
-            {#     Article body       #}
-            <div class="col-md-8" style="padding-left: 50px">
-                <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px; overflow: auto; max-height: 330px">
-                    <div class="table-condensed">
-                        <table class="table mappings">
-                            {#     Table header       #}
-                            <tr>
-                                <th style="width: 25%">{{ Translate('Name') }}</th>
-                                <th style="width: 25%">{{ Translate('Unit') }}</th>
-                                <th style="width: 20%">{{ Translate('Status') }}</th>
-                                <th style="width: 20%">{{ Translate('Comment') }}</th>
-                                <th style="width: 10%">{{ Translate('Amount') }}</th>
-                            </tr>
-
-                            {#     Table content       #}
-                            {% for mapping in articles %}
-                                <tr class="item item-{{ mapping.getId() }}"
-                                    {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
-                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
-                                    {% else %}style="background-color: #fae3e3"{% endif %}>
-                                    <td>{{ mapping.getArticle().getName() }}</td>
-                                    <td>{{ mapping.getArticle().getUnit().getName() }}</td>
-                                    <td>{{ mapping.getStatus() }}</td>
-                                    <td>{% if mapping.getComment()|length > 0 %}
-                                            <a rel="popover" style="background-color: #ed1a1a;"
-                                               data-original-title="{{ translate('Comments') }}"
-                                               data-content="<span class='badge badge-info'></span> {{ mapping.getComment() }}<br/>"
-                                               data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
-                                        {% endif %}</td>
-                                    <td>{{ mapping.getAmount() }}</td>
+                {#     Article body       #}
+                <div style="padding-top: 80px">
+                    <div class="row" style="padding-top: 10px; padding-left: 20px; padding-right: 20px; overflow: auto; max-height: 330px">
+                        <div class="table-condensed">
+                            <table class="table mappings">
+                                {#     Table header       #}
+                                <tr>
+                                    <th style="width: 25%">{{ Translate('Name') }}</th>
+                                    <th style="width: 25%">{{ Translate('Unit') }}</th>
+                                    <th style="width: 20%">{{ Translate('Status') }}</th>
+                                    <th style="width: 20%">{{ Translate('Comment') }}</th>
+                                    <th style="width: 10%">{{ Translate('Amount') }}</th>
                                 </tr>
-                            {% endfor %}
-                        </table>
+
+                                {#     Table content       #}
+                                {% for mapping in articles %}
+                                    <tr class="item item-{{ mapping.getId() }}"
+                                            {% if mapping.getStatus() == 'Aangevraagd' %}{#style="background-color: #faf1e3"#}
+                                    {% elseif mapping.getStatus() == 'Goedgekeurd' %}style="background-color: #e3fae3"
+                                        {% else %}style="background-color: #fae3e3"{% endif %}>
+                                        <td>{{ mapping.getArticle().getName() }}</td>
+                                        <td>{{ mapping.getArticle().getUnit().getName() }}</td>
+                                        <td>{{ mapping.getStatus() }}</td>
+                                        <td>{% if mapping.getComment()|length > 0 %}
+                                                <a rel="popover" style="background-color: #ed1a1a;"
+                                                   data-original-title="{{ translate('Comments') }}"
+                                                   data-content="<span class='badge badge-info'></span> {{ mapping.getComment() }}<br/>"
+                                                   data-placement="left" class="label label-warning">{{ translate('Remark') }}</a>
+                                            {% endif %}</td>
+                                        <td>{{ mapping.getAmount() }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+
+
+
         </div>
 
         {#     Order history       #}

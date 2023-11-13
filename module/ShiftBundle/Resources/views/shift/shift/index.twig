@@ -581,16 +581,14 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <dl>
-                                        <dt>{{ translate('Description') }}</dt>
-                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                        {% if shift.getDescription() %}
+                                            <dt>{{ translate('Description') }}</dt>
+                                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                        {% endif %}
 
                                         <dt>{{ translate('Location') }}</dt>
                                         <dd>
                                             {{ shift.getLocation().getName() }}
-                                        </dd>
-                                        <dd style="margin-top: 5px;">
-                                            <img class="img-rounded"
-                                                 src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}"/>
                                         </dd>
                                     </dl>
                                 </div>

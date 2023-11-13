@@ -1,6 +1,6 @@
 .vtk-home-header {
   width: 100%;
-  //height: ~"calc(100vh - 135px)";     banner 24ul
+  height: ~"calc(100vh - 135px)";
   padding: 15px;
 }
 
@@ -51,7 +51,7 @@
     url(../_site/img/technisch_pattern.png);
   background-position: 60% 20%;
   background-size: 65%;
-  padding: 40px 0 75px;
+  padding: 75px 0;
 }
 
 .vtk-home-br {
@@ -89,6 +89,25 @@
 
 .menulink {
   margin-bottom: 17px;
+}
+
+.fadeElement {
+  display: inline-block;
+  opacity: 0;
+  transition: all 1.5s;
+}
+
+.fadeElement.leftFade {
+  transform: translate(-15vw, 0) rotate(5deg);
+}
+
+.fadeElement.rightFade {
+  transform: translate(15vw, 0) rotate(-5deg);
+}
+
+.fadeElement.visibleFade {
+  opacity: 1;
+  transform: translate(0, 0);
 }
 
 .category-title:hover {
@@ -249,6 +268,7 @@
 }
 
 .home-menu-category {
+  width: 200px;
   margin-right: 40px; 
   margin-bottom: 50px;
 }

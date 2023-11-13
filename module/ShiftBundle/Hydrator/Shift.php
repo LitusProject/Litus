@@ -80,10 +80,12 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
 
         $editRoles = array();
         if (isset($data['edit_roles'])) {
+
             $roleRepository = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\Acl\Role');
 
             foreach ($data['edit_roles'] as $editRole) {
+
                 $editRoles[] = $roleRepository->findOneByName($editRole);
             }
         }

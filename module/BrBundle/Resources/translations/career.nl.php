@@ -17,14 +17,13 @@ return array(
     'Company'                                                                                                                                                                          => 'Bedrijf',
     'Vacancy'                                                                                                                                                                          => 'Job',
     'Internship'                                                                                                                                                                       => 'Stage',
+    'Student Job'                                                                                                                                                                      => 'Studentenjob',
     'Internship Fair'                                                                                                                                                                  => 'Stagebeurs',
     'Most Recent'                                                                                                                                                                      => 'Meest Recent',
     'All'                                                                                                                                                                              => 'Alle',
     'View Site'                                                                                                                                                                        => 'Website bekijken',
     'Events'                                                                                                                                                                           => 'Evenementen',
-    'View Internships'                                                                                                                                                                 => 'Stages bekijken',
     'View Jobs'                                                                                                                                                                        => 'Jobs bekijken',
-    'View Studentjobs'                                                                                                                                                                 => 'Studentenjobs bekijken',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welkom bij het online BR platform! Hier kan je op een eenvoudige wijze interessante job- en stage-aanbiedingen bekijken, de laatste informatie over bedrijfsevenementen terugvinden of gewoon eens het bedrijvenlandschap verkennen.',
     'So just look around and you might just find what you are looking for!'                                                                                                            => 'Kijk dus gerust eens rond en wie weet vind jij wel wat je zoekt!',
@@ -39,4 +38,5 @@ return array(
     'View the time table for the busses here'                                                                                                                                          => 'Bekijk hier het busschema',
     'There are no upcoming Career events.'                                                                                                                                             => 'Er zijn geen aankomende Career evenementen.',
     'Career Calendar'                                                                                                                                                                  => 'Career Kalender',
+    'Last updated'                                                                                                                                                                     => 'Laatste update',
 );

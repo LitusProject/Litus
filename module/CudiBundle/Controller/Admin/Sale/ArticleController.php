@@ -90,9 +90,10 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                     ->findOneById($formData['academic_year']);
 
                 $semester = $formData['semester'];
+                $common = $formData['common'];
 
                 $file = new CsvFile();
-                $document = new SaleArticlesGenerator($this->getEntityManager(), $academicYear, $formData['semester']);
+                $document = new SaleArticlesGenerator($this->getEntityManager(), $academicYear, $formData['semester'], $common);
                 $document->generateDocument($file);
 
                 $this->getResponse()->getHeaders()

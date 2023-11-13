@@ -68,6 +68,9 @@ return array(
         'br_admin_communication' => array(
             'add', 'manage', 'delete', 'view',
         ),
+        'br_admin_job' => array(
+            'manage', 'search',
+        ),
         'br_career_index' => array(
             'index', 'calendar',
         ),
@@ -78,12 +81,6 @@ return array(
             'overview','view','subscribe','map','qr','scanQr','overviewMatches','removeMatch', 'guide', 'busschema', 'updateNotes', 'getNotes', 'csv',
         ),
         'br_career_vacancy' => array(
-            'view', 'overview',
-        ),
-        'br_career_internship' => array(
-            'view', 'overview',
-        ),
-        'br_career_student_job' => array(
             'view', 'overview',
         ),
         'br_career_internshipfair' => array(
@@ -107,13 +104,7 @@ return array(
         'br_corporate_cv' => array(
             'downloadArchive', 'grouped', 'list', 'search', 'pdf',
         ),
-        'br_corporate_internship' => array(
-            'overview', 'add', 'delete', 'edit',
-        ),
         'br_corporate_vacancy' => array(
-            'overview', 'add', 'delete', 'edit',
-        ),
-        'br_corporate_student_job' => array(
             'overview', 'add', 'delete', 'edit',
         ),
         'br_corporate_company' => array(

@@ -5,8 +5,8 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <aside>
-        {% if hasAccess('calendar_admin_calendar', 'template') %}
+    {% if hasAccess('calendar_admin_calendar', 'template') %}
+        <aside>
             <div class="sidebox" style="margin-top: 35px">
                 <div class="title">Cantus template</div>
                 <div class="content">
@@ -18,8 +18,8 @@
                     </p>
                 </div>
             </div>
-        {% endif %}
-    </aside>
+        </aside>
+    {% endif %}
 
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}

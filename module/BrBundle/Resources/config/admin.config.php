@@ -54,12 +54,17 @@ return array(
                     'title' => 'Communications',
                     'help'  => 'Here you can view all outgoing communications.',
                 ),
+                'br_admin_job' => array(
+                    'title' => 'Jobs',
+                    'help'  => 'Here you can view all jobs.',
+                ),
             ),
             'controllers' => array(
                 'br_admin_company_event',
                 'br_admin_company_job',
                 'br_admin_company_user',
                 'br_admin_company_logo',
+                'br_admin_job',
             ),
         ),
     ),

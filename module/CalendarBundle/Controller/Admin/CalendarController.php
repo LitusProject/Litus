@@ -6,6 +6,7 @@ use CalendarBundle\Entity\Node\Event;
 use Imagick;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use PhpParser\Node\Expr\Cast\Object_;
 
 /**
  * Handles system admin for calendar.
@@ -86,10 +87,13 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function templateAction()
     {
-        $form = $this->getForm('calendar_event_add');
-        $shiftForm = $this->getForm('shift_shift_add');
+        $form = $this->getForm('calendar_event_schedule');
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -101,152 +105,7 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
                 $this->getEntityManager()->persist($event);
                 $this->getEntityManager()->flush();
 
-                $data = array(
-                    'manager'               => false,
-                    'unit'                  => 3,
-                    'event'                 => $event->getId(),
-                    'location'              => 2,
-                    'nb_responsibles'       => 0,
-                    'handled_on_event'      => false,
-                    'ticket_needed'         => false,
-                    'points'                => 0,
-                );
-
-                $startDate = $event->getStartDate()->format('d/m/Y');
-                $endDate = $event->getEndDate()->format('d/m/Y');
-
-                $data['name'] = 'Pispolitie';
-                $data['description'] = 'Mensen die naar het toilet willen een strafje geven';
-                $data['nb_volunteers'] = 2;
-                $data['nb_volunteers_min'] = 2;
-                $data['reward'] = 2;
-                $data['start_date'] = $startDate . ' 20:30';
-                $data['end_date'] = $startDate . ' 22:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['start_date'] = $startDate . ' 22:15';
-                $data['end_date'] = $endDate . ' 00:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Controleren QR-code + bandjes uitdelen';
-                $data['description'] = 'Controleren QR-code + bandjes uitdelen';
-                $data['reward'] = 1;
-                $data['start_date'] = $startDate . ' 20:00';
-                $data['end_date'] = $startDate . ' 20:30';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Stewarden';
-                $data['description'] = 'Zorgen dat er niemand luid is buiten en fiksen dat er geen drank buiten geraakt';
-                $data['start_date'] = $startDate . ' 22:00';
-                $data['end_date'] = $startDate . ' 22:15';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['start_date'] = $endDate . ' 00:00';
-                $data['end_date'] = $endDate . ' 00:15';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Bijrijden';
-                $data['description'] = 'Chille in de kar. Locatie van de loods is: Tervuursevest 238';
-                $data['nb_volunteers_min'] = 1;
-                $data['start_date'] = $startDate . ' 18:00';
-                $data['end_date'] = $startDate . ' 19:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Corona stilhouden';
-                $data['description'] = 'Je mag ze ook buiten gooien als ze niet stil zijn xxx';
-                $data['start_date'] = $endDate . ' 00:15';
-                $data['end_date'] = $endDate . ' 01:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Bandjes controleren';
-                $data['description'] = 'Bandjes controleren tijdens de tempus';
-                $data['nb_volunteers'] = 1;
-                $data['start_date'] = $startDate . ' 22:00';
-                $data['end_date'] = $startDate . ' 22:15';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['start_date'] = $endDate . ' 00:00';
-                $data['end_date'] = $endDate . ' 00:15';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Tappen & Rondbrengen';
-                $data['description'] = 'Tappen & Rondbrengen';
-                $data['nb_volunteers'] = 4;
-                $data['nb_volunteers_min'] = 3;
-                $data['reward'] = 2;
-                $data['start_date'] = $startDate . ' 20:30';
-                $data['end_date'] = $startDate . ' 22:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['start_date'] = $startDate . ' 22:15';
-                $data['end_date'] = $endDate . ' 00:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['nb_volunteers'] = 2;
-                $data['nb_volunteers_min'] = 1;
-                $data['start_date'] = $endDate . ' 00:15';
-                $data['end_date'] = $endDate . ' 01:00';
-                $data['reward'] = 1;
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Opbouwen';
-                $data['description'] = 'Wat tafels en stoelen klaar zetten voor de cantus';
-                $data['nb_volunteers'] = 4;
-                $data['nb_volunteers_min'] = 3;
-                $data['start_date'] = $startDate . ' 19:00';
-                $data['end_date'] = $startDate . ' 20:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $data['name'] = 'Afbraak';
-                $data['description'] = 'Please help ons mee en zorg dat we na een half uurtje klaar kunnen zijn :))';
-                $data['nb_volunteers'] = 5;
-                $data['start_date'] = $endDate . ' 01:00';
-                $data['end_date'] = $endDate . ' 02:00';
-
-                $this->getEntityManager()->persist(
-                    $shiftForm->getHydrator()->hydrate($data)
-                );
-
-                $this->getEntityManager()->flush();
+                $this->addShiftsByEvent($event);
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -267,6 +126,25 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         return new ViewModel(
             array(
                 'form' => $form,
+            )
+        );
+    }
+
+    public function addShiftsAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        error_log($event->getName());
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $this->addShiftsByEvent($event);
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
             )
         );
     }
@@ -520,5 +398,164 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         }
 
         return $event;
+    }
+
+    /**
+     * @param Event $event
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    private function addShiftsByEvent(Event $event)
+    {
+        $shiftForm = $this->getForm('shift_shift_add');
+
+        $data = array(
+            'manager'               => false,
+            'unit'                  => 3,
+            'edit_roles'            => array('activiteiten',),
+            'event'                 => $event->getId(),
+            'location'              => 2,
+            'nb_responsibles'       => 0,
+            'handled_on_event'      => false,
+            'ticket_needed'         => false,
+            'points'                => 0,
+        );
+
+        $startDate = $event->getStartDate()->format('d/m/Y');
+        $endDate = $event->getEndDate()->format('d/m/Y');
+
+        $data['name'] = 'Pispolitie';
+        $data['description'] = 'Mensen die naar het toilet willen een strafje geven';
+        $data['nb_volunteers'] = 2;
+        $data['nb_volunteers_min'] = 2;
+        $data['reward'] = 2;
+        $data['start_date'] = $startDate . ' 20:30';
+        $data['end_date'] = $startDate . ' 22:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['start_date'] = $startDate . ' 22:15';
+        $data['end_date'] = $endDate . ' 00:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Controleren QR-code + bandjes uitdelen';
+        $data['description'] = 'Controleren QR-code + bandjes uitdelen';
+        $data['reward'] = 1;
+        $data['start_date'] = $startDate . ' 20:00';
+        $data['end_date'] = $startDate . ' 20:30';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Stewarden';
+        $data['description'] = 'Zorgen dat er niemand luid is buiten en fiksen dat er geen drank buiten geraakt';
+        $data['start_date'] = $startDate . ' 22:00';
+        $data['end_date'] = $startDate . ' 22:15';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['start_date'] = $endDate . ' 00:00';
+        $data['end_date'] = $endDate . ' 00:15';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Bijrijden';
+        $data['description'] = 'Chille in de kar. Locatie van de loods is: Tervuursevest 238';
+        $data['nb_volunteers_min'] = 1;
+        $data['start_date'] = $startDate . ' 18:00';
+        $data['end_date'] = $startDate . ' 19:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Corona stilhouden';
+        $data['description'] = 'Je mag ze ook buiten gooien als ze niet stil zijn xxx';
+        $data['start_date'] = $endDate . ' 00:15';
+        $data['end_date'] = $endDate . ' 01:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Bandjes controleren';
+        $data['description'] = 'Bandjes controleren tijdens de tempus';
+        $data['nb_volunteers'] = 1;
+        $data['start_date'] = $startDate . ' 22:00';
+        $data['end_date'] = $startDate . ' 22:15';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['start_date'] = $endDate . ' 00:00';
+        $data['end_date'] = $endDate . ' 00:15';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Tappen & Rondbrengen';
+        $data['description'] = 'Tappen & Rondbrengen';
+        $data['nb_volunteers'] = 4;
+        $data['nb_volunteers_min'] = 3;
+        $data['reward'] = 2;
+        $data['start_date'] = $startDate . ' 20:30';
+        $data['end_date'] = $startDate . ' 22:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['start_date'] = $startDate . ' 22:15';
+        $data['end_date'] = $endDate . ' 00:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['nb_volunteers'] = 2;
+        $data['nb_volunteers_min'] = 1;
+        $data['start_date'] = $endDate . ' 00:15';
+        $data['end_date'] = $endDate . ' 01:00';
+        $data['reward'] = 1;
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Opbouwen';
+        $data['description'] = 'Wat tafels en stoelen klaar zetten voor de cantus';
+        $data['nb_volunteers'] = 4;
+        $data['nb_volunteers_min'] = 3;
+        $data['start_date'] = $startDate . ' 19:00';
+        $data['end_date'] = $startDate . ' 20:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $data['name'] = 'Afbraak';
+        $data['description'] = 'Please help ons mee en zorg dat we na een half uurtje klaar kunnen zijn :))';
+        $data['nb_volunteers'] = 5;
+        $data['start_date'] = $endDate . ' 01:00';
+        $data['end_date'] = $endDate . ' 02:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );
+
+        $this->getEntityManager()->flush();
     }
 }

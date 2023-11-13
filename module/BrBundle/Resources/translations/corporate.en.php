@@ -66,7 +66,7 @@ return array(
     'What can you expect?'                                                                                                                                                                 => 'What can you expect?',
     'Visibility'                                                                                                                                                                           => 'Visibility',
     'Flexibility'                                                                                                                                                                          => 'Flexibility',
-    'Proffesionaliteit'                                                                                                                                                                    => 'Professionalism & Quality',
+    'Profesionaliteit'                                                                                                                                                                    => 'Professionalism & Quality',
     'bedrijvenrelaties'                                                                                                                                                                    => 'Corporate Relations',
     'My Profile'                                                                                                                                                                           => 'My Profile',
     'Forgot password?'                                                                                                                                                                     => 'Forgot password?',

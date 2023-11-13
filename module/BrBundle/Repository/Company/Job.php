@@ -14,11 +14,10 @@ use DateTime;
 class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @param  string  $type
      * @param  integer $id
      * @return \BrBundle\Entity\Company\Job
      */
-    public function findOneActiveByTypeAndId($type, $id)
+    public function findOneActiveById($id)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('v')
@@ -26,7 +25,6 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->eq('v.id', ':id'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
@@ -34,7 +32,6 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 )
             )
             ->setParameter('id', $id)
-            ->setParameter('type', $type)
             ->setParameter('now', new DateTime())
             ->setMaxResults(1)
             ->getQuery()
@@ -59,6 +56,58 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('company', $company->getId())
             ->orderBy('v.type', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $name
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByNameQuery($name)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->like($query->expr()->lower('v.name'), ':name'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $company
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByCompanyQuery($company)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name'),
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($company) . '%')
+            ->setParameter('now', new DateTime())
+            ->orderBy('c.name', 'ASC')
+            ->addOrderBy('v.name', 'ASC')
             ->getQuery();
     }
 
@@ -113,6 +162,28 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllActiveByDateQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('v, c')
+            ->from('BrBundle\Entity\Company\Job', 'v')
+            ->innerJoin('v.company', 'c')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->gt('v.endDate', ':now'),
+                    $query->expr()->eq('c.active', 'true'),
+                    $query->expr()->eq('v.removed', 'FALSE'),
+                    $query->expr()->eq('v.approved', 'TRUE')
+                )
+            )
+            ->setParameter('now', new DateTime())
+            ->orderBy('v.dateUpdated', 'DESC')
+            ->getQuery();
+    }
+
+    /**
      * @param  CompanyEntity $company
      * @param  string        $type
      * @return \Doctrine\ORM\Query
@@ -120,20 +191,26 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllActiveByCompanyAndTypeQuery(CompanyEntity $company, $type)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
-        return $query->select('v')
+        $query->select('v')
             ->from('BrBundle\Entity\Company\Job', 'v')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('v.company', ':company'),
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             )
-            ->setParameter('type', $type)
-            ->setParameter('company', $company->getId())
-            ->setParameter('now', new DateTime())
+            ->setParameter('company', $company->getId());
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();
     }
@@ -153,13 +230,19 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
 
         if ($sector !== null) {
             $query->andWhere(
@@ -182,8 +265,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('c.name', 'ASC')
             ->addOrderBy('v.name', 'ASC')
             ->getQuery();
@@ -204,13 +286,20 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
+
         if ($sector !== null) {
             $query->andWhere(
                 $query->expr()->eq('v.sector', ':sector')
@@ -231,8 +320,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.dateUpdated', 'DESC')
             ->getQuery();
     }
@@ -252,13 +340,19 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->innerJoin('v.company', 'c')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('v.type', ':type'),
                     $query->expr()->gt('v.endDate', ':now'),
                     $query->expr()->eq('c.active', 'true'),
                     $query->expr()->eq('v.removed', 'FALSE'),
                     $query->expr()->eq('v.approved', 'TRUE')
                 )
             );
+
+        if ($type !== null) {
+            $query->andWhere(
+                $query->expr()->eq('v.type', ':type')
+            )
+                ->setParameter('type', $type);
+        }
 
         if ($sector !== null) {
             $query->andWhere(
@@ -281,8 +375,7 @@ class Job extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 ->setParameter('master', '%' . $master . '%');
         }
 
-        return $query->setParameter('type', $type)
-            ->setParameter('now', new DateTime())
+        return $query->setParameter('now', new DateTime())
             ->orderBy('v.name', 'ASC')
             ->getQuery();
     }

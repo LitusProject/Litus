@@ -126,8 +126,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     public function scheduleAction()
     {
         $form = $this->getForm('cudi_sale_session_opening-hour_schedule');
-        $shiftForm = $this->getForm('shift_shift_schedule');
-        $registrationForm = $this->getForm('shift_registration-shift_schedule');
+        $shiftForm = $this->getForm('shift_shift_add');
+        $registrationForm = $this->getForm('shift_registration-shift_add');
 
         $now = (new DateTime())->format('d/m/Y H:i');
 
@@ -155,11 +155,11 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'start_date' => $startDate,
                             'end_date' => $endDate,
                             // SHIFTS
-                            'name'                  => 'Boekjes verkopen',
-                            'description'           => 'Kom helpen met boeken verkopen. Leer nieuwe mensen kennen en kom de sfeer opsnuiven.
-(Er is altijd begeleiding dus wees niet bang als je voor de eerste keer komt ;))',
+                            'name'                  => 'Boeken verkopen',
+                            'description'           => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
                             'manager'               => false,
                             'unit'                  => 1,
+                            'edit_roles'            => array('cursusdienst',),
                             'event'                 => '',
                             'location'              => 1,
                             'nb_responsibles'       => 0,
@@ -172,7 +172,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             // REGISTRATION SHIFTS
                             'visible_date' => $now,
                             'signout_date' => $signoutDate,
-                            'nb_registered' => 50,
+                            'nb_registered' => $formData['nb-registered_' . $startHour . '-' . $endHour . '_' . $split[2]],
                             'members_only' => false,
                             'members_visible' => true,
                             'final_signin_date' => $startDate,

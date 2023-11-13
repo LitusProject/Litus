@@ -1,7 +1,8 @@
 <?php
 
 namespace LogisticsBundle\Controller\Admin;
-
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
@@ -15,6 +16,7 @@ use LogisticsBundle\Entity\Request;
 /**
  * RequestController
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class RequestController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -88,6 +90,81 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             )
         );
 
+    }
+
+    public function csvAction()
+    {
+        $order = $this->getLastOrderByRequest($this->getRequestEntity());
+        $file = new CsvFile();
+        $heading = array('ORDER');
+
+        $results = array(
+            array(
+                'Naam',
+                'Verantwoordelijke',
+                'Post',
+            ),
+            array(
+            $order->getName(),
+            $order->getContact(),
+            $order->getUnit()->getName(),
+            ),
+            array(
+                'Van',
+                'Tot',
+                'Locatie',),
+            array(
+                $order->getStartDate()->format('l d/m/Y H:i'),
+                $order->getEndDate()->format('l d/m/Y H:i'),
+                $order->getLocation()->getName(),
+            ),
+            array('',),
+            array('ARTICLES'),
+            array(
+                'Naam',
+                'Wie',
+                'Categorie',
+                'Locatie',
+                'Plek',
+                'Aantal',
+                'Klaar',
+                'Mee',
+                'Terug',
+                'Opmerkingen'
+                ),
+        );
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($articles as $article) {
+            $results[] = array(
+                $article->getArticle()->getName(),
+                $article->getArticle()->getUnit()->getName(),
+                $article->getArticle()->getCategory(),
+                $article->getArticle()->getLocation(),
+                $article->getArticle()->getSpot(),
+                $article->getAmount()
+            );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="Materiaal_' . $order->getStartDate()->format('Y-m-d') . '_' . $order->getUnit()->getName(). '_' . $order->getName() . '.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
     }
 
     public function exportAction()
@@ -219,32 +296,6 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         return $academic;
-    }
-
-    /**
-     * @return Order|null
-     */
-    private function getOrderEntity()
-    {
-        $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
-        error_log($order? 'Order': 'No order');
-
-        if (!($order instanceof Order)) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No Order was found!'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_admin_request',
-                array(
-                    'action' => 'manage',
-                )
-            );
-
-            return;
-        }
-        return $order;
     }
 
     /**

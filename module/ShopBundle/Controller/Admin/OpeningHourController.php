@@ -125,7 +125,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
     public function scheduleAction()
     {
         $form = $this->getForm('shop_admin_session_opening-hour_schedule');
-        $shiftForm = $this->getForm('shift_shift_schedule');
+        $shiftForm = $this->getForm('shift_shift_add');
 
         $monday = new DateTime();                                                                   // create DateTime object with current time
         $monday->setISODate($monday->format('o'), $monday->format('W') + 1);     // set object to Monday on next week
@@ -152,6 +152,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
                             'description'           => '',
                             'manager'               => false,
                             'unit'                  => 2,
+                            'edit_roles'            => array('theokot',),
                             'event'                 => '',
                             'location'              => 1,
                             'nb_responsibles'       => 0,
