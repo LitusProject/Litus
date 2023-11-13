@@ -77,15 +77,10 @@ return array(
         'description' => 'Enable the winner column when exporting a sales session to csv',
     ),
     array(
-        'key'         => 'shop.no_show_configuration',
-        'value'       => 'no-show configuration goes here',
-        'description' => 'The no-show configuration is used for warnings when a person does not show up for their reservation, holding for each warning the ban period and an email message',
-    ),
-    array(
         'key'         => 'shop.no_show_config',
         'value'       => serialize(
             array(
-                '1' => array(
+                '0' => array(
                     'mail_subject' => 'VTK Theokot Warning',
                     'mail_content' => '(English version below)
 
@@ -119,9 +114,9 @@ Please note that we fully understand that unexpected circumstances may prevent y
 The team hopes for your understanding.
 Best regards,
 The Theokot Team',
-                    'ban_days' => 0
+                    'ban_days' => '0 days'
                 ),
-                '2' => array(
+                '1' => array(
                     'mail_subject' => 'VTK Theokot Warning',
                     'mail_content' => '(English version below)
 
@@ -137,7 +132,7 @@ Groentjes, het Theokotteam
 
 ENGLISH VERSION
 
-Dag {{ name }}
+Dear {{ name }}
 
 You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
 
@@ -147,11 +142,11 @@ The team hopes for your understanding.
 Best regards,
 The Theokot Team
 ',
-                    'ban_days' => 7
+                    'ban_days' => '7 days'
                 ),
     ),
 ),
-        'description' => 'Holds a no-show warning email, for each amount of warnings the user has',
+        'description' => 'Holds a no-show warning email and a amount of ban days for each amount of warnings the user has',
     ),
     array(
         'key'         => 'shop.no-reply_mail',
