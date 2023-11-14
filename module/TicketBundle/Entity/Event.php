@@ -114,14 +114,14 @@ class Event
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint", nullable=true)
+     * @ORM\Column(name="price_members", type="integer", nullable=true)
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
+     * @ORM\Column(name="price_non_members", type="integer", nullable=true)
      */
     private $priceNonMembers;
 
