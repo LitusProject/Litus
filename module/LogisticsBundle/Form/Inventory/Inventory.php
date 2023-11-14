@@ -107,6 +107,9 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
                 'attributes' => array(
@@ -145,6 +148,9 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
