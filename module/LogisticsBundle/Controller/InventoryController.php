@@ -56,8 +56,9 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                         );
                         return new ViewModel();
                     }
-                    $article = $form->hydrateObject();
-                    $this->getEntityManager()->persist($article);
+                    $this->getEntityManager()->persist(
+                        $form->hydrateObject()
+                    );
                     $this->getEntityManager()->flush();
 
                     $this->flashMessenger()->success(

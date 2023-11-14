@@ -101,11 +101,14 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type'     => 'text',
                 'name'     => 'perUnit',
                 'label'    => 'Per unit',
-                'required' => false,
+                'required' => true,
                 'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
@@ -121,7 +124,7 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type'       => 'select',
                 'name'       => 'unit',
                 'label'      => 'Unit',
-                'required'   => false,
+                'required' => true,
                 'attributes' => array(
                     'options' => InventoryEntity::$possibleUnits,
                 ),
@@ -145,6 +148,9 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
                         ),
                     ),
                 ),
