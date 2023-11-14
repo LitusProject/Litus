@@ -53,7 +53,7 @@ return array(
         'shop_admin_shop_reservation' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/shop/reservation[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/shop/reservation[/:action[/:id]][/:field/:string][/type/:type][/page/:page][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',

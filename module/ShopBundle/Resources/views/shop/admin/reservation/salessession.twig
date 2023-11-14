@@ -192,6 +192,7 @@
                 display: function (data) {
                     $('#reservation_search table').find('tr.item').remove();
                     $(data).each(function () {
+                        console.log('Processing result:');
                         $('#reservation_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.person + '</td>')
                             .append('<td>' + this.product + '</td>')
