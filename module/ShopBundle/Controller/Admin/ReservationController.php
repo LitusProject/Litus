@@ -81,9 +81,13 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    /**
+     * Toggles a no-show:
+     * - if no ban is present yet for the person in the current sales session, a ban is created
+     * - if a ban is already present for the person in the current sales session, it is reverted
+     */
     public function noshowAction()
     {
-        error_log("no show action");
         $this->initAjax();
 
         $reservation = $this->getReservationEntity();
@@ -91,38 +95,62 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $noShowConfig = $this->getNoShowConfig();
+        $salesSession = $reservation->getSalesSession();
+        if ($salesSession === null) {
+            return new ViewModel();
+        }
 
-        // Get total amount of warnings for person (past, present and future)
-        $warningCount = $this->getEntityManager()
-            ->getRepository('ShopBundle\Entity\Reservation\Ban')
-            ->findAllByPersonQuery($reservation->getPerson())
-            ->getSingleScalarResult();
+        // if ban already present in sales session -> revert it
+        if ($salesSession->containsBanForPerson($reservation->getPerson())) {
+            $salesSession->removeAllBansFromPerson($reservation->getPerson());
 
-        // Create ban
-        $banIntervalStr = $noShowConfig->getBanInterval($warningCount);
-        $banInterval = DateInterval::createFromDateString($banIntervalStr);
+            $this->getEntityManager()->persist($salesSession);
+            $this->getEntityManager()->flush();
+        }
+        // no ban present yet -> create one
+        else {
+            $noShowConfig = $this->getNoShowConfig();
 
-        $banStartTimestamp = new DateTime();
+            // Get total amount of warnings for person (past, present and future)
+            $warningCount = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Reservation\Ban')
+                ->findAllByPersonQuery($reservation->getPerson())
+                ->getSingleScalarResult();
 
-        $banEndTimestamp = new DateTime();
-        $banEndTimestamp = $banEndTimestamp->add($banInterval);
+            // Create ban
+            $banIntervalStr = $noShowConfig->getBanInterval($warningCount);
+            $banInterval = DateInterval::createFromDateString($banIntervalStr);
 
-        $ban = new Ban();
-        $ban->setPerson($reservation->getPerson());
-        $ban->setStartTimestamp($banStartTimestamp);
-        $ban->setEndTimestamp($banEndTimestamp);
+            $banStartTimestamp = new DateTime();
 
-        $this->getEntityManager()->persist($ban);
-        $this->getEntityManager()->flush($ban);
+            $banEndTimestamp = new DateTime();
+            $banEndTimestamp = $banEndTimestamp->add($banInterval);
 
-        // Send warning email
-        $this->sendNoShowEmail($reservation->getPerson(), $warningCount);
+            $ban = new Ban();
+            $ban->setPerson($reservation->getPerson());
+            $ban->setStartTimestamp($banStartTimestamp);
+            $ban->setEndTimestamp($banEndTimestamp);
+            $ban->setSalesSession($salesSession);
+
+            $this->getEntityManager()->persist($ban);
+            $this->getEntityManager()->flush();
+
+            // Send warning email
+            $this->sendNoShowEmail($reservation->getPerson(), $warningCount);
+        }
+
+        // front-end needs to update the no-show checkboxes of all the reservations of the person in real-time
+        $reservationsToUpdate = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllReservationsByPersonAndSalesSessionQuery($reservation->getPerson()->getFullName(), $salesSession)
+            ->getResult();
+        $reservationsToUpdateIds = array_map(fn($reservation) => $reservation->getId(), $reservationsToUpdate);
 
         return new ViewModel(
             array(
                 'result' => array(
-                    'status'           => 'success',
+                    'reservationsToUpdate' => $reservationsToUpdateIds,
+                    'status' => 'success',
                 ),
             )
         );
@@ -183,12 +211,16 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
+            return new ViewModel();
+        }
+
         // $numResults = $this->getEntityManager()
         //     ->getRepository('CommonBundle\Entity\General\Config')
         //     ->getConfigValue('search_max_results');
         $reservations = $this->search()
             ->getResult();
-
 
         $result = array();
         foreach ($reservations as $reservation) {
@@ -198,7 +230,10 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $item->product = $reservation->getProduct()->getName();
             $item->amount = $reservation->getAmount();
             $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
-            $item->personBanned = $reservation->PersonIsCurrentlyBanned($this->getEntityManager(), $reservation->getPerson());
+
+            // if a no-show has been set for a person, all reservations of the person will indicate it
+            $item->noshow = $salesSession->containsBanForPerson($reservation->getPerson());
+
             $item->consumed = $reservation->getConsumed();
             $item->reward = $reservation->getReward();
 

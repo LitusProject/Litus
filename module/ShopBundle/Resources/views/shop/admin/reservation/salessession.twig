@@ -97,7 +97,7 @@
                     <th>Product</th>
                     <th>Amount</th>
                     <th>Total Price</th>
-                    <th>Currently Banned</th>
+                    <th>No Show</th>
                     <th>Consumed</th>
                     <th>Reward</th>
                     <th width="70px">Actions</th>
@@ -112,7 +112,7 @@
                     <th>Product</th>
                     <th>Amount</th>
                     <th>Total Price</th>
-                    <th>Currently Banned</th>
+                    <th>No Show</th>
                     <th>Consumed</th>
                     <th>Reward</th>
                     <th width="70px">Actions</th>
@@ -126,7 +126,7 @@
                         <td>{{ reservation.getAmount() * reservation.getProduct().getSellPrice() }}</td>
                         <td style="text-align:center"><input id="noshow-{{ reservation.getId() }}" disabled
                                                              type="checkbox"
-                                                             {% if reservation.PersonIsCurrentlyBanned(entityManager, reservation.GetPerson()) %}checked{% endif %} /></td>
+                                                             {% if salesSession.containsBanForPerson(reservation.getPerson()) %}checked{% endif %} /></td>
                         <td style="text-align:center"><input id="noshow-{{ reservation.getId() }}" disabled
                                                             type="checkbox"
                                                             {% if reservation.getConsumed() %}checked{% endif %} /></td>
@@ -199,7 +199,7 @@
                             .append('<td>' + this.total  + '</td>')
                             .append('<td style="text-align:center"><input id="noshow-' + this.id +
                                   '" disabled type="checkbox"' +
-                                  (this.personBanned ? 'checked': '') + '/></td>')
+                                  (this.noshow ? 'checked': '') + '/></td>')
                             .append('<td style="text-align:center"><input id="noshow-' + this.id +
                                 '" disabled type="checkbox"' +
                                 (this.consumed ? 'checked': '0') + '/></td>')
@@ -241,14 +241,24 @@
             $.post('{{ url('shop_admin_shop_reservation', {"action":"noshow"}) }}' + id, function (data) {
                 if (data && 'success' == data.status) {
                     $('.flashmessage').addClass('hide');
-                    if(data.blacklisted){
-                        $('.reservation_noshow_blacklisted').removeClass('hide');
-                    }
-                    if(data.blacklistAvoided){
-                        $('.reservation_noshow_blacklistAvoided').removeClass('hide');
-                    }
+
                     $('.reservation_noshow_success').removeClass('hide');
-                    $('#noshow-' + id).prop('checked', !$('#noshow-' + id).prop('checked'));
+                    // $('#noshow-' + id).prop('checked', !$('#noshow-' + id).prop('checked'));
+
+                    if (Array.isArray(data.reservationsToUpdate) && data.reservationsToUpdate.length > 0) {
+                        console.log("reservation to update is not empty");
+                        // Iterate through the array and update checkboxes
+                        data.reservationsToUpdate.forEach(function(updateId) {
+                            var checkbox = $('#noshow-' + updateId);
+                            if (checkbox.length > 0) {
+                                checkbox.prop('checked', !checkbox.prop('checked'));
+                            }
+                        });
+                    } else {
+                        console.log("reservation to update is empty");
+                        // Update only the original ID if data.ids is not provided
+                        $('#noshow-' + id).prop('checked', !$('#noshow-' + id).prop('checked'));
+                    }
                 } else {
                     $('.flashmessage').addClass('hide');
                     $('.reservation_noshow_error').removeClass('hide');

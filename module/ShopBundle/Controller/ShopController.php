@@ -340,6 +340,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     'redirect' => urlencode($this->getRequest()->getRequestUri()),
                 )
             );
+            return new CanReserveResponse(false);
         }
 
         // check if user has active reservation bans

@@ -2,8 +2,12 @@
 
 namespace ShopBundle\Entity;
 
+use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Reservation\Ban;
 
 /**
  * This entity stores a sales session.
@@ -70,6 +74,13 @@ class Session
      * @ORM\Column(type="integer", nullable=true)
      */
     private $amountRewards;
+
+    /**
+     * @var ArrayCollection All the bans that have been set as a result of no-shows in this sales session.
+     *
+     * @ORM\OneToMany(targetEntity="ShopBundle\Entity\Reservation\Ban", mappedBy="salesSession", cascade={"persist"}, orphanRemoval=true)
+     */
+    private $bans;
 
     /**
      * @return integer
@@ -213,5 +224,49 @@ class Session
     public function getRemarks()
     {
         return $this->remarks;
+    }
+
+    /**
+     * @param Ban $ban
+     * @return $this
+     */
+    public function addBan(Ban $ban) {
+        $this->bans->add($ban);
+    }
+
+    /**
+     * Check if a Person has received a ban already in this sales session.
+     *
+     * @param Person $person
+     * @return boolean
+     */
+    public function containsBanForPerson(Person $person) {
+        foreach ($this->bans as $ban) {
+            if ($ban->getPerson() == $person) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Removes all the bans related to a certain person that have been made in this sales session.
+     * If there are no bans present, nothing happens.
+     *
+     * @param Person $person
+     * @return void
+     */
+    public function removeAllBansFromPerson(Person $person) {
+        $elementsToRemove = [];
+
+        foreach ($this->bans as $ban) {
+            if ($ban->getPerson() == $person) {
+                $elementsToRemove[] = $ban;
+            }
+        }
+
+        foreach ($elementsToRemove as $banToRemove) {
+            $this->bans->removeElement($banToRemove);
+        }
     }
 }

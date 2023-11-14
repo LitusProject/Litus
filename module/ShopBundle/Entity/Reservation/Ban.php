@@ -5,6 +5,7 @@ namespace ShopBundle\Entity\Reservation;
 use DateTime;
 use CommonBundle\Entity\User\Person;
 use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Session;
 
 /**
  * This entity stores a reservation ban for a user.
@@ -45,6 +46,13 @@ class Ban
      */
     private $endTimestamp;
 
+    /**
+     * @var Session The sales session in case the ban has been created from a no-show, null otherwise
+     *
+     * @ORM\ManyToOne(targetEntity="ShopBundle\Entity\Session", cascade={"persist"})
+     * @ORM\JoinColumn(name="sales_session", referencedColumnName="id", nullable=true)
+     */
+    private $salesSession;
 
     public function __construct()
     {
@@ -115,6 +123,23 @@ class Ban
      */
     public function removeEndTimestamp() {
         $this->endTimestamp = null;
+
+        return $this;
+    }
+
+    /**
+     * @return Session
+     */
+    public function getSalesSession() {
+        return $this->salesSession;
+    }
+
+    /**
+     * @param Session $salesSession
+     * @return $this
+     */
+    public function setSalesSession(Session $salesSession) {
+        $this->salesSession = $salesSession;
 
         return $this;
     }

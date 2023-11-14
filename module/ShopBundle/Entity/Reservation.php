@@ -225,23 +225,4 @@ class Reservation
 
         return $timestamp < $this->getSalesSession()->getFinalReservationDate();
     }
-
-    /**
-     * Whether the person that this reservation is made by is currently banned from making reservations.
-     *
-     * Note: the ban does not necessarily come from this reservation entity. It can come from a no-show action
-     * on other reservation entities, as well as from manually adding Bans.
-     *
-     * @return bool
-     */
-    public function PersonIsCurrentlyBanned(EntityManager $entityManager, Person $person) {
-        $activeBans = $entityManager
-            ->getRepository('ShopBundle\Entity\Reservation\Ban')
-            ->findActiveByPersonQuery($person)
-            ->getResult();
-
-        if (count($activeBans) > 0) return true;
-
-        return false;
-    }
 }
