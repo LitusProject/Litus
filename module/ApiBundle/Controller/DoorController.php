@@ -6,6 +6,7 @@ use CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Entity\User\Person\Academic;
 use DoorBundle\Entity\Log;
 use Laminas\View\Model\ViewModel;
+use DateTime;
 
 /**
  * DoorController
@@ -124,6 +125,81 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
                 'result' => (object) array(
                     'status' => 'success',
                     'person' => $rNumber,
+                ),
+            ),
+        );
+    }
+
+    public function isAllowedAction()
+    {
+        if (!$this->getRequest()->isPost()) {
+            return $this->error(405, 'This endpoint can only be accessed through POST');
+        }
+        $userData = $this->getRequest()->getPost('userData');
+
+        if ((str_contains($userData, ';')) && (strlen($userData) == 25)) {
+            $seperatedString = explode(';', $userData);
+            $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
+        } else {
+            $rNumber = $userData;
+        }
+
+
+        $person = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneByUsername($rNumber);
+
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($person->getId());
+
+        //Academic is praesidium
+        if ($academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() == "praesidium") {
+            return new ViewModel(
+                array(
+                    'result' => (object)array(
+                        'status' => 'success',
+                        'person' => $rNumber,
+                        'academic' => $academic->getId(),
+                        'is_allowed' => true,
+                    ),
+                ),
+            );
+        }
+
+        $rules = $this->getEntityManager()
+            ->getRepository('DoorBundle\Entity\Rule')
+            ->findAllByAcademic($academic);
+
+        if (!is_null($rules)) {
+            foreach ($rules as $rule) {
+                $start = $rule->getStartDate();
+                $start->setTime($rule->getStartTime() / 100, $rule->getStartTime() % 100);
+                $end = $rule->getEndDate();
+                $end->setTime($rule->getEndTime() / 100, $rule->getEndTime() % 100);
+                $now = new DateTime();
+                if ($start <= $now && $end >= $now) {
+                    return new ViewModel(
+                        array(
+                            'result' => (object)array(
+                                'status' => 'success',
+                                'person' => $rNumber,
+                                'academic' => $academic->getId(),
+                                'is_allowed' => true,
+                            ),
+                        ),
+                    );
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object)array(
+                    'status' => 'success',
+                    'person' => $rNumber,
+                    'academic' => $academic->getId(),
+                    'is_allowed' => false,
                 ),
             ),
         );

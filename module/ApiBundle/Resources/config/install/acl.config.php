@@ -24,7 +24,7 @@ return array(
             'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'is-same',
         ),
         'api_door' => array(
-            'getRules', 'log', 'get-username',
+            'getRules', 'log', 'get-username', 'is-available'
         ),
         'api_fak' => array(
             'add-checkin', 'add-checkin-username',
