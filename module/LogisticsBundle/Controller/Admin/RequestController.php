@@ -95,74 +95,10 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     public function csvAction()
     {
         $order = $this->getLastOrderByRequest($this->getRequestEntity());
-        $file = new CsvFile();
-        $heading = array('ORDER');
-
-        $results = array(
-            array(
-                'Naam',
-                'Verantwoordelijke',
-                'Post',
-            ),
-            array(
-            $order->getName(),
-            $order->getContact(),
-            $order->getUnit()->getName(),
-            ),
-            array(
-                'Van',
-                'Tot',
-                'Locatie',),
-            array(
-                $order->getStartDate()->format('l d/m/Y H:i'),
-                $order->getEndDate()->format('l d/m/Y H:i'),
-                $order->getLocation()->getName(),
-            ),
-            array('',),
-            array('ARTICLES'),
-            array(
-                'Naam',
-                'Wie',
-                'Categorie',
-                'Locatie',
-                'Plek',
-                'Aantal',
-                'Klaar',
-                'Mee',
-                'Terug',
-                'Opmerkingen'
-                ),
-        );
-
-        $articles = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-            ->findAllByOrderQuery($order)->getResult();
-        foreach ($articles as $article) {
-            $results[] = array(
-                $article->getArticle()->getName(),
-                $article->getArticle()->getUnit()->getName(),
-                $article->getArticle()->getCategory(),
-                $article->getArticle()->getLocation(),
-                $article->getArticle()->getSpot(),
-                $article->getAmount()
-            );
-        }
-
-        $document = new CsvGenerator($heading, $results);
-        $document->generateDocument($file);
-
-        $headers = new Headers();
-        $headers->addHeaders(
-            array(
-                'Content-Disposition' => 'attachment; filename="Materiaal_' . $order->getStartDate()->format('Y-m-d') . '_' . $order->getUnit()->getName(). '_' . $order->getName() . '.csv"',
-                'Content-Type'        => 'text/csv',
-            )
-        );
-        $this->getResponse()->setHeaders($headers);
 
         return new ViewModel(
             array(
-                'data' => $file->getContent(),
+                'data' => $this->generateCsvFile($order),
             )
         );
     }
@@ -179,30 +115,57 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             $nextMonday->modify('next monday');
         }
 
+        $comingRequests = array();
         // Gets last order for every request
+        $lastOrders = array();
         foreach ($requests as $request) {
             $lastOrder = $this->getLastOrderByRequest($request);
             if ($lastOrder && $now <= $lastOrder->getStartDate() && $lastOrder->getStartDate() <= $nextMonday) {
-                $file = new TmpFile();
-                $document = new PdfGenerator($this->getEntityManager(), $lastOrder, $file);
-                $document->generate();
-
-                $headers = new Headers();
-                $headers->addHeaders(
-                    array(
-                        'Content-Disposition' => 'attachment; filename="' . $lastOrder->getName() . '.pdf"',
-                        'Content-Type'        => 'application/pdf',
-                    )
-                );
-                $this->getResponse()->setHeaders($headers);
+                $comingRequests[] = $lastOrder->getRequest();
             }
         }
 
-        return new ViewModel(
-            array(
-                'data' => $file->getContent(),
-            )
-        );
+        foreach ($requests as $request) {
+            $order = $this->getLastOrderByRequest($request);
+            return new ViewModel(
+                array(
+                    'data' => $this->generateCsvFile($order),
+                )
+            );
+        }
+
+//        $now = new DateTime();
+//        $nextMonday = new DateTime();
+//        $nextMonday->modify('next monday');
+//        $interval = $now->diff($nextMonday);
+//        if ($interval->days <= 3) {
+//            $nextMonday->modify('next monday');
+//        }
+//
+//        // Gets last order for every request
+//        foreach ($requests as $request) {
+//            $lastOrder = $this->getLastOrderByRequest($request);
+//            if ($lastOrder && $now <= $lastOrder->getStartDate() && $lastOrder->getStartDate() <= $nextMonday) {
+//                $file = new TmpFile();
+//                $document = new PdfGenerator($this->getEntityManager(), $lastOrder, $file);
+//                $document->generate();
+//
+//                $headers = new Headers();
+//                $headers->addHeaders(
+//                    array(
+//                        'Content-Disposition' => 'attachment; filename="' . $lastOrder->getName() . '.pdf"',
+//                        'Content-Type'        => 'application/pdf',
+//                    )
+//                );
+//                $this->getResponse()->setHeaders($headers);
+//            }
+//        }
+//
+//        return new ViewModel(
+//            array(
+//                'data' => $file->getContent(),
+//            )
+//        );
     }
 
     public function oldAction()
@@ -424,6 +387,93 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             ->findAllByRequest($request);
         array_pop($orders);                                     // pop dummy order
         return current($orders);                                       // Gets the first element of an array
+    }
+
+    /**
+     * @param Order $order
+     */
+    private function generateCsvFile($order)
+    {
+        $file = new CsvFile();
+        $heading = array('ORDER');
+
+        $unitNameOrder = '';
+        if ($order->getUnit()) {
+            $unitNameOrder = $order->getUnit()->getName();
+        }
+
+        $results = array(
+            array(
+                'Naam',
+                'Verantwoordelijke',
+                'Post',
+            ),
+            array(
+                $order->getName(),
+                $order->getContact(),
+                $unitNameOrder,
+            ),
+            array(
+                'Van',
+                'Tot',
+                'Locatie',),
+            array(
+                $order->getStartDate()->format('l d/m/Y H:i'),
+                $order->getEndDate()->format('l d/m/Y H:i'),
+                $order->getLocation()->getName(),
+            ),
+            array('',),
+            array('ARTICLES'),
+            array(
+                'Naam',
+                'Wie',
+                'Categorie',
+                'Locatie',
+                'Plek',
+                'Aantal',
+                'Klaar',
+                'Mee',
+                'Terug',
+                'Opmerkingen'
+            ),
+        );
+
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+            ->findAllByOrderQuery($order)->getResult();
+        foreach ($articles as $article) {
+            $unitNameArticle = '';
+            if ($article->getArticle()->getUnit()) {
+                $unitNameArticle = $article->getArticle()->getUnit()->getName();
+            }
+
+            $results[] = array(
+                $article->getArticle()->getName(),
+                $unitNameArticle,
+                $article->getArticle()->getCategory(),
+                $article->getArticle()->getLocation(),
+                $article->getArticle()->getSpot(),
+                $article->getAmount()
+            );
+        }
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        if ($unitNameOrder) {
+            $unitNameOrder = '_' . $unitNameOrder;
+        }
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="Materiaal_' . $order->getStartDate()->format('Y-m-d') . $unitNameOrder . '_' . $order->getName() . '.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return $file->getContent();
     }
 
     /**
