@@ -91,11 +91,10 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}
-                                            {{ translate('KU Leuven&mdash;Central Login') }}
-                                        {% endautoescape %}</a>
+                                        <a style="cursor: pointer" class="btn btn-info"
+                                           href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
                                     </li>
-                                    <hr/>
+                                    <hr>
 
                                     <li>
                                         {% if loginForm is defined %}

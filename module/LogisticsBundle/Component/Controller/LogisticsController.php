@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Component\Controller;
 
+use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use Laminas\Mvc\MvcEvent;
 
@@ -65,6 +66,19 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         $shibbolethUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('shibboleth_url');
+
+        if (@unserialize($shibbolethUrl) !== false) {
+            $shibbolethUrl = unserialize($shibbolethUrl);
+
+            if (getenv('SERVED_BY') === false) {
+                throw new ShibbolethUrlException('The SERVED_BY environment variable does not exist');
+            }
+            if (!isset($shibbolethUrl[getenv('SERVED_BY')])) {
+                throw new ShibbolethUrlException('Array key ' . getenv('SERVED_BY') . ' does not exist');
+            }
+
+            $shibbolethUrl = $shibbolethUrl[getenv('SERVED_BY')];
+        }
 
         $shibbolethUrl .= '?source=logistics';
 
