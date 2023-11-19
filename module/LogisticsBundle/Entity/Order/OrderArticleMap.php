@@ -211,7 +211,7 @@ class OrderArticleMap
      */
     public function isApproved()
     {
-        return $this->status == 'goedgekeurd';
+        return $this->getOrder()->isApproved();
     }
 
     /**
@@ -219,6 +219,14 @@ class OrderArticleMap
      */
     public function isRejected()
     {
-        return $this->status == 'afgewezen';
+        return $this->getOrder()->isRejected();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isReviewed()
+    {
+        return $this->getOrder()->isReviewed();
     }
 }

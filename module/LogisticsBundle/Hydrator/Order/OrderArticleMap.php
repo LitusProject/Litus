@@ -18,7 +18,7 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
                 $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Article')
                     ->findOneById($data['article']['id']),
-                $data['amount']
+                $data['amount'],
             );
         }
 

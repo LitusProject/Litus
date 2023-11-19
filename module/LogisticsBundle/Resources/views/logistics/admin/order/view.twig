@@ -115,6 +115,7 @@
                         {% endif %}
                     </tr>
 
+                    {% set reviewable = false %}
                     {#     Table content       #}
                     {% for mapping in articles %}
                                 <tr class="item item-{{ mapping.getId() }}">
@@ -127,11 +128,16 @@
                                     <td>{{ mapping.getOldAmount() }}</td>
                                     <td>{{ mapping.getAmount() }}</td>
                                     {% if order.getId() == lastOrders[0].getId() and order.getStatus() == 'Pending' %}
+                                    {% if hasAccess('logistics_admin_order', 'reviewOrder') %}
                                         <td class="actions">
-                                            <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}" data-content="{{ mapping.getAmount() }}">
-                                                <b>Review</b>
-                                            </a>
+                                            {% if mapping.getArticle().getUnit() == reviewingUnit or reviewingUnit.getName() == 'Logistiek' %}
+                                                {% set reviewable = true %}
+                                                <a href="#" class="review-article" data-id="{{ mapping.getId() }}" data-name="{{ mapping.getArticle().getName() }}" data-content="{{ mapping.getAmount() }}">
+                                                    <b>Review</b>
+                                                </a>
+                                            {% endif %}
                                         </td>
+                                    {% endif %}
                                     {% endif %}
                                 </tr>
                     {% endfor %}
@@ -184,9 +190,11 @@
             <div class="row" style="margin-top: 30px; text-align: center">
                 <div style="width: 230px; margin: auto">
                     {% if hasAccess('logistics_admin_order', 'reviewOrder') %}
-                        <a class="edit review" style="margin: 6px" href="#" data-id="{{ order.getId() }}">
-                            <b style="padding-left: 5px">Review</b>
-                        </a>
+                        {% if reviewable %}
+                            <a class="edit review" style="margin: 6px" href="#" data-id="{{ order.getId() }}">
+                                <b style="padding-left: 5px">Review</b>
+                            </a>
+                        {% endif %}
                     {% endif %}
                     {% if hasAccess('logistics_admin_order', 'approve') %}
                         <a class="accept_request" style="margin: 6px" href="{{ url('logistics_admin_order', {"action": "approve", "id": order.getId()}) }}">

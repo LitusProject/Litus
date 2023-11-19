@@ -103,7 +103,7 @@
                                     {% set available = map['article'].getAmountAvailable() - map['orderedAmount'] %}
                                     {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category
                                     and available > 0%}
-                                        <tr class="{% if map['mapped'] > 0 %}success{% endif %} {{ unit }} {{ category }} hide">
+                                        <tr class="{% if map['accepted'] %}success{% endif %} {{ unit }} {{ category }} hide">
                                             <td>{{ map['article'].getName() }}</td>
                                             <td class="hidden-xs">{{ map['article'].getStatus() }}</td>
                                             <td class="hidden-xs">{{ available }}/{{ map['article'].getAmountOwned() }}</td>

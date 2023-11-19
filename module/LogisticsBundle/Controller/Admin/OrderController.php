@@ -12,6 +12,7 @@ use LogisticsBundle\Entity\Request;
 /**
  * OrderController
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class OrderController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
@@ -153,6 +154,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 'oldOrder'      => $oldOrder,
                 'articles'      => $articles,
                 'lastOrders'    => $lastOrders,
+                'reviewingUnit' => $reviewingUnit,
 
                 'orderForm'     => $orderForm,
                 'articleForm'   => $articleForm,

@@ -37,9 +37,18 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $lastOrders = array();
         foreach ($requests as $request) {
             $lastOrder = $this->getLastOrderByRequest($request);
-            if ($lastOrder)
-            $lastOrders[] = $lastOrder;
+            if ($lastOrder) {
+                $lastOrders[] = $lastOrder;
+            }
         }
+
+        // Sort orders according to last update date
+        uasort($lastOrders, function ($a, $b) {
+            if ($a->getUpdateDate() == $b->getUpdateDate()) {
+                return 0;
+            }
+            return ($a->getUpdateDate() > $b->getUpdateDate())? -1: 1;
+        });
 
         return new ViewModel(
             array(
@@ -78,12 +87,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $mapped = array();
         foreach ($mappings as $map) {
             if (!isset($mapped[$map->getArticle()->getId()])) {
-                $mapped[$map->getArticle()->getId()] = 0;
+                $mapped[$map->getArticle()->getId()] = array(
+                    'amount'    => 0,
+                    'accepted'  => $map->isApproved(),
+                );
             }
 
-            if ($map->isApproved()) {
-                $mapped[$map->getArticle()->getId()] += $map->getAmount();
-            }
+            $mapped[$map->getArticle()->getId()]['amount'] += $map->getAmount();
         }
 
         $allArticles = array();
@@ -101,16 +111,18 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             if ($art->isPostVisibility() && $academic->isPraesidium($this->getCurrentAcademicYear())
                 && $art->getUnit() == $academic->getUnit($this->getCurrentAcademicYear())) {
                 $articleInfo = array(
-                    'article' => $art,
-                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'article'       => $art,
+                    'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
+                    'accepted'      => $mapped[$art->getId()]['accepted'],
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
                 $allArticles[] = $articleInfo;
             } elseif ($art->isPraesidiumVisibility() && $academic->isPraesidium($this->getCurrentAcademicYear())) {
                 $articleInfo = array(
-                    'article' => $art,
-                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'article'       => $art,
+                    'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
+                    'accepted'      => $mapped[$art->getId()]['accepted'],
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -118,16 +130,18 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             } elseif ($art->isGreaterVtkVisibility() && ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
                     || $academic->isPraesidium($this->getCurrentAcademicYear()))) {
                 $articleInfo = array(
-                    'article' => $art,
-                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'article'       => $art,
+                    'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
+                    'accepted'      => $mapped[$art->getId()]['accepted'],
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
                 $allArticles[] = $articleInfo;
             } else {
                 $articleInfo = array(
-                    'article' => $art,
-                    'mapped'  => $mapped[$art->getId()] ?? 0,
+                    'article'       => $art,
+                    'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
+                    'accepted'      => $mapped[$art->getId()]['accepted'],
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -164,7 +178,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                             ->getRepository('LogisticsBundle\Entity\Article')
                             ->findOneById($articleId);
 
-                        $oldAmount = $mapped[$articleId]?: 0;
+                        $oldAmount = $mapped[$articleId]['amount']?: 0;
                         $booking = new Map($newOrder, $article, $formValue, $oldAmount);
 
                         $this->getEntityManager()->persist($booking);
