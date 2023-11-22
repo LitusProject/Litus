@@ -30,6 +30,21 @@ class Html extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
+    public function findAllByPublicationQuery(PublicationEntity $publication)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('PublicationBundle\Entity\Edition\Html', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('p.publication', ':publication'),
+                )
+            )
+            ->setParameter('publication', $publication)
+            ->orderBy('p.date', 'DESC')
+            ->getQuery();
+    }
+
     public function findOneByPublicationTitleAndAcademicYear(PublicationEntity $publication, $title, AcademicYear $academicYear)
     {
         $query = $this->getEntityManager()->createQueryBuilder();
