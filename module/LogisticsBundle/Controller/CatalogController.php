@@ -3,6 +3,9 @@
 namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Exception\NotSupported;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Laminas\Mail\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
@@ -18,7 +21,10 @@ use LogisticsBundle\Entity\Request;
  */
 class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
-    public function overviewAction()
+    /**
+     * @throws NotSupported
+     */
+    public function overviewAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -58,7 +64,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function catalogAction()
+    /**
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws NotSupported
+     */
+    public function catalogAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -225,7 +237,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function addOrderAction()
+    /**
+     * @throws OptimisticLockException
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws ORMException
+     */
+    public function addOrderAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -258,7 +275,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function editOrderAction()
+    /**
+     * @throws ORMException
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws OptimisticLockException
+     * @throws NotSupported
+     */
+    public function editOrderAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -336,7 +359,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function viewAction()
+    /**
+     * @throws NotSupported
+     */
+    public function viewAction(): ViewModel
     {
         $person = $this->getAcademicEntity();
         if ($person === null) {
@@ -371,7 +397,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function cancelRequestAction()
+    public function cancelRequestAction(): ViewModel
     {
         $this->initAjax();
 
@@ -404,7 +430,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function removeRequestAction()
+    /**
+     * @throws OptimisticLockException
+     * @throws ORMException
+     * @throws \Doctrine\ORM\Exception\ORMException
+     */
+    public function removeRequestAction(): ViewModel
     {
         $this->initAjax();
 
@@ -441,7 +472,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
     }
 
-    public function searchAction()
+    public function searchAction(): ViewModel
     {
         $this->initAjax();
 
@@ -516,7 +547,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @return Academic|null
      */
-    private function getAcademicEntity()
+    private function getAcademicEntity(): ?Academic
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
             return null;
@@ -525,7 +556,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $academic = $this->getAuthentication()->getPersonObject();
 
         if (!($academic instanceof Academic)) {
-            return;
+            return null;
         }
 
         return $academic;
@@ -536,7 +567,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @return Order|null
      */
-    private function getOrderEntity()
+    private function getOrderEntity(): ?Order
     {
         $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
         if (!($order instanceof Order)) {
@@ -552,7 +583,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 )
             );
 
-            return;
+            return null;
         }
 
         return $order;
@@ -561,7 +592,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @return Request|null
      */
-    private function getRequestEntity()
+    private function getRequestEntity(): ?Request
     {
         $request = $this->getEntityById('LogisticsBundle\Entity\Request', 'request');
 
@@ -578,16 +609,17 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 )
             );
 
-            return;
+            return null;
         }
 
         return $request;
     }
 
     /**
+     * @param $articles
      * @return array
      */
-    private function getAllActiveUnits($articles)
+    private function getAllActiveUnits($articles): array
     {
         $unitsArray = array();
         foreach ($articles as $article) {
@@ -605,9 +637,11 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     }
 
     /**
+     * @param Academic $academic
      * @return array
+     * @throws NotSupported
      */
-    private function getOpenRequestsByAcademic(Academic $academic)
+    private function getOpenRequestsByAcademic(Academic $academic): array
     {
         $unhandledRequests = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Request')
@@ -621,6 +655,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @return array
+     * @throws NotSupported
      */
     private function getOpenRequestsByUnit($unit)
     {
@@ -641,6 +676,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @return array
+     * @throws NotSupported
      */
     private function findOverlappingAcceptedAmount($article, $order)
     {
@@ -659,6 +695,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @param Request $request
      * @return array
+     * @throws NotSupported
      */
     private function getAllOrdersByRequest($request)                  // Gets all orders except oldest (dummy order)
     {
@@ -671,13 +708,17 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return Order
+     * @return Order|null
+     * @throws NotSupported
      */
-    private function getLastOrderByRequest($request)                  // Gets the most recent order
+    private function getLastOrderByRequest(Request $request): ?Order                  // Gets the most recent order
     {
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
+        if (!$orders) {
+            return null;
+        }
         array_pop($orders);                                     // pop dummy order
         return current($orders);                                       // Gets the first element of an array
     }
@@ -685,8 +726,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     /**
      * @param Request $request
      * @return Order
+     * @throws NotSupported
      */
-    private function getFirstOrderByRequest($request)                // Gets the oldest order, by default an empty order
+    private function getFirstOrderByRequest(Request $request): Order                // Gets the oldest order, by default an empty order
     {
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
@@ -699,11 +741,11 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      * @param array $a2
      * @return array
      */
-    private function mergeArraysUnique(array $a1, array $a2)
+    private function mergeArraysUnique(array $a1, array $a2): array
     {
         foreach ($a2 as $e2) {
             if (!in_array($e2, $a1)) {
-                array_push($a1, $e2);
+                $a1[] = $e2;
             }
         }
         return $a1;
@@ -711,11 +753,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Order $order
+     * @param string $updator
      * @return Order
      */
-    private function recreateOrder(Order $order, string $updator)
+    private function recreateOrder(Order $order, string $updater): Order
     {
-        $new = new Order($order->getContact(), $order->getRequest(), $updator);
+        $new = new Order($order->getContact(), $order->getRequest(), $updater);
         $new->setCreator($order->getCreator());
         $new->setLocation($order->getLocation());
         $new->setDescription($order->getDescription());
@@ -733,6 +776,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
+     * @throws NotSupported
      */
     private function sendMailToLogi(Request $request) // Mail for Logistiek
     {
@@ -779,6 +823,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
+     * @throws NotSupported
      */
     private function sendAlertMails(Request $request) // Extra mails for specific items (ex. to Theokot)
     {
