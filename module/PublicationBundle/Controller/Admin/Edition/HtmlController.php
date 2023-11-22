@@ -25,7 +25,7 @@ class HtmlController extends \CommonBundle\Component\Controller\ActionController
         $paginator = $this->paginator()->createFromQuery(
             $this->getEntityManager()
                 ->getRepository('PublicationBundle\Entity\Edition\Html')
-                ->findAllByPublicationAndAcademicYearQuery($publication, $this->getCurrentAcademicYear()),
+                ->findAllByPublicationQuery($publication, $this->getCurrentAcademicYear()),
             $this->getParam('page')
         );
 
