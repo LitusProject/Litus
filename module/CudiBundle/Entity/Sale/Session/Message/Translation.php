@@ -43,7 +43,7 @@ class Translation
     /**
      * @var string The content of this translation
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $content;
 
