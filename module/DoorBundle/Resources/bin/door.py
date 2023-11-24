@@ -91,6 +91,7 @@ def allow(identification, academic):
         result = requests.post(API_HOST + '/api/door/log', data=params)
     except ConnectionError:
         log("Could not connect to Litus. Log entry not created.")
+        return
     
     # Status OK.
     if result.status_code == 200:
@@ -115,6 +116,7 @@ def authorize(identification):
     except ConnectionError:
         # No internet
         log("Could not connect to Litus. Failed to identify card.")
+        return
 
     if response.status_code == 200:
         person = response.json()['person']
