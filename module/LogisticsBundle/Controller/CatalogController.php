@@ -50,7 +50,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         // Sort orders according to last update date
         uasort($lastOrders, function ($a, $b) {
-            if ($a->getUpdateDate() == $b->getUpdateDate()) {
+            if ($a->getUpdateDate() === $b->getUpdateDate()) {
                 return 0;
             }
             return ($a->getUpdateDate() > $b->getUpdateDate())? -1: 1;
@@ -657,7 +657,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
      * @return array
      * @throws NotSupported
      */
-    private function getOpenRequestsByUnit($unit)
+    private function getOpenRequestsByUnit($unit): array
     {
         $activeOrders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
@@ -675,10 +675,12 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     }
 
     /**
-     * @return array
+     * @param Article $article
+     * @param Order $order
+     * @return int
      * @throws NotSupported
      */
-    private function findOverlappingAcceptedAmount($article, $order)
+    private function findOverlappingAcceptedAmount(Article $article, Order $order): int
     {
         $maps = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
@@ -694,30 +696,33 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return array
+     * @return array|bool
      * @throws NotSupported
      */
-    private function getAllOrdersByRequest($request)                  // Gets all orders except oldest (dummy order)
+    private function getAllOrdersByRequest(Request $request)                  // Gets all orders except oldest (dummy order)
     {
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
+        if (!$orders) {
+            return false;
+        }
         array_pop($orders);
         return $orders;
     }
 
     /**
      * @param Request $request
-     * @return Order|null
+     * @return Order|bool
      * @throws NotSupported
      */
-    private function getLastOrderByRequest(Request $request): ?Order                  // Gets the most recent order
+    private function getLastOrderByRequest(Request $request)                  // Gets the most recent order
     {
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
             ->findAllByRequest($request);
         if (!$orders) {
-            return null;
+            return false;
         }
         array_pop($orders);                                     // pop dummy order
         return current($orders);                                       // Gets the first element of an array
@@ -725,10 +730,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return Order
+     * @return Order|bool
      * @throws NotSupported
      */
-    private function getFirstOrderByRequest(Request $request): Order                // Gets the oldest order, by default an empty order
+    private function getFirstOrderByRequest(Request $request)                // Gets the oldest order, by default an empty order
     {
         $orders = $this->getEntityManager()
             ->getRepository('LogisticsBundle\Entity\Order')
@@ -753,7 +758,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Order $order
-     * @param string $updator
+     * @param string $updater
      * @return Order
      */
     private function recreateOrder(Order $order, string $updater): Order
@@ -768,7 +773,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $new->setName($order->getName());
         $new->setUnit($order->getUnit());
         $new->pending();
-        # In comment: should be fixed later on when adding van system,
+        # In comment: should be fixed later on when adding van system
         # $new->setNeedsRide($order->needsRide());
 
         return $new;
