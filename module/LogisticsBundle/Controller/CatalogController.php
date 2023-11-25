@@ -768,7 +768,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $new->setName($order->getName());
         $new->setUnit($order->getUnit());
         $new->pending();
-        # In comment: should be fixed later on when adding van system
+        # In comment: should be fixed later on when adding van system,
         # $new->setNeedsRide($order->needsRide());
 
         return $new;
