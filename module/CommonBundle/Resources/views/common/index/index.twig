@@ -156,15 +156,44 @@
                             <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
                             </div>
                         {% endfor %}
-                        {#                    {% if cudi.openingHours|length == 0 %}#}
-                        {#                        <b>{{ translate('Cudi is currently closed.') }}</b>#}
-                        {#                    {% endif %}#}
-                        {% for opening in cudi.openingHours %}
-                            <div>
-                                <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }} &emsp;{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
-                                <p style="float:right">{{ opening.getStart().format('H:i') }}
-                                    - {{ opening.getEnd().format('H:i') }}</p></div>
+
+                        <style>
+                            /* Used to keep the comment and hour aligned below each other, even if the day is not shown */
+                            .opening-hour-grid {
+                                display: grid;
+                                grid-template-columns: auto auto auto;
+                            }
+                            .opening-hour-grid p:nth-child(3) {
+                                justify-self: end; /* Align the third <p> to the end (right) */
+                            }
+                        </style>
+
+                        <!-- For multiple openingHours for the same day, the day is only displayed once -->
+                        {% for date, openingHours in cudi.dateToOpeningHoursMap %}
+                            <div class="opening-hour-grid">
+                            {% set isFirstOpeningHour = true %}
+                            {% for opening in openingHours %}
+                                {% if isFirstOpeningHour %}
+                                    <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
+                                    <p>{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
+                                    <p style="text-align: right">{{ opening.getStart().format('H:i') }} - {{ opening.getEnd().format('H:i') }}</p>
+                                    {% set isFirstOpeningHour = false %}
+                                {% else %}
+                                    <p></p>
+                                    <p>{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
+                                    <p style="text-align: right">{{ opening.getStart().format('H:i') }} - {{ opening.getEnd().format('H:i') }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            </div>
                         {% endfor %}
+
+
+{#                        {% for opening in cudi.openingHours %}#}
+{#                            <div>#}
+{#                                <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }} &emsp;{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>#}
+{#                                <p style="float:right">{{ opening.getStart().format('H:i') }}#}
+{#                                    - {{ opening.getEnd().format('H:i') }}</p></div>#}
+{#                        {% endfor %}#}
                     </div>
                 </div>
                 <div class="col-md-6 fadeElement rightFade">
@@ -174,6 +203,7 @@
                             <div style="white-space: pre-wrap;">{{ message.getTopContent(language) }}
                             </div>
                         {% endfor %}
+
                         {% for opening in shop.openingHours %}
                             <div>
                                 <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }} &emsp;{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>

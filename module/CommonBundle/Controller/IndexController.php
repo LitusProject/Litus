@@ -210,9 +210,17 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findNbBySession($cudi['currentSession']);
         }
 
-        $cudi['openingHours'] = $this->getEntityManager()
+
+        $openingHours = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findPeriodFromNow('P14D');
+
+        // dateToOpeningHoursMap used to only show date once, even if multiple openingHours exist for the date
+        foreach ($openingHours as $openingHour) {
+            $date = $openingHour->getStart()->format('d/m/Y');
+            $cudi['dateToOpeningHoursMap'][$date][] = $openingHour;
+        }
+
 
         $cudi['messages'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\Message')
