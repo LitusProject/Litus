@@ -164,7 +164,6 @@
                                 grid-template-columns: auto auto auto;
                             }
                         </style>
-
                         <!-- For multiple openingHours for the same day, the day is only displayed once -->
                         {% for date, openingHours in cudi.dateToOpeningHoursMap %}
                             <div class="opening-hour-grid">
@@ -181,6 +180,11 @@
                                     <p style="text-align: right">{{ opening.getStart().format('H:i') }} - {{ opening.getEnd().format('H:i') }}</p>
                                 {% endif %}
                             {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        {% for message in cudi.messages %}
+                            <div style="white-space: pre-wrap;">{{ message.getBottomContent(language) }}
                             </div>
                         {% endfor %}
 
@@ -201,12 +205,31 @@
                             </div>
                         {% endfor %}
 
-                        {% for opening in shop.openingHours %}
-                            <div>
-                                <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }} &emsp;{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
-                                <p style="float:right">{{ opening.getStartDate().format('H:i') }}
-                                    - {{ opening.getEndDate().format('H:i') }}</p></div>
+                        <!-- For multiple openingHours for the same day, the day is only displayed once -->
+                        {% for date, openingHours in shop.dateToOpeningHoursMap %}
+                            <div class="opening-hour-grid">
+                                {% set isFirstOpeningHour = true %}
+                                {% for opening in openingHours %}
+                                    {% if isFirstOpeningHour %}
+                                        <p style="display:inline-block">{{ dateLocalized(opening.getStart(), 'EEEE (d/M)')|capitalize }}</p>
+                                        <p>{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
+                                        <p style="text-align: right">{{ opening.getStart().format('H:i') }} - {{ opening.getEnd().format('H:i') }}</p>
+                                        {% set isFirstOpeningHour = false %}
+                                    {% else %}
+                                        <p></p>
+                                        <p>{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>
+                                        <p style="text-align: right">{{ opening.getStart().format('H:i') }} - {{ opening.getEnd().format('H:i') }}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         {% endfor %}
+
+{#                        {% for opening in shop.openingHours %}#}
+{#                            <div>#}
+{#                                <p style="display:inline-block">{{ dateLocalized(opening.getStartDate(), 'EEEE (d/M)')|capitalize }} &emsp;{% if opening.getComment(language) %} ({{ opening.getComment(language) }}) {% endif %}</p>#}
+{#                                <p style="float:right">{{ opening.getStartDate().format('H:i') }}#}
+{#                                    - {{ opening.getEndDate().format('H:i') }}</p></div>#}
+{#                        {% endfor %}#}
                         {% for message in shop.messages %}
                             <div style="white-space: pre-wrap;">{{ message.getBottomContent(language) }}
                             </div>

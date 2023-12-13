@@ -89,6 +89,14 @@ class OpeningHour
     }
 
     /**
+     * @return DateTime
+     */
+    public function getStart()
+    {
+        return $this->startDate;
+    }
+
+    /**
      * @param  DateTime $startDate
      * @return self
      */
@@ -103,6 +111,14 @@ class OpeningHour
      * @return DateTime
      */
     public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEnd()
     {
         return $this->endDate;
     }

@@ -210,17 +210,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findNbBySession($cudi['currentSession']);
         }
 
-
-        $openingHours = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
-            ->findPeriodFromNow('P14D');
-
-        // dateToOpeningHoursMap used to only show date once, even if multiple openingHours exist for the date
-        foreach ($openingHours as $openingHour) {
-            $date = $openingHour->getStart()->format('d/m/Y');
-            $cudi['dateToOpeningHoursMap'][$date][] = $openingHour;
-        }
-
+        $cudi['dateToOpeningHoursMap'] = $this->createOpeningHourMap(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
+                ->findPeriodFromNow('P14D')
+        );
 
         $cudi['messages'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\Message')
@@ -285,9 +279,11 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'messages' => $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Session\Message')
                 ->findAllActive(),
-            'openingHours' => $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Session\OpeningHour')
-                ->findPeriodFromNow('P14D'),
+            'dateToOpeningHoursMap' => $this->createOpeningHourMap(
+                $this->getEntityManager()
+                    ->getRepository('ShopBundle\Entity\Session\OpeningHour')
+                    ->findPeriodFromNow('P14D')
+            ),
         );
     }
 
@@ -408,5 +404,19 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $videos;
+    }
+
+    /**
+     * Converts an array of OpeningHour objects into a new array which maps a string representing the date
+     * to an array of all the DateTime objects that fall on that day.
+     */
+    private function createOpeningHourMap(array $openingHours) {
+        $dateToOpeningHoursMap = array();
+        foreach ($openingHours as $openingHour) {
+            $date = $openingHour->getStart()->format('d/m/Y');
+            $dateToOpeningHoursMap[$date][] = $openingHour;
+        }
+
+        return $dateToOpeningHoursMap;
     }
 }
