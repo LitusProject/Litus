@@ -104,6 +104,7 @@ class PdfController extends \CommonBundle\Component\Controller\ActionController\
             );
 
             rename($formData['file']['tmp_name'], $filePath . $fileName);
+            chmod($filePath.$fileName, 0744); // set permissions
 
             $this->getEntityManager()->persist($edition);
             $this->getEntityManager()->flush();
