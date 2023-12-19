@@ -46,7 +46,7 @@
         "oxcom/zend-twig": "^1.0",
         "packagelist/yuicompressor-bin": "^2.4",
         "sendinblue/api-v3-sdk": "8.4.2",
-        "sentry/sentry": "^1.9",
+        "sentry/sentry": "^4.2",
         "symfony/console": "^3.4",
         "symfony/event-dispatcher": "^4.4",
         "twitter/bootstrap": "^3.3",
