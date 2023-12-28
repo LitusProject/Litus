@@ -15,7 +15,7 @@ class Subscription extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['network_reception'] = $object->isAtNetworkReception();
+//        $data['network_reception'] = $object->isAtNetworkReception();
         // Consent should always be redone
         $data['consent'] = false;
         return $data;
@@ -27,7 +27,7 @@ class Subscription extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new SubscriptionEntity();
         }
         $object = $this->stdHydrate($data, $object, self::$stdKeys);
-        $object->setAtNetworkReception($data['network_reception']);
+//        $object->setAtNetworkReception($data['network_reception']);
         $object->setConsent($data['consent']);
 
         return $object;

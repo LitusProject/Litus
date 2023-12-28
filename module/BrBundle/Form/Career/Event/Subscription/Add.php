@@ -98,26 +98,26 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'phone_number',
-                'label'      => 'Phone Number',
-                'attributes' => array(
-                    'placeholder' => '+CCAAANNNNNN',
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'PhoneNumber'),
-                        ),
-                    ),
-                ),
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'       => 'text',
+//                'name'       => 'phone_number',
+//                'label'      => 'Phone Number',
+//                'attributes' => array(
+//                    'placeholder' => '+CCAAANNNNNN',
+//                ),
+//                'options'    => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                        'validators' => array(
+//                            array('name' => 'PhoneNumber'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
 
         $this->add(
             array(
@@ -162,7 +162,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'       => 'select',
                 'name'       => 'study',
-                'label'      => 'Study',
+                'label'      => 'Study (for bachelors, choose the study you would like to do)',
                 'required'   => true,
                 'attributes' => array(
                     'id'      => 'study',
@@ -201,7 +201,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'    => 'text',
                 'name'    => 'specialization',
-                'label'   => 'Specialization',
+                'label'   => 'Specialization (optional)',
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -254,14 +254,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             );
         }
 
-        $this->add(
-            array(
-                'type'     => 'checkbox',
-                'name'     => 'network_reception',
-                'label'    => 'I will participate in the network reception.',
-                'required' => true,
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'     => 'checkbox',
+//                'name'     => 'network_reception',
+//                'label'    => 'I will participate in the network reception.',
+//                'required' => true,
+//            )
+//        );
         $this->add(
             array(
                 'type'       => 'checkbox',

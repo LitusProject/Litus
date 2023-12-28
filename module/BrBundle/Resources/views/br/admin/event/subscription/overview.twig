@@ -33,7 +33,7 @@
                 <th>Name</th>
                 <th width="150px">University</th>
                 <th width="200px">Study</th>
-                <th width="180px">At network reception</th>
+{#                <th width="180px">At network reception</th>#}
                 <th width="150px">QR</th>
                 <th width="100px">Action</th>
             </tr>
@@ -46,7 +46,7 @@
                 <th>Name</th>
                 <th width="150px">University</th>
                 <th width="200px">Study</th>
-                <th width="180px">At network reception</th>
+{#                <th width="180px">At network reception</th>#}
                 <th width="150px">QR</th>
                 <th width="100px">Action</th>
             </tr>
@@ -55,7 +55,7 @@
                     <td>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</td>
                     <td>{{ subscription.getUniversityString() }}</td>
                     <td>{{ subscription.getStudyString() }}</td>
-                    <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>
+{#                    <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>#}
                     <td>{{subscription.getQrCode()}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_event_subscription', 'edit') %}
@@ -122,7 +122,7 @@
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.university + '</td>')
                             .append('<td>' + this.study + '</td>')
-                            .append('<td>' + this.reception + '</td>')
+                            // .append('<td>' + this.reception + '</td>')
                             .append('<td>' + this.qr + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
