@@ -315,7 +315,7 @@ class Subscription
     /**
      * @param string $university
      */
-    public function setOtherUniversity(string $university): void
+    public function setOtherUniversity($university): void
     {
         $this->otherUniversity = $university;
     }
@@ -358,7 +358,7 @@ class Subscription
     /**
      * @param string $study
      */
-    public function setOtherStudy(string $study): void
+    public function setOtherStudy($study): void
     {
         $this->otherStudy = $study;
     }
