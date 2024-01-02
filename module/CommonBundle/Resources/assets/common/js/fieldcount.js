@@ -9,7 +9,9 @@
     var methods = {
         init: function (options) {
             var label = $(this).closest('.form-group').find('label');
-            label.append('(<span class="count-label"></span>)');
+            if(label[0].innerHTML.indexOf('<span class="count-label"') == -1) {
+                label.append('(<span class="count-label"></span>)');
+            }
             _updateLabel($(this));
             $(this).unbind('propertychange keyup input paste change').bind('propertychange keyup input paste change', function() {
                 _updateLabel($(this));
@@ -82,6 +84,8 @@
 }) (jQuery);
 
 $(document).ready(function () {
+    // For some reason, this gets called twice, causing the .count fields to have the count displayed twice.
+    // This is fixed with a check if the element contains the string '<span class="count-label"'.
     $('.count').each(function() {
         $(this).fieldCount();
     });
