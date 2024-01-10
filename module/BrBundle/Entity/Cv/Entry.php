@@ -211,13 +211,6 @@ class Entry
     private $thesisSummary;
 
     /**
-     * @var string Field of interest.
-     *
-     * @ORM\Column(name="future_interest", type="string")
-     */
-    private $futureInterest;
-
-    /**
      * @var string Mobility inside europe.
      *
      * @ORM\Column(name="mobility_europe", type="string")
@@ -230,13 +223,6 @@ class Entry
      * @ORM\Column(name="mobility_world", type="string")
      */
     private $mobilityWorld;
-
-    /**
-     * @var string Career expectations.
-     *
-     * @ORM\Column(name="career_expectations", type="text")
-     */
-    private $careerExpectations;
 
     /**
      * @var string Hobbies.
@@ -859,29 +845,6 @@ class Entry
     }
 
     /**
-     * Retrieves the futureInterest of this entry.
-     *
-     * @return string
-     */
-    public function getFutureInterest()
-    {
-        return $this->futureInterest;
-    }
-
-    /**
-     * Changes the futureInterest of this cv entry to the given value.
-     *
-     * @param  string $futureInterest The new value
-     * @return Entry
-     */
-    public function setFutureInterest($futureInterest)
-    {
-        $this->futureInterest = $futureInterest;
-
-        return $this;
-    }
-
-    /**
      * Retrieves the mobilityEurope of this entry.
      *
      * @return string
@@ -923,29 +886,6 @@ class Entry
     public function setMobilityWorld($mobilityWorld)
     {
         $this->mobilityWorld = $mobilityWorld;
-
-        return $this;
-    }
-
-    /**
-     * Retrieves the careerExpectations of this entry.
-     *
-     * @return string
-     */
-    public function getCareerExpectations()
-    {
-        return $this->careerExpectations;
-    }
-
-    /**
-     * Changes the careerExpectations of this cv entry to the given value.
-     *
-     * @param  string $careerExpectations The new value
-     * @return Entry
-     */
-    public function setCareerExpectations($careerExpectations)
-    {
-        $this->careerExpectations = $careerExpectations;
 
         return $this;
     }

@@ -47,10 +47,8 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
             ->setLanguageExtra($data['languages_extra']['extra'])
             ->setComputerSkills($data['capabilities']['computer_skills'])
             ->setThesisSummary($data['thesis']['summary'])
-            ->setFutureInterest($data['future']['field_of_interest'])
             ->setMobilityEurope($data['future']['mobility_europe'])
             ->setMobilityWorld($data['future']['mobility_world'])
-            ->setCareerExpectations($data['future']['career_expectations'])
             ->setHobbies($data['profile']['hobbies'])
             ->setAbout($data['profile']['about']);
 
