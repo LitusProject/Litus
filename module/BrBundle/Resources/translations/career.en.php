@@ -22,7 +22,6 @@ return array(
     'Most Recent'                                                                                                                                                                      => 'Most Recent',
     'All'                                                                                                                                                                              => 'All',
     'View Site'                                                                                                                                                                        => 'View Site',
-    'Events'                                                                                                                                                                           => 'Events',
     'View Jobs'                                                                                                                                                                        => 'View Jobs',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.',

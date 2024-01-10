@@ -58,6 +58,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         $data = array();
         foreach ($articles as $article) {
             $codes = $this->getSubjectCode($entityManager, $academicYear, $article);
+            $articleData = array();
             if ($codes) {
                 foreach ($codes as $code) {
                     $articleData = array(

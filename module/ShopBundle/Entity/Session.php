@@ -232,6 +232,8 @@ class Session
      */
     public function addBan(Ban $ban) {
         $this->bans->add($ban);
+
+        return $this;
     }
 
     /**

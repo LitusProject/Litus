@@ -185,13 +185,6 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $formData['email'],
                             $formData['organization'],
                             $formData['identification'],
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
                         );
 
                         $this->getEntityManager()->persist($guestInfo);
@@ -796,6 +789,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneByQREvent($event, $qr)[0];
 
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }

@@ -182,7 +182,6 @@ class Order
 
 
     /**
-     * @param Academic $contact
      * @param Request  $request
      * @param string $updator
      */

@@ -13,6 +13,7 @@ use LogisticsBundle\Entity\Article;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap as Map;
 use LogisticsBundle\Entity\Request;
+use RuntimeException;
 
 /**
  * CatalogController

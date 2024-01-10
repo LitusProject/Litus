@@ -22,7 +22,6 @@ return array(
     'Most Recent'                                                                                                                                                                      => 'Meest Recent',
     'All'                                                                                                                                                                              => 'Alle',
     'View Site'                                                                                                                                                                        => 'Website bekijken',
-    'Events'                                                                                                                                                                           => 'Evenementen',
     'View Jobs'                                                                                                                                                                        => 'Jobs bekijken',
 
     'Welcome to the online BR platform! Here you can find interesting job or internship offers, check out the latest event info or just explore what kind of companies are out there.' => 'Welkom bij het online BR platform! Hier kan je op een eenvoudige wijze interessante job- en stage-aanbiedingen bekijken, de laatste informatie over bedrijfsevenementen terugvinden of gewoon eens het bedrijvenlandschap verkennen.',

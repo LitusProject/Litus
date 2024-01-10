@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Form\Admin\Article;
 
 use LogisticsBundle\Entity\Article;
+use RuntimeException;
 
 /**
  * The form used to add a new Article

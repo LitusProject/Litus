@@ -2,6 +2,7 @@
 
 namespace MailBundle\Controller\Admin;
 
+use GuzzleHttp\Client;
 use Laminas\View\Model\ViewModel;
 use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Entity\Preference;
@@ -189,7 +190,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
      */
     public function sibRemoveAttribute(string $name) {
         $api = $this->sibGetAPI();
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
 
         $response = $client->request('DELETE', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
             'body' => '{"type":"boolean"}',

@@ -37,6 +37,7 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
                 ->findAllByOrderOnBarcode($this->order);
         }
 
+        $items = array();
         foreach ($orderItems as $item) {
             $items[] = array(
                 'type' => 'text',

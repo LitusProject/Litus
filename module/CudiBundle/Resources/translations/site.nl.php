@@ -59,7 +59,6 @@ return array(
     'Disable catalog update mails'                                                                                                                                                => 'Disable catalog update mails',
 
     'Color'                                                                                                                                                                       => 'Color',
-    'Bought'                                                                                                                                                                      => 'Bought',
 
     'You sent out a mail for the selected retail!'                                                                                                                                => 'Er is een e-mail verzonden naar de verkoper!',
     'You canceled your interest in the selected retail!'                                                                                                                          => 'Je hebt je aanvraag voor de geselecteerde aanbieding verwijderd!',

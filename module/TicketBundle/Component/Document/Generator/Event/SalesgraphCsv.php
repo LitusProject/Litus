@@ -11,10 +11,9 @@ use Doctrine\ORM\EntityManager;
 class SalesgraphCsv extends \CommonBundle\Component\Document\Generator\Csv
 {
     /**
-     * @param EntityManager $entityManager
      * @param array         $salesGraphData
      */
-    public function __construct(EntityManager $entityManager, array $salesGraphData)
+    public function __construct(array $salesGraphData)
     {
         $headers = array('Timestamp', 'Amount Sold');
 

@@ -39,7 +39,6 @@ return array(
     'I want to receive my Ir.Reëel at CuDi'                                                                   => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail'                                                                  => 'Ik wil \'t Bakske ontvangen via e-mail',
     'T-shirt Size'                                                                                            => 'T-shirt Maat',
-    'Register'                                                                                                => 'Schrijf In',
     'Become a Member'                                                                                         => 'Lid Worden',
     'You haven\'t checked the option to become a member. Being a member has many advantages.'                 => 'Je hebt de optie om lid te worden niet aangeduid. Als lid geniet je echter veel voordelen.',
     'Are you sure you want to continue?'                                                                      => 'Ben je zeker dat je wil verdergaan?',

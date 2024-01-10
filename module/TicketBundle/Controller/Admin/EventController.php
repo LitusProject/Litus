@@ -274,7 +274,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $salesGraphData['dataset'] = $sales_accumulated;
 
         $file = new CsvFile();
-        $document = new SalesgraphCsvGenerator($this->getEntityManager(), $salesGraphData);
+        $document = new SalesgraphCsvGenerator($salesGraphData);
         $document->generateDocument($file);
 
         $now = new DateTime();

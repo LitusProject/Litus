@@ -110,12 +110,12 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
                         if ($article->getUnit() === $reviewingUnit) {
                             $booking = new OrderArticleMap($newOrder, $article, $amount, $oldAmount, $comment);
-                            if ($oldAmount == $formValue) {
+                            if ($oldAmount == $amount) {
                                 $booking->setStatus('goedgekeurd');
                             } else {
                                 $booking->setStatus('herzien');
                             }
-                            $total += $formValue - $oldAmount;
+                            $total += $amount - $oldAmount;
                         } else {
                             $booking = new OrderArticleMap($newOrder, $article, $oldAmount, $oldAmount);
                         }

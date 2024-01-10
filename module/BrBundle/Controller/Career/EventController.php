@@ -275,7 +275,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-       
+       $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
@@ -331,6 +331,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('BrBundle\Entity\Event\Visitor')
                     ->findByEventAndQr($event, $qr);
 
+                $color = null;
+                $textColor = null;
                 if ($visitor == null) {
                     // If there is no such result, then the person must be entering
                     $entry = true;
@@ -369,7 +371,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                         'entry'        => $entry,
                         'firstTime'    => ($previousVisits == null),
                         'color'        => $color,
-                        'textColor'    => $textColor
+                        'textColor'    => $textColor,
                     )
                 );
             }
@@ -414,11 +416,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
 
-        if ($person === null || !($person instanceof Corporate)) {
+        if (!($person instanceof Corporate)) {
             $this->flashMessenger()->error(
                 'Error',
                 "You are not logged in and can't view any matches!"
@@ -444,6 +447,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->getResult();
 
         $entries = array();
+        $gradesMapEnabled = null;
+        $gradesMap = null;
         if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
             $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('br.cv_grades_map_enabled');
@@ -455,7 +460,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             foreach ($matches as $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
 
-                if ($entry != false) {
+                if ($entry) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
                 }
             }
@@ -487,30 +492,33 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
 
-        $companyMap = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\CompanyMap')
-            ->findByEventAndCompany($event, $person->getCompany());
+        if ($person instanceof Corporate) {
+            $companyMap = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                ->findByEventAndCompany($event, $person->getCompany());
 
-        $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Connection')
-            ->findAllByCompanyMapQuery($companyMap)
-            ->getResult();
+            $matches = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Connection')
+                ->findAllByCompanyMapQuery($companyMap)
+                ->getResult();
 
-        foreach ($matches as $match) {
-            $subscription = $match->getSubscription();
-            $results[] = array(
-                $subscription->getFirstName(),
-                $subscription->getLastName(),
-                $subscription->getStudyString(),
-                $subscription->getSpecialization(),
-                $subscription->getEmail(),
-                $subscription->getPhoneNumber(),
-                $match->getNotes(),
-            );
+            foreach ($matches as $match) {
+                $subscription = $match->getSubscription();
+                $results[] = array(
+                    $subscription->getFirstName(),
+                    $subscription->getLastName(),
+                    $subscription->getStudyString(),
+                    $subscription->getSpecialization(),
+                    $subscription->getEmail(),
+                    $subscription->getPhoneNumber(),
+                    $match->getNotes(),
+                );
+            }
         }
         $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);

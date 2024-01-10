@@ -136,7 +136,14 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                     $profile = $form->hydrateObject();
                     $this->getEntityManager()->persist($profile);
                     $pmap = new ProfileCompanyMap($company, $profile);
+                } else {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        'Something went wrong.'
+                    );
+                    return new ViewModel();
                 }
+
                 $this->getEntityManager()->persist($pmap);
 
 //                // Add new features with their importances

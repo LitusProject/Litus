@@ -5,6 +5,7 @@ namespace BrBundle\Entity\Company;
 use BrBundle\Entity\User\Person\Corporate;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use RuntimeException;
 
 /**
  * This entity stores the node item.

@@ -536,7 +536,7 @@ class Ticket
             }
         }
 
-//        return $this;
+        return $this;
     }
 
     /**

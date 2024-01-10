@@ -1,6 +1,8 @@
 <?php
 
 namespace LogisticsBundle\Form\Admin\Article;
+use RuntimeException;
+
 /**
  * The form used to add articles via CSV .
  *

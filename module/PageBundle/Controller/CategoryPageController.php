@@ -122,6 +122,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
             ->findAll();
 
         $name = $this->getParam('name');
+        $page = null;
         foreach ($categories as $category) {
             foreach ($languages as $language) {
                 if ($name == $category->getName($language)) {

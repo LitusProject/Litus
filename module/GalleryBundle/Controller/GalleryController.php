@@ -225,7 +225,7 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return $photo;
     }
 
-    private function getEventEntityByPoster()
+    private function getAlbumEntityByPoster()
     {
         $album = $this->getEntityById('GalleryBundle\Entity\Album', 'name', 'poster');
 

@@ -4,8 +4,10 @@ namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\Connection;
+use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\ProfileStudentMap;
+use BrBundle\Entity\Match\Profile\StudentProfile;
 use BrBundle\Entity\Match\Wave;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
@@ -166,14 +168,14 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         // Get the correct form by profile type and check whether there already exists one of this type!
         if ($type == 'company') {
             foreach ($profiles as $p) {
-                if ($p instanceof Match\Profile\CompanyProfile) {
+                if ($p instanceof CompanyProfile) {
                     return new ViewModel();
                 }
             }
             $form = $this->getForm('br_career_match_company_add');
         } else {
             foreach ($profiles as $p) {
-                if ($p instanceof Match\Profile\StudentProfile) {
+                if ($p instanceof StudentProfile) {
                     return new ViewModel();
                 }
             }
@@ -197,10 +199,11 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $profile = null;
                 if ($type == 'company') {
-                    $profile = new Match\Profile\CompanyProfile();
+                    $profile = new CompanyProfile();
                 } elseif ($type == 'student') {
-                    $profile = new Match\Profile\StudentProfile();
+                    $profile = new StudentProfile();
                 }
                 $this->getEntityManager()->persist($profile);
 
@@ -296,15 +299,16 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         }
 
         // Get the correct form by profile type and check whether there already exists one of this type!
+        $profile = null;
         if ($type == 'company') {
             foreach ($profiles as $p) {
-                if ($p->getProfile() instanceof Match\Profile\CompanyProfile) {
+                if ($p->getProfile() instanceof CompanyProfile) {
                     $profile = $p->getProfile();
                 }
             }
         } else {
             foreach ($profiles as $p) {
-                if ($p->getProfile() instanceof Match\Profile\StudentProfile) {
+                if ($p->getProfile() instanceof StudentProfile) {
                     $profile = $p->getProfile();
                 }
             }
@@ -313,7 +317,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
         return new ViewModel(
             array(
                 'type'     => $type,
-                'features' => $profile->getFeatures()->toArray(),
+                'features' => $profile ? $profile->getFeatures()->toArray() : null,
             )
         );
     }
@@ -337,16 +341,17 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         $form = null;
         // Get the correct form by profile type and check whether there already exists one of this type!
+        $profile = null;
         if ($type == 'company') {
             foreach ($profiles as $p) {
-                if ($p->getProfile() instanceof Match\Profile\CompanyProfile) {
+                if ($p->getProfile() instanceof CompanyProfile) {
                     $profile = $p->getProfile();
                     $form = $this->getForm('br_career_match_company_edit', array('profile' => $profile));
                 }
             }
         } else {
             foreach ($profiles as $p) {
-                if ($p->getProfile() instanceof Match\Profile\StudentProfile) {
+                if ($p->getProfile() instanceof StudentProfile) {
                     $profile = $p->getProfile();
                     $form = $this->getForm('br_career_match_student_edit', array('profile' => $profile));
                 }
