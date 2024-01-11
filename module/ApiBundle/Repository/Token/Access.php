@@ -25,7 +25,7 @@ class Access extends \ApiBundle\Repository\Token
             ->where(
                 $query->expr()->andX(
                     $query->expr()->gt('a.expirationTime', ':now'),
-                    $query->expr()->gt('a.code', ':code')
+                    $query->expr()->eq('a.code', ':code')
                 )
             )
             ->setParameter('now', new DateTime())
