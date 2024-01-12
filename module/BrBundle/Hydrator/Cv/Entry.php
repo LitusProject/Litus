@@ -162,10 +162,8 @@ class Entry extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data['thesis']['summary'] = $object->getThesisSummary();
 
-        $data['future']['field_of_interest'] = $object->getFutureInterest();
         $data['future']['mobility_europe'] = $object->getMobilityEurope();
         $data['future']['mobility_world'] = $object->getMobilityWorld();
-        $data['future']['career_expectations'] = $object->getCareerExpectations();
 
         $data['profile']['hobbies'] = $object->getHobbies();
         $data['profile']['about'] = $object->getAbout();

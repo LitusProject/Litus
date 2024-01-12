@@ -322,7 +322,7 @@
 
             <fo:table margin-right="0mm">
 
-                <fo:table-column column-width="20mm"/>
+                <fo:table-column column-width="25mm"/>
                 <fo:table-column column-width="95mm"/>
                 <fo:table-column column-width="35mm"/>
 
