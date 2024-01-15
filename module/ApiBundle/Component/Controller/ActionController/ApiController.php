@@ -407,9 +407,18 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
      */
     protected function getAccessToken($field = 'access_token')
     {
-        $code = $this->getRequest()->getQuery($field);
-        if ($code === null && $this->getRequest()->isPost()) {
-            $code = $this->getRequest()->getPost($field);
+        $headers = $this->getRequest()->getHeaders();
+        $authheader = $headers->get("Authorization");
+        $code = null;
+        if (preg_match('/Bearer\s(\S+)/', $authheader->toString(), $matches)) {
+            $code = $matches[1];
+        }
+
+        if ($code === null) {
+            $code = $this->getRequest()->getQuery($field);
+            if ($code === null && $this->getRequest()->isPost()) {
+                $code = $this->getRequest()->getPost($field);
+            }
         }
 
         return $this->getEntityManager()
