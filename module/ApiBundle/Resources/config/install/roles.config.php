@@ -7,7 +7,9 @@ return array(
         ),
         'actions' => array(
             'api_oauth' => array(
-                'authorize', 'shibboleth', 'me'
+                'authorize', 'shibboleth'
+            ),'api_auth' => array(
+                'me',
             ),
         ),
     ),
