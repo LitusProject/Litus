@@ -49,6 +49,35 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         return $this->personAction();
     }
 
+    public function meAction()
+    {
+        $this->initJson();
+        $accessToken = $this->getAccessToken();
+        $person = null;
+        if ($accessToken === null) {
+            return $this->error(401, 'The access token is not valid');
+        }
+
+        $person = $accessToken->getPerson();
+
+
+        if ($person === null) {
+            return $this->error(404, 'The person was not found');
+        }
+
+        $result = array(
+            'username'  => $person->getUsername(),
+            'full_name' => $person->getFullName(),
+            'email'     => $person->getEmail(),
+        );
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result,
+            )
+        );
+    }
+
     /**
      * @return Person|null
      */
