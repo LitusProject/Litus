@@ -410,8 +410,10 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
         $headers = $this->getRequest()->getHeaders();
         $authheader = $headers->get("Authorization");
         $code = null;
-        if (preg_match('/Bearer\s(\S+)/', $authheader->toString(), $matches)) {
-            $code = $matches[1];
+        if ($authheader) {
+            if (preg_match('/Bearer\s(\S+)/', $authheader->getFieldValue(), $matches)) {
+                $code = $matches[1];
+            }
         }
 
         if ($code === null) {
