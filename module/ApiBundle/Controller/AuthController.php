@@ -53,7 +53,6 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     {
         $this->initJson();
         $accessToken = $this->getAccessToken();
-        $person = null;
         if ($accessToken === null) {
             return $this->error(401, 'The access token is not valid');
         }

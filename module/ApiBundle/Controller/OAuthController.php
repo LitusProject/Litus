@@ -292,6 +292,10 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 return $key;
             }
 
+            if (is_null($key)){
+                return $this->error(401, 'Unknown client_id');
+            }
+
             $accessToken = new AccessToken(
                 $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode()
