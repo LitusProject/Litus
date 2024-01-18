@@ -24,21 +24,21 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Restore PHP_CodeSniffer cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/phpcs
           key: ${{ runner.os }}-phpcs-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-phpcs-
 
       - name: Restore PHPStan cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/phpcs
           key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}
@@ -61,7 +61,7 @@ jobs:
             | cs2pr --graceful-warnings
 
       - name: Save PHP_CodeSniffer cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         if: always()
         with:
           path: ${{ runner.temp }}/phpcs
@@ -74,7 +74,7 @@ jobs:
         run: ./vendor/bin/phpstan analyse --error-format=github --no-progress
 
       - name: Save PHPStan cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         if: always()
         with:
           path: ${{ runner.temp }}/phpstan
