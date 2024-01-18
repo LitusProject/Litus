@@ -28,6 +28,27 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             );
         }
 
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $key = $this->getKey('client_id');
+            if ($key instanceof ViewModel) {
+                return $key;
+            }
+
+            $authorizationCode = new AuthorizationCode(
+                $this->getAuthentication()->getPersonObject(),
+                $key
+            );
+
+            $this->getEntityManager()->persist($authorizationCode);
+            $this->getEntityManager()->flush();
+
+            $this->redirect()->toUrl(
+                $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode() . '&state=' . $this->getRequest()->getQuery('state')
+            );
+
+            return new ViewModel();
+        }
+
         $this->getSessionContainer()->key = $this->getRequest()->getQuery('client_id');
 
         $form = $this->getForm('common_auth_login');
