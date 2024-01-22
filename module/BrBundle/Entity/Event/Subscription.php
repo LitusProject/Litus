@@ -290,7 +290,7 @@ class Subscription
      */
     public function getOtherUniversity(): string
     {
-        return $this->otherUniversity;
+        return $this->otherUniversity ?? '';
     }
 
     /**
@@ -333,7 +333,7 @@ class Subscription
      */
     public function getOtherStudy(): string
     {
-        return $this->otherStudy;
+        return $this->otherStudy ?? '';
     }
 
     /**
