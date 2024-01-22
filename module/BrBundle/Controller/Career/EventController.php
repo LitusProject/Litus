@@ -135,8 +135,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $form = $this->getForm('br_career_event_subscription_add', array('event' => $event));
 
         if ($person instanceof Academic) {
-            //TODO: Check for double subscriptions??
-
             $data = array();
             $data['first_name'] = $person->getFirstName();
             $data['last_name'] = $person->getLastName();
@@ -148,6 +146,38 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $form_data = $form->getData();
+                $existing_subscription = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\Subscription')
+                    ->findOneBy(array(
+                            'event' => $event->getId(),
+                            'firstName' => $form_data['first_name'],
+                            'lastName' => $form_data['last_name'],
+                            'email' => $form_data['email'],
+                        )
+                    );
+
+                if ($existing_subscription) {
+                    $this->flashMessenger()->success(
+                        'Error',
+                        'You have already subscribed for this event!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'br_career_event',
+                        array(
+                            'action' => 'view',
+                            'id' => $event->getId(),
+                        )
+                    );
+
+                    return new ViewModel(
+                        array(
+                            'event' => $event,
+                        )
+                    );
+                }
+
                 $subscription = $form->hydrateObject();
                 $subscription->setEvent($event);
                 $this->getEntityManager()->persist($subscription);
