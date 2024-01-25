@@ -648,6 +648,7 @@ abstract class Person implements RoleAware
             $code = new Code($code, $time);
             $entityManager->persist($code);
             $this->setCode($code);
+            $entityManager->flush();
 
             $language = $this->getLanguage();
             if ($language === null) {
