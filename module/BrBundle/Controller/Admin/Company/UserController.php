@@ -64,7 +64,8 @@ class UserController extends \CommonBundle\Component\Controller\ActionController
                         $this->getEntityManager(),
                         $this->getMailTransport(),
                         false,
-                        'br.account_activated_mail'
+                        'br.account_activated_mail',
+                        86400 * 90,
                     );
                 }
 

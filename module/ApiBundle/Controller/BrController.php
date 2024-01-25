@@ -348,13 +348,15 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             }
 
         }
-        $person->activate(
-            $this->getEntityManager(),
-            $this->getMailTransport(),
-            false,
-            'br.account_activated_mail',
-            86400 * 30
-        );
+
+// To activate the person automatically on creation, use this:
+//        $person->activate(
+//            $this->getEntityManager(),
+//            $this->getMailTransport(),
+//            false,
+//            'br.account_activated_mail',
+//            86400 * 90
+//        );
 
         return new ViewModel(
             array(
