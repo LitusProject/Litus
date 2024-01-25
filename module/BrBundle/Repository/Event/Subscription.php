@@ -21,6 +21,7 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->eq('s.event', ':event')
             )
             ->setParameter('event', $event->getId())
+            ->orderBy('s.id')
             ->getQuery();
     }
 
@@ -37,6 +38,7 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->setParameter('event', $event->getId())
             ->setParameter('id', $id)
+            ->orderBy('s.id')
             ->getQuery();
     }
 

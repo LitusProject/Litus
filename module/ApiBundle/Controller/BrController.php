@@ -401,7 +401,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      *
      * URL: vtk.be/api/br/getSubscriptions?key=apiKey&event=eventId&page=pageNumber&length=pageLength
      * headers:
-     *      Event: eventId
+     *      Event: eventId (same as event param) (optional)
      *      Last-ID: lastId (optional)
      * query:
      *      key=apiKey
