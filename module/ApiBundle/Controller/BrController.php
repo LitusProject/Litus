@@ -400,7 +400,14 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
      *
      * URL: vtk.be/api/br/getSubscriptions?key=apiKey&event=eventId&page=pageNumber&length=pageLength
-     * headers: Event: 22
+     * headers:
+     *      Event: eventId
+     *      Last-ID: lastId (optional)
+     * query:
+     *      key=apiKey
+     *      event=eventId (same as Event header) (optional)
+     *      page=pageNumber (optional)
+     *      length=pageLength (optional)
      */
     public function getSubscriptionsAction()
     {
