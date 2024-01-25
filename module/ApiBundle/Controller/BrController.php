@@ -335,7 +335,6 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
             $error_mes = $e->getMessage();
-//            die($error_mes);
             if (str_contains($error_mes, "already exists") and str_contains($error_mes, "Key (username)")) {
                 return new ViewModel(
                     array(
