@@ -88,7 +88,7 @@ return array(
     array(
         'key'        => 'secretary.pull_price',
         'value'      => 'here comes the price',
-        'desription' => 'The price for the departmental pulls',
+        'description' => 'The price for the departmental pulls',
     ),
     array(
         'key'         => 'secretary.pull_confirmation_mail',
