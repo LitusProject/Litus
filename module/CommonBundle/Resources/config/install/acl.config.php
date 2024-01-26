@@ -36,10 +36,10 @@ return array(
             'manage', 'search',
         ),
         'common_admin_faq' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
         ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences'
+            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences',
         ),
         'common_session' => array(
             'manage', 'expire',

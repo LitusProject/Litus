@@ -7,7 +7,6 @@ use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use LogisticsBundle\Entity\Article as ArticleEntity;
-use LogisticsBundle\Entity\Order as OrderEntity;
 use LogisticsBundle\Entity\Request;
 
 /**
@@ -80,8 +79,6 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
-
-
 
     /**
      * @param  Person\Academic $creator

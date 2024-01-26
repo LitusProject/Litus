@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             array('name' => 'StringTrim'),
                         ),
                     ),
-                )
+                ),
             )
         );
 

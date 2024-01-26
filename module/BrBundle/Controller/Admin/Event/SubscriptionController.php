@@ -308,7 +308,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $headers->addHeaders(
             array(
                 'Content-Disposition' => 'attachment; filename="subscriptions_' . $event->getTitle() . '.csv"',
-                'Content-Type' => 'text/csv',
+                'Content-Type'        => 'text/csv',
             )
         );
         $this->getResponse()->setHeaders($headers);
@@ -373,7 +373,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );
@@ -444,7 +444,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );

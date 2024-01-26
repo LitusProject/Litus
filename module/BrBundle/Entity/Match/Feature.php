@@ -85,7 +85,7 @@ class Feature
      */
     public static $possibleTypes = array(
         'company' => 'Company',
-        'student' => 'Student'
+        'student' => 'Student',
     );
 
     public function __construct()

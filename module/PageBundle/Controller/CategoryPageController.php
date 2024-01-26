@@ -24,12 +24,12 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $big_frames = $this->getEntityManager()
-            ->getRepository("PageBundle\Entity\Frame")
+            ->getRepository('PageBundle\Entity\Frame')
             ->findAllActiveBigFrames($page)
             ->getResult();
 
         $small_frames = $this->getEntityManager()
-            ->getRepository("PageBundle\Entity\Frame")
+            ->getRepository('PageBundle\Entity\Frame')
             ->findAllActiveSmallFrames($page)
             ->getResult();
 
@@ -41,7 +41,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
 
             if ($frame->getLinkTo() instanceof Page) {
                 $frame_data['linkto_type'] = 'page';
-            } else if ($frame->getLinkTo() instanceof Link) {
+            } elseif ($frame->getLinkTo() instanceof Link) {
                 $frame_data['linkto_type'] = 'link';
             }
 
@@ -55,13 +55,13 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
 
             if ($frame->hasDescription()) {
                 $frame_data['frame_type'] = 'Small Frame with Description';
-            } else if ($frame->hasPoster()) {
+            } elseif ($frame->hasPoster()) {
                 $frame_data['frame_type'] = 'Small Frame with Poster';
             }
 
             if ($frame->getLinkTo() instanceof Page) {
                 $frame_data['linkto_type'] = 'page';
-            } else if ($frame->getLinkTo() instanceof Link) {
+            } elseif ($frame->getLinkTo() instanceof Link) {
                 $frame_data['linkto_type'] = 'link';
             }
 
@@ -86,8 +86,8 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('page.frame_poster_path') . '/';
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.frame_poster_path') . '/';
 
         $headers = new Headers();
         $headers->addHeaders(

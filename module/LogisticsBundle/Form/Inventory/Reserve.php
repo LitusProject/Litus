@@ -2,8 +2,6 @@
 
 namespace LogisticsBundle\Form\Inventory;
 
-use LogisticsBundle\Entity\Inventory as InventoryEntity;
-
 /**
  * Edit Inventory
  *
@@ -18,11 +16,11 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'reserve',
-                'label'    => 'Reserve',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'reserve',
+                'label'      => 'Reserve',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -30,8 +28,8 @@ class Reserve extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'reserve',
-                    'placeholder'  => 'Geef het aantal items in om te reserveren',
+                    'id'          => 'reserve',
+                    'placeholder' => 'Geef het aantal items in om te reserveren',
                 ),
             )
         );

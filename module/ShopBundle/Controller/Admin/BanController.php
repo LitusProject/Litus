@@ -2,9 +2,7 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use DateTime;
 use Laminas\View\Model\ViewModel;
-use ShopBundle\Repository\Reservation\Ban;
 use ShopBundle\Entity\Reservation\Ban as BanEntity;
 
 /**
@@ -152,7 +150,7 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
             $item->id = $ban->getPerson()->getId();
             $item->name = $ban->getPerson()->getFullName();
             $item->startTimestamp = $ban->getStartTimestamp()->format('d/m/Y H:i');
-            $item->endTimestamp = $ban->getEndTimestamp() ? $ban->getEndTimestamp()->format('d/m/Y H:i') : "";
+            $item->endTimestamp = $ban->getEndTimestamp() ? $ban->getEndTimestamp()->format('d/m/Y H:i') : '';
             $result[] = $item;
         }
 

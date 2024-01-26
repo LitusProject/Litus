@@ -113,21 +113,21 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'allWaves'   => $allWaves,
-                'matches'    => $matches ?? null,
-                'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'   => $sp,
-                'needs_cp'   => $cp,
-                'bannerText' => $bannerText,
-                'academicYear' => $this->getCurrentAcademicYear()->getCode(),
+                'allWaves'           => $allWaves,
+                'matches'            => $matches ?? null,
+                'lastUpdate'         => new \DateTime(), // TODO!!
+                'needs_sp'           => $sp,
+                'needs_cp'           => $cp,
+                'bannerText'         => $bannerText,
+                'academicYear'       => $this->getCurrentAcademicYear()->getCode(),
                 'academicYearObject' => $this->getCurrentAcademicYear(),
-                'entityManager' => $this->getEntityManager(),
-                'gradesMapEnabled' => $gradesMapEnabled,
-                'gradesMap'        => $gradesMap,
-                'profilePath'      => $this->getEntityManager()
+                'entityManager'      => $this->getEntityManager(),
+                'gradesMapEnabled'   => $gradesMapEnabled,
+                'gradesMap'          => $gradesMap,
+                'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'entries'       => $entries,
+                'entries'            => $entries,
             )
         );
     }
@@ -241,7 +241,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                         'br_corporate_match',
                         array(
                             'action' => 'addProfile',
-                            'type'   => 'student'
+                            'type'   => 'student',
                         )
                     );
                 } elseif ($type == 'student' && $cp) {
@@ -249,7 +249,7 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
                         'br_corporate_match',
                         array(
                             'action' => 'addProfile',
-                            'type'   => 'company'
+                            'type'   => 'company',
                         )
                     );
                 } else {
@@ -511,21 +511,21 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
 
         return new ViewModel(
             array(
-                'allWaves'   => $allWaves,
-                'matches'    => $matches ?? null,
-                'lastUpdate' => new \DateTime(), // TODO!!
-                'needs_sp'   => $sp,
-                'needs_cp'   => $cp,
-                'bannerText' => $bannerText,
-                'academicYear' => $this->getCurrentAcademicYear()->getCode(),
+                'allWaves'           => $allWaves,
+                'matches'            => $matches ?? null,
+                'lastUpdate'         => new \DateTime(), // TODO!!
+                'needs_sp'           => $sp,
+                'needs_cp'           => $cp,
+                'bannerText'         => $bannerText,
+                'academicYear'       => $this->getCurrentAcademicYear()->getCode(),
                 'academicYearObject' => $this->getCurrentAcademicYear(),
-                'entityManager' => $this->getEntityManager(),
-                'gradesMapEnabled' => $gradesMapEnabled,
-                'gradesMap'        => $gradesMap,
-                'profilePath'      => $this->getEntityManager()
+                'entityManager'      => $this->getEntityManager(),
+                'gradesMapEnabled'   => $gradesMapEnabled,
+                'gradesMap'          => $gradesMap,
+                'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'entries'       => $entries,
+                'entries'            => $entries,
             )
         );
     }

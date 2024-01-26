@@ -25,8 +25,8 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
         $tiebreaker = $quiz->getTiebreaker();
         return new ViewModel(
             array(
-                'quiz'              => $quiz,
-                'tiebreaker'        => $tiebreaker,
+                'quiz'       => $quiz,
+                'tiebreaker' => $tiebreaker,
             )
         );
     }
@@ -38,13 +38,13 @@ class TiebreakerController extends \CommonBundle\Component\Controller\ActionCont
             return new ViewModel();
         }
 
-        if(!is_null($quiz->getTiebreaker())){
+        if (!is_null($quiz->getTiebreaker())) {
             $this->redirect()->toRoute(
                 'quiz_admin_tiebreaker',
                 array(
                     'action' => 'edit',
                     'quizid' => $quiz->getId(),
-                    'id' => $quiz->getTiebreaker()->getId(),
+                    'id'     => $quiz->getTiebreaker()->getId(),
                 )
             );
         }

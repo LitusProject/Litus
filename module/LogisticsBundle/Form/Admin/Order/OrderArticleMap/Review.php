@@ -2,8 +2,6 @@
 
 namespace LogisticsBundle\Form\Admin\Order\OrderArticleMap;
 
-use LogisticsBundle\Entity\Order\OrderArticleMap;
-
 /**
  * Edit OrderArticleMap
  *
@@ -24,19 +22,18 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
         parent::init();
 
         foreach ($this->articles as $mapping) {
-
             $this->add(
                 array(
-                    'type'     => 'text',
-                    'name'     => 'article-amount-' . $mapping->getId(),
-                    'label'    => 'Amount',
-                    'value'    => $mapping->getAmount(),
+                    'type'       => 'text',
+                    'name'       => 'article-amount-' . $mapping->getId(),
+                    'label'      => 'Amount',
+                    'value'      => $mapping->getAmount(),
                     'attributes' => array(
-                        'class'       => 'input-very-mini',
-                        'id'          => 'article-amount-' . $mapping->getId(),
+                        'class' => 'input-very-mini',
+                        'id'    => 'article-amount-' . $mapping->getId(),
                     ),
-                    'required' => true,
-                    'options'  => array(
+                    'required'   => true,
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),
@@ -51,15 +48,15 @@ class Review extends \CommonBundle\Component\Form\Admin\Form
 
             $this->add(
                 array(
-                    'type'     => 'textarea',
-                    'name'     => 'article-comment-' . $mapping->getId(),
-                    'label'    => 'Comment',
-                    'value'    => $mapping->getComment(),
+                    'type'       => 'textarea',
+                    'name'       => 'article-comment-' . $mapping->getId(),
+                    'label'      => 'Comment',
+                    'value'      => $mapping->getComment(),
                     'attributes' => array(
-                        'style'       => 'height: 30px;',
-                        'id'          => 'article-comment-' . $mapping->getId(),
+                        'style' => 'height: 30px;',
+                        'id'    => 'article-comment-' . $mapping->getId(),
                     ),
-                    'options'  => array(
+                    'options'    => array(
                         'input' => array(
                             'filters' => array(
                                 array('name' => 'StringTrim'),

@@ -64,7 +64,7 @@ class UrlValid extends \CommonBundle\Component\Validator\AbstractValidator
             return false;
         }
 
-        if(str_contains($value,'&') or str_contains($value,'+') or str_contains($value,'.') or str_contains($value,'#')){
+        if (str_contains($value, '&') or str_contains($value, '+') or str_contains($value, '.') or str_contains($value, '#')) {
             $this->error(self::NOT_VALID);
             return false;
         }

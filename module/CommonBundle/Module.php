@@ -33,7 +33,7 @@ class Module
                 MvcEvent::EVENT_RENDER_ERROR,
                 array(
                     $serviceManager->get('sentry_client'),
-                    'logMvcEvent'
+                    'logMvcEvent',
                 )
             );
 
@@ -51,7 +51,7 @@ class Module
             MvcEvent::EVENT_DISPATCH,
             array(
                 new InjectTemplateListener(),
-                'injectTemplate'
+                'injectTemplate',
             ),
             0
         );

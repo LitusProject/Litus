@@ -36,13 +36,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'textarea',
-                'name'    => 'additional_info',
-                'label'   => 'Additional Info',
+                'type'       => 'textarea',
+                'name'       => 'additional_info',
+                'label'      => 'Additional Info',
                 'attributes' => array(
-                    'style'    => 'height: 50px;',
+                    'style' => 'height: 50px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -54,10 +54,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'select',
-                'name'    => 'unit',
-                'label'   => 'Unit',
-                'options' => array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'options'    => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
@@ -86,11 +86,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'text',
-                'name'    => 'amount_owned',
-                'label'   => 'Amount Owned',
-                'required'=> true,
-                'options' => array(
+                'type'     => 'text',
+                'name'     => 'amount_owned',
+                'label'    => 'Amount Owned',
+                'required' => true,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -105,11 +105,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'text',
-                'name'    => 'amount_available',
-                'label'   => 'Amount Available',
-                'required'=> true,
-                'options' => array(
+                'type'     => 'text',
+                'name'     => 'amount_available',
+                'label'    => 'Amount Available',
+                'required' => true,
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -175,13 +175,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'textarea',
-                'name'    => 'internal_comment',
-                'label'   => 'Internal Comment',
+                'type'       => 'textarea',
+                'name'       => 'internal_comment',
+                'label'      => 'Internal Comment',
                 'attributes' => array(
-                    'style'    => 'height: 50px;',
+                    'style' => 'height: 50px;',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

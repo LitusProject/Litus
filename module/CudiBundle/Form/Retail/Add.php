@@ -49,7 +49,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'validators' => array(
                             array('name' => 'Price'),
-                            array('name' => 'MaximalRetailPrice')
+                            array('name' => 'MaximalRetailPrice'),
                         ),
                     ),
                 ),

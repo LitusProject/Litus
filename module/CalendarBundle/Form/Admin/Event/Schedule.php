@@ -20,4 +20,3 @@ class Schedule extends \CalendarBundle\Form\Admin\Event\Add
             ->remove('is_international');
     }
 }
-

@@ -4,11 +4,11 @@ namespace CommonBundle\Entity\User\Person;
 
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\PreferenceMapping;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CommonBundle\Entity\User\PreferenceMapping;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -243,7 +243,7 @@ class Academic extends \CommonBundle\Entity\User\Person
         $workgroup = false;
         if ($this->getAllUnits($academicYear)) {
             foreach ($this->getAllUnits($academicYear) as $unit) {
-                if ($unit->isWorkgroup()){
+                if ($unit->isWorkgroup()) {
                     $workgroup = true;
                 }
             }

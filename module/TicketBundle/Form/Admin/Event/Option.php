@@ -125,14 +125,14 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
         );
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'limit_per_person_option',
-                'label' => 'Limit of tickets per person for this option (0: no limit)',
-                'value'    => 0,
+                'type'       => 'text',
+                'name'       => 'limit_per_person_option',
+                'label'      => 'Limit of tickets per person for this option (0: no limit)',
+                'value'      => 0,
                 'attributes' => array(
                     'class' => 'maximum',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -146,9 +146,9 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
         );
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'visible',
-                'label' => 'Option is visible',
+                'type'     => 'checkbox',
+                'name'     => 'visible',
+                'label'    => 'Option is visible',
                 'required' => false,
             )
         );

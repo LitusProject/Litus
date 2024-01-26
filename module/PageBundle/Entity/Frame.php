@@ -2,13 +2,12 @@
 
 namespace PageBundle\Entity;
 
-
 use CommonBundle\Entity\General\Language;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Locale;
 use PageBundle\Entity\Frame\Translation;
 use PageBundle\Entity\Node\Page;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * This entity represents a frame in a CategoryPage.
@@ -160,14 +159,16 @@ class Frame
     /**
      * @return boolean
      */
-    public function doesLinkToPage(){
+    public function doesLinkToPage()
+    {
         return !is_null($this->linkToPage);
     }
 
     /**
      * @return boolean
      */
-    public function doesLinkToLink(){
+    public function doesLinkToLink()
+    {
         return !is_null($this->linkToLink);
     }
 
@@ -245,7 +246,7 @@ class Frame
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return Translation|null
      */
     public function getTranslation(Language $language = null, $allowFallback = true)
@@ -271,14 +272,14 @@ class Frame
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return string
      */
     public function getTitle(Language $language = null, $allowFallback = true)
     {
-        if(!is_null($this->linkToPage)){
+        if (!is_null($this->linkToPage)) {
             return $this->linkToPage->getTitle($language, $allowFallback);
-        } else if ((!is_null($this->linkToLink))){
+        } elseif ((!is_null($this->linkToLink))) {
             return $this->linkToLink->getName($language, $allowFallback);
         }
 
@@ -287,7 +288,7 @@ class Frame
 
     /**
      * @param Language|null $language
-     * @param boolean $allowFallback
+     * @param boolean       $allowFallback
      * @return string
      */
     public function getDescription(Language $language = null, $allowFallback = true)

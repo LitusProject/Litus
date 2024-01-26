@@ -83,8 +83,7 @@ class Booking
             ->addTo($person->getEmail(), $person->getFullName())
             ->setSubject($subject);
 
-        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('cudi.booking_mails_to_sysadmin')) {
             $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -174,8 +173,7 @@ class Booking
             ->addTo($person->getEmail(), $person->getFullName())
             ->setSubject($subject);
 
-        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('cudi.booking_mails_to_sysadmin')) {
             $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')
@@ -269,8 +267,7 @@ class Booking
             ->addTo($person->getEmail(), $person->getFullName())
             ->setSubject($subject);
 
-        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.booking_mails_to_sysadmin')){
+        if ($entityManager->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('cudi.booking_mails_to_sysadmin')) {
             $mail->addBcc(
                 $entityManager
                     ->getRepository('CommonBundle\Entity\General\Config')

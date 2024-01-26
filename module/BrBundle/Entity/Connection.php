@@ -220,7 +220,7 @@ class Connection
         foreach ($studentTraitMaps as $trait) {
             $studentTraits[] = array(
                 'id'         => $trait->getFeature()->getId(),
-                'importance' => $trait->getImportanceWorth()
+                'importance' => $trait->getImportanceWorth(),
             );
             $max += $trait->getImportanceWorth() / 100;
         }
@@ -229,7 +229,7 @@ class Connection
                 'id'         => $trait->getFeature()->getId(),
                 'bonusIds'   => $trait->getFeature()->getBonus(),
                 'malusIds'   => $trait->getFeature()->getMalus(),
-                'importance' => $trait->getImportanceWorth()
+                'importance' => $trait->getImportanceWorth(),
             );
             $max += $trait->getImportanceWorth() / 100;
         }

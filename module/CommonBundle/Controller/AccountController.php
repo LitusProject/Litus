@@ -158,18 +158,18 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         return new ViewModel(
             array(
-                'academicYear'          => $this->getCurrentAcademicYear(),
-                'organizationYear'      => $this->getCurrentAcademicYear(true),
-                'signatureEnabled'      => $signatureEnabled,
-                'metaData'              => $metaData,
-                'studies'               => $studies,
-                'subjects'              => $subjects,
-                'profilePath'           => $this->getEntityManager()
+                'academicYear'       => $this->getCurrentAcademicYear(),
+                'organizationYear'   => $this->getCurrentAcademicYear(true),
+                'signatureEnabled'   => $signatureEnabled,
+                'metaData'           => $metaData,
+                'studies'            => $studies,
+                'subjects'           => $subjects,
+                'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'profileForm'           => $profileForm,
-                'preferencesEnabled'    => $academic->isPraesidium($this->getCurrentAcademicYear()),
-                'preferenceMappings'    => $academic->getPreferenceMappings(),
+                'profileForm'        => $profileForm,
+                'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'preferenceMappings' => $academic->getPreferenceMappings(),
             )
         );
     }
@@ -205,7 +205,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 array(
                     'meta_data' => $metaData,
                 )
-
             );
         } else {
             $form = $this->getForm(
@@ -222,8 +221,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 ->getConfigValue('secretary.membership_article')
         );
         $isicMembership = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.isic_membership') == 1;
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('secretary.isic_membership') == 1;
         $isicRedirect = false;
         $isicOrder = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\IsicCard')
@@ -539,7 +538,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $enableSibApi = $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('mail.enable_sib_api');
-            if ($enableSibApi == "1") {
+            if ($enableSibApi == '1') {
                 $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
                 $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
 
@@ -649,8 +648,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             );
 
             $filePath = 'public' . $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('common.profile_path');
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.profile_path');
 
             if ($form->isValid()) {
                 $formData = $form->getData();
@@ -696,8 +695,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                         'result' => array(
                             'status'  => 'success',
                             'profile' => $this->getEntityManager()
-                                    ->getRepository('CommonBundle\Entity\General\Config')
-                                    ->getConfigValue('common.profile_path') . '/' . $newFileName,
+                                ->getRepository('CommonBundle\Entity\General\Config')
+                                ->getConfigValue('common.profile_path') . '/' . $newFileName,
                         ),
                     )
                 );
@@ -851,16 +850,17 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
      * Newly added sections in Litus admin are added to account preferences of academic with default value, and
      * removed sections in Litus admin are removed from account preferences of academic.
      *
-     * @param Academic $academic
+     * @param Academic        $academic
      * @param ArrayCollection $preferenceMappings
      * @param $sections
      * @return void
      */
-    private function syncPreferenceMappings($academic, $preferenceMappings, $preferences) {
+    private function syncPreferenceMappings($academic, $preferenceMappings, $preferences)
+    {
         if ($preferences != null) {
             foreach ($preferences as $section) {
                 // possible that new sections are added in admin that are not yet in academic's preferences -> add those with their default value
-                if (!($section->inPreferencesMappings($preferenceMappings))) {
+                if (!$section->inPreferencesMappings($preferenceMappings)) {
                     $prefToAdd = new PreferenceMapping($academic, $section, $section->getDefaultValue());
                     $this->getEntityManager()->persist($prefToAdd);
                     $this->getEntityManager()->flush();
@@ -868,10 +868,10 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             }
         }
 
-        if ($preferenceMappings != null ) {
+        if ($preferenceMappings != null) {
             foreach ($preferenceMappings as $preferenceMapping) {
                 // possible that sections are removed in admin that are still in academic's preferences -> remove those
-                if (!($preferenceMapping->inPreferences($preferences))) {
+                if (!$preferenceMapping->inPreferences($preferences)) {
                     $academic->removePreferenceMapping($preferenceMapping);
                     $this->getEntityManager()->remove($preferenceMapping);
                     $this->getEntityManager()->flush();
@@ -907,4 +907,3 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return sibApiHelperResponse::successful();
     }
 }
-

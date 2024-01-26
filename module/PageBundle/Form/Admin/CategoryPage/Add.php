@@ -25,12 +25,12 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'category',
-                'label' => 'Category',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'category',
+                'label'      => 'Category',
+                'required'   => true,
                 'attributes' => array(
-                    'id' => 'category',
+                    'id'      => 'category',
                     'options' => $this->createCategoriesArray(),
                 ),
             )
@@ -38,14 +38,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'edit_roles',
-                'label' => 'Edit Roles',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'edit_roles',
+                'label'      => 'Edit Roles',
+                'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
                 ),
-                'options' => array(
+                'options'    => array(
                     'options' => $this->createEditRolesArray(),
                 ),
             )
@@ -73,7 +73,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             $categorypage = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\CategoryPage')
                 ->findOneByCategory($category);
-            if(!$categorypage or $categorypage == $this->getCategoryPage()) {
+            if (!$categorypage or $categorypage == $this->getCategoryPage()) {
                 $categoryOptions[$category->getId()] = $category->getName();
             }
         }

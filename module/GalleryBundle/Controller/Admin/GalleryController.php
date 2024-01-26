@@ -2,7 +2,6 @@
 
 namespace GalleryBundle\Controller\Admin;
 
-use CalendarBundle\Entity\Node\Event;
 use GalleryBundle\Entity\Album;
 use GalleryBundle\Entity\Album\Photo;
 use Imagick;
@@ -215,7 +214,6 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
 
         $form = $this->getForm('gallery_album_poster');
         if ($this->getRequest()->isPost()) {
-
             $form->setData(
                 array_merge_recursive(
                     $this->getRequest()->getPost()->toArray(),

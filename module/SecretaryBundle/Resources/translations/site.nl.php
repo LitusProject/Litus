@@ -94,5 +94,5 @@ return array(
     'Food during event'                                                                                       => 'Eten tijdens het event',
     'I will participate in the network reception.'                                                            => 'Ik neem deel aan de netwerk receptie',
     'I consent that my personal information can be used within this event for necessary purposes.'            => 'Ik sta toe dat mijn persoonlijke informatie gebruikt kan worden tijdens het event voor noodzakelijke doeleinden',
-    'Register'                                                                                                => 'Registreer'
+    'Register'                                                                                                => 'Registreer',
 );

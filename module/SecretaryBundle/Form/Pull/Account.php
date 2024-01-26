@@ -3,11 +3,10 @@
 namespace SecretaryBundle\Form\Pull;
 
 use CommonBundle\Entity\User\Person;
-use Doctrine\Common\Collections\ArrayCollection;
 use LogicException;
 use RuntimeException;
 use TicketBundle\Entity\Event;
-Use Zend\Validator\Identical;
+use Zend\Validator\Identical;
 
 class Account extends \CommonBundle\Component\Form\Bootstrap\Form
 {
@@ -36,9 +35,9 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'fieldset',
-                'name' => 'spacer',
-                'label' => 'Departmental Pull',
+                'type'     => 'fieldset',
+                'name'     => 'spacer',
+                'label'    => 'Departmental Pull',
                 'elements' => array(// intentionally empty
                 ),
             )
@@ -49,14 +48,14 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
          */
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'pull',
-                'label' => 'Option',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'pull',
+                'label'      => 'Option',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->createPullArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
@@ -68,21 +67,21 @@ class Account extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'conditions',
+                'type'       => 'checkbox',
+                'name'       => 'conditions',
                 //                'label'      => 'I have read and accept the GDPR terms and condition specified above',
-                'label' => 'I consent that my information will be used to help you further with your order.',
+                'label'      => 'I consent that my information will be used to help you further with your order.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name' => 'identical',
+                                'name'    => 'identical',
                                 'options' => array(
-                                    'token' => true,
-                                    'strict' => false,
+                                    'token'    => true,
+                                    'strict'   => false,
                                     'messages' => array(
                                         Identical::NOT_SAME => 'You must agree to the terms and conditions.',
                                     ),

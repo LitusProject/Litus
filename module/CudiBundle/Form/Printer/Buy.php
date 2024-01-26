@@ -6,7 +6,7 @@ use CommonBundle\Entity\User\Person;
 use LogicException;
 use RuntimeException;
 use TicketBundle\Entity\Event;
-Use Zend\Validator\Identical;
+use Zend\Validator\Identical;
 
 class Buy extends \CommonBundle\Component\Form\Bootstrap\Form
 {

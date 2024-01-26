@@ -169,7 +169,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
                     'br_admin_match_profile',
                     array(
                         'action' => 'edit',
-                        'id'     => $profile->getId()
+                        'id'     => $profile->getId(),
                     )
                 );
 
@@ -288,8 +288,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('BrBundle\Entity\Match\Profile\CompanyProfile')
             ->findAll();
 
-        foreach ($allCompanyProfiles as $companyProfile)
-        {
+        foreach ($allCompanyProfiles as $companyProfile) {
             $matches = $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Connection')
                 ->findAllByProfile($companyProfile);
@@ -306,7 +305,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         $this->redirect()->toRoute(
             'br_admin_match_profile',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 
@@ -336,7 +335,7 @@ class ProfileController extends \CommonBundle\Component\Controller\ActionControl
         $this->redirect()->toRoute(
             'br_admin_match_profile',
             array(
-                'action' => 'manage'
+                'action' => 'manage',
             )
         );
 

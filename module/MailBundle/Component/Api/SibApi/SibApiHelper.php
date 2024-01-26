@@ -3,31 +3,33 @@
 namespace MailBundle\Component\Api\SibApi;
 
 use Doctrine\ORM\EntityManager;
+use Exception;
+use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\GuzzleException;
 use MailBundle\Controller\Admin\PreferenceController;
-use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Api;
-use GuzzleHttp\Client as HttpClient;
-use Exception;
+use SendinBlue\Client\Configuration;
 
 class SibApiHelper extends PreferenceController
 {
     private $config;
 
-    public function __construct(EntityManager $entityManager) {
+    public function __construct(EntityManager $entityManager)
+    {
         $api_key = $entityManager
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.sib_api');
         $this->config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $api_key);
     }
 
-    public function addAttribute(string $attributeName) {
+    public function addAttribute(string $attributeName)
+    {
         $attributesApiInstance = new Api\AttributesApi(
             new HttpClient(),
             $this->config
         );
 
-        $attributeCategory = "normal";
+        $attributeCategory = 'normal';
         $createAttribute = new \SendinBlue\Client\Model\CreateAttribute();
         $createAttribute->setType('boolean');
 
@@ -40,14 +42,15 @@ class SibApiHelper extends PreferenceController
         }
     }
 
-    public function deleteAttribute(string $attributeName) {
+    public function deleteAttribute(string $attributeName)
+    {
         $apiInstance = new Api\AttributesApi(
             new HttpClient(),
             $this->config
         );
 
         try {
-            $apiInstance->deleteAttribute("normal", $attributeName);
+            $apiInstance->deleteAttribute('normal', $attributeName);
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
             error_log('Exception when calling Sendinblue AttributesApi->deleteAttribute: ' . $e->getMessage());
@@ -55,19 +58,22 @@ class SibApiHelper extends PreferenceController
         }
     }
 
-    public function updateAttributeForAllContacts(string $attributeName, bool $value) {
+    public function updateAttributeForAllContacts(string $attributeName, bool $value)
+    {
         set_time_limit(3000);  // increase php timeout limit
         $emails = $this->getAllUserEmails();
-        foreach($emails as $email) {
+        foreach ($emails as $email) {
             $sibApiHelperResponse = $this->createOrUpdateContact($email, $attributeName, $value);
-            if (!$sibApiHelperResponse->success)
+            if (!$sibApiHelperResponse->success) {
                 return $sibApiHelperResponse;
+            }
         }
         set_time_limit(90); // set back to default php timeout limit
         return SibApiHelperResponse::successful();
     }
 
-    public function exportContacts() {
+    public function exportContacts()
+    {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
@@ -76,10 +82,13 @@ class SibApiHelper extends PreferenceController
         $preferences = $this->getEntityManager()
             ->getRepository('MailBundle\Entity\Preference')
             ->findAll();
-        $attributes = array_map(function ($preference) {
+        $attributes = array_map(
+            function ($preference) {
                 return $preference->getAttribute();
-            }, $preferences);
-        $data['exportAttributes'] =$attributes;
+            },
+            $preferences
+        );
+        $data['exportAttributes'] = $attributes;
         $requestContactExport = new \SendinBlue\Client\Model\RequestContactExport($data);
         $notifyUrl = $requestContactExport->getNotifyUrl();
 
@@ -92,10 +101,13 @@ class SibApiHelper extends PreferenceController
         }
     }
 
-    public function createOrUpdateContactWithMultipleAttributes(string $email, array $preferenceMappings, bool $value) {
+    public function createOrUpdateContactWithMultipleAttributes(string $email, array $preferenceMappings, bool $value)
+    {
         foreach ($preferenceMappings as $prefMap) {
             $response = $this->createOrUpdateContact($email, $prefMap->getPreference()->getAttribute(), $value);
-            if (!$response->success) return $response;
+            if (!$response->success) {
+                return $response;
+            }
         }
         return SibApiHelperResponse::successful();
     }
@@ -104,22 +116,23 @@ class SibApiHelper extends PreferenceController
      * Updates an attribute of a SendInBlue contact to a value, or leaves it unchanged if
      * the new value is the same as the old value.
      */
-    public function createOrUpdateContact(string $email, string $attributeName, bool $value) {
+    public function createOrUpdateContact(string $email, string $attributeName, bool $value)
+    {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
         );
 
-        $data["email"] = $email;
-        $data["attributes"] = array($attributeName => $value);
-        $data["updateEnabled"] = true;
+        $data['email'] = $email;
+        $data['attributes'] = array($attributeName => $value);
+        $data['updateEnabled'] = true;
         $createContact = new \SendinBlue\Client\Model\CreateContact($data);
 
         try {
             $apiInstance->createContact($createContact);
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
-            error_log("Exception when calling Sendinblue ContactsApi->createContact with data: Email: " . $email . ", Attribute: " . $attributeName . ", Value: " . $value . ", ErrorMessage: " . $e->getMessage());
+            error_log('Exception when calling Sendinblue ContactsApi->createContact with data: Email: ' . $email . ', Attribute: ' . $attributeName . ', Value: ' . $value . ', ErrorMessage: ' . $e->getMessage());
             return SibApiHelperResponse::unsuccessful($e);
         }
     }
@@ -130,11 +143,12 @@ class SibApiHelper extends PreferenceController
      * @return array
      * @throws GuzzleException
      */
-    private function getAllUserEmails() {
+    private function getAllUserEmails()
+    {
         $offset = 0;
         $limit = 1000;
         $emails = $this->getUserEmails($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
-        while (count($emails)%1000 == 0) { // take next thousand, as long as they exist
+        while (count($emails) % 1000 == 0) { // take next thousand, as long as they exist
             $offset += 1000;
             $emails = array_merge($emails, $this->getUserEmails($offset, $limit));
         }
@@ -144,8 +158,8 @@ class SibApiHelper extends PreferenceController
     /**
      * Returns an array containing all ids of SendInBlue contacts that are between $offset and $limit in the SendInBlue contact list.
      *
-     * @param int $offset
-     * @param int $limit
+     * @param integer $offset
+     * @param integer $limit
      * @return array
      * @throws GuzzleException
      */
@@ -153,13 +167,14 @@ class SibApiHelper extends PreferenceController
     {
         $batch = $this->getUserBatch($offset, $limit);
         if ($batch !== null) {
-            $emails = array_map(function ($item) {
-                return $item['email'];
-            }, $batch);
-            return $emails;
-        }
-        else {
-            throw new Exception("Users batch decoding failed.");
+            return array_map(
+                function ($item) {
+                    return $item['email'];
+                },
+                $batch
+            );
+        } else {
+            throw new Exception('Users batch decoding failed.');
         }
     }
 
@@ -167,7 +182,8 @@ class SibApiHelper extends PreferenceController
      * Returns a StreamInterface object which contains information of all SendInBlue contacts that are
      * between $offset and $limit in the SendInBlue contact list.
      */
-    private function getUserBatch(int $offset, int $limit) {
+    private function getUserBatch(int $offset, int $limit)
+    {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
@@ -189,21 +205,26 @@ class SibApiHelper extends PreferenceController
      * @param string $needle
      * @return array
      */
-    private function strPosAll($haystack, $needle) {
+    private function strPosAll($haystack, $needle)
+    {
         $s = 0;
         $i = 0;
-        while(is_integer($i)) {
+        while (is_integer($i)) {
             $i = mb_stripos($haystack, $needle, $s);
-            if(is_integer($i)) {
+            if (is_integer($i)) {
                 $aStrPos[] = $i;
                 $s = $i + mb_strlen($needle);
             }
         }
-        if(isset($aStrPos)) return $aStrPos;
-        else return array();
+        if (isset($aStrPos)) {
+            return $aStrPos;
+        } else {
+            return array();
+        }
     }
 
-    public function getContactDetails($id) {
+    public function getContactDetails($id)
+    {
         $apiInstance = new Api\ContactsApi(
             new HttpClient(),
             $this->config
@@ -216,5 +237,4 @@ class SibApiHelper extends PreferenceController
             error_log('Exception when calling ContactsApi->getContactInfo: ' . $e->getMessage());
         }
     }
-
 }

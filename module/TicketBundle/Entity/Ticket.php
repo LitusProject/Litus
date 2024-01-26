@@ -616,7 +616,7 @@ class Ticket
                 'ticket',
                 array('action' => 'qr',
                     'id'       => $event->getRandId(),
-                    'qr'     => $this->getQrCode()
+                    'qr'       => $this->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );
@@ -652,10 +652,12 @@ class Ticket
             ->setReplyTo($mailAddress, $mailName)
             ->addTo($this->getEmail(), $this->getFullName())
             ->setSubject($subject)
-            ->addBcc($entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('system_administrator_mail'),
-                'System Administrator')
+            ->addBcc(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
             ->addBcc($mailAddress);
 
         if (getenv('APPLICATION_ENV') != 'development') {

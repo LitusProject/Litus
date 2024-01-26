@@ -496,7 +496,7 @@ return array(
                 'defaults'    => array(
                     'controller' => 'br_career_match',
                     'action'     => 'overview',
-                    'type'       => 'student'
+                    'type'       => 'student',
                 ),
             ),
         ),
@@ -613,7 +613,7 @@ return array(
                 'defaults'    => array(
                     'controller' => 'br_corporate_match',
                     'action'     => 'overview',
-                    'type'       => 'company'
+                    'type'       => 'company',
                 ),
             ),
         ),

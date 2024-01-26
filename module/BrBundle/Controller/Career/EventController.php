@@ -7,9 +7,9 @@ use BrBundle\Entity\Event\Connection;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
-use CommonBundle\Entity\User\Person\Academic;
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\Mail\Message;
@@ -83,8 +83,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'hasGuide' => $hasGuide,
+                'event'        => $event,
+                'hasGuide'     => $hasGuide,
                 'hasBusschema' => $hasBusschema,
             )
         );
@@ -149,11 +149,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 $form_data = $form->getData();
                 $existing_subscription = $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Event\Subscription')
-                    ->findOneBy(array(
-                            'event' => $event->getId(),
+                    ->findOneBy(
+                        array(
+                            'event'     => $event->getId(),
                             'firstName' => $form_data['first_name'],
-                            'lastName' => $form_data['last_name'],
-                            'email' => $form_data['email'],
+                            'lastName'  => $form_data['last_name'],
+                            'email'     => $form_data['email'],
                         )
                     );
 
@@ -167,7 +168,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                         'br_career_event',
                         array(
                             'action' => 'view',
-                            'id' => $event->getId(),
+                            'id'     => $event->getId(),
                         )
                     );
 
@@ -244,7 +245,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'event'             => $event,
                 'locations'         => $locations,
                 'interestedMasters' => $interestedMasters,
-                'masters'           => Subscription::POSSIBLE_STUDIES
+                'masters'           => Subscription::POSSIBLE_STUDIES,
             )
         );
     }
@@ -264,8 +265,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'guide' => $guide,
+                'event'        => $event,
+                'guide'        => $guide,
                 'publicPdfDir' => $publicPdfDir,
             )
         );
@@ -286,8 +287,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'busschema' => $busschema,
+                'event'        => $event,
+                'busschema'    => $busschema,
                 'publicPdfDir' => $imageDir,
             )
         );
@@ -305,7 +306,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-       $person = null;
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
@@ -414,8 +415,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 ->fromRoute(
                     'br_career_event',
                     array('action' => 'qr',
-                        'id'    => $event->getId(),
-                        'code'     => $qr
+                        'id'       => $event->getId(),
+                        'code'     => $qr,
                     ),
                     array('force_canonical' => true)
                 )
@@ -498,21 +499,22 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event'   => $event,
-                'matches' => $matches,
-                'entityManager' => $this->getEntityManager(),
+                'event'              => $event,
+                'matches'            => $matches,
+                'entityManager'      => $this->getEntityManager(),
                 'academicYearObject' => $this->getCurrentAcademicYear(),
-                'gradesMapEnabled' => $gradesMapEnabled,
-                'gradesMap'        => $gradesMap,
-                'profilePath'      => $this->getEntityManager()
+                'gradesMapEnabled'   => $gradesMapEnabled,
+                'gradesMap'          => $gradesMap,
+                'profilePath'        => $this->getEntityManager()
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
-                'entries'       => $entries,
+                'entries'            => $entries,
             )
         );
     }
 
-    public function csvAction() {
+    public function csvAction()
+    {
         $file = new CsvFile();
         $heading = array('first_name', 'last_name', 'study', 'specialization', 'email', 'phone', 'notes');
         $results = array();
@@ -599,7 +601,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'result' => $old_note
+                'result' => $old_note,
             )
         );
     }
@@ -654,7 +656,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );

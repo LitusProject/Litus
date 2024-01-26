@@ -115,7 +115,7 @@ return array(
                     'id'       => '[a-zA-Z0-9_-]*',
                     'code'     => '[0-9]*',
                     'language' => '(en|nl)',
-                    'qr'  => '[a-zA-Z0-9_-]*',
+                    'qr'       => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'ticket',

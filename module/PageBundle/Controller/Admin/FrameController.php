@@ -3,12 +3,9 @@
 namespace PageBundle\Controller\Admin;
 
 use Imagick;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use PageBundle\Entity\CategoryPage;
 use PageBundle\Entity\Frame;
-use PageBundle\Entity\Link;
-use PageBundle\Entity\Node\Page;
 
 /**
  * FrameController
@@ -50,9 +47,9 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(false),
-                'category_page_id' => $category_page->getId(),
+                'category_page_id'  => $category_page->getId(),
             )
         );
     }
@@ -80,7 +77,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'page_admin_categorypage_frame',
                     array(
-                        'action' => 'manage',
+                        'action'           => 'manage',
                         'category_page_id' => $category_page->getId(),
                     )
                 );
@@ -91,7 +88,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'             => $form,
                 'category_page_id' => $category_page->getId(),
             )
         );
@@ -122,7 +119,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'page_admin_categorypage_frame',
                     array(
-                        'action' => 'manage',
+                        'action'           => 'manage',
                         'category_page_id' => $category_page->getId(),
                     )
                 );
@@ -133,8 +130,8 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form' => $form,
-                'frame' => $frame,
+                'form'             => $form,
+                'frame'            => $frame,
                 'category_page_id' => $category_page->getId(),
             )
         );
@@ -175,8 +172,8 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             $this->url()->fromRoute(
                 'page_admin_categorypage_frame',
                 array(
-                    'action' => 'upload',
-                    'frame_id'     => $frame->getId(),
+                    'action'           => 'upload',
+                    'frame_id'         => $frame->getId(),
                     'category_page_id' => $category_page->getId(),
                 )
             )
@@ -184,9 +181,9 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'frame' => $frame,
+                'frame'            => $frame,
                 'category_page_id' => $category_page->getId(),
-                'form'  => $form,
+                'form'             => $form,
             )
         );
     }
@@ -223,7 +220,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
                 $this->redirect()->toRoute(
                     'page_admin_categorypage_frame',
                     array(
-                        'action' => 'manage',
+                        'action'           => 'manage',
                         'category_page_id' => $this->getCategoryPageEntity()->getId(),
                     )
                 );
@@ -311,7 +308,7 @@ class FrameController extends \CommonBundle\Component\Controller\ActionControlle
             $this->redirect()->toRoute(
                 'page_admin_categorypage_frame',
                 array(
-                    'action' => 'manage',
+                    'action'           => 'manage',
                     'category_page_id' => $this->getCategoryPageEntity()->getId(),
                 )
             );

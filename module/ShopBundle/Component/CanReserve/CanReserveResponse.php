@@ -9,7 +9,7 @@ namespace ShopBundle\Component\CanReserve;
 class CanReserveResponse
 {
     /**
-     * @var bool
+     * @var boolean
      */
     private $canReserve;
 
@@ -21,7 +21,7 @@ class CanReserveResponse
     /**
      * CanReserveResponse constructor.
      *
-     * @param bool $canReserve
+     * @param boolean     $canReserve
      * @param string|null $reason
      */
     public function __construct(bool $canReserve, string $reason = null)
@@ -31,7 +31,7 @@ class CanReserveResponse
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function canReserve(): bool
     {

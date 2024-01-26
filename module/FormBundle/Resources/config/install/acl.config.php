@@ -3,7 +3,7 @@
 return array(
     'formbundle' => array(
         'form_admin_form' => array(
-            'add', 'delete', 'edit', 'manage', 'old', 'clear'
+            'add', 'delete', 'edit', 'manage', 'old', 'clear',
         ),
         'form_admin_group' => array(
             'add', 'delete', 'deleteForm', 'edit', 'forms', 'manage', 'old', 'sort',

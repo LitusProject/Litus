@@ -257,7 +257,8 @@ class Order
     /**
      * @return boolean
      */
-    public function isDelivered(){
+    public function isDelivered()
+    {
         return $this->isDelivered;
     }
 
@@ -266,7 +267,8 @@ class Order
      *
      * @return $this
      */
-    public function setDelivered($isDelivered){
+    public function setDelivered($isDelivered)
+    {
         $this->isDelivered = $isDelivered;
 
         return $this;

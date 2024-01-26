@@ -141,30 +141,30 @@ class Article
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
-        ''                       => '',
-        'allerlei'                  => 'Allerlei',
-        'archief'                   => 'Archief',
-        'banners&vlaggen'           => 'Banners & vlaggen',
-        'BR&Dev'                    => 'BR & Dev',
-        'cantus'                    => 'Cantus',
-        'decoratie'                 => 'Decoratie',
-        'elektriciteit'             => 'Elektriciteit',
-        'licht&geluid'              => 'Licht & geluid',
-        'fak'                       => 'Fak',
-        'keuken'                    => 'Keuken',
-        'kledij'                    => 'Kledij',
-        'kuisproducten'             => 'Kuisproducten',
-        'secrimateriaal'            => 'Secrimateriaal',
-        'the game'                  => 'The game',
-        'touw&tape'                 => 'Touw & tape',
-        'veiligheid&signalisatie'   => 'Veiligheid & signalisatie',
-        'verf'                      => 'Verf',
-        'vuur'                      => 'Vuur',
-        'werkmateriaal'             => 'Werkmateriaal',
+        ''                        => '',
+        'allerlei'                => 'Allerlei',
+        'archief'                 => 'Archief',
+        'banners&vlaggen'         => 'Banners & vlaggen',
+        'BR&Dev'                  => 'BR & Dev',
+        'cantus'                  => 'Cantus',
+        'decoratie'               => 'Decoratie',
+        'elektriciteit'           => 'Elektriciteit',
+        'licht&geluid'            => 'Licht & geluid',
+        'fak'                     => 'Fak',
+        'keuken'                  => 'Keuken',
+        'kledij'                  => 'Kledij',
+        'kuisproducten'           => 'Kuisproducten',
+        'secrimateriaal'          => 'Secrimateriaal',
+        'the game'                => 'The game',
+        'touw&tape'               => 'Touw & tape',
+        'veiligheid&signalisatie' => 'Veiligheid & signalisatie',
+        'verf'                    => 'Verf',
+        'vuur'                    => 'Vuur',
+        'werkmateriaal'           => 'Werkmateriaal',
 
         # Flesserke en EHBO: hier moet automatisch materiaal naar toe gebracht worden
-        'flesserke'                 => 'Flesserke',
-        'ehbo'                      => 'EHBO',
+        'flesserke'               => 'Flesserke',
+        'ehbo'                    => 'EHBO',
     );
 
     /**
@@ -172,10 +172,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'post'          => 'Post',
-        'praesidium'    => 'Praesidium',
-        'greatervtk'    => 'Greater VTK',
-        'members'       => 'Members',
+        'post'       => 'Post',
+        'praesidium' => 'Praesidium',
+        'greatervtk' => 'Greater VTK',
+        'members'    => 'Members',
     );
 
     /**
@@ -369,7 +369,7 @@ class Article
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isPostVisibility()
     {
@@ -377,7 +377,7 @@ class Article
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isPraesidiumVisibility()
     {
@@ -385,7 +385,7 @@ class Article
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isGreaterVtkVisibility()
     {
@@ -393,7 +393,7 @@ class Article
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isMemberVisibility()
     {

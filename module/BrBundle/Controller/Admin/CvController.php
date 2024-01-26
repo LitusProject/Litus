@@ -272,7 +272,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
      *
      * @return ViewModel
      */
-    public function synchronizeAction() {
+    public function synchronizeAction()
+    {
         $tmpFile = new TmpFile();
         $year = $this->getAcademicYear();
 
@@ -285,10 +286,10 @@ class CvController extends \BrBundle\Component\Controller\CvController
         $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
         $document->generate();
 
-        $filePath = "./public" . $this->getEntityManager()
+        $filePath = './public' . $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.cvbook_path') . '/';
-        $file = fopen($filePath . "cvbook-" . $year->getCode(true) . ".pdf", "w");
+        $file = fopen($filePath . 'cvbook-' . $year->getCode(true) . '.pdf', 'w');
         $result = fwrite($file, $tmpFile->getContent());  // will return false if failed
 
         if (!$result) {
@@ -296,8 +297,7 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 'Error',
                 'Something went wrong, the cv-book could not be synchronized!'
             );
-        }
-        else {
+        } else {
             $this->flashMessenger()->success(
                 'Success',
                 'The cv-book is now synchronized!'

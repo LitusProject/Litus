@@ -3,8 +3,8 @@
 namespace ShopBundle\Entity\Session\Message;
 
 use CommonBundle\Entity\General\Language;
-use ShopBundle\Entity\Session\Message;
 use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Session\Message;
 
 /**
  * This entity stores the node item.
@@ -54,9 +54,9 @@ class Translation
     private $bottomContent;
 
     /**
-     * @param Message $message
-     * @param Language    $language
-     * @param string      $content
+     * @param Message  $message
+     * @param Language $language
+     * @param string   $content
      */
     public function __construct(Message $message, Language $language, $topContent, $bottomContent)
     {

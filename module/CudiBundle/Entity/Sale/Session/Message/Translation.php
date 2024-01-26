@@ -4,7 +4,6 @@ namespace CudiBundle\Entity\Sale\Session\Message;
 
 use CommonBundle\Entity\General\Language;
 use CudiBundle\Entity\Sale\Session\Message;
-use CudiBundle\Entity\Sale\Session\OpeningHour;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,9 +47,9 @@ class Translation
     private $content;
 
     /**
-     * @param Message $message
-     * @param Language    $language
-     * @param string      $content
+     * @param Message  $message
+     * @param Language $language
+     * @param string   $content
      */
     public function __construct(Message $message, Language $language, $content)
     {

@@ -3,12 +3,10 @@
 namespace CudiBundle\Controller;
 
 use CommonBundle\Component\Controller\Exception\RuntimeException;
+use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
-use TicketBundle\Entity\Event;
 use TicketBundle\Entity\GuestInfo;
-use TicketBundle\Entity\Ticket;
-use Laminas\View\Model\ViewModel;
 
 class PrinterController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -50,7 +48,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                     $this->getEntityManager()->flush();
 
                     $numbers = array(
-                        'member' => 0,
+                        'member'     => 0,
                         'non_member' => 1,
                     );
 
@@ -93,12 +91,12 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
 
                     if ($person->isMember($this->getCurrentAcademicYear())) {
                         $numbers = array(
-                            'member' => 1,
+                            'member'     => 1,
                             'non_member' => 0,
                         );
                     } else {
                         $numbers = array(
-                            'member' => 0,
+                            'member'     => 0,
                             'non_member' => 1,
                         );
                     }
@@ -214,7 +212,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
             $ticket->setStatus('sold');
             $this->runPowershell($ticket);
 
-            $this->getSentryClient()->logMessage("Printer set sold, after powershell: " . $ticket->getId());
+            $this->getSentryClient()->logMessage('Printer set sold, after powershell: ' . $ticket->getId());
 
             $this->flashMessenger()->success(
                 'Success',
@@ -231,7 +229,8 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         return new ViewModel();
     }
 
-    private function generatePayLink($ticket) {
+    private function generatePayLink($ticket)
+    {
         $secretInfo = unserialize(
             $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('common.kbc_secret_info')
@@ -241,13 +240,13 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
         $url = 'https://vtk.be' . $this->url()->fromRoute(
-                'cudi_printer',
-                array(
-                    'action' => 'payed',
-                    'id'     => $ticket->getId(),
-                    'code'   => $ticket->getNumber(),
-                )
-            );
+            'cudi_printer',
+            array(
+                'action' => 'payed',
+                'id'     => $ticket->getId(),
+                'code'   => $ticket->getNumber(),
+            )
+        );
 
         $price = $ticket->getAmount() * 100;
 
@@ -314,7 +313,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.printer_uniflow_client_secret');
 
-        $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
+        $command = 'pwsh ' . ' ' . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
 
         try {
             $query = shell_exec("$command 2>&1");

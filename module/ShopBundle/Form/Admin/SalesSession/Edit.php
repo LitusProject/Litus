@@ -36,8 +36,8 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
                         'label' => $product->getName(),
                     ),
                     'attributes' => array(
-                        'min'   => '0',
-                        'max'   => '100',
+                        'min' => '0',
+                        'max' => '100',
                     ),
                 )
             );

@@ -2,9 +2,9 @@
 
 namespace MailBundle\Entity;
 
+use CommonBundle\Entity\User\PreferenceMapping;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use CommonBundle\Entity\User\PreferenceMapping;
 
 /**
  * This is the entity for a mailing preference.
@@ -46,7 +46,7 @@ class Preference
     private $attribute;
 
     /**
-     * @var bool The default preference value of this mailing preference for each user
+     * @var boolean The default preference value of this mailing preference for each user
      *
      * @ORM\Column(name="default_value", type="boolean")
      */
@@ -70,7 +70,8 @@ class Preference
 //    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false) {
 //    }
 
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     /**
@@ -92,7 +93,8 @@ class Preference
     /**
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
@@ -105,7 +107,7 @@ class Preference
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function getDefaultValue()
     {
@@ -137,7 +139,8 @@ class Preference
      *
      * @return self
      */
-    public function setDescription(string $description) {
+    public function setDescription(string $description)
+    {
         $this->description = $description;
 
         return $this;
@@ -156,7 +159,7 @@ class Preference
     }
 
     /**
-     * @param bool $defaultValue
+     * @param boolean $defaultValue
      *
      * @return self
      */
@@ -200,9 +203,10 @@ class Preference
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
-    public function inPreferencesMappings($preferenceMappingsToCheck) {
+    public function inPreferencesMappings($preferenceMappingsToCheck)
+    {
         foreach ($preferenceMappingsToCheck as $preferenceMapping) {
             if ($this->name == $preferenceMapping->getPreference()->getName()) {
                 return true;
@@ -210,5 +214,4 @@ class Preference
         }
         return false;
     }
-
 }

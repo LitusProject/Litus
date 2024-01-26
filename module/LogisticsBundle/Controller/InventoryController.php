@@ -2,9 +2,7 @@
 
 namespace LogisticsBundle\Controller;
 
-use DateTime;
 use Laminas\View\Model\ViewModel;
-use LogisticsBundle\Entity\Inventory;
 
 class InventoryController extends \LogisticsBundle\Component\Controller\LogisticsController
 {
@@ -201,7 +199,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
                             'id'     => $inventory->getId(),
                         )
                     );
-                } else if ($new_reserved < 0) {
+                } elseif ($new_reserved < 0) {
                     $this->flashMessenger()->error(
                         'Error',
                         'Not enough articles reserved to return!'
@@ -227,7 +225,7 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'      => $form,
                 'inventory' => $inventory,
             )
         );

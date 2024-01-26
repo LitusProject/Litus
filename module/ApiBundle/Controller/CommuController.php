@@ -11,7 +11,6 @@ use Laminas\View\Model\ViewModel;
  */
 class CommuController extends \ApiBundle\Component\Controller\ActionController\ApiController
 {
-
     /**
      * input: {
      *      "key": "api key",
@@ -42,15 +41,15 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
         foreach ($openingHours as $openingHour) {
             $count++;
             $result[] = array(
-                'start_date' => $openingHour->getStart()->format("Y-m-d H:i"),
-                'end_date' => $openingHour->getEnd()->format("Y-m-d H:i"),
+                'start_date' => $openingHour->getStart()->format('Y-m-d H:i'),
+                'end_date'   => $openingHour->getEnd()->format('Y-m-d H:i'),
             );
         }
 
         return new ViewModel(
             array(
                 'result' => (object)array(
-                    'status' => 'success',
+                    'status'        => 'success',
                     'opening_hours' => $result,
                 ),
             )
@@ -87,21 +86,22 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
             $processedEvent = array();
 
             $languages = $this->getEntityManager()
-                ->getRepository("CommonBundle\Entity\General\Language")
+                ->getRepository('CommonBundle\Entity\General\Language')
                 ->findAll();
             foreach ($languages as $language) {
                 $title = $event->getTitle($language);
                 $location = $event->getLocation($language);
                 $content = $event->getContent($language);
 
-                $processedEvent[$language->getAbbrev()] = ["title" => $title,
-                    "location" => $location,
-                    "content" => $content];
+                $processedEvent[$language->getAbbrev()] = array('title' => $title,
+                    'location'                                          => $location,
+                    'content'                                           => $content,
+                );
             }
-            $processedEvent["start_date"] = $event->getStartDate()->format("Y-m-d");
-            $processedEvent["start_hour"] = $event->getStartDate()->format("H:i");
-            $processedEvent["end_date"] = $event->getEndDate()->format("Y-m-d");
-            $processedEvent["end_hour"] = $event->getEndDate()->format("H:i");
+            $processedEvent['start_date'] = $event->getStartDate()->format('Y-m-d');
+            $processedEvent['start_hour'] = $event->getStartDate()->format('H:i');
+            $processedEvent['end_date'] = $event->getEndDate()->format('Y-m-d');
+            $processedEvent['end_hour'] = $event->getEndDate()->format('H:i');
 
             $result[] = $processedEvent;
         }

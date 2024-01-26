@@ -2,8 +2,6 @@
 
 namespace ShopBundle\Repository;
 
-use DateTime;
-
 /**
  * Reservation
  *

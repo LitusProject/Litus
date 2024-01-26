@@ -23,10 +23,10 @@ class Experience extends \CommonBundle\Component\Form\Fieldset
                 'required'   => true,
                 'attributes' => array(
                     'options' => array(
-                        'Internship' => 'Internship',
+                        'Internship'  => 'Internship',
                         'Job Student' => 'Job Student',
-                        'Volunteer'  => 'Volunteer',
-                        'Other'      => 'Other',
+                        'Volunteer'   => 'Volunteer',
+                        'Other'       => 'Other',
                     ),
                 ),
             )

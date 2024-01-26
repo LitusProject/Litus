@@ -27,11 +27,11 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'type'       => 'checkbox',
                     'name'       => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
                     'label'      => $day->format('l') . ' 10:30-18:00',
-                    'required' => true,
+                    'required'   => true,
                     'attributes' => array(
-                        'id'        => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
-                        'value'     => 1,
-                        'class'     => 'interval select' . $day->format('d'),
+                        'id'    => 'interval_10:30-18:00_' . $day->format('d/m/Y'),
+                        'value' => 1,
+                        'class' => 'interval select' . $day->format('d'),
                     ),
                 )
             );
@@ -43,9 +43,9 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'label'      => 'Shifts needed',
                     'required'   => false,
                     'attributes' => array(
-                        'id'        => 'shift_' . $day->format('d/m/Y'),
-                        'value'     => 1,
-                        'class'     => 'select' . $day->format('d'),
+                        'id'    => 'shift_' . $day->format('d/m/Y'),
+                        'value' => 1,
+                        'class' => 'select' . $day->format('d'),
                     ),
                 )
             );
@@ -62,11 +62,6 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
         $dt = new DateTime();                                                           // create DateTime object with current time
         $dt->setISODate($dt->format('o'), $dt->format('W') + 1);     // set object to Monday on next week
         $periods = new DatePeriod($dt, new DateInterval('P1D'), 4);   // get all 1day periods from Monday to +6 days
-        $days = iterator_to_array($periods);                                           // convert DatePeriod object to array
-        // $days[0] is Monday, ..., $days[3] is Thursday
-        // to format selected date do: $days[1]->format('Y-m-d');
-
-        return $days;
+        return iterator_to_array($periods);
     }
 }
-

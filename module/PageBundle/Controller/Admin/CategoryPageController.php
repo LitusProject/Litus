@@ -31,7 +31,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(false),
             )
         );
@@ -107,7 +107,7 @@ class CategoryPageController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form,
+                'form'         => $form,
                 'categorypage' => $page,
             )
         );

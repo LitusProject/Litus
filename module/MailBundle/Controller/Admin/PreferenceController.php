@@ -3,10 +3,10 @@
 namespace MailBundle\Controller\Admin;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Laminas\View\Model\ViewModel;
 use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Entity\Preference;
-use GuzzleHttp\Exception\GuzzleException;
 
 class PreferenceController extends \MailBundle\Component\Controller\AdminController
 {
@@ -23,8 +23,8 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
 
         return new ViewModel(
             array(
-                'preferences'         => $preferences,
-                'paginationControl'   => $this->paginator()->createControl(true),
+                'preferences'       => $preferences,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -64,7 +64,6 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
             );
 
             return new ViewModel();
-
         }
 
         return new ViewModel(
@@ -108,7 +107,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
 
         return new ViewModel(
             array(
-                'form'  => $form,
+                'form'       => $form,
                 'preference' => $preference,
             )
         );
@@ -131,7 +130,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
         $enableSibApi = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('mail.enable_sib_api');
-        if ($enableSibApi == "1") {
+        if ($enableSibApi == '1') {
             $sibApiHelper = new SibApiHelper($this->getEntityManager());
             $sibApiHelperResponse = $sibApiHelper->deleteAttribute($preference->getAttribute());
             if (!$sibApiHelperResponse->success) {
@@ -139,8 +138,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
                     'Error',
                     'Exception when calling Sendinblue AttributesApi->deleteAttribute: ' . $sibApiHelperResponse->exception->getMessage()
                 );
-            }
-            else {
+            } else {
                 $this->getEntityManager()->remove($preference);
                 $this->getEntityManager()->flush();
                 $this->flashMessenger()->error(
@@ -188,18 +186,22 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
      * @return void
      * @throws GuzzleException
      */
-    public function sibRemoveAttribute(string $name) {
+    public function sibRemoveAttribute(string $name)
+    {
 //        $api = $this->sibGetAPI();
         $client = new Client();
 
-        $response = $client->request('DELETE', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
-            'body' => '{"type":"boolean"}',
-            'headers' => [
-                'accept' => 'application/json',
-//                'api-key' => $api,
-                'content-type' => 'application/json',
-            ],
-        ]);
+        $response = $client->request(
+            'DELETE',
+            'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name,
+            array(
+                'body'    => '{"type":"boolean"}',
+                'headers' => array(
+                    'accept'       => 'application/json',
+            //                'api-key' => $api,
+                    'content-type' => 'application/json',
+                ),
+            )
+        );
     }
-
 }

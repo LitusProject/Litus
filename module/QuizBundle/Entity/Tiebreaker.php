@@ -97,7 +97,7 @@ class Tiebreaker
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getCorrectAnswer()
     {
@@ -105,7 +105,7 @@ class Tiebreaker
     }
 
     /**
-     * @param int $correctAnswer
+     * @param integer $correctAnswer
      * @return self
      */
     public function setCorrectAnswer(int $correctAnswer)

@@ -6,7 +6,6 @@ use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use CommonBundle\Entity\User\Person;
-use DateInterval;
 use DateTime;
 
 /**
@@ -327,8 +326,8 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
     }
 
     /**
-     * @param  Person $person
-     * @param int $marginInMinutes
+     * @param  Person  $person
+     * @param integer $marginInMinutes
      * @return array
      */
     public function findAllCurrentAndCudiTimeslotByPersonWithMargin(Person $person, int $marginInMinutes)

@@ -2,8 +2,8 @@
 
 namespace CudiBundle\Controller\Admin\Sale\Session;
 
-use DateTime;
 use CudiBundle\Entity\Sale\Session\OpeningHour;
+use DateTime;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -140,43 +140,43 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             if ($form->isValid()) {
                 $formData = $form->getData();
                 foreach ($formData as $formKey => $formValue) {
-                    $split = explode("_", $formKey);
+                    $split = explode('_', $formKey);
                     if ($split[0] == 'interval' && $formValue) {
                         $startHour = explode('-', $split[1])[0];
                         $endHour = explode('-', $split[1])[1];
                         $startDate = $split[2] . ' ' . $startHour;
                         $endDate = $split[2] . ' ' . $endHour;
 
-                        $reward = $startHour == '12:30'? 2: 1;
-                        $signoutDate = (DateTime::createFromFormat('d/m/Y', $split[2]))->modify('+1 day')->format('d/m/Y') . ' 00:00';
+                        $reward = $startHour == '12:30' ? 2 : 1;
+                        $signoutDate = DateTime::createFromFormat('d/m/Y', $split[2])->modify('+1 day')->format('d/m/Y') . ' 00:00';
 
                         $data = array(
                             // OPENING HOURS
-                            'start_date' => $startDate,
-                            'end_date' => $endDate,
+                            'start_date'        => $startDate,
+                            'end_date'          => $endDate,
                             // SHIFTS
-                            'name'                  => 'Boeken verkopen',
-                            'description'           => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
-                            'manager'               => false,
-                            'unit'                  => 1,
-                            'edit_roles'            => array('cursusdienst',),
-                            'event'                 => '',
-                            'location'              => 1,
-                            'nb_responsibles'       => 0,
-                            'nb_volunteers'         => $formData['volunteers_' . $startHour . '-' . $endHour . '_' . $split[2]],
-                            'nb_volunteers_min'     => $formData['volunteers-min_' . $startHour . '-' . $endHour . '_' . $split[2]],
-                            'reward'                => $reward,
-                            'handled_on_event'      => false,
-                            'ticket_needed'         => false,
-                            'points'                => 0,
+                            'name'              => 'Boeken verkopen',
+                            'description'       => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
+                            'manager'           => false,
+                            'unit'              => 1,
+                            'edit_roles'        => array('cursusdienst',),
+                            'event'             => '',
+                            'location'          => 1,
+                            'nb_responsibles'   => 0,
+                            'nb_volunteers'     => $formData['volunteers_' . $startHour . '-' . $endHour . '_' . $split[2]],
+                            'nb_volunteers_min' => $formData['volunteers-min_' . $startHour . '-' . $endHour . '_' . $split[2]],
+                            'reward'            => $reward,
+                            'handled_on_event'  => false,
+                            'ticket_needed'     => false,
+                            'points'            => 0,
                             // REGISTRATION SHIFTS
-                            'visible_date' => $now,
-                            'signout_date' => $signoutDate,
-                            'nb_registered' => $formData['nb-registered_' . $startHour . '-' . $endHour . '_' . $split[2]],
-                            'members_only' => false,
-                            'members_visible' => true,
+                            'visible_date'      => $now,
+                            'signout_date'      => $signoutDate,
+                            'nb_registered'     => $formData['nb-registered_' . $startHour . '-' . $endHour . '_' . $split[2]],
+                            'members_only'      => false,
+                            'members_visible'   => true,
                             'final_signin_date' => $startDate,
-                            'is_cudi_timeslot' => true,
+                            'is_cudi_timeslot'  => true,
                         );
 
                         // OPENING HOURS
@@ -229,8 +229,8 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'form'          => $form,
-                'nextMonday'    => $monday,
+                'form'       => $form,
+                'nextMonday' => $monday,
             )
         );
     }

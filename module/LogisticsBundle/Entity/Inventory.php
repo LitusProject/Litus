@@ -2,7 +2,6 @@
 
 namespace LogisticsBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,17 +32,17 @@ class Inventory
      * @var array The possible types of a category
      */
     public static $possibleCategories = array(
-        ''                  => '',
-        'Frisdrank'         => 'Frisdrank',
-        'Alcohol'           => 'Alcohol',
-        'Koffie & thee'     => 'Koffie & thee',
-        'Voedsel'           => 'Voedsel',
-        'Groenten & fruit'  => 'Groenten & fruit',
-        'Snacks'            => 'Snacks',
-        'Kruiden'           => 'Kruiden',
-        'Saus'              => 'Saus',
-        'Conserven'         => 'Conserven',
-        'Andere'            => 'Andere'
+        ''                 => '',
+        'Frisdrank'        => 'Frisdrank',
+        'Alcohol'          => 'Alcohol',
+        'Koffie & thee'    => 'Koffie & thee',
+        'Voedsel'          => 'Voedsel',
+        'Groenten & fruit' => 'Groenten & fruit',
+        'Snacks'           => 'Snacks',
+        'Kruiden'          => 'Kruiden',
+        'Saus'             => 'Saus',
+        'Conserven'        => 'Conserven',
+        'Andere'           => 'Andere',
     );
 
     /**
@@ -64,14 +63,14 @@ class Inventory
      * @var array The possible types of units
      */
     public static $possibleUnits = array(
-        ''          => '',
-        'kg'        => 'kg',
-        'g'         => 'g',
-        'l'         => 'l',
-        'cl'        => 'cl',
-        'ml'        => 'ml',
-        'stuks'     => 'stuks',
-        'zakjes'    => 'zakjes',
+        ''       => '',
+        'kg'     => 'kg',
+        'g'      => 'g',
+        'l'      => 'l',
+        'cl'     => 'cl',
+        'ml'     => 'ml',
+        'stuks'  => 'stuks',
+        'zakjes' => 'zakjes',
     );
 
     /**
@@ -131,7 +130,7 @@ class Inventory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -201,7 +200,7 @@ class Inventory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPerUnit()
     {
@@ -247,7 +246,7 @@ class Inventory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmount()
     {
@@ -286,7 +285,7 @@ class Inventory
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getReserved()
     {

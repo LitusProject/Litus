@@ -36,7 +36,7 @@ return array(
         'value'       => serialize(
             array(
                 'eu'     => 'Vul in VAT voor EU companies',
-                'non-eu' => 'Vul dit in VAT voor non-EU companies'
+                'non-eu' => 'Vul dit in VAT voor non-EU companies',
             )
         ),
         'description' => 'Explains what the VAT',
@@ -267,7 +267,7 @@ Example content of this section.
         'value'       => serialize(
             array(
                 'nl' => '* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
-                'en' => '* ?'
+                'en' => '* ?',
             )
         ),
         'description' => 'The standard auto discount text that is displayed on the creation of a new contract.',
@@ -302,7 +302,7 @@ Example content of this section.
         'value'       => 5,
         'description' => 'The amount of matches in a companies\' wave',
     ),
-            array(
+    array(
         'key'         => 'br.match_career_banner_text',
         'value'       => 'Hier komt nog mooie text van BR',
         'description' => 'banner text on career/match/overview',
@@ -317,7 +317,7 @@ Example content of this section.
         'value'       => serialize(
             array(
                 100 => 5,
-                200 => 3
+                200 => 3,
             )
         ),
         'description' => 'The maximum allowed features per importance value',
@@ -328,9 +328,9 @@ Example content of this section.
         'value'       => serialize(
             array(
                 'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
-                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
+                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".',
             )
-        )
+        ),
     ),
     array(
         'key'         => 'br.career_page_text',
@@ -412,7 +412,7 @@ Example content of this section.
                 ),
             )
         ),
-        'description' => 'The texts for the corporate page'
+        'description' => 'The texts for the corporate page',
     ),
     array(
         'key'         => 'br.communication_options',
@@ -452,7 +452,7 @@ Bestaand Bedrijf: {{ oldCompany }}.
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
             )
         ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication'
+        'description' => 'The mail sent when a duplicate date is chosen for a communication',
     ),
     array(
         'key'         => 'br.cv_grades_map_enabled',
@@ -492,7 +492,7 @@ Een student heeft zijn data doorgestuurd naar jou op het Matching Software platf
 -- Dit is een automatisch gegenereerde email --',
             )
         ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication'
+        'description' => 'The mail sent when a duplicate date is chosen for a communication',
     ),
     array(
         'key'         => 'br.match_wave_companies_body',
@@ -504,7 +504,7 @@ Er zijn nieuwe matches!
 -- Dit is een automatisch gegenereerde email --',
             )
         ),
-        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used'
+        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used',
     ),
     array(
         'key'         => 'br.match_wave_students_body',
@@ -516,7 +516,7 @@ Er zijn nieuwe matches!
 -- Dit is een automatisch gegenereerde email --',
             )
         ),
-        'description' => 'The mail sent to all students that have matches, when the button in the admin is used'
+        'description' => 'The mail sent to all students that have matches, when the button in the admin is used',
     ),
     array(
         'key'         => 'br.match_sector_feature_max_points',
@@ -552,7 +552,7 @@ Er zijn nieuwe matches!
                 'faculty of bio engineering'        => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
                 'faculty of business and economics' => 'rgb(106, 206, 226)',//'rgb(180, 202, 202)',
                 'faculty of engineering technology' => 'rgb(64, 191, 96)',//'rgb(255, 255, 143)',
-                'other'                             => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
+                'other'                             => 'rgb(230, 25, 107)',//'rgb(255, 248, 233)'
             )
         ),
         'description' => 'The colors associated with a specific study in RGB values',
@@ -576,7 +576,7 @@ Er zijn nieuwe matches!
                 'faculty of bio engineering'        => 'white',
                 'faculty of business and economics' => 'black',
                 'faculty of engineering technology' => 'white',
-                'other'                             => 'white'
+                'other'                             => 'white',
             )
         ),
         'description' => 'The text colors associated with a specific study to be visible on the background',

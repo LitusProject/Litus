@@ -26,7 +26,7 @@ return array(
             'consume',
         ),
         'ticket' => array(
-            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr'
+            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr',
         ),
     ),
 );

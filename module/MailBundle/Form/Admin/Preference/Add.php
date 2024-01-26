@@ -63,9 +63,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'checkbox',
-                'name'     => 'default_value',
-                'label'    => 'Default value',
+                'type'  => 'checkbox',
+                'name'  => 'default_value',
+                'label' => 'Default value',
             )
         );
 

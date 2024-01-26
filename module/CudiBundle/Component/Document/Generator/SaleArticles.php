@@ -35,7 +35,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             'Purchase Price',
             'Sell Price',
             'Name Contact Person',
-            'E-mail Contact Person'
+            'E-mail Contact Person',
         );
 
         parent::__construct(
@@ -76,10 +76,10 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                         number_format($article->getPurchasePrice() / 100, 2),
                         number_format($article->getSellPrice() / 100, 2),
                         $article->getMainArticle()->getNameContact(),
-                        $article->getMainArticle()->getEmailContact()
+                        $article->getMainArticle()->getEmailContact(),
                     );
                 }
-            } elseif ($common)  {
+            } elseif ($common) {
                 $articleData = array(
                     $article->getMainArticle()->getTitle(),
                     $article->getBarcode(),
@@ -95,7 +95,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     number_format($article->getPurchasePrice() / 100, 2),
                     number_format($article->getSellPrice() / 100, 2),
                     $article->getMainArticle()->getNameContact(),
-                    $article->getMainArticle()->getEmailContact()
+                    $article->getMainArticle()->getEmailContact(),
                 );
             }
 

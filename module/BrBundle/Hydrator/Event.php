@@ -19,7 +19,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         'visible_for_companies',
         'visible_for_students',
         'location',
-        'audience'
+        'audience',
     );
 
     protected function doExtract($object = null)

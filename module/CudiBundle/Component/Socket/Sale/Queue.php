@@ -160,12 +160,12 @@ class Queue
     /**
      * @param  Session $session                  The sale session
      * @param  string  $universityIdentification
-     * @param bool $forced
+     * @param boolean $forced
      * @return string
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
-        if ((str_contains($universityIdentification, ';')) && (strlen($universityIdentification) == 25)) {
+        if (str_contains($universityIdentification, ';') && (strlen($universityIdentification) == 25)) {
             $seperatedString = explode(';', $universityIdentification);
             $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->entityManager);
         } else {
@@ -206,7 +206,7 @@ class Queue
             );
         }
 
-        if(!$forced) {
+        if (!$forced) {
             $forceRegistrationShift = $this->entityManager
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('cudi.queue_force_registration_shift');
@@ -527,19 +527,19 @@ class Queue
         }
 
         $result = array(
-            'id'        => 0,
-            'articleId' => $article->getId(),
-            'price'     => $article->getSellPrice(),
-            'title'     => $article->getMainArticle()->getTitle(),
-            'barcode'   => $article->getBarcode(),
-            'barcodes'  => $barcodes,
-            'author'    => $article->getMainArticle()->getAuthors(),
-            'number'    => 1,
-            'status'    => 'assigned',
-            'sellable'  => $article->isSellable(),
-            'unbookable'=> $article->isUnbookable(),
-            'collected' => 0,
-            'discounts' => array(),
+            'id'         => 0,
+            'articleId'  => $article->getId(),
+            'price'      => $article->getSellPrice(),
+            'title'      => $article->getMainArticle()->getTitle(),
+            'barcode'    => $article->getBarcode(),
+            'barcodes'   => $barcodes,
+            'author'     => $article->getMainArticle()->getAuthors(),
+            'number'     => 1,
+            'status'     => 'assigned',
+            'sellable'   => $article->isSellable(),
+            'unbookable' => $article->isUnbookable(),
+            'collected'  => 0,
+            'discounts'  => array(),
 
         );
 

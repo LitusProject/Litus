@@ -28,7 +28,8 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             ->setAttribute('class', '')
             ->setAttribute(
                 'action',
-                $this->url()->fromRoute('logistics_auth', array('action' => 'login',)));
+                $this->url()->fromRoute('logistics_auth', array('action' => 'login',))
+            );
         $result->organizationUrl = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('organization_url');

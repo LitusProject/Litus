@@ -6,7 +6,7 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'api_auth' => array(
-            'getCorporate', 'getPerson', 'me'
+            'getCorporate', 'getPerson', 'me',
         ),
         'api_br' => array(
             'add-company','edit-company-name', 'add-cv-book',  'add-page-visible', 'is-page-visible', 'get-cv-years', 'get-company-id', 'send-activation', 'add-user', 'get-user-id', 'getSubscriptions',

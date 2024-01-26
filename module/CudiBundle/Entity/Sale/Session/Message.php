@@ -32,7 +32,7 @@ class Message
     private $creationTime;
 
     /**
-     * @var bool Is active on home page
+     * @var boolean Is active on home page
      *
      * @ORM\Column(name="active", type="boolean")
      */
@@ -84,7 +84,7 @@ class Message
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {

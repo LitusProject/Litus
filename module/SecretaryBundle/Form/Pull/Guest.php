@@ -32,9 +32,9 @@ class Guest extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'fieldset',
-                'name' => 'guest_form',
-                'label' => 'Contact Details',
+                'type'     => 'fieldset',
+                'name'     => 'guest_form',
+                'label'    => 'Contact Details',
                 'elements' => array(
                     array(
                         'type'       => 'text',
@@ -87,15 +87,15 @@ class Guest extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-                )
+                ),
             )
         );
 
         $this->add(
             array(
-                'type' => 'fieldset',
-                'name' => 'spacer',
-                'label' => 'Department Pull',
+                'type'     => 'fieldset',
+                'name'     => 'spacer',
+                'label'    => 'Department Pull',
                 'elements' => array(
                     // intentionally empty
                 ),
@@ -107,14 +107,14 @@ class Guest extends \CommonBundle\Component\Form\Bootstrap\Form
          */
         $this->add(
             array(
-                'type' => 'select',
-                'name' => 'pull',
-                'label' => 'Option',
-                'required' => true,
+                'type'       => 'select',
+                'name'       => 'pull',
+                'label'      => 'Option',
+                'required'   => true,
                 'attributes' => array(
                     'options' => $this->createPullArray(),
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),
@@ -126,13 +126,13 @@ class Guest extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'conditions',
-                'label' => 'I consent that my information will be used to help you further with your order.',
+                'type'       => 'checkbox',
+                'name'       => 'conditions',
+                'label'      => 'I consent that my information will be used to help you further with your order.',
                 'attributes' => array(
                     'id' => 'conditions',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(

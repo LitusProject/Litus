@@ -34,11 +34,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'datetime',
-                'name'       => 'start_timestamp',
-                'label'      => 'Start Date',
-                'required'   => true,
-                'options' => array(
+                'type'     => 'datetime',
+                'name'     => 'start_timestamp',
+                'label'    => 'Start Date',
+                'required' => true,
+                'options'  => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -55,10 +55,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'datetime',
-                'name'       => 'end_timestamp',
-                'label'      => 'End Date',
-                'required'   => false,
+                'type'     => 'datetime',
+                'name'     => 'end_timestamp',
+                'label'    => 'End Date',
+                'required' => false,
                 'options'  => array(
                     'input' => array(
                         'validators' => array(

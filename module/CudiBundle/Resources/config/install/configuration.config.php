@@ -632,7 +632,7 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
             array(
                 'slides',
                 'textbook',
-                'exercises'
+                'exercises',
             )
         ),
         'description' => 'An array of all allowed article types for retails.',
@@ -699,5 +699,5 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'key'         => 'cudi.maximum_booking_number',
         'value'       => '10',
         'description' => 'This is the maximum size of things someone can order in Cudi',
-    )
+    ),
 );

@@ -66,7 +66,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Type',
                 'attributes' => array(
                     'options' => $this->getTypeArray(),
-                )
+                ),
             )
         );
 

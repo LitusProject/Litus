@@ -216,7 +216,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                     $status = $data[4];
                     $location = $data[5];
                     for ($x = 6; $x <= 9; $x++) {
-                       $data[$x] = $data[$x]?: '';
+                        $data[$x] = $data[$x] ?: '';
                     }
                     $spot = $data[6];
                     $category = $data[7];
@@ -324,7 +324,7 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->name = $article->getName();
             $item->amountOwned = $article->getAmountOwned();
             $item->amountAvailable = $article->getAmountAvailable();
-            $article->getUnit()? $item->unitName = $article->getUnit()->GetName(): $item->unitName = '';
+            $article->getUnit() ? $item->unitName = $article->getUnit()->GetName() : $item->unitName = '';
             $item->category = $article->getCategory();
             $item->location = $article->getLocation();
             $item->spot = $article->getSpot();

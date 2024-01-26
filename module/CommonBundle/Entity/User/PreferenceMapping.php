@@ -41,16 +41,16 @@ class PreferenceMapping
     private $preference;
 
     /**
-     * @var bool The boolean that defines the user's preference
+     * @var boolean The boolean that defines the user's preference
      *
      * @ORM\Column(type="boolean")
      */
     private $value;
 
     /**
-     * @param Academic $person
+     * @param Academic   $person
      * @param Preference $preference
-     * @param bool $value
+     * @param boolean    $value
      */
     public function __construct(Academic $person, Preference $preference, bool $value = true)
     {
@@ -61,7 +61,6 @@ class PreferenceMapping
         $person->addPreferenceMapping($this);
         $preference->addPreferenceMapping($this);
     }
-
 
     /**
      * @return string
@@ -88,7 +87,7 @@ class PreferenceMapping
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function getValue()
     {
@@ -96,7 +95,7 @@ class PreferenceMapping
     }
 
     /**
-     * @param bool $value
+     * @param boolean $value
      *
      * @return self
      */
@@ -110,9 +109,10 @@ class PreferenceMapping
     /**
      * @param array $preferences
      *
-     * @return bool
+     * @return boolean
      */
-    public function inPreferences($preferences) {
+    public function inPreferences($preferences)
+    {
         foreach ($preferences as $preference) {
             if ($this->getPreference()->getName() == $preference->getName()) {
                 return true;
@@ -120,5 +120,4 @@ class PreferenceMapping
         }
         return false;
     }
-
 }

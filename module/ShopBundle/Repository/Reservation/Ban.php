@@ -69,7 +69,8 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery();
     }
 
-    public function findAllByNameQuery(string $name) {
+    public function findAllByNameQuery(string $name)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
 
         return $query->select('b')
@@ -98,7 +99,7 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
 
-        $query = $queryBuilder->select('b')
+        return $queryBuilder->select('b')
             ->from('ShopBundle\Entity\Reservation\Ban', 'b')
             ->where(
                 $queryBuilder->expr()->andX(
@@ -114,8 +115,5 @@ class Ban extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('now', new DateTime())
             ->orderBy('b.endTimestamp', 'ASC')
             ->getQuery();
-
-        return $query;
     }
-
 }

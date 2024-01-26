@@ -2,14 +2,11 @@
 
 namespace MailBundle\Form\Admin\Preference;
 
-use MailBundle\Entity\Preference;
-
 /**
  * Edit Preference
  */
 class Edit extends Add
 {
-
     public function init()
     {
         parent::init();

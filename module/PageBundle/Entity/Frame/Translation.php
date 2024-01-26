@@ -3,8 +3,8 @@
 namespace PageBundle\Entity\Frame;
 
 use CommonBundle\Entity\General\Language;
-use PageBundle\Entity\Frame;
 use Doctrine\ORM\Mapping as ORM;
+use PageBundle\Entity\Frame;
 
 /**
  * This entity stores the translations of a frame item.
@@ -47,9 +47,9 @@ class Translation
     private $description;
 
     /**
-     * @param Frame $frame
+     * @param Frame    $frame
      * @param Language $language
-     * @param string $description
+     * @param string   $description
      */
     public function __construct(Frame $frame, Language $language, string $description)
     {

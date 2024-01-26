@@ -3,8 +3,8 @@
 namespace ShopBundle\Entity\Session\OpeningHour;
 
 use CommonBundle\Entity\General\Language;
-use ShopBundle\Entity\Session\OpeningHour;
 use Doctrine\ORM\Mapping as ORM;
+use ShopBundle\Entity\Session\OpeningHour;
 
 /**
  * This entity stores the node item.

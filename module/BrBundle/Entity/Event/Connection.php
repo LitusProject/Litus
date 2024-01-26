@@ -22,7 +22,6 @@ namespace BrBundle\Entity\Event;
 
 use BrBundle\Entity\Event\CompanyMap;
 use BrBundle\Entity\Event\Subscription;
-use CommonBundle\Component\Util\AcademicYear;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
@@ -122,7 +121,8 @@ class Connection
         return $this->timestamp;
     }
 
-    public function getStudentCv(EntityManager $em, \CommonBundle\Entity\General\AcademicYear $ay) {
+    public function getStudentCv(EntityManager $em, \CommonBundle\Entity\General\AcademicYear $ay)
+    {
         $name = $this->subscription->getFirstName() . ' ' . $this->subscription->getLastName();
         $academic = $em->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findAllByNameQuery($name)

@@ -55,11 +55,11 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'unitsWithMembers'      => $unitsWithMembers,
-                'emptyUnits'            => $units,
-                'workgroups'            => $workgroups,
-                'activeAcademicYear'    => $academicYear,
-                'academicYears'         => $academicYears,
+                'unitsWithMembers'   => $unitsWithMembers,
+                'emptyUnits'         => $units,
+                'workgroups'         => $workgroups,
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
             )
         );
     }
@@ -460,7 +460,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         ->getRepository('CommonBundle\Entity\General\Organization\Unit')
                         ->findOneById($data[2]);
                     $description = $data[3];
-                    $coordinator = $data[4]?:0;
+                    $coordinator = $data[4] ?: 0;
 
                     $repositoryCheck = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap\Academic')

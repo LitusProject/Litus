@@ -3,10 +3,8 @@
 namespace LogisticsBundle\Repository;
 
 use CommonBundle\Entity\General\Organization\Unit;
-use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 use CommonBundle\Entity\User\Person\Academic;
 use Doctrine\Common\Collections\ArrayCollection;
-use LogisticsBundle\Entity\Order as OrderEntity;
 
 /**
  * Request
@@ -66,15 +64,15 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                     $query->expr()->andx(
                         $query->expr()->eq('r.handled', 'FALSE'),
                         $query->expr()->eq('r.removed', 'FALSE'),
-//                        $query->expr()->isNull('r.editOrder'),
-//                        $query->expr()->eq('ro.removed', 'FALSE'),
+                        //                        $query->expr()->isNull('r.editOrder'),
+                        //                        $query->expr()->eq('ro.removed', 'FALSE'),
                         $query->expr()->eq('r.creator', ':academic')
                     ),
                     $query->expr()->andx(
                         $query->expr()->eq('r.handled', 'FALSE'),
                         $query->expr()->eq('r.removed', 'FALSE'),
-//                        $query->expr()->isNotNull('r.editOrder'),
-//                        $query->expr()->eq('o.removed', 'FALSE'),
+                        //                        $query->expr()->isNotNull('r.editOrder'),
+                        //                        $query->expr()->eq('o.removed', 'FALSE'),
                         $query->expr()->eq('r.creator', ':academic')
                     )
                 )
@@ -98,8 +96,8 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
                     $query->expr()->eq('r.removed', 'FALSE'),
-//                    $query->expr()->eq('o.approved', 'FALSE'),
-//                    $query->expr()->eq('o.removed', 'FALSE'),
+                    //                    $query->expr()->eq('o.approved', 'FALSE'),
+                    //                    $query->expr()->eq('o.removed', 'FALSE'),
                     $query->expr()->eq('r.creator', ':academic')
                 )
             )
@@ -200,9 +198,9 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('r.handled', 'TRUE'),
                     $query->expr()->eq('r.removed', 'FALSE'),
-//                    $query->expr()->eq('o.approved', 'FALSE'),
-//                    $query->expr()->eq('o.removed', 'FALSE'),
-//                    $query->expr()->eq('o.unit', ':unit')
+                    //                    $query->expr()->eq('o.approved', 'FALSE'),
+                    //                    $query->expr()->eq('o.removed', 'FALSE'),
+                    //                    $query->expr()->eq('o.unit', ':unit')
                 )
             )
             ->setParameter('unit', $unit->getId())

@@ -13,8 +13,8 @@ class OpeningHour extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = array(
-            'start_date'       => $object->getStartDate()->format('d/m/Y H:i'),
-            'end_date'         => $object->getEndDate()->format('d/m/Y H:i'),
+            'start_date'  => $object->getStartDate()->format('d/m/Y H:i'),
+            'end_date'    => $object->getEndDate()->format('d/m/Y H:i'),
             'tab_content' => array(),
         );
 

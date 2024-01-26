@@ -105,12 +105,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'form'     => $form,
-                'fields'   => $fields,
-                'entries'  => $entries,
-                'viewer'   => $viewerMap,
+                'form'         => $form,
+                'fields'       => $fields,
+                'entries'      => $entries,
+                'viewer'       => $viewerMap,
                 'isFormEditor' => $isFormEditor,
-                'mailForm' => $mailForm,
+                'mailForm'     => $mailForm,
             )
         );
     }

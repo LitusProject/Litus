@@ -42,7 +42,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
 
         $totalReservations = 0;
-        for($i = 0; $i < sizeof($result); $i++) {
+        for ($i = 0; $i < sizeof($result); $i++) {
             $totalReservations += $result[$i][1];
             $totalAmount = $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Session\Stock')
@@ -150,7 +150,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             array(
                 'result' => array(
                     'reservationsToUpdate' => $reservationsToUpdateIds,
-                    'status' => 'success',
+                    'status'               => 'success',
                 ),
             )
         );
@@ -182,7 +182,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
                 '',
-                ''
+                '',
             );
         }
 
@@ -313,15 +313,16 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     private function getNoShowConfig()
     {
         $noShowConfigDataSerialized = ($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.no_show_config'));
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no_show_config'));
 
         $noShowConfigData = unserialize($noShowConfigDataSerialized);
 
         return new NoShowConfig($noShowConfigData);
     }
 
-    public function sendNoShowEmail(Person $person, int $warningCount) {
+    public function sendNoShowEmail(Person $person, int $warningCount)
+    {
         $noShowConfig = $this->getNoShowConfig();
 
         $mailContent = $noShowConfig->getEmailContent($person, $warningCount);

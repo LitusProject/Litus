@@ -47,7 +47,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
             $object,
             $numbers,
             $data['payed'],
-            $data['payed']? $data['payId'] : null,
+            $data['payed'] ? $data['payId'] : null,
             $this->getEntityManager(),
             $person,
             $guestInfo

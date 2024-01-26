@@ -57,11 +57,11 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'contact',
-                'label'    => 'Contact Name',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'contact',
+                'label'      => 'Contact Name',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -69,20 +69,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'contact_name',
-                    'placeholder'  => 'Contact name',
-                    'value'        => $this->academic->getFullName(),
+                    'id'          => 'contact_name',
+                    'placeholder' => 'Contact name',
+                    'value'       => $this->academic->getFullName(),
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'email',
+                'label'      => 'Email',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -93,9 +93,9 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'contact_mail',
-                    'placeholder'  => 'E-mail',
-                    'value'        => $this->academic->getEmail(),
+                    'id'          => 'contact_mail',
+                    'placeholder' => 'E-mail',
+                    'value'       => $this->academic->getEmail(),
                 ),
             )
         );
@@ -121,23 +121,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'       => 'datetime',
-                'name'       => 'start_date',
-                'label'      => 'Start Date',
-                'required'   => true,
-                'options'    => array(
-                    'input'  => array(
+                'type'     => 'datetime',
+                'name'     => 'start_date',
+                'label'    => 'Start Date',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
                         'validators' => array(
                             array(
                                 'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'now',
                                     'format'     => 'd/m/Y H:i',
-                                )
-                            )
-                        )
-                    )
-                )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             )
         );
 
@@ -224,7 +224,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->findAllActive();
 
         $locationsArray = array(
-            ''  => '',
+            '' => '',
         );
         foreach ($locations as $location) {
             $locationsArray[$location->getId()] = $location->getName();

@@ -16,13 +16,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'study_nl',
-                'label' => 'Study NL',
+                'type'       => 'text',
+                'name'       => 'study_nl',
+                'label'      => 'Study NL',
                 'attributes' => array(
                     'id' => 'study_nl',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -34,13 +34,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'study_en',
-                'label' => 'Study EN',
+                'type'       => 'text',
+                'name'       => 'study_en',
+                'label'      => 'Study EN',
                 'attributes' => array(
                     'id' => 'study_en',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -52,13 +52,13 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'amount_available',
-                'label' => 'Amount in stock',
+                'type'       => 'text',
+                'name'       => 'amount_available',
+                'label'      => 'Amount in stock',
                 'attributes' => array(
                     'id' => 'amount_available',
                 ),
-                'required' => false,
+                'required'   => false,
                 'options'    => array(
                     'input' => array(
                         'filters' => array(
@@ -74,11 +74,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'available',
-                'label' => 'Available to book',
+                'type'       => 'checkbox',
+                'name'       => 'available',
+                'label'      => 'Available to book',
                 'attributes' => array(
-                    'id' => 'available'
+                    'id' => 'available',
                 ),
             )
         );
@@ -90,7 +90,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         }
     }
 
-    public function setPull(Pull $pull) {
+    public function setPull(Pull $pull)
+    {
         $this->pull = $pull;
 
         return $this;

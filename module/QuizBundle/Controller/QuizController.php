@@ -48,9 +48,9 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         if (is_null($tiebreaker)) {
             return new ViewModel(
                 array(
-                    'quiz' => $quiz,
+                    'quiz'   => $quiz,
                     'rounds' => $rounds,
-                    'teams' => $teams,
+                    'teams'  => $teams,
                     'points' => $points,
                 )
             );
@@ -66,11 +66,11 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         }
         return new ViewModel(
             array(
-                'quiz' => $quiz,
-                'rounds' => $rounds,
-                'teams' => $teams,
-                'points' => $points,
-                'tiebreaker' => $tiebreaker,
+                'quiz'               => $quiz,
+                'rounds'             => $rounds,
+                'teams'              => $teams,
+                'points'             => $points,
+                'tiebreaker'         => $tiebreaker,
                 'tiebreaker_answers' => $tiebreakerAnswers,
             )
         );
@@ -94,7 +94,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\Point')
             ->findOneBy(
                 array(
-                    'team' => $team,
+                    'team'  => $team,
                     'round' => $round,
                 )
             );
@@ -146,7 +146,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
             ->getRepository('QuizBundle\Entity\TiebreakerAnswer')
             ->findOneBy(
                 array(
-                    'team' => $team,
+                    'team'       => $team,
                     'tiebreaker' => $tiebreaker,
                 )
             );
@@ -220,12 +220,12 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
         if (is_null($tiebreaker)) {
             return new ViewModel(
                 array(
-                    'quiz' => $quiz,
-                    'rounds' => $rounds,
-                    'teams' => $teams_indexed,
-                    'points' => $points,
+                    'quiz'         => $quiz,
+                    'rounds'       => $rounds,
+                    'teams'        => $teams_indexed,
+                    'points'       => $points,
                     'total_points' => $totals,
-                    'order' => $this->getRequest()->getQuery('order', 'ASC'),
+                    'order'        => $this->getRequest()->getQuery('order', 'ASC'),
                 )
             );
         }
@@ -241,7 +241,7 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         $totals_by_index = array(); // [ [index] => [teamid, totalPoints]
         foreach ($totals as $teamid => $totalPoints) {
-            $totals_by_index[] = [$teamid, $totalPoints];
+            $totals_by_index[] = array($teamid, $totalPoints);
         }
 
 
@@ -260,9 +260,10 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
                     // Sorteer equal values op afstand tot correct tiebreakeranswer,
                     //als ze gelijk zijn is de volgorde undefined
-                    usort($equal_scores,
-                        fn($a, $b) => abs($correctAnswer - $tiebreakerAnswers[$a[0]]) <=>
-                            abs($correctAnswer - $tiebreakerAnswers[$b[0]]));
+                    usort(
+                        $equal_scores,
+                        fn($a, $b) => abs($correctAnswer - $tiebreakerAnswers[$a[0]]) <=> abs($correctAnswer - $tiebreakerAnswers[$b[0]])
+                    );
                 }
                 foreach ($equal_scores as $score) {
                     $totals_with_tiebreaker[] = $score;
@@ -278,14 +279,14 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'quiz' => $quiz,
-                'rounds' => $rounds,
-                'teams' => $teams_indexed,
-                'points' => $points,
-                'total_points' => $totals_by_teamid,
-                'tiebreaker' => $tiebreaker,
+                'quiz'               => $quiz,
+                'rounds'             => $rounds,
+                'teams'              => $teams_indexed,
+                'points'             => $points,
+                'total_points'       => $totals_by_teamid,
+                'tiebreaker'         => $tiebreaker,
                 'tiebreaker_answers' => $tiebreakerAnswers,
-                'order' => $this->getRequest()->getQuery('order', 'ASC'),
+                'order'              => $this->getRequest()->getQuery('order', 'ASC'),
             )
         );
     }

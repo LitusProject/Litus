@@ -2,9 +2,6 @@
 
 namespace ShopBundle\Repository\Session;
 
-use DateInterval;
-use DateTime;
-
 /**
  * Message
  *

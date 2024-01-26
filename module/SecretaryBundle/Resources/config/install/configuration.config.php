@@ -86,9 +86,9 @@ return array(
         'description' => 'This is the Ticket Event ID for the pulls',
     ),
     array(
-        'key'         => 'secretary.pull_price',
-        'value'       => 'here comes the price',
-        'desription'  => 'The price for the departmental pulls',
+        'key'        => 'secretary.pull_price',
+        'value'      => 'here comes the price',
+        'desription' => 'The price for the departmental pulls',
     ),
     array(
         'key'         => 'secretary.pull_confirmation_mail',
@@ -108,6 +108,6 @@ return array(
     VTK',
             ),
         ),
-        'description' => 'Email sent for confirmation of pull order'
+        'description' => 'Email sent for confirmation of pull order',
     ),
 );

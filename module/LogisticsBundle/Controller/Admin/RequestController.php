@@ -1,9 +1,9 @@
 <?php
 
 namespace LogisticsBundle\Controller\Admin;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File\TmpFile;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Laminas\Http\Headers;
@@ -36,7 +36,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $lastOrders,
+                'requests' => $lastOrders,
             )
         );
     }
@@ -57,7 +57,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $lastOrders,
+                'requests' => $lastOrders,
             )
         );
     }
@@ -86,10 +86,9 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $lastOrders,
+                'requests' => $lastOrders,
             )
         );
-
     }
 
     public function csvAction()
@@ -184,7 +183,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'requests'    => $lastOrders,
+                'requests' => $lastOrders,
             )
         );
     }
@@ -204,10 +203,13 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $mappings = array();
-        foreach ($lastOrders as $order){
-            $mappings = array_merge($mappings, $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                ->findAllByOrderQuery($order)->getResult());
+        foreach ($lastOrders as $order) {
+            $mappings = array_merge(
+                $mappings,
+                $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                    ->findAllByOrderQuery($order)->getResult()
+            );
         }
 
         $conflicts = array();
@@ -216,9 +218,13 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             // Find overlaps
             $overlapping_maps = $this->findOverlapping($mappings, $map);
             // Delete map so it doesn't pop up twice
-            $mappings = array_udiff(array($map), $overlapping_maps, function ($obj_a, $obj_b) {
-                return $obj_a->getId() - $obj_b->getId();
-            });
+            $mappings = array_udiff(
+                array($map),
+                $overlapping_maps,
+                function ($obj_a, $obj_b) {
+                    return $obj_a->getId() - $obj_b->getId();
+                }
+            );
 
             // Look if all overlapping article amounts surpass the amount available
             $total = 0;
@@ -230,7 +236,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 $conflict = array(
                     'article'  => $map->getArticle(),
                     'mappings' => $overlapping_maps,
-                    'total'    => $total
+                    'total'    => $total,
                 );
                 $conflicts[] = $conflict;
             }
@@ -416,7 +422,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'Van',
                 'Tot',
-                'Locatie',),
+                'Locatie',
+            ),
             array(
                 $order->getStartDate()->format('l d/m/Y H:i'),
                 $order->getEndDate()->format('l d/m/Y H:i'),
@@ -434,7 +441,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 'Klaar',
                 'Mee',
                 'Terug',
-                'Opmerkingen'
+                'Opmerkingen',
             ),
         );
 
@@ -453,7 +460,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
                 $article->getArticle()->getCategory(),
                 $article->getArticle()->getLocation(),
                 $article->getArticle()->getSpot(),
-                $article->getAmount()
+                $article->getAmount(),
             );
         }
 

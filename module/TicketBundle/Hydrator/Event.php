@@ -21,11 +21,15 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         if ($object === null) {
             do {
                 $rand_id = uniqid();
-            } while (!is_null($this->getEntityManager()
-                ->getRepository("TicketBundle\Entity\Event")
-                ->findOneBy(array(
-                    "rand_id" => $rand_id,
-                ))));
+            } while (!is_null(
+                $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Event')
+                    ->findOneBy(
+                        array(
+                            'rand_id' => $rand_id,
+                        )
+                    )
+            ));
             $object = new EventEntity($rand_id);
         }
 
@@ -200,13 +204,13 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
             foreach ($object->getOptions() as $option) {
                 $data['options'][] = array(
-                    'option_id'         => $option->getId(),
-                    'option'            => $option->getName(),
-                    'maximum'           => $option->getMaximum(),
-                    'price_members'     => number_format($option->getPriceMembers() / 100, 2),
-                    'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
-                    'membershipDiscount' => $option->getPriceNonMembers() > 0,
-                    'visible'           => $option->isVisible() ? $option->isVisible() : '',
+                    'option_id'               => $option->getId(),
+                    'option'                  => $option->getName(),
+                    'maximum'                 => $option->getMaximum(),
+                    'price_members'           => number_format($option->getPriceMembers() / 100, 2),
+                    'price_non_members'       => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
+                    'membershipDiscount'      => $option->getPriceNonMembers() > 0,
+                    'visible'                 => $option->isVisible() ? $option->isVisible() : '',
                     'limit_per_person_option' => $option->getLimitPerPerson() ? : 0,
                 );
             }

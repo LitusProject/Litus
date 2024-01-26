@@ -50,7 +50,8 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
         );
     }
 
-    public function calendarAction(){
+    public function calendarAction()
+    {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllCareerAndActiveAndNotHidden();

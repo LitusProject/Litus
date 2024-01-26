@@ -84,16 +84,16 @@ return array(
             ),
         ),
         'secretary_pull' => array(
-            'type' => 'Laminas\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route' => '[/:language]/secretary/pull[/:action[/:id[/code/:code]]][/]',
+                'route'       => '[/:language]/secretary/pull[/:action[/:id[/code/:code]]][/]',
                 'constraints' => array(
-                    'action'    => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'language'  => '(en|nl)',
-                    'id'        => '[0-9]*',
-                    'code'      => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                    'id'       => '[0-9]*',
+                    'code'     => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_pull',
                     'action'     => 'view',
                 ),
@@ -117,17 +117,17 @@ return array(
             ),
         ),
         'secretary_admin_pull' => array(
-            'type' => 'Laminas\Router\Http\Segment',
+            'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route' => '/admin/secretary/pull[/:action[/:id][/page/:page]][/]',
+                'route'       => '/admin/secretary/pull[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id' => '[0-9]*',
+                    'id'     => '[0-9]*',
                     'page'   => '[0-9]*',
                 ),
-                'defaults' => array(
+                'defaults'    => array(
                     'controller' => 'secretary_admin_pull',
-                    'action' => 'manage',
+                    'action'     => 'manage',
                 ),
             ),
         ),

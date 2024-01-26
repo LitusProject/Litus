@@ -6,7 +6,6 @@ use CalendarBundle\Entity\Node\Event;
 use Imagick;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
-use PhpParser\Node\Expr\Cast\Object_;
 
 /**
  * Handles system admin for calendar.
@@ -411,15 +410,15 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         $shiftForm = $this->getForm('shift_shift_add');
 
         $data = array(
-            'manager'               => false,
-            'unit'                  => 3,
-            'edit_roles'            => array('activiteiten',),
-            'event'                 => $event->getId(),
-            'location'              => 2,
-            'nb_responsibles'       => 0,
-            'handled_on_event'      => false,
-            'ticket_needed'         => false,
-            'points'                => 0,
+            'manager'          => false,
+            'unit'             => 3,
+            'edit_roles'       => array('activiteiten',),
+            'event'            => $event->getId(),
+            'location'         => 2,
+            'nb_responsibles'  => 0,
+            'handled_on_event' => false,
+            'ticket_needed'    => false,
+            'points'           => 0,
         );
 
         $startDate = $event->getStartDate()->format('d/m/Y');

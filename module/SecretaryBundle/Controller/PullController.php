@@ -6,13 +6,11 @@ use CommonBundle\Component\Controller\Exception\RuntimeException;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
 use Laminas\Mime\Part;
+use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Payment\PaymentParam;
 use TicketBundle\Component\Ticket\Ticket as TicketBook;
-use TicketBundle\Entity\Event;
 use TicketBundle\Entity\GuestInfo;
 use TicketBundle\Entity\Ticket;
-use Laminas\View\Model\ViewModel;
-use SecretaryBundle\Entity\Pull;
 
 class PullController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
@@ -65,7 +63,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                         ->findOneById($option);
 
                     $numbers = array(
-                        'member' => 0,
+                        'member'     => 0,
                         'non_member' => 1,
                     );
 
@@ -107,12 +105,12 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
                     if ($person->isMember($this->getCurrentAcademicYear())) {
                         $numbers = array(
-                            'member' => 1,
+                            'member'     => 1,
                             'non_member' => 0,
                         );
                     } else {
                         $numbers = array(
-                            'member' => 0,
+                            'member'     => 0,
                             'non_member' => 1,
                         );
                     }
@@ -157,7 +155,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'options' => $options,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -271,13 +269,13 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
         $urlPrefix = $secretInfo['urlPrefix'];   #Change prod to test for testenvironment
 
         $url = 'https://vtk.be' . $this->url()->fromRoute(
-                'secretary_pull',
-                array(
-                    'action' => 'payed',
-                    'id'     => $ticket->getId(),
-                    'code'   => $ticket->getNumber(),
-                )
-            );
+            'secretary_pull',
+            array(
+                'action' => 'payed',
+                'id'     => $ticket->getId(),
+                'code'   => $ticket->getNumber(),
+            )
+        );
 
         $price = $ticket->getAmount() * 100;
 
@@ -359,10 +357,12 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
             ->setFrom($secretary_mail, 'Secretaris')
             ->addTo($ticket->getEmail(), $ticket->getFullName())
             ->setSubject($subject)
-            ->addBcc($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('system_administrator_mail'),
-                'System Administrator')
+            ->addBcc(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
             ->addBcc($secretary_mail);
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);

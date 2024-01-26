@@ -24,8 +24,8 @@ class IndexController extends \TicketBundle\Component\Controller\SaleController
 
             if ($form->isValid()) {
                 $tickets = $form->hydrateObject($event);
-                foreach ($tickets as $ticket){
-                    if($ticket->getStatus() === 'Sold' && $ticket->getEvent()->getQrEnabled()){
+                foreach ($tickets as $ticket) {
+                    if ($ticket->getStatus() === 'Sold' && $ticket->getEvent()->getQrEnabled()) {
                         $ticket->setQrCode();
                         $ticket->sendQrMail($this, $this->getLanguage());
                     }

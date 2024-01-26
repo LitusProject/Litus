@@ -2,7 +2,6 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
-use CudiBundle\Form\Admin\Sale\Article\View;
 use Laminas\View\Model\ViewModel;
 use SecretaryBundle\Entity\Pull;
 
@@ -19,7 +18,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

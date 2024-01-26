@@ -262,7 +262,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             'subscribers'     => $subscribersCount,
             'current'         => $currentVisitors,
             'representatives' => $attendees,
-            'matches'         => $matchesCount
+            'matches'         => $matchesCount,
         );
 
 
@@ -271,7 +271,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'event'    => $event,
                 'logGraph' => $logGraphData,
-                'totals'   => $totals
+                'totals'   => $totals,
             )
         );
     }
@@ -415,7 +415,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event,
-                'form' => $form
+                'form'  => $form,
             ),
         );
     }
@@ -464,7 +464,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event,
-                'form'  => $form
+                'form'  => $form,
             )
         );
     }

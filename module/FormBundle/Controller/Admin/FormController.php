@@ -29,9 +29,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $entry_counts = array();
         foreach ($paginator as $form) {
             $form->setEntityManager($this->getEntityManager());
-            $amount = count($this->getEntityManager()
-                ->getRepository('FormBundle\Entity\Node\Entry')
-                ->findAllByForm($form));
+            $amount = count(
+                $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByForm($form)
+            );
             $entry_counts[$form->getId()] = $amount;
         }
 

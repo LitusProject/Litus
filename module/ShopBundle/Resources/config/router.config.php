@@ -138,12 +138,12 @@ return array(
     ),
 
     'controllers' => array(
-        'shop_admin_shop_salessession'          => 'ShopBundle\Controller\Admin\SalesSessionController',
-        'shop_admin_shop_product'               => 'ShopBundle\Controller\Admin\ProductController',
-        'shop_admin_shop_reservation'           => 'ShopBundle\Controller\Admin\ReservationController',
-        'shop_admin_shop_ban'                   => 'ShopBundle\Controller\Admin\BanController',
-        'shop_admin_shop_message'               => 'ShopBundle\Controller\Admin\MessageController',
-        'shop_admin_shop_openinghour'           => 'ShopBundle\Controller\Admin\OpeningHourController',
-        'shop'                                  => 'ShopBundle\Controller\ShopController',
+        'shop_admin_shop_salessession' => 'ShopBundle\Controller\Admin\SalesSessionController',
+        'shop_admin_shop_product'      => 'ShopBundle\Controller\Admin\ProductController',
+        'shop_admin_shop_reservation'  => 'ShopBundle\Controller\Admin\ReservationController',
+        'shop_admin_shop_ban'          => 'ShopBundle\Controller\Admin\BanController',
+        'shop_admin_shop_message'      => 'ShopBundle\Controller\Admin\MessageController',
+        'shop_admin_shop_openinghour'  => 'ShopBundle\Controller\Admin\OpeningHourController',
+        'shop'                         => 'ShopBundle\Controller\ShopController',
     ),
 );

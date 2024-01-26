@@ -30,7 +30,7 @@ return array(
     'City'                                                                                                    => 'City',
     'Country'                                                                                                 => 'Country',
     'Internet'                                                                                                => 'Internet',
-    'University EOther-mail'                                                                                       => 'University E-mail',
+    'University EOther-mail'                                                                                  => 'University E-mail',
     'Personal E-mail'                                                                                         => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address'                                                  => 'I want to receive e-mail at my personal e-mail address',
     'Student Organization'                                                                                    => 'Student Organization',

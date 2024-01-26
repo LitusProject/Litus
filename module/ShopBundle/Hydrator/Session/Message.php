@@ -6,7 +6,6 @@ use ShopBundle\Entity\Session\Message as MessageEntity;
 
 class Message extends \CommonBundle\Component\Hydrator\Hydrator
 {
-
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
@@ -45,7 +44,7 @@ class Message extends \CommonBundle\Component\Hydrator\Hydrator
 
         foreach ($this->getLanguages() as $language) {
             $data['tab_content']['tab_' . $language->getAbbrev()] = array(
-                'topContent' => $object->getTopContent($language, false),
+                'topContent'    => $object->getTopContent($language, false),
                 'bottomContent' => $object->getBottomContent($language, false),
             );
         }

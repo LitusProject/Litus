@@ -3,7 +3,6 @@
 namespace LogisticsBundle\Form\Admin\Order;
 
 use LogisticsBundle\Entity\Order;
-use RuntimeException;
 
 /**
  * Add Order
@@ -29,8 +28,7 @@ class Review extends \LogisticsBundle\Form\Admin\Order\Add
         if ($this->order !== null) {
             $this->bind($this->order);
 
-            if ($this->order->getUnit() == null)
-            {
+            if ($this->order->getUnit() == null) {
                 $this->remove('unit');
             }
         }

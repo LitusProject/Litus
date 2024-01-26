@@ -22,9 +22,9 @@ return array(
         'description' => serialize(
             array(
                 'en' => 'The text on the book tickets page',
-                'nl' => 'The extra tekst op de tickets page'
+                'nl' => 'The extra tekst op de tickets page',
             )
-        )
+        ),
     ),
     array(
         'key'         => 'ticket.confirmation_email_from',
@@ -68,10 +68,10 @@ Payment can be done through the following link should you not have paid yet: {{ 
 
 Kind regards,
 
-VTK'
+VTK',
             ),
         ),
-        'description' => 'Email sent for confirmation of ticket reservation'
+        'description' => 'Email sent for confirmation of ticket reservation',
     ),
     array(
         'key'         => 'ticket.pay_link_domain',

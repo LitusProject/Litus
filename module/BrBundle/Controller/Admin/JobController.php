@@ -2,19 +2,7 @@
 
 namespace BrBundle\Controller\Admin;
 
-use BrBundle\Component\Document\Generator\Pdf\Invoice as InvoiceGenerator;
-use BrBundle\Entity\Invoice;
-use BrBundle\Entity\Invoice\History;
-use BrBundle\Entity\Invoice\Manual as ManualInvoice;
-use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
-use CommonBundle\Component\Util\File as FileUtil;
-use CommonBundle\Component\Util\File\TmpFile;
-use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use DateTime;
-use FormBundle\Component\Document\Generator\Zip as ZipGenerator;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
-use RuntimeException;
 
 /**
  * JobController
@@ -43,12 +31,13 @@ class JobController extends \CommonBundle\Component\Controller\ActionController\
                 $this->getEntityManager()
                     ->getRepository('BrBundle\Entity\Company\Job')
                     ->findAllActiveByTypeQuery(null, null, null, null),
-                $this->getParam('page'));
+                $this->getParam('page')
+            );
         }
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

@@ -2,16 +2,14 @@
 
 namespace ShopBundle\Component\NoShow;
 
-use CommonBundle\Component\Controller\ActionController\AdminController;
 use CommonBundle\Entity\User\Person;
-use Laminas\Mail\Message;
-use Nette\NotImplementedException;
 
 /**
  * This class is used to interpret the configuration value that defines the configuration of the no-show system.
  * The no-show system is used to notify users and create bans when users reserve items and don't pick them up.
  */
-class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\AdminController {
+class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\AdminController
+{
 
     /**
      * @var array Stores the email related to each warning
@@ -23,9 +21,10 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
      */
     private array $banDaysDictionary;
 
-    public function __construct($configData) {
-        $this->emailDictionary = [];
-        $this->banDaysDictionary = [];
+    public function __construct($configData)
+    {
+        $this->emailDictionary = array();
+        $this->banDaysDictionary = array();
 
         foreach ($configData as $index => $data) {
             $index = (int)$index; // This conversion may not be necessary
@@ -39,10 +38,11 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
     /**
      * Returns the amount of days of ban for the warningCount.
      *
-     * @param int $warningCount
+     * @param integer $warningCount
      * @return mixed
      */
-    public function getBanInterval(int $warningCount) {
+    public function getBanInterval(int $warningCount)
+    {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;
         }
@@ -52,11 +52,12 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
     /**
      * Returns the warning email content for the warningCount.
      *
-     * @param Person $person
-     * @param int $warningCount
+     * @param Person  $person
+     * @param integer $warningCount
      * @return array|string|string[]
      */
-    public function getEmailContent(Person $person, int $warningCount) {
+    public function getEmailContent(Person $person, int $warningCount)
+    {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;
         }
@@ -72,10 +73,11 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
     /**
      * Returns the warning email subject for the warningCount.
      *
-     * @param int $warningCount
+     * @param integer $warningCount
      * @return mixed
      */
-    public function getEmailSubject(int $warningCount) {
+    public function getEmailSubject(int $warningCount)
+    {
         if ($warningCount >= count($this->banDaysDictionary)) {
             $warningCount = count($this->banDaysDictionary) - 1;
         }

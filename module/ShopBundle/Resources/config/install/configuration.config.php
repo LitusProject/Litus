@@ -114,7 +114,7 @@ Please note that we fully understand that unexpected circumstances may prevent y
 The team hopes for your understanding.
 Best regards,
 The Theokot Team',
-                    'ban_days' => '0 days'
+                    'ban_days'     => '0 days',
                 ),
                 '1' => array(
                     'mail_subject' => 'VTK Theokot Warning',
@@ -142,10 +142,10 @@ The team hopes for your understanding.
 Best regards,
 The Theokot Team
 ',
-                    'ban_days' => '7 days'
+                    'ban_days'     => '7 days',
                 ),
-    ),
-),
+            ),
+        ),
         'description' => 'Holds a no-show warning email and a amount of ban days for each amount of warnings the user has',
     ),
     array(

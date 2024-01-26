@@ -154,7 +154,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                     'options'    => array(
                         'input' => array(
-                            'required' => true,
+                            'required'   => true,
                             'validators' => array(
                                 array(
                                     'name'    => 'NumberTicketsGuest',
@@ -181,7 +181,7 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'options'    => array(
                             'input' => array(
-                                'required' => true,
+                                'required'   => true,
                                 'validators' => array(
                                     array(
                                         'name'    => 'NumberTicketsGuest',
@@ -202,21 +202,21 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                 if ($option->isVisible()) {
                     $this->add(
                         array(
-                            'type' => 'select',
-                            'name' => 'option_' . $option->getId() . '_number_member',
-                            'label' => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
+                            'type'       => 'select',
+                            'name'       => 'option_' . $option->getId() . '_number_member',
+                            'label'      => $option->getPriceNonMembers() != 0 ? ucfirst($option->getName()) . ' (Member)' : ucfirst($option->getName()),
                             'attributes' => array(
-//                                'options' => $this->getNumberOptions(),
+                        //                                'options' => $this->getNumberOptions(),
                                 'options' => $this->getLimitForOption($option),
                             ),
-                            'options' => array(
+                            'options'    => array(
                                 'input' => array(
-                                    'required' => true,
+                                    'required'   => true,
                                     'validators' => array(
                                         array(
-                                            'name' => 'NumberTicketsGuest',
+                                            'name'    => 'NumberTicketsGuest',
                                             'options' => array(
-                                                'event' => $this->event,
+                                                'event'   => $this->event,
                                                 //                                            'person'  => $this->guestInfo,
                                                 'maximum' => $this->event->getLimitPerPerson(),
                                             ),
@@ -230,21 +230,21 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
                     if (!$this->event->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
                         $this->add(
                             array(
-                                'type' => 'select',
-                                'name' => 'option_' . $option->getId() . '_number_non_member',
-                                'label' => ucfirst($option->getName()) . ' (Non Member)',
+                                'type'       => 'select',
+                                'name'       => 'option_' . $option->getId() . '_number_non_member',
+                                'label'      => ucfirst($option->getName()) . ' (Non Member)',
                                 'attributes' => array(
-//                                    'options' => $this->getNumberOptions(),
+                            //                                    'options' => $this->getNumberOptions(),
                                     'options' => $this->getLimitForOption($option),
                                 ),
-                                'options' => array(
+                                'options'    => array(
                                     'input' => array(
-                                        'required' => true,
+                                        'required'   => true,
                                         'validators' => array(
                                             array(
-                                                'name' => 'NumberTicketsGuest',
+                                                'name'    => 'NumberTicketsGuest',
                                                 'options' => array(
-                                                    'event' => $this->event,
+                                                    'event'   => $this->event,
                                                     //                                                'person'  => $this->guestInfo,
                                                     'maximum' => $this->event->getLimitPerPerson(),
                                                 ),
@@ -301,7 +301,8 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
         return $numbers;
     }
 
-    private function getLimitForOption(Event\Option $option) {
+    private function getLimitForOption(Event\Option $option)
+    {
         $numbers = array();
 
         if ($option->getLimitPerPerson() == 0) {
@@ -374,19 +375,20 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @return string
      */
-    private function getTermsLabel(){
+    private function getTermsLabel()
+    {
         $urls = explode(',', $this->event->getTermsUrl());
         $text = $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified');
         $here = $this->getServiceLocator()->get('translator')->translate('here');
-        if(count($urls) == 1){
-            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+        if (count($urls) == 1) {
+            $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         } elseif (count($urls) > 1) {
-            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
-            for ($i = 1;$i <=count($urls)-2;$i++){
-                $text = $text . ', ' . str_replace(array('url', 'here'), array($urls[$i], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            for ($i = 1; $i <= count($urls) - 2; $i++) {
+                $text .= ', ' . str_replace(array('url', 'here'), array($urls[$i], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
             }
             $and = $this->getServiceLocator()->get('translator')->translate('and');
-            $text = $text . ' ' . $and . ' ' . str_replace(array('url', 'here'), array(end($urls), $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+            $text .= ' ' . $and . ' ' . str_replace(array('url', 'here'), array(end($urls), $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         }
         return $text;
     }

@@ -4,7 +4,6 @@ namespace ShopBundle\Entity;
 
 use CommonBundle\Entity\User\Person;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use ShopBundle\Entity\Session as SalesSession;
 

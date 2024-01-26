@@ -44,7 +44,7 @@ class Video
     private $date;
 
     /**
-     * @var bool true if video is to be shown on home page
+     * @var boolean true if video is to be shown on home page
      *
      * @ORM\Column(name="show_on_home_page", type="boolean")
      */
@@ -150,7 +150,7 @@ class Video
     }
 
     /**
-     * @param bool $showOnHomePage
+     * @param boolean $showOnHomePage
      * @return self
      */
     public function setShowOnHomePage($showOnHomePage)

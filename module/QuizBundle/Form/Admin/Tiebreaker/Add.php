@@ -3,7 +3,6 @@
 namespace QuizBundle\Form\Admin\Tiebreaker;
 
 use QuizBundle\Entity\Quiz;
-use QuizBundle\Entity\Team;
 use QuizBundle\Entity\Tiebreaker;
 use RuntimeException;
 

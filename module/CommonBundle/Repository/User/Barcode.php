@@ -182,7 +182,6 @@ class Barcode extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
      * @param  Person $person
      * @return \CommonBundle\Entity\User\Barcode\Ean12|null
      */
-
     public function findEan12ByPerson($person)
     {
         if (!($person instanceof Person)) {

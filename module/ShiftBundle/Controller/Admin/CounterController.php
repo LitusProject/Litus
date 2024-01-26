@@ -415,7 +415,7 @@ class CounterController extends \CommonBundle\Component\Controller\ActionControl
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears'      => $academicYears,
-                'total'              => $total
+                'total'              => $total,
             )
         );
     }

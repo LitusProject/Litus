@@ -114,7 +114,7 @@ class Subscription
         'faculty of bio engineering'        => 'Faculty of Bio Engineering',
         'faculty of business and economics' => 'Faculty of Business and Economics',
         'faculty of engineering technology' => 'Faculty of Engineering Technology',
-        'other'                             => 'Other'
+        'other'                             => 'Other',
     );
 
     /**

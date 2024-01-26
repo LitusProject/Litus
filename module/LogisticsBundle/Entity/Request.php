@@ -5,8 +5,6 @@ namespace LogisticsBundle\Entity;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use LogisticsBundle\Entity\Order;
-use RuntimeException;
 
 /**
  * This entity stores a request for an order.
@@ -187,4 +185,3 @@ class Request
         return $this->contact;
     }
 }
-

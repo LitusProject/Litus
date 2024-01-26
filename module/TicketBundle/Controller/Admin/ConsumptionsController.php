@@ -483,7 +483,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             ),
         );
     }

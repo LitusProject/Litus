@@ -83,16 +83,16 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             if ($person === null && !$formSpecification->isNonMember()) {
                 return new ViewModel(
                     array(
-                        'message'   => 'Please login to view this form',
+                        'message'       => 'Please login to view this form',
                         'specification' => $formSpecification,
                     )
                 );
             } elseif (!$formSpecification->isMultiple() && count($entries) > 0) {
                 return new ViewModel(
                     array(
-                        'message' => 'You can\'t fill this form more than once',
+                        'message'       => 'You can\'t fill this form more than once',
                         'specification' => $formSpecification,
-                        'entries' => $entries,
+                        'entries'       => $entries,
                     )
                 );
             }
@@ -116,11 +116,11 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $infoForm = $this->getForm(
                 'form_specified-form_add',
                 array(
-                    'form'       => $formSpecification,
-                    'person'     => $person,
-                    'language'   => $this->getLanguage(),
-                    'guest_info' => $guestInfo,
-                    'event'      => $event,
+                    'form'          => $formSpecification,
+                    'person'        => $person,
+                    'language'      => $this->getLanguage(),
+                    'guest_info'    => $guestInfo,
+                    'event'         => $event,
                     'is_event_form' => true,
                 )
             );
@@ -173,8 +173,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                                 $this->redirect()->toRoute(
                                     'ticket',
                                     array(
-                                        'action'  => 'event',
-                                        'id' => $event->getRandId(),
+                                        'action' => 'event',
+                                        'id'     => $event->getRandId(),
                                     )
                                 );
                                 return new ViewModel();
@@ -208,7 +208,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             throw new RuntimeException('Guestinfo is null');
                         }
 
-                        if($event->isOnlinePayment()){
+                        if ($event->isOnlinePayment()) {
                             foreach ($booked_tickets as $ticket) {
                                 $this->sendMail($ticket);
                             }
@@ -311,7 +311,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             throw new RuntimeException('Guestinfo is null');
                         }
 
-                        if($event->isOnlinePayment()){
+                        if ($event->isOnlinePayment()) {
                             foreach ($booked_tickets as $ticket) {
                                 $this->sendMail($ticket);
                             }
@@ -425,7 +425,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         $this->getEntityManager()->flush();
 
-                        if($event->isOnlinePayment()){
+                        if ($event->isOnlinePayment()) {
                             foreach ($booked_tickets as $ticket) {
                                 $this->sendMail($ticket);
                             }
@@ -490,7 +490,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
                         $this->getEntityManager()->flush();
 
-                        if($event->isOnlinePayment()){
+                        if ($event->isOnlinePayment()) {
                             foreach ($booked_tickets as $ticket) {
                                 $this->sendMail($ticket);
                             }
@@ -606,7 +606,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $shasign = $keyAndVal[1];
             }
 
-            if($keyAndVal[0] === 'PAYID'){
+            if ($keyAndVal[0] === 'PAYID') {
                 $payid = $keyAndVal[1];
             }
         }
@@ -639,7 +639,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             }
             $this->getEntityManager()->flush();
             if ($ticket->getEvent()->getQrEnabled()) {
-                $ticket->sendQrMail($this,$this->getLanguage());
+                $ticket->sendQrMail($this, $this->getLanguage());
             }
 
             $this->flashMessenger()->success(
@@ -681,7 +681,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 $shasign = $keyAndVal[1];
             }
 
-            if($keyAndVal[0] === 'PAYID'){
+            if ($keyAndVal[0] === 'PAYID') {
                 $payid = $keyAndVal[1];
             }
         }
@@ -695,7 +695,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findOneBy(
                 array(
-                    'orderId' => $paymentParams['ORDERID']
+                    'orderId' => $paymentParams['ORDERID'],
                 )
             );
 
@@ -757,7 +757,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $now = new \DateTime('now');
         $book_date = $ticket->getBookDate();
         $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
-        $time_in_minutes = $time_diff/(60); // Set Time Difference in seconds to minutes
+        $time_in_minutes = $time_diff / (60); // Set Time Difference in seconds to minutes
 
         $max_time = $ticket->getEvent()->getDeadlineTime();
 
@@ -768,7 +768,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         } else {
             return new ViewModel(
                 array(
-                    'late' => true,
+                    'late'  => true,
                     'event' => $ticket->getEvent(),
                 )
             );
@@ -816,10 +816,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 }
                 return new ViewModel(
                     array(
-                        'event' => $event,
-                        'entry' => $entry,
+                        'event'         => $event,
+                        'entry'         => $entry,
                         'ticket_option' => $ticket->getOption() ? $ticket->getOption()->getName() : 'default',
-                        'ticket' => $ticket,
+                        'ticket'        => $ticket,
                     )
                 );
             }
@@ -832,8 +832,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 ->fromRoute(
                     'ticket',
                     array('action' => 'qr',
-                        'id' => $event->getRandId(),
-                        'qr' => $qr
+                        'id'       => $event->getRandId(),
+                        'qr'       => $qr,
                     ),
                     array('force_canonical' => true)
                 )
@@ -882,7 +882,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $event = $this->getEntityManager()->getRepository('TicketBundle\Entity\Event')
                 ->findOneBy(
                     array(
-                        'id' => $this->getParam('id'),
+                        'id'      => $this->getParam('id'),
                         'rand_id' => null,
                     )
                 );
@@ -993,10 +993,10 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
 
         $eventName = $ticket->getEvent()->getActivity()->getTitle();
 
-        $mailBody = $ticket->getEvent()->getConfirmationMailBody() ? :$mailData['content'];
-        $mailSubject = $ticket->getEvent()->getConfirmationMailSubject() ? :$mailData['subject'];
+        $mailBody = $ticket->getEvent()->getConfirmationMailBody() ? : $mailData['content'];
+        $mailSubject = $ticket->getEvent()->getConfirmationMailSubject() ? : $mailData['subject'];
 
-        $mailFrom = $ticket->getEvent()->getMailFrom() ? :$this->getEntityManager()
+        $mailFrom = $ticket->getEvent()->getMailFrom() ? : $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('ticket.confirmation_email_from');
 
@@ -1038,10 +1038,12 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->setReplyTo($mailFrom)
             ->addTo($mailTo)
             ->addBcc($mailFrom)
-            ->addBcc($this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('system_administrator_mail'),
-                'System Administrator')
+            ->addBcc(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
             ->setSubject(str_replace('{{ event }}', $eventName, $mailSubject));
 
         if (getenv('APPLICATION_ENV') != 'development') {
@@ -1096,7 +1098,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('cudi.printer_uniflow_client_secret');
 
-        $command = 'pwsh ' . " " . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
+        $command = 'pwsh ' . ' ' . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
 
         try {
             $query = shell_exec("$command 2>&1");

@@ -4,11 +4,11 @@ namespace ShopBundle\Entity\Session;
 
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
-use ShopBundle\Entity\Session\OpeningHour\Translation;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
+use ShopBundle\Entity\Session\OpeningHour\Translation;
 
 /**
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Session\OpeningHour")

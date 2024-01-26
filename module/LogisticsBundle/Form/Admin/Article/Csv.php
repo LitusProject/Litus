@@ -1,6 +1,7 @@
 <?php
 
 namespace LogisticsBundle\Form\Admin\Article;
+
 use RuntimeException;
 
 /**
@@ -20,10 +21,10 @@ class Csv extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'select',
-                'name'    => 'unit',
-                'label'   => 'Unit',
-                'options' => array(
+                'type'       => 'select',
+                'name'       => 'unit',
+                'label'      => 'Unit',
+                'options'    => array(
                     'input' => array(
                         'filter' => array(
                             array('name' => 'StringTrim'),

@@ -193,7 +193,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     'br_admin_event_company',
                     array(
                         'action' => 'manage',
-                        'event'  => $companyMap->getEvent()->getId()
+                        'event'  => $companyMap->getEvent()->getId(),
                     )
                 );
             }

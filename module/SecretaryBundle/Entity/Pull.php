@@ -101,14 +101,15 @@ class Pull
     }
 
     /**
-     * @return int
+     * @return integer
      */
-    public function getOrdered() {
+    public function getOrdered()
+    {
         return $this->ordered;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getAmountAvailable()
     {
@@ -168,19 +169,21 @@ class Pull
     }
 
     /**
-     * @param int $amount
+     * @param integer $amount
      * @return self
      */
-    public function setAmountAvailable($amount) {
+    public function setAmountAvailable($amount)
+    {
         $this->amount_available = $amount;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return integer
      */
-    public function addOrdered() {
+    public function addOrdered()
+    {
         $this->ordered += 1;
         $this->amount_available -= 1;
 

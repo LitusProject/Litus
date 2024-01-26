@@ -41,7 +41,7 @@ return array(
         ),
         'actions' => array(
             'common_account' => array(
-                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences'
+                'edit', 'index', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences',
             ),
             'common_session' => array(
                 'manage', 'expire',
@@ -53,7 +53,7 @@ return array(
         'parents' => array(),
         'actions' => array(
             'common_admin_faq' => array(
-                'add', 'delete', 'edit', 'manage', 'search'
+                'add', 'delete', 'edit', 'manage', 'search',
             ),
         ),
     ),

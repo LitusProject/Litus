@@ -5,7 +5,6 @@ namespace ShopBundle\Entity;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use ShopBundle\Entity\Reservation\Ban;
 
@@ -230,7 +229,8 @@ class Session
      * @param Ban $ban
      * @return $this
      */
-    public function addBan(Ban $ban) {
+    public function addBan(Ban $ban)
+    {
         $this->bans->add($ban);
 
         return $this;
@@ -242,7 +242,8 @@ class Session
      * @param Person $person
      * @return boolean
      */
-    public function containsBanForPerson(Person $person) {
+    public function containsBanForPerson(Person $person)
+    {
         foreach ($this->bans as $ban) {
             if ($ban->getPerson() == $person) {
                 return true;
@@ -258,8 +259,9 @@ class Session
      * @param Person $person
      * @return void
      */
-    public function removeAllBansFromPerson(Person $person) {
-        $elementsToRemove = [];
+    public function removeAllBansFromPerson(Person $person)
+    {
+        $elementsToRemove = array();
 
         foreach ($this->bans as $ban) {
             if ($ban->getPerson() == $person) {

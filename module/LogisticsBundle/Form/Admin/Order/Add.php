@@ -20,14 +20,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'name',
-                'label'    => 'Order Name',
-                'required' => true,
+                'type'       => 'text',
+                'name'       => 'name',
+                'label'      => 'Order Name',
+                'required'   => true,
                 'attributes' => array(
                     'id' => 'order_review_name',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -47,14 +47,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'contact',
-                'label'    => 'Contact Name',
+                'type'       => 'text',
+                'name'       => 'contact',
+                'label'      => 'Contact Name',
                 'attributes' => array(
                     'id' => 'order_review_contact',
                 ),
-                'required' => true,
-                'options'  => array(
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -72,21 +72,21 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'options' => $this->createUnitsArray(),
-                    'id' => 'order_review_unit',
+                    'id'      => 'order_review_unit',
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => true,
+                'type'       => 'text',
+                'name'       => 'email',
+                'label'      => 'Email',
+                'required'   => true,
                 'attributes' => array(
                     'id' => 'order_review_email',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -108,8 +108,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Location',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => $this->createLocationsArray(),
-                    'id' => 'order_review_location',
+                    'options'     => $this->createLocationsArray(),
+                    'id'          => 'order_review_location',
                     '<data-help>' => 'If you don\'t see your location as a possible option, put it in the description (be as complete as possible).',
                 ),
             )
@@ -117,10 +117,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'start_date',
-                'label'    => 'Start Date',
-                'required' => true,
+                'type'       => 'datetime',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
                 'attributes' => array(
                     'id' => 'order_review_start_date',
                 ),
@@ -129,14 +129,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'end_date',
-                'label'    => 'End Date',
-                'required' => true,
+                'type'       => 'datetime',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => true,
                 'attributes' => array(
                     'id' => 'order_review_end_date',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'validators' => array(
                             array(
@@ -154,15 +154,15 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'textarea',
-                'name'     => 'description',
-                'label'    => 'Description',
+                'type'       => 'textarea',
+                'name'       => 'description',
+                'label'      => 'Description',
                 'attributes' => array(
-                    'style'       => 'height: 20px;',
-                    'id' => 'order_review_description',
+                    'style' => 'height: 20px;',
+                    'id'    => 'order_review_description',
                 ),
-                'required' => false,
-                'options'  => array(
+                'required'   => false,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -174,14 +174,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'textarea',
-                'name'    => 'internal_comment',
-                'label'   => 'Internal Comment',
+                'type'       => 'textarea',
+                'name'       => 'internal_comment',
+                'label'      => 'Internal Comment',
                 'attributes' => array(
-                    'style'       => 'height: 30px;',
-                    'id' => 'order_review_internal_comment',
+                    'style' => 'height: 30px;',
+                    'id'    => 'order_review_internal_comment',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -193,14 +193,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'    => 'textarea',
-                'name'    => 'external_comment',
-                'label'   => 'External Comment',
+                'type'       => 'textarea',
+                'name'       => 'external_comment',
+                'label'      => 'External Comment',
                 'attributes' => array(
-                    'style'       => 'height: 30px;',
-                    'id' => 'order_review_external_comment',
+                    'style' => 'height: 30px;',
+                    'id'    => 'order_review_external_comment',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

@@ -25,8 +25,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $this->add(
             array(
-                'type' => 'hidden',
-                'name' => 'category_page_id',
+                'type'       => 'hidden',
+                'name'       => 'category_page_id',
                 'attributes' => array(
                     'id' => 'category_page_id',
                 ),
@@ -35,18 +35,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type' => 'radio',
-                'name' => 'frame_type',
-                'label' => 'Frame Type',
-                'required' => true,
-                'value' => 'big',
+                'type'       => 'radio',
+                'name'       => 'frame_type',
+                'label'      => 'Frame Type',
+                'required'   => true,
+                'value'      => 'big',
                 'attributes' => array(
                     'options' => array(
-                        'big' => 'Big Frame',
+                        'big'              => 'Big Frame',
                         'smalldescription' => 'Small Frame with Description',
-                        'smallposter' => 'Small Frame with Poster',
+                        'smallposter'      => 'Small Frame with Poster',
                     ),
-                    'class' => 'frame_type',
+                    'class'   => 'frame_type',
                 ),
             )
         );
@@ -58,14 +58,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         foreach ($category_pages as $category_page) {
             $this->add(
                 array(
-                    'type' => 'select',
-                    'name' => 'link_to_' . $category_page->getId(),
-                    'label' => 'Link To',
+                    'type'       => 'select',
+                    'name'       => 'link_to_' . $category_page->getId(),
+                    'label'      => 'Link To',
                     'attributes' => array(
                         'class' => 'link_to',
-                        'id' => 'link_to_' . $category_page->getId(),
+                        'id'    => 'link_to_' . $category_page->getId(),
                     ),
-                    'options' => array(
+                    'options'    => array(
                         'options' => $this->createPagesAndLinksArray($category_page),
                     ),
                 )
@@ -74,8 +74,8 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type' => 'checkbox',
-                'name' => 'active',
+                'type'  => 'checkbox',
+                'name'  => 'active',
                 'label' => 'Active',
                 'value' => true,
             )
@@ -104,14 +104,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
     {
         $container->add(
             array(
-                'type' => 'textarea',
-                'name' => 'description',
-                'label' => 'Description',
-                'required' => false,
+                'type'       => 'textarea',
+                'name'       => 'description',
+                'label'      => 'Description',
+                'required'   => false,
                 'attributes' => array(
-                    'class' => 'description'
+                    'class' => 'description',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -141,10 +141,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             '' => '',
         );
         foreach ($pages as $page) {
-            $pageOptions["page_" . $page->getId()] = $page->getTitle();
+            $pageOptions['page_' . $page->getId()] = $page->getTitle();
         }
         foreach ($links as $link) {
-            $pageOptions["link_" . $link->getId()] = $link->getName();
+            $pageOptions['link_' . $link->getId()] = $link->getName();
         }
 
         return $pageOptions;

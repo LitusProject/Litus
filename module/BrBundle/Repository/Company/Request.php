@@ -53,7 +53,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     /**
      * @param CompanyEntity $company
-     * @param string $type
+     * @param string        $type
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findAllUnhandledByCompany(CompanyEntity $company, $type)
@@ -84,7 +84,7 @@ class Request extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     /**
      * @param CompanyEntity $company
-     * @param string $type
+     * @param string        $type
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findRejectsByCompany(CompanyEntity $company, $type)

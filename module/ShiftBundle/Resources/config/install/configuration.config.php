@@ -185,5 +185,5 @@ U bent verwijderd van de volgende shift door een administrator:
         'key'         => 'shift.praesidium_counter_start_day',
         'value'       => 'Monday this week',
         'description' => 'Set the starting day for the praesidium counter',
-    )
+    ),
 );

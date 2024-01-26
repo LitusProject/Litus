@@ -29,23 +29,23 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
             $hydrator = $this->getHydrator();
             $this->populateValues($hydrator->extract($this->order));
         }
-        if ($this->sortby == "alpha") {
-            $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+        if ($this->sortby == 'alpha') {
+            $orderItems = $this->getEntityManager()->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->findAllByOrderOnAlpha($this->order);
         } else {
-            $orderItems = $this->getEntityManager()->getRepository("CudiBundle\Entity\Stock\Order\Item")
+            $orderItems = $this->getEntityManager()->getRepository('CudiBundle\Entity\Stock\Order\Item')
                 ->findAllByOrderOnBarcode($this->order);
         }
 
         $items = array();
         foreach ($orderItems as $item) {
             $items[] = array(
-                'type' => 'text',
-                'name' => $item->getArticle()->getId(),
-                'label' => $item->getArticle()->getMainArticle()->getTitle(),
+                'type'     => 'text',
+                'name'     => $item->getArticle()->getId(),
+                'label'    => $item->getArticle()->getMainArticle()->getTitle(),
                 'required' => false,
-                'value' => $item->getNumber(),
-                'options' => array(
+                'value'    => $item->getNumber(),
+                'options'  => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -62,9 +62,9 @@ class SetDelivered extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type' => 'fieldset',
-                'name' => 'articles',
-//                'label' => 'Articles',
+                'type'     => 'fieldset',
+                'name'     => 'articles',
+            //                'label' => 'Articles',
                 'elements' => $items,
             )
         );

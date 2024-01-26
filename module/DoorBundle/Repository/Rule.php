@@ -23,14 +23,14 @@ class Rule extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->gte('r.endDate', ':now')
             )
-            ->setParameter('now', (new DateTime())->setTime(0,0))
+            ->setParameter('now', (new DateTime())->setTime(0, 0))
             ->getQuery()
             ->getResult();
     }
 
     /**
      * @param $academic
-     * @return float|int|mixed|string
+     * @return float|integer|mixed|string
      */
     public function findAllByAcademic($academic)
     {
@@ -41,7 +41,7 @@ class Rule extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->gte('r.endDate', ':now'),
                 $query->expr()->eq('r.academic', ':academic'),
             )
-            ->setParameter('now', (new DateTime())->setTime(0,0))
+            ->setParameter('now', (new DateTime())->setTime(0, 0))
             ->setParameter('academic', $academic)
             ->getQuery()
             ->getResult();

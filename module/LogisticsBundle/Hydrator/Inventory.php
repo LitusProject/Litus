@@ -24,7 +24,7 @@ class Inventory extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $array = $this->stdExtract($object, self::$stdKeys);
-        $array['perUnit'] = $object->getPerUnit() != ''? $object->getPerUnit(): Null;
+        $array['perUnit'] = $object->getPerUnit() != '' ? $object->getPerUnit() : null;
 
         return $array;
     }

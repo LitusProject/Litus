@@ -76,7 +76,7 @@ class Option
      * @param integer             $priceMembers
      * @param integer|null        $priceNonMembers
      * @param integer|string|null $maximum
-     * @param integer|null $limit
+     * @param integer|null        $limit
      */
     public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum, $visible, $limit)
     {
@@ -183,7 +183,7 @@ class Option
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isVisible()
     {
@@ -191,7 +191,7 @@ class Option
     }
 
     /**
-     * @param bool $visible
+     * @param boolean $visible
      * @return self
      */
     public function setIsVisible($visible)
@@ -201,7 +201,7 @@ class Option
     }
 
     /**
-     * @return int|null
+     * @return integer|null
      */
     public function getLimitPerPerson()
     {

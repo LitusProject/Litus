@@ -63,7 +63,7 @@ abstract class Tabbable extends \CommonBundle\Component\Form\Fieldset implements
 
                 $tabs->addTab(
                     array(
-                        $language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']'
+                        $language->getName() => '[' . $tabContent->getName() . '][' . 'tab_' . $abbrev . ']',
                     )
                 );
             }

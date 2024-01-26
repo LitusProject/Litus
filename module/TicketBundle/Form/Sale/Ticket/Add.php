@@ -276,14 +276,14 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type' => 'text',
-                'name' => 'payId',
-                'label' => 'Betaalreferentie',
-                'required' => false,
+                'type'       => 'text',
+                'name'       => 'payId',
+                'label'      => 'Betaalreferentie',
+                'required'   => false,
                 'attributes' => array(
                     'id' => 'payid',
                 ),
-                'options' => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),

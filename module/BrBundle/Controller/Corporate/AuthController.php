@@ -79,7 +79,8 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
         return new ViewModel();
     }
 
-    public function requestUsernameAction(){
+    public function requestUsernameAction()
+    {
         $form = $this->getForm('br_corporate_auth_requestusername');
 
         if ($this->getRequest()->isPost()) {
@@ -148,7 +149,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                     'br_corporate_index',
                     array(
                         'language' => $this->getLanguage()->getAbbrev(),
-                        'action' => 'login',
+                        'action'   => 'login',
                     )
                 );
                 return new ViewModel();
@@ -221,7 +222,7 @@ class AuthController extends \BrBundle\Component\Controller\CorporateController
                     'br_corporate_index',
                     array(
                         'language' => $this->getLanguage()->getAbbrev(),
-                        'action' => 'login',
+                        'action'   => 'login',
                     )
                 );
                 return new ViewModel();

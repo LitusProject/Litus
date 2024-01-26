@@ -2,8 +2,6 @@
 
 namespace LogisticsBundle\Form\Admin\Inventory;
 
-use LogisticsBundle\Entity\Inventory;
-
 /**
  * Add inventory article
  */

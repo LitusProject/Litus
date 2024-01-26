@@ -454,19 +454,19 @@ class QueueItem
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()]['number'] += $booking->getNumber();
             } else {
                 $result = array(
-                    'id'        => $booking->getId(),
-                    'articleId' => $booking->getArticle()->getId(),
-                    'price'     => (int) $booking->getArticle()->getSellPrice(),
-                    'title'     => $booking->getArticle()->getMainArticle()->getTitle(),
-                    'barcode'   => $booking->getArticle()->getBarcode(),
-                    'barcodes'  => $barcodes,
-                    'author'    => $booking->getArticle()->getMainArticle()->getAuthors(),
-                    'number'    => $booking->getNumber(),
-                    'status'    => $booking->getStatus(),
-                    'sellable'  => $booking->getArticle()->isSellable(),
-                    'unbookable'=> $booking->getArticle()->isUnbookable(),
-                    'collected' => $this->articles->{$booking->getArticle()->getId()} ?? 0,
-                    'discounts' => array(),
+                    'id'         => $booking->getId(),
+                    'articleId'  => $booking->getArticle()->getId(),
+                    'price'      => (int) $booking->getArticle()->getSellPrice(),
+                    'title'      => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'barcode'    => $booking->getArticle()->getBarcode(),
+                    'barcodes'   => $barcodes,
+                    'author'     => $booking->getArticle()->getMainArticle()->getAuthors(),
+                    'number'     => $booking->getNumber(),
+                    'status'     => $booking->getStatus(),
+                    'sellable'   => $booking->getArticle()->isSellable(),
+                    'unbookable' => $booking->getArticle()->isUnbookable(),
+                    'collected'  => $this->articles->{$booking->getArticle()->getId()} ?? 0,
+                    'discounts'  => array(),
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {

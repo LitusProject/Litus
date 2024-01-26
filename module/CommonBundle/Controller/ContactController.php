@@ -11,7 +11,8 @@ use Laminas\View\Model\ViewModel;
  */
 class ContactController extends \CommonBundle\Component\Controller\ActionController\SiteController
 {
-    public function indexAction() {
+    public function indexAction()
+    {
 
         return new ViewModel(
         );

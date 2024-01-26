@@ -290,8 +290,7 @@ class MatchController extends \CommonBundle\Component\Controller\ActionControlle
         $allMatches = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Connection')
             ->findAll();
-        foreach ($allMatches as $currentMatch)
-        {
+        foreach ($allMatches as $currentMatch) {
             $this->getEntityManager()->remove($currentMatch);
         }
 

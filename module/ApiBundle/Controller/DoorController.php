@@ -4,9 +4,9 @@ namespace ApiBundle\Controller;
 
 use CommonBundle\Component\Controller\ActionController;
 use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
 use DoorBundle\Entity\Log;
 use Laminas\View\Model\ViewModel;
-use DateTime;
 
 /**
  * DoorController
@@ -137,7 +137,7 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         }
         $userData = $this->getRequest()->getPost('userData');
 
-        if ((str_contains($userData, ';')) && (strlen($userData) == 25)) {
+        if (str_contains($userData, ';') && (strlen($userData) == 25)) {
             $seperatedString = explode(';', $userData);
             $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
         } else {
@@ -154,13 +154,13 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($person->getId());
 
         //Academic is praesidium
-        if ($academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() == "praesidium") {
+        if ($academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() == 'praesidium') {
             return new ViewModel(
                 array(
                     'result' => (object)array(
-                        'status' => 'success',
-                        'person' => $rNumber,
-                        'academic' => $academic->getId(),
+                        'status'     => 'success',
+                        'person'     => $rNumber,
+                        'academic'   => $academic->getId(),
                         'is_allowed' => true,
                     ),
                 ),
@@ -182,9 +182,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
                     return new ViewModel(
                         array(
                             'result' => (object)array(
-                                'status' => 'success',
-                                'person' => $rNumber,
-                                'academic' => $academic->getId(),
+                                'status'     => 'success',
+                                'person'     => $rNumber,
+                                'academic'   => $academic->getId(),
                                 'is_allowed' => true,
                             ),
                         ),
@@ -196,9 +196,9 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
         return new ViewModel(
             array(
                 'result' => (object)array(
-                    'status' => 'success',
-                    'person' => $rNumber,
-                    'academic' => $academic->getId(),
+                    'status'     => 'success',
+                    'person'     => $rNumber,
+                    'academic'   => $academic->getId(),
                     'is_allowed' => false,
                 ),
             ),

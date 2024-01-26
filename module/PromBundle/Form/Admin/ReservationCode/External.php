@@ -63,7 +63,7 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                                 'name' => 'EmailAddress',
                             ),
                             array(
-                                'name' => 'EntryExternal'
+                                'name' => 'EntryExternal',
                             ),
                         ),
                     ),
@@ -83,8 +83,8 @@ class External extends \CommonBundle\Component\Form\Admin\Form
                 'options'    => array(
                     'input' => array(
                         'validators' => array(
-                            array('name' => 'Int')
-                        )
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
             )

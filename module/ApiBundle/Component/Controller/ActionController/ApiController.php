@@ -408,7 +408,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
     protected function getAccessToken($field = 'access_token')
     {
         $headers = $this->getRequest()->getHeaders();
-        $authheader = $headers->get("Authorization");
+        $authheader = $headers->get('Authorization');
         $code = null;
         if ($authheader) {
             if (preg_match('/Bearer\s(\S+)/', $authheader->getFieldValue(), $matches)) {

@@ -305,7 +305,8 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
                             $authenticationHandler['auth_route'],
                             array(
                                 'redirect' => urlencode($this->getRequest()->getRequestUri()),
-                            ));
+                            )
+                        );
                     }
                 } else {
                     throw new Exception\HasNoAccessException(
@@ -567,7 +568,7 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
 
         $headers = array(
             'Authorization: Basic ' . $base64,
-            'Content-Type: application/x-www-form-urlencoded'
+            'Content-Type: application/x-www-form-urlencoded',
         );
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);

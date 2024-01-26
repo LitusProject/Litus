@@ -226,7 +226,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function eerstejaarsCalendarAction(){
+    public function eerstejaarsCalendarAction()
+    {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllEerstejaarsAndActiveAndNotHidden();
@@ -244,7 +245,8 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
         );
     }
 
-    public function internationalCalendarAction(){
+    public function internationalCalendarAction()
+    {
         $events = $this->getEntityManager()
             ->getRepository('CalendarBundle\Entity\Node\Event')
             ->findAllInternationalAndActiveAndNotHidden();

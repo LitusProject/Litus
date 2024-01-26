@@ -410,7 +410,8 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
      * Converts an array of OpeningHour objects into a new array which maps a string representing the date
      * to an array of all the DateTime objects that fall on that day.
      */
-    private function createOpeningHourMap(array $openingHours) {
+    private function createOpeningHourMap(array $openingHours)
+    {
         $dateToOpeningHoursMap = array();
         foreach ($openingHours as $openingHour) {
             $date = $openingHour->getStart()->format('d/m/Y');

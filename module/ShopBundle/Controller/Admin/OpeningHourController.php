@@ -3,8 +3,8 @@
 namespace ShopBundle\Controller\Admin;
 
 use DateTime;
-use ShopBundle\Entity\Session\OpeningHour;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\Session\OpeningHour;
 
 /**
  * OpeningHourController
@@ -136,7 +136,7 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
             if ($form->isValid()) {
                 $formData = $form->getData();
                 foreach ($formData as $formKey => $formValue) {
-                    $split = explode("_", $formKey);
+                    $split = explode('_', $formKey);
                     if ($split[0] == 'interval' && $formValue) {
                         $startHour = explode('-', $split[1])[0];
                         $endHour = explode('-', $split[1])[1];
@@ -145,23 +145,23 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
                         $data = array(
                             // OPENING HOURS
-                            'start_date' => $startDate,
-                            'end_date' => $endDate,
+                            'start_date'        => $startDate,
+                            'end_date'          => $endDate,
                             // ALL SHIFTS
-                            'name'                  => '',
-                            'description'           => '',
-                            'manager'               => false,
-                            'unit'                  => 2,
-                            'edit_roles'            => array('theokot',),
-                            'event'                 => '',
-                            'location'              => 1,
-                            'nb_responsibles'       => 0,
-                            'nb_volunteers'         => 4,
-                            'nb_volunteers_min'     => 2,
-                            'reward'                => 2,
-                            'handled_on_event'      => false,
-                            'ticket_needed'         => false,
-                            'points'                => 0,
+                            'name'              => '',
+                            'description'       => '',
+                            'manager'           => false,
+                            'unit'              => 2,
+                            'edit_roles'        => array('theokot',),
+                            'event'             => '',
+                            'location'          => 1,
+                            'nb_responsibles'   => 0,
+                            'nb_volunteers'     => 4,
+                            'nb_volunteers_min' => 2,
+                            'reward'            => 2,
+                            'handled_on_event'  => false,
+                            'ticket_needed'     => false,
+                            'points'            => 0,
                         );
 
                         // OPENING HOURS
@@ -221,8 +221,8 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
         return new ViewModel(
             array(
-                'form'          => $form,
-                'nextMonday'    => $monday,
+                'form'       => $form,
+                'nextMonday' => $monday,
             )
         );
     }
@@ -271,5 +271,4 @@ class OpeningHourController extends \CommonBundle\Component\Controller\ActionCon
 
         return $openingHour;
     }
-
 }

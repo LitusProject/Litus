@@ -2,7 +2,6 @@
 
 namespace ShopBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use ShopBundle\Entity\Session as SalesSession;
 

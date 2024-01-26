@@ -51,8 +51,8 @@ class TiebreakerAnswer
 
     /**
      * @param Tiebreaker $tiebreaker
-     * @param Team $team
-     * @param integer $answer
+     * @param Team       $team
+     * @param integer    $answer
      */
     public function __construct(Tiebreaker $tiebreaker, Team $team, int $answer)
     {

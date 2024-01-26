@@ -255,8 +255,7 @@ class CatalogUpdate extends \CommonBundle\Component\Console\Command
                     ->addCc($mailAddress, $mailName)
                     ->setSubject($mailSubject);
 
-                if($this->getEntityManager()->getRepository('Common\Entity\General\Config')
-                        ->getConfigValue('cudi.catalog_update_mail_to_sysadmin')){
+                if ($this->getEntityManager()->getRepository('Common\Entity\General\Config')                    ->getConfigValue('cudi.catalog_update_mail_to_sysadmin')) {
                     $mail->addBcc(
                         $this->getEntityManager()
                             ->getRepository('CommonBundle\Entity\General\Config')

@@ -9,7 +9,7 @@ use InvalidArgumentException;
 class Article extends \CommonBundle\Component\Hydrator\Hydrator
 {
     private static $articleKeys = array(
-        'title', 'year_published', 'isbn', 'url', 'name_contact', 'email_contact'
+        'title', 'year_published', 'isbn', 'url', 'name_contact', 'email_contact',
     );
 
     private static $internalKeys = array(

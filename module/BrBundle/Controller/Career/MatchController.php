@@ -241,7 +241,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                         'br_career_match',
                         array(
                             'action' => 'addProfile',
-                            'type'   => 'student'
+                            'type'   => 'student',
                         )
                     );
                 } elseif ($type == 'student' && $cp) {
@@ -249,7 +249,7 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
                         'br_career_match',
                         array(
                             'action' => 'addProfile',
-                            'type'   => 'company'
+                            'type'   => 'company',
                         )
                     );
                 } else {

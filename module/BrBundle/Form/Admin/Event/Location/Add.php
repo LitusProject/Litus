@@ -111,7 +111,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'id'      => 'orientation',
                     'options' => array(
                         'horizontal' => 'Horizontal',
-                        'vertical'   => 'Vertical'
+                        'vertical'   => 'Vertical',
                     ),
                 ),
                 'options'    => array(

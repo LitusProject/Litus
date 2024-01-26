@@ -84,10 +84,10 @@ return array(
     ),
 
     'controllers' => array(
-        'quiz_admin_quiz'  => 'QuizBundle\Controller\Admin\QuizController',
-        'quiz_admin_round' => 'QuizBundle\Controller\Admin\RoundController',
-        'quiz_admin_team'  => 'QuizBundle\Controller\Admin\TeamController',
-        'quiz_admin_tiebreaker'  => 'QuizBundle\Controller\Admin\TiebreakerController',
-        'quiz_quiz'        => 'QuizBundle\Controller\QuizController',
+        'quiz_admin_quiz'       => 'QuizBundle\Controller\Admin\QuizController',
+        'quiz_admin_round'      => 'QuizBundle\Controller\Admin\RoundController',
+        'quiz_admin_team'       => 'QuizBundle\Controller\Admin\TeamController',
+        'quiz_admin_tiebreaker' => 'QuizBundle\Controller\Admin\TiebreakerController',
+        'quiz_quiz'             => 'QuizBundle\Controller\QuizController',
     ),
 );

@@ -85,9 +85,9 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'rewards_amount',
                 'label'      => 'Rewards Amount',
                 'attributes' => array(
-                    'min'       => '0',
-                    'max'       => '10',
-                    'value'     => '3',
+                    'min'   => '0',
+                    'max'   => '10',
+                    'value' => '3',
                 ),
             )
         );
@@ -115,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'min'   => '0',
                         'max'   => '100',
-                        'value' => $product->getDefaultAmount() ? $product->getDefaultAmount(): 0,
+                        'value' => $product->getDefaultAmount() ? $product->getDefaultAmount() : 0,
                     ),
                 )
             );

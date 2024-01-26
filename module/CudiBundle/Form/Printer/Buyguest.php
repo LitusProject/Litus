@@ -86,7 +86,7 @@ class Buyguest extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-                )
+                ),
             )
         );
 

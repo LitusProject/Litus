@@ -66,7 +66,7 @@ class Amount extends \CudiBundle\Entity\Sale\Article\Restriction
                 $academicYear
             );
         $amount = 0;
-        foreach ($bookings as $booking){
+        foreach ($bookings as $booking) {
             $amount += $booking->getNumber();
         }
 

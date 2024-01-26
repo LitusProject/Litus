@@ -99,10 +99,12 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->redirect()->toRoute('common_auth',
+            return $this->redirect()->toRoute(
+                'common_auth',
                 array(
                     'redirect' => urlencode($this->getRequest()->getRequestUri()),
-                ));
+                )
+            );
         }
 
         $max_booking_number = $this->getEntityManager()
@@ -271,14 +273,14 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         foreach ($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getType() == 'amount') {
                                 $bookings = $this->getEntityManager()
-                                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                        ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                                            $saleArticle,
-                                            $academic,
-                                            $this->getCurrentAcademicYear()
-                                        );
+                                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                    ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                                        $saleArticle,
+                                        $academic,
+                                        $this->getCurrentAcademicYear()
+                                    );
                                 $amount = 0;
-                                foreach ($bookings as $booking){
+                                foreach ($bookings as $booking) {
                                     $amount += $booking->getNumber();
                                 }
 
@@ -344,7 +346,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                         'Warning',
                         'You have not booked any textbooks!'
                     );
-                } else if ($total > $max_booking_number) {
+                } elseif ($total > $max_booking_number) {
                     $this->flashMessenger()->warn(
                         'Warning',
                         'You have booked too many textbooks!'

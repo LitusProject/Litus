@@ -14,7 +14,7 @@ class NumberTicketsGuest extends AbstractValidator implements FormAwareInterface
 
     protected $options = array(
         'maximum' => '',
-        'event' => null,
+        'event'   => null,
     );
 
     /**
@@ -60,7 +60,7 @@ class NumberTicketsGuest extends AbstractValidator implements FormAwareInterface
     /**
      * Returns true if these do not exceed max
      *
-     * @param string $value The value of the field that will be validated
+     * @param string     $value   The value of the field that will be validated
      * @param array|null $context The context of the field that will be validated
      * @return boolean
      */

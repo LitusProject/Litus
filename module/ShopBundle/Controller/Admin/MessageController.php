@@ -2,8 +2,8 @@
 
 namespace ShopBundle\Controller\Admin;
 
-use ShopBundle\Entity\Session\Message;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Entity\Session\Message;
 
 /**
  * MessageController
@@ -21,7 +21,7 @@ class MessageController extends \CommonBundle\Component\Controller\ActionControl
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

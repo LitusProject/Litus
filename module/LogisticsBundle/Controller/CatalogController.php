@@ -50,17 +50,20 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         // Sort orders according to last update date
-        uasort($lastOrders, function ($a, $b) {
-            if ($a->getUpdateDate() === $b->getUpdateDate()) {
-                return 0;
+        uasort(
+            $lastOrders,
+            function ($a, $b) {
+                if ($a->getUpdateDate() === $b->getUpdateDate()) {
+                    return 0;
+                }
+                return $a->getUpdateDate() > $b->getUpdateDate() ? -1 : 1;
             }
-            return ($a->getUpdateDate() > $b->getUpdateDate())? -1: 1;
-        });
+        );
 
         return new ViewModel(
             array(
-                'lastOrders'    => $lastOrders,
-                'fathom'        => $this->getFathomInfo(),
+                'lastOrders' => $lastOrders,
+                'fathom'     => $this->getFathomInfo(),
             )
         );
     }
@@ -88,7 +91,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         // Check if authenticated to modify order articles
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -101,8 +104,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         foreach ($mappings as $map) {
             if (!isset($mapped[$map->getArticle()->getId()])) {
                 $mapped[$map->getArticle()->getId()] = array(
-                    'amount'    => 0,
-                    'accepted'  => $map->isApproved(),
+                    'amount'   => 0,
+                    'accepted' => $map->isApproved(),
                 );
             }
 
@@ -122,7 +125,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         foreach ($articles as $art) {
             if ($art->isPostVisibility() && $academic->isPraesidium($this->getCurrentAcademicYear())
-                && $art->getUnit() == $academic->getUnit($this->getCurrentAcademicYear())) {
+                && $art->getUnit() == $academic->getUnit($this->getCurrentAcademicYear())
+            ) {
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
@@ -141,7 +145,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
                 $allArticles[] = $articleInfo;
             } elseif ($art->isGreaterVtkVisibility() && ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
-                    || $academic->isPraesidium($this->getCurrentAcademicYear()))) {
+                || $academic->isPraesidium($this->getCurrentAcademicYear()))
+            ) {
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
@@ -191,7 +196,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                             ->getRepository('LogisticsBundle\Entity\Article')
                             ->findOneById($articleId);
 
-                        $oldAmount = $mapped[$articleId]['amount']?: 0;
+                        $oldAmount = $mapped[$articleId]['amount'] ?: 0;
                         $booking = new Map($newOrder, $article, $formValue, $oldAmount);
 
                         $this->getEntityManager()->persist($booking);
@@ -217,7 +222,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     'logistics_catalog',
                     array(
                         'action' => 'view',
-                        'order'  => $newOrder->getId()
+                        'order'  => $newOrder->getId(),
                     )
                 );
 
@@ -227,13 +232,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return new ViewModel(
             array(
-                'isPraesidium'  => $academic->isPraesidium($this->getCurrentAcademicYear()),
-                'articles'      => $allArticles,
-                'categories'    => Article::$POSSIBLE_CATEGORIES,
-                'units'         => $this->getAllActiveUnits($articles),
-                'form'          => $form,
-                'searchForm'    => $searchForm,
-                'order'         => $order,
+                'isPraesidium' => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'articles'     => $allArticles,
+                'categories'   => Article::$POSSIBLE_CATEGORIES,
+                'units'        => $this->getAllActiveUnits($articles),
+                'form'         => $form,
+                'searchForm'   => $searchForm,
+                'order'        => $order,
             )
         );
     }
@@ -264,7 +269,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $this->getEntityManager()->persist($order);
                 $this->getEntityManager()->flush();
 
-                $this->redirect()->toRoute('logistics_catalog', array('action' => 'catalog', 'order'  => $order->getId(),));
+                $this->redirect()->toRoute('logistics_catalog', array('action' => 'catalog', 'order' => $order->getId(),));
                 return new ViewModel();
             }
         }
@@ -296,7 +301,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -333,7 +338,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     'The request has been sent to our administrators for approval.'
                 );
 
-                $this->redirect()->toRoute('logistics_catalog', array('action' => 'view', 'order'  => $newOrder->getId()));
+                $this->redirect()->toRoute('logistics_catalog', array('action' => 'view', 'order' => $newOrder->getId()));
                 return new ViewModel();
             }
         }
@@ -363,7 +368,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         if ($person !== $order->getCreator()
             &&(!$person->isPraesidium($this->getCurrentAcademicYear())
-                ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            ||$person->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -377,9 +382,9 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return new ViewModel(
             array(
-                'order'         => $order,
-                'articles'      => $articles,
-                'lastOrders'    => $lastOrders,
+                'order'      => $order,
+                'articles'   => $articles,
+                'lastOrders' => $lastOrders,
             )
         );
     }
@@ -401,7 +406,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -443,7 +448,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -475,7 +480,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -548,8 +553,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return $academic;
     }
-
-
 
     /**
      * @return Order|null
@@ -653,7 +656,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $requests = array();
         foreach ($activeOrders as $activeOrder) {
             $request = $activeOrder->getRequest();
-            if (!($request->isRemoved()) and !(in_array($request, $requests, true))) {
+            if (!$request->isRemoved() and !in_array($request, $requests, true)) {
                 $requests[] = $activeOrder->getRequest();
             }
         }
@@ -663,8 +666,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Article $article
-     * @param Order $order
-     * @return int
+     * @param Order   $order
+     * @return integer
      * @throws NotSupported
      */
     private function findOverlappingAcceptedAmount(Article $article, Order $order): int
@@ -683,7 +686,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return array|bool
+     * @return array|boolean
      * @throws NotSupported
      */
     private function getAllOrdersByRequest(Request $request)                  // Gets all orders except oldest (dummy order)
@@ -700,7 +703,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return Order|bool
+     * @return Order|boolean
      * @throws NotSupported
      */
     private function getLastOrderByRequest(Request $request)                  // Gets the most recent order
@@ -717,7 +720,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
     /**
      * @param Request $request
-     * @return Order|bool
+     * @return Order|boolean
      * @throws NotSupported
      */
     private function getFirstOrderByRequest(Request $request)                // Gets the oldest order, by default an empty order
@@ -744,7 +747,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
     }
 
     /**
-     * @param Order $order
+     * @param Order  $order
      * @param string $updater
      * @return Order
      */
@@ -789,8 +792,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         );
 
         $reviewLink = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('logistics.order_link') . $order->getId();
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.order_link') . $order->getId();
 
         $message = $mailData['content'];
         $subject = $mailData['subject'];
@@ -859,10 +862,10 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         }
 
         foreach ($alertMailArray as $alertMail => $mappings) {
-            if ($alertMail != Null && $alertMail !== '') {
+            if ($alertMail != null && $alertMail !== '') {
                 $articleBody = '';
                 foreach ($mappings as $map) {
-                    $articleBody .= "\t* " . $map->getArticle()->getName() . str_repeat(" ", 35 - strlen($map->getArticle()->getName())) . "aantal: " . $map->getAmount() . "\r\n";
+                    $articleBody .= "\t* " . $map->getArticle()->getName() . str_repeat(' ', 35 - strlen($map->getArticle()->getName())) . 'aantal: ' . $map->getAmount() . "\r\n";
                 }
                 error_log($articleBody);
                 $headers = new Headers();

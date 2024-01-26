@@ -24,7 +24,7 @@ class VideoController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'videos'      => $videos,
+                'videos' => $videos,
             )
         );
     }

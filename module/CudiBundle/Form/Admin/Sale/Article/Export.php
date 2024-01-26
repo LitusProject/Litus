@@ -44,10 +44,10 @@ class Export extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'       => 'checkbox',
-                'name'       => 'common',
-                'label'      => 'Common items',
-                'required'   => true,
+                'type'     => 'checkbox',
+                'name'     => 'common',
+                'label'    => 'Common items',
+                'required' => true,
             )
         );
 

@@ -437,7 +437,7 @@ class Study
             $data = json_decode($client->send()->getBody(), true)['d'];
             if (count($data['results']) == 1) {
                 return array(
-                    'email' => $data['results'][0]['preferredMailAddress']
+                    'email' => $data['results'][0]['preferredMailAddress'],
                 );
             }
 

@@ -89,7 +89,7 @@ class CompanyController extends \BrBundle\Component\Controller\CareerController
                 'logoPath'       => $logoPath,
                 'smallCompanies' => $smallComps,
                 'largeCompanies' => $largeComps,
-                'allCompanies'   => $allComps
+                'allCompanies'   => $allComps,
                 // 'possible_sectors' => array('all' => 'All') + Company::POSSIBLE_SECTORS,
             )
         );

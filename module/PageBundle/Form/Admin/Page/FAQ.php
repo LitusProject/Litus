@@ -34,7 +34,7 @@ class FAQ extends \CommonBundle\Component\Form\Admin\Form
                                 'options' => array(
                                     'page' => $this->getPage(),
                                 ),
-                            )
+                            ),
                         ),
                     ),
                 ),

@@ -6,7 +6,7 @@ return array(
             'add', 'retire', 'edit', 'manage', 'rehire',
         ),
         'br_admin_company' => array(
-            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf'
+            'add', 'delete', 'editLogo', 'edit', 'manage', 'search', 'upload', 'csv', 'pdf',
         ),
         'br_admin_company_event' => array(
             'add', 'delete', 'edit', 'editPoster', 'manage', 'upload',
@@ -21,10 +21,10 @@ return array(
             'manage', 'add', 'delete',
         ),
         'br_admin_contract' => array(
-            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned'
+            'manage', 'edit', 'view', 'history', 'sign', 'signedList', 'download', 'delete', 'csv', 'unfinishedList', 'archiveUnsigned',
         ),
         'br_admin_cv_entry' => array(
-            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv', 'synchronize'
+            'manage', 'delete', 'export', 'exportAcademics', 'exportCvCsv', 'synchronize',
         ),
         'br_admin_event' => array(
             'manage', 'delete', 'add', 'edit', 'old', 'statistics','deleteAttendee', 'editAttendee', 'guide', 'busschema',
@@ -39,7 +39,7 @@ return array(
             'draw', 'add', 'edit', 'delete',
         ),
         'br_admin_invoice' => array(
-            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList', 'downloadAll'
+            'history', 'view', 'edit', 'manage', 'download', 'payed', 'pay', 'manualAdd', 'csv', 'payedList', 'downloadAll',
         ),
         'br_admin_order' => array(
             'product', 'edit', 'delete', 'deleteProduct', 'editProduct', 'view', 'add', 'old', 'manage', 'signed', 'generate',
@@ -54,16 +54,16 @@ return array(
             'reject', 'approve', 'manage', 'view',
         ),
         'br_admin_match_feature' => array(
-            'manage', 'add', 'edit', 'delete', 'bonusMalus'
+            'manage', 'add', 'edit', 'delete', 'bonusMalus',
         ),
         'br_admin_match_profile' => array(
             'manage', 'add', 'edit', 'delete', 'matches', 'deleteAllStudentProfiles', 'deleteAllCompanyProfiles',
         ),
         'br_admin_match_match' => array(
-            'manage', 'view', 'delete', 'generateMatches', 'stats', 'sendMailStudents', 'sendMailCompanies', 'deleteAll'
+            'manage', 'view', 'delete', 'generateMatches', 'stats', 'sendMailStudents', 'sendMailCompanies', 'deleteAll',
         ),
         'br_admin_match_wave' => array(
-            'manage', 'delete', 'add', 'generateWaves', 'view'
+            'manage', 'delete', 'add', 'generateWaves', 'view',
         ),
         'br_admin_communication' => array(
             'add', 'manage', 'delete', 'view',
@@ -87,7 +87,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_match' => array(
-            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'sendData'
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'sendData',
         ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
@@ -96,7 +96,7 @@ return array(
             'login', 'logout', 'requestUsername', 'resetPassword',
         ),
         'br_corporate_index' => array(
-            'index', 'events', 'login'
+            'index', 'events', 'login',
         ),
         'br_corporate_jobfair' => array(
             'overview',
@@ -111,7 +111,7 @@ return array(
             'edit',
         ),
         'br_corporate_match' => array(
-            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'interested', 'stats'
-        )
+            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'interested', 'stats',
+        ),
     ),
 );

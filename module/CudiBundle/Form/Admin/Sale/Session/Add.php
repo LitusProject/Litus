@@ -26,17 +26,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $unitElements = array();
         $lastSession = $this->getLastSalesSession();
         $closeRegister = $lastSession->getCloseRegister();
-        if(!is_null($closeRegister)) {
+        if (!is_null($closeRegister)) {
             $amounts = $lastSession->getCloseRegister()->getMoneyUnitAmounts();
-            for($i = 0; $i < sizeof($amounts); $i++){
+            for ($i = 0; $i < sizeof($amounts); $i++) {
                 $amounts[$i] = $amounts[$i]->getAmount();
             }
         } else {
-            error_log("fill money units array with zeros");
-            $amounts = array_fill(0, sizeof($units),0);
+            error_log('fill money units array with zeros');
+            $amounts = array_fill(0, sizeof($units), 0);
         }
 
-        for ($i = 0; $i < sizeof($units); $i++){
+        for ($i = 0; $i < sizeof($units); $i++) {
             $unit = $units[$i];
             $amount = $amounts[$i];
 //            $amount = $amounts[$i]->getAmount();
@@ -79,18 +79,18 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $devices = $this->getDevices();
         $deviceElements = array();
         $closeRegister = $lastSession->getCloseRegister();
-        if(!is_null($closeRegister)) {
+        if (!is_null($closeRegister)) {
             $amounts = $lastSession->getCloseRegister()->getBankDeviceAmounts();
-            for($i = 0; $i < sizeof($amounts); $i++){
-                $amounts[$i] = $amounts[$i]->getAmount()/100;
+            for ($i = 0; $i < sizeof($amounts); $i++) {
+                $amounts[$i] = $amounts[$i]->getAmount() / 100;
             }
         } else {
-            error_log("fill device array with zeros");
-            $amounts = array_fill(0, sizeof($devices),0);
+            error_log('fill device array with zeros');
+            $amounts = array_fill(0, sizeof($devices), 0);
         }
 
 
-        for ($i = 0; $i < sizeof($devices); $i++){
+        for ($i = 0; $i < sizeof($devices); $i++) {
             $device = $devices[$i];
             $amount = $amounts[$i];
 //            $amount = (($amounts[$i]->getAmount())/100);

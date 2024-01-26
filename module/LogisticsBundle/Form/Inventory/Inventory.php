@@ -24,10 +24,10 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'      => 'Barcode Product',
                 'required'   => true,
                 'attributes' => array(
-                    'id'           => 'barcode',
-                    'placeholder'  => 'Barcode',
+                    'id'          => 'barcode',
+                    'placeholder' => 'Barcode',
                 ),
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -39,11 +39,11 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'name',
-                'label'    => 'Product Name',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'name',
+                'label'      => 'Product Name',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -51,8 +51,8 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'name',
-                    'placeholder'  => 'Product Name',
+                    'id'          => 'name',
+                    'placeholder' => 'Product Name',
                 ),
             )
         );
@@ -90,19 +90,19 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'brand',
-                    'placeholder'  => 'Brandname',
+                    'id'          => 'brand',
+                    'placeholder' => 'Brandname',
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'perUnit',
-                'label'    => 'Per unit',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'perUnit',
+                'label'      => 'Per unit',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -113,8 +113,8 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'perUnit',
-                    'placeholder'  => 'Amount per unit',
+                    'id'          => 'perUnit',
+                    'placeholder' => 'Amount per unit',
                 ),
             )
         );
@@ -124,7 +124,7 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                 'type'       => 'select',
                 'name'       => 'unit',
                 'label'      => 'Unit',
-                'required' => true,
+                'required'   => true,
                 'attributes' => array(
                     'options' => InventoryEntity::$possibleUnits,
                 ),
@@ -140,11 +140,11 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'amount',
-                'label'    => 'Amount',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'amount',
+                'label'      => 'Amount',
+                'required'   => true,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -155,19 +155,19 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'amount',
-                    'placeholder'  => 'Amount',
+                    'id'          => 'amount',
+                    'placeholder' => 'Amount',
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'expiry_date',
-                'label'    => 'Expiry Date',
-                'required' => false,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'expiry_date',
+                'label'      => 'Expiry Date',
+                'required'   => false,
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -175,9 +175,9 @@ class Inventory extends \CommonBundle\Component\Form\Bootstrap\Form
                     ),
                 ),
                 'attributes' => array(
-                    'id'           => 'expiry_date',
-                    'placeholder'  => 'Expiry date',
-                    'value'        => '',
+                    'id'          => 'expiry_date',
+                    'placeholder' => 'Expiry date',
+                    'value'       => '',
                 ),
             )
         );

@@ -31,10 +31,10 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'paginator'             => $paginator,
-                'paginationControl'     => $this->paginator()->createControl(true),
-                'activeAcademicYear'    => $academicYear,
-                'academicYears'         => $academicYears,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
             )
         );
     }

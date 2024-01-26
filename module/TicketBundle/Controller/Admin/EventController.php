@@ -3,7 +3,6 @@
 namespace TicketBundle\Controller\Admin;
 
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
-use DateInterval;
 use DateTime;
 use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
@@ -121,10 +120,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'  => $form,
-                'event' => $event,
-                'em'    => $this->getEntityManager(),
-                'info_form'  => $event->getForm(),
+                'form'      => $form,
+                'event'     => $event,
+                'em'        => $this->getEntityManager(),
+                'info_form' => $event->getForm(),
             )
         );
     }
@@ -166,14 +165,14 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             if ($event->getPayDeadline()) {
                 // In this case, people can pay their ticket longer than 24 hours.
                 // We clean all tickets older than an hour
-                $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
+                $days = $time_diff / (24 * 60 * 60); // Set Time Difference in seconds to day
                 if ($days > 1) {
                     $this->getEntityManager()->remove($expired);
                 }
             } else {
                 // Here, we check how long the pay time is
                 // We clean all tickets that are older than the pay deadline
-                $time = $time_diff/(60); // Set Time Diff from seconds to minutes
+                $time = $time_diff / (60); // Set Time Diff from seconds to minutes
                 if ($time > $payTime) {
                     $this->getEntityManager()->remove($expired);
                 }
@@ -198,8 +197,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     public function salesgraphAction()
     {
         $sales = $this->getEntityManager()
-            ->getRepository("TicketBundle\Entity\Ticket")
-            ->findAllByStatusAndEvent("sold", $this->getEventEntity());
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('sold', $this->getEventEntity());
 
         // $data exist of a key: UNIX timestamp and the amount of tickets sold at that moment
         $data = array();
@@ -229,7 +228,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'event' => $this->getEventEntity(),
+                'event'          => $this->getEventEntity(),
                 'salesGraphData' => $salesGraphData,
             )
         );
@@ -238,15 +237,16 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * Export the data of the salesgraph
      */
-    public function exportSalesgraphAction(){
+    public function exportSalesgraphAction()
+    {
         $event = $this->getEventEntity();
         if ($event === null) {
             return new ViewModel();
         }
 
         $sales = $this->getEntityManager()
-            ->getRepository("TicketBundle\Entity\Ticket")
-            ->findAllByStatusAndEvent("sold", $this->getEventEntity());
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('sold', $this->getEventEntity());
 
         // $data exist of a key: UNIX timestamp and the amount of tickets sold at that moment
         $data = array();
@@ -299,7 +299,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     /**
      * Clear all visitors of this event. This will set the exit_time of every visitor to now.
      */
-    public function clearVisitorsAction(){
+    public function clearVisitorsAction()
+    {
         $event = $this->getEventEntity();
         if ($event === null) {
             return new ViewModel();
@@ -309,7 +310,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('TicketBundle\Entity\Event\Visitor')
             ->findAllByEventAndExitNull($event);
 
-        foreach ($visitors as $visitor){
+        foreach ($visitors as $visitor) {
             $visitor->setExitTimestamp(new DateTime());
         }
         $this->getEntityManager()->flush();

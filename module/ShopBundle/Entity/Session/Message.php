@@ -3,11 +3,11 @@
 namespace ShopBundle\Entity\Session;
 
 use CommonBundle\Entity\General\Language;
-use ShopBundle\Entity\Session\Message\Translation;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Locale;
+use ShopBundle\Entity\Session\Message\Translation;
 
 /**
  * @ORM\Entity(repositoryClass="ShopBundle\Repository\Session\Message")
@@ -32,7 +32,7 @@ class Message
     private $creationTime;
 
     /**
-     * @var bool Is active on home page
+     * @var boolean Is active on home page
      *
      * @ORM\Column(name="active", type="boolean")
      */
@@ -84,7 +84,7 @@ class Message
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isActive()
     {

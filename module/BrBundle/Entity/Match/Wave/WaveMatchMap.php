@@ -55,7 +55,7 @@ class WaveMatchMap
     private $connection;
 
     /**
-     * @param Connection       $connection
+     * @param Connection  $connection
      * @param CompanyWave $wave
      */
     public function __construct(Connection $connection, CompanyWave $wave)

@@ -265,7 +265,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                         'options'    => array(
                             'input' => array(
-                                'required' => true,
+                                'required'   => true,
                                 'validators' => array(
                     //                                    array(
                     //                                        'name'    => 'NumberTickets',
@@ -299,7 +299,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'options'    => array(
                                 'input' => array(
-                                    'required' => true,
+                                    'required'   => true,
                                     'validators' => array(
                         //                                        array(
                         //                                            'name'    => 'NumberTickets',
@@ -334,7 +334,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                             'options'    => array(
                                 'input' => array(
-                                    'required' => true,
+                                    'required'   => true,
                                     'validators' => array(
                         //                                        array(
                         //                                            'name'    => 'NumberTickets',
@@ -368,7 +368,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                 ),
                                 'options'    => array(
                                     'input' => array(
-                                        'required' => true,
+                                        'required'   => true,
                                         'validators' => array(
                             //                                            array(
                             //                                                'name'    => 'NumberTickets',
@@ -508,7 +508,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     }
 
     /**
-     * @param bool $isEventForm
+     * @param boolean $isEventForm
      * @return self
      */
     public function setIsEventForm(bool $isEventForm = false)
@@ -555,19 +555,20 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     /**
      * @return string
      */
-    private function getTermsLabel(){
+    private function getTermsLabel()
+    {
         $urls = explode(',', $this->event->getTermsUrl());
         $text = $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified');
         $here = $this->getServiceLocator()->get('translator')->translate('here');
-        if(count($urls) == 1){
-            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+        if (count($urls) == 1) {
+            $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         } elseif (count($urls) > 1) {
-            $text = $text . ' ' . str_replace(array('url', 'here'), array($urls[0], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
-            for ($i = 1;$i <=count($urls)-2;$i++){
-                $text = $text . ', ' . str_replace(array('url', 'here'), array($urls[$i], $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
+            for ($i = 1; $i <= count($urls) - 2; $i++) {
+                $text .= ', ' . str_replace(array('url', 'here'), array($urls[$i], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
             }
             $and = $this->getServiceLocator()->get('translator')->translate('and');
-            $text = $text . ' ' . $and . ' ' . str_replace(array('url', 'here'), array(end($urls), $here),'<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
+            $text .= ' ' . $and . ' ' . str_replace(array('url', 'here'), array(end($urls), $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         }
         return $text;
     }

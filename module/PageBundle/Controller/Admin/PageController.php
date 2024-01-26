@@ -362,7 +362,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'page' => $page,
-                'form'  => $form,
+                'form' => $form,
             )
         );
     }
@@ -407,7 +407,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 return new ViewModel(
                     array(
                         'status' => 'error',
-                        'form' => array(
+                        'form'   => array(
                             'errors' => $form->getMessages(),
                         ),
                     )

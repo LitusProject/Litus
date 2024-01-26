@@ -2,8 +2,8 @@
 
 namespace ShopBundle\Entity\Reservation;
 
-use DateTime;
 use CommonBundle\Entity\User\Person;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use ShopBundle\Entity\Session;
 
@@ -59,16 +59,18 @@ class Ban
     }
 
     /**
-     * @return int
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * @return Person The person this ban applies to
      */
-    public function getPerson() {
+    public function getPerson()
+    {
         return $this->person;
     }
 
@@ -76,7 +78,8 @@ class Ban
      * @param $person
      * @return $this
      */
-    public function setPerson($person) {
+    public function setPerson($person)
+    {
         $this->person = $person;
 
         return $this;
@@ -85,7 +88,8 @@ class Ban
     /**
      * @return DateTime
      */
-    public function getStartTimestamp() {
+    public function getStartTimestamp()
+    {
         return $this->startTimestamp;
     }
 
@@ -93,7 +97,8 @@ class Ban
      * @param $timestamp
      * @return $this
      */
-    public function setStartTimestamp($timestamp) {
+    public function setStartTimestamp($timestamp)
+    {
         $this->startTimestamp = $timestamp;
 
         return $this;
@@ -102,7 +107,8 @@ class Ban
     /**
      * @return DateTime|null
      */
-    public function getEndTimestamp() {
+    public function getEndTimestamp()
+    {
         return $this->endTimestamp;
     }
 
@@ -110,7 +116,8 @@ class Ban
      * @param $timestamp
      * @return $this
      */
-    public function setEndTimestamp($timestamp) {
+    public function setEndTimestamp($timestamp)
+    {
         $this->endTimestamp = $timestamp;
 
         return $this;
@@ -121,7 +128,8 @@ class Ban
      *
      * @return $this
      */
-    public function removeEndTimestamp() {
+    public function removeEndTimestamp()
+    {
         $this->endTimestamp = null;
 
         return $this;
@@ -130,7 +138,8 @@ class Ban
     /**
      * @return Session
      */
-    public function getSalesSession() {
+    public function getSalesSession()
+    {
         return $this->salesSession;
     }
 
@@ -138,16 +147,18 @@ class Ban
      * @param Session $salesSession
      * @return $this
      */
-    public function setSalesSession(Session $salesSession) {
+    public function setSalesSession(Session $salesSession)
+    {
         $this->salesSession = $salesSession;
 
         return $this;
     }
 
     /**
-     * @return bool Whether the ban is currently active on the user
+     * @return boolean Whether the ban is currently active on the user
      */
-    public function isActive() {
+    public function isActive()
+    {
         // Get the current timestamp
         $currentTimestamp = time();
 

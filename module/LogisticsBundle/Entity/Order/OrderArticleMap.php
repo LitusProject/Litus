@@ -79,12 +79,12 @@ class OrderArticleMap
         'klaar'       => 'Klaar',
         'weggezet'    => 'Weggezet',
         'none'        => 'None',
-        'vuil'          => 'Vuil',
-        'kapot'         => 'Kapot',
-        'vermist'       => 'Vermist',
-        'weg'           => 'Weg',
-        'aankopen'      => 'Aankopen',
-        'nakijken'      => 'Nakijken',
+        'vuil'        => 'Vuil',
+        'kapot'       => 'Kapot',
+        'vermist'     => 'Vermist',
+        'weg'         => 'Weg',
+        'aankopen'    => 'Aankopen',
+        'nakijken'    => 'Nakijken',
     );
 
     /**
@@ -95,7 +95,7 @@ class OrderArticleMap
      * @param integer $oldAmount
      * @param string  $comment
      */
-    public function __construct(Order $order, Article $article, $amount, $oldAmount=0, $comment='')
+    public function __construct(Order $order, Article $article, $amount, $oldAmount = 0, $comment = '')
     {
         $this->referencedOrder = $order;
         $this->referencedArticle = $article;

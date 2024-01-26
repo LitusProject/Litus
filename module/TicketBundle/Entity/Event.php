@@ -252,8 +252,9 @@ class Event
      */
     public function getRandId()
     {
-        if (is_null($this->rand_id))
+        if (is_null($this->rand_id)) {
             return $this->id;
+        }
         return $this->rand_id;
     }
 
@@ -881,7 +882,7 @@ class Event
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function getPayDeadline()
     {
@@ -899,7 +900,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDeadlineTime()
     {

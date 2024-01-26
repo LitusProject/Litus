@@ -21,7 +21,7 @@ class Edit extends \OnBundle\Form\Admin\Slug\Add
 
         $dateTimeField = $this->get('expiration_date');
 
-        if(!is_null($this->slug->getExpirationDate())){
+        if (!is_null($this->slug->getExpirationDate())) {
             $dateTimeField->setValue($this->slug->getExpirationDate()->format('d/m/Y'));
         } else {
             $dateTimeField->setValue('');

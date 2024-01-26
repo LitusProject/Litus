@@ -99,22 +99,24 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
             $unitRoles = $unit->getRoles();
             foreach ($unitRoles as $unitRole) {
                 if ($unitRole == $role) {
-                    $unitMembers = array_unique(array_merge(
-                        $unitMembers,
-                        $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
-                        ->findBy(array('unit' => $unit, 'academicYear' => $academicYear))
-                    ),
-                        SORT_REGULAR);
+                    $unitMembers = array_unique(
+                        array_merge(
+                            $unitMembers,
+                            $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                                ->findBy(array('unit' => $unit, 'academicYear' => $academicYear))
+                        ),
+                        SORT_REGULAR
+                    );
                 }
             }
         }
 
         return new ViewModel(
             array(
-                'role'          => $role,
-                'members'       => $members,
-                'unitMembers'   => $unitMembers,
+                'role'        => $role,
+                'members'     => $members,
+                'unitMembers' => $unitMembers,
             )
         );
     }

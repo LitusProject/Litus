@@ -4,8 +4,6 @@ namespace ApiBundle\Controller;
 
 use BrBundle\Entity\Company;
 use BrBundle\Entity\User\Person\Corporate as CorporateEntity;
-use BrBundle\Entity\Event as EventEntity;
-use BrBundle\Entity\Event\Subscription as SubscriptionEntity;
 use CommonBundle\Entity\General\AcademicYear;
 use Doctrine\Common\Collections\ArrayCollection;
 use Laminas\View\Model\ViewModel;
@@ -136,8 +134,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneBy(array(
-                'company' => $company->getId()));
+            ->findOneBy(
+                array(
+                    'company' => $company->getId(),
+                )
+            );
 
         $page->addYear($this->getCurrentAcademicYear());
 
@@ -174,7 +175,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneBy(
                 array(
-                    'company' => $company->getId()
+                    'company' => $company->getId(),
                 )
             );
 
@@ -250,7 +251,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'id'  => $company_id,
+                    'id'     => $company_id,
                 ),
             )
         );
@@ -335,7 +336,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
             $error_mes = $e->getMessage();
-            if (str_contains($error_mes, "already exists") and str_contains($error_mes, "Key (username)")) {
+            if (str_contains($error_mes, 'already exists') and str_contains($error_mes, 'Key (username)')) {
                 return new ViewModel(
                     array(
                         'result' => (object)array(
@@ -345,7 +346,6 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                     )
                 );
             }
-
         }
 
 // To activate the person automatically on creation, use this:
@@ -479,7 +479,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         }
 
         // Create Response
-        $startingIndex = ($pageNumber-1)*$pageLength;
+        $startingIndex = ($pageNumber - 1) * $pageLength;
 
         $result = array();
         $slice = array_slice($allSubscriptions, $startingIndex, $pageLength);
@@ -490,7 +490,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                     'br_career_event',
                     array('action' => 'qr',
                         'id'       => $event->getId(),
-                        'code'     => $subscription->getQrCode()
+                        'code'     => $subscription->getQrCode(),
                     ),
                     array('force_canonical' => true)
                 );
@@ -498,10 +498,10 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             $url = str_replace('liv.', '', $url);
 
             $result[] = array(
-                'id' => $subscription->getId(),
-                'name' => $subscription->getFirstName() . ' ' . $subscription->getLastName(),
+                'id'    => $subscription->getId(),
+                'name'  => $subscription->getFirstName() . ' ' . $subscription->getLastName(),
                 'study' => $subscription->getStudy(),
-                'url' => $url,
+                'url'   => $url,
             );
         }
 

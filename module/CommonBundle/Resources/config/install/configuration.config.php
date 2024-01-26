@@ -474,13 +474,13 @@ You can remove any installed cookies from your computer or mobile device at any 
         'description' => 'The shaIn, shaOut and urlPrefix for KBC',
     ),
     array(
-        'key'       => 'common.studcard_client_id',
-        'value'     => 'vtk-cursusdienst',
+        'key'         => 'common.studcard_client_id',
+        'value'       => 'vtk-cursusdienst',
         'description' => 'Client ID for Student Card API basic authentication',
     ),
     array(
-        'key'       => 'common.studcard_client_secret',
-        'value'     => 'Secret Value',
+        'key'         => 'common.studcard_client_secret',
+        'value'       => 'Secret Value',
         'description' => 'Client Secret for Student Card API basic authentication',
     ),
 );

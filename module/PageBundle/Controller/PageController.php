@@ -81,8 +81,8 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('page.poster_path') . '/';
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.poster_path') . '/';
 
         $headers = new Headers();
         $headers->addHeaders(

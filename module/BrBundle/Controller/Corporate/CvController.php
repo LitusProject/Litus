@@ -101,7 +101,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
                     array(
                         'action'       => 'list',
                         'academicyear' => $person->getCompany()->getCvBookYears()[count($person->getCompany()->getCvBookYears()) - 1]->getCode(),
-                        'sortby'       => is_null($this->getParam("sortby")) ?? "lastname", $this->getParam("sortby"),
+                        'sortby'       => is_null($this->getParam('sortby')) ?? 'lastname', $this->getParam('sortby'),
                     )
                 );
 
@@ -151,7 +151,8 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         );
     }
 
-    public function pdfAction() {
+    public function pdfAction()
+    {
         $person = $this->getCorporateEntity();
         if ($person === null) {
             return new ViewModel();
@@ -190,16 +191,16 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
         }
 
         $cvbookPath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.cvbook_path') . '/';
-        $fileName = "cvbook-" . $academicYear->getCode(true) . ".pdf";
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cvbook_path') . '/';
+        $fileName = 'cvbook-' . $academicYear->getCode(true) . '.pdf';
 
         return new ViewModel(
             array(
-                'action'         => 'pdf',
-                'academicYear'   => $academicYear,
-                'filePath'       => $cvbookPath . $fileName,
-                'fileName'       => $fileName,
+                'action'       => 'pdf',
+                'academicYear' => $academicYear,
+                'filePath'     => $cvbookPath . $fileName,
+                'fileName'     => $fileName,
             )
         );
     }
@@ -334,7 +335,7 @@ class CvController extends \BrBundle\Component\Controller\CorporateController
      */
     private function getList(AcademicYear $academicYear, $sortBy)
     {
-        if($sortBy === "firstname"){
+        if ($sortBy === 'firstname') {
             return $this->getEntityManager()
                 ->getRepository('BrBundle\Entity\Cv\Entry')
                 ->findAllByAcademicYearByFirstname($academicYear);

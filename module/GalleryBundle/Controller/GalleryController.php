@@ -67,8 +67,8 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         }
 
         $filePath = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('gallery.poster_path') . '/';
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('gallery.poster_path') . '/';
 
         $headers = new Headers();
         $headers->addHeaders(
@@ -236,4 +236,3 @@ class GalleryController extends \CommonBundle\Component\Controller\ActionControl
         return $album;
     }
 }
-

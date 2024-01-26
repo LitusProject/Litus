@@ -5,7 +5,6 @@ namespace LogisticsBundle\Entity;
 use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
-use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -180,12 +179,11 @@ class Order
      */
     private $referencedRequest;
 
-
     /**
-     * @param Request|null  $request
-     * @param string $updator
+     * @param Request|null $request
+     * @param string       $updator
      */
-    public function __construct($contact, $request, string $updator, string $status='')
+    public function __construct($contact, $request, string $updator, string $status = '')
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();

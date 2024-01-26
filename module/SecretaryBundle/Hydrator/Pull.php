@@ -2,7 +2,6 @@
 
 namespace SecretaryBundle\Hydrator;
 
-use CommonBundle\Component\Hydrator\Exception\InvalidObjectException;
 use SecretaryBundle\Entity\Pull as PullEntity;
 
 class Pull extends \CommonBundle\Component\Hydrator\Hydrator
@@ -24,8 +23,6 @@ class Pull extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        $data = $this->stdExtract($object, self::$stdKeys);
-
-        return $data;
+        return $this->stdExtract($object, self::$stdKeys);
     }
 }

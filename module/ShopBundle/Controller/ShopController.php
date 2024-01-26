@@ -6,12 +6,8 @@ use DateInterval;
 use DateTime;
 use Laminas\View\Model\ViewModel;
 use ShopBundle\Component\CanReserve\CanReserveResponse;
-use ShopBundle\Entity\History;
 use ShopBundle\Entity\Reservation;
 use ShopBundle\Entity\Session as SalesSession;
-
-
-
 
 /**
  * ShopController
@@ -26,10 +22,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     {
         // reserve function should not be executed when user does not have permission to reserve
         $canReserveResponse = $this->canReserve();
-        if (!($canReserveResponse->canReserve())) {
+        if (!$canReserveResponse->canReserve()) {
             return new ViewModel(
                 array(
-                    'shopName'   => $this->getShopName(),
+                    'shopName'           => $this->getShopName(),
                     'canReserveResponse' => $canReserveResponse,
                 )
             );
@@ -95,9 +91,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'canReserveResponse' => $canReserveResponse,
-                'form'         => $reserveForm,
-                'shopName'     => $this->getShopName(),
-                'stockEntries' => $stockEntries,
+                'form'               => $reserveForm,
+                'shopName'           => $this->getShopName(),
+                'stockEntries'       => $stockEntries,
             )
         );
     }
@@ -106,10 +102,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     {
         // reserve function should not be executed when user does not have permission to reserve
         $canReserveResponse = $this->canReserve();
-        if (!($canReserveResponse->canReserve())) {
+        if (!$canReserveResponse->canReserve()) {
             return new ViewModel(
                 array(
-                    'shopName'   => $this->getShopName(),
+                    'shopName'           => $this->getShopName(),
                     'canReserveResponse' => $canReserveResponse,
                 )
             );
@@ -153,10 +149,10 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     {
         // reserve function should not be executed when user does not have permission to reserve
         $canReserveResponse = $this->canReserve();
-        if (!($canReserveResponse->canReserve())) {
+        if (!$canReserveResponse->canReserve()) {
             return new ViewModel(
                 array(
-                    'shopName'   => $this->getShopName(),
+                    'shopName'           => $this->getShopName(),
                     'canReserveResponse' => $canReserveResponse,
                 )
             );
@@ -168,9 +164,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'canReserveResponse'     => $canReserveResponse,
-                'reservations' => $reservations,
-                'shopName'     => $this->getShopName(),
+                'canReserveResponse' => $canReserveResponse,
+                'reservations'       => $reservations,
+                'shopName'           => $this->getShopName(),
             )
         );
     }
@@ -215,7 +211,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
                 $username = $form->getData()['username'];
-                if ((str_contains($username, ';')) && (strlen($username) == 25)) {
+                if (str_contains($username, ';') && (strlen($username) == 25)) {
                     $seperatedString = explode(';', $username);
                     $rNumber = $this->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
                     $reservations = $this->getEntityManager()
@@ -231,7 +227,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     return new ViewModel(
                         array(
                             'noEntity' => 'No consumptions were found',
-                            'form' => $this->getForm('shop_shop_consume'),
+                            'form'     => $this->getForm('shop_shop_consume'),
                         )
                     );
                 } else {
@@ -244,9 +240,9 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     return new ViewModel(
                         array(
                             'reservations' => $reservations,
-                            'consumed' => $consumed,
-                            'form' => $form,
-                            'session' => $salesSession
+                            'consumed'     => $consumed,
+                            'form'         => $form,
+                            'session'      => $salesSession,
                         )
                     );
                 }
@@ -255,7 +251,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'session' => $salesSession,
-                'form' => $form,
+                'form'    => $form,
             )
         );
     }
@@ -267,7 +263,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             ->findOneById($this->getParam('id'));
 
         if (!$salesSession->getReward()) {
-            $numberRewards = $salesSession->getAmountRewards()? $salesSession->getAmountRewards(): 3;
+            $numberRewards = $salesSession->getAmountRewards() ? $salesSession->getAmountRewards() : 3;
             $allReservations = $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Reservation')
                 ->findBySalesSessionQuery($salesSession)
@@ -310,13 +306,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             'shop',
             array(
                 'action' => 'consume',
-                'id'     => $salesSession->getId()
+                'id'     => $salesSession->getId(),
             )
         );
         return new ViewModel();
     }
 
-    public function getActiveBanEnd() {
+    public function getActiveBanEnd()
+    {
         $activeBans = $this->getEntityManager()
             ->getRepository('ShopBundle\Entity\Reservation\Ban')
             ->findActiveByPersonQuery($this->getPersonEntity())
@@ -335,7 +332,8 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
     private function canReserve()
     {
         if (!$this->getAuthentication()->isAuthenticated()) {
-            $this->redirect()->toRoute('common_auth',
+            $this->redirect()->toRoute(
+                'common_auth',
                 array(
                     'redirect' => urlencode($this->getRequest()->getRequestUri()),
                 )
@@ -351,13 +349,12 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
 
         if (count($activeBans) > 0) {
             // retrieve the largest end timestamp of the currently active bans for this user
-            $endTimestamps = [];
+            $endTimestamps = array();
             $infinite = false;
             foreach ($activeBans as $ban) {
                 if ($ban->getEndTimestamp() == null) {
                     $infinite = true;
-                }
-                else {
+                } else {
                     $endTimestamps[] = $ban->getEndTimestamp();
                 }
             }
@@ -367,7 +364,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             if ($infinite) {
                 return new CanReserveResponse(
                     false,
-                    "Your reservation privileges have been revoked for an indefinite amount of time."
+                    'Your reservation privileges have been revoked for an indefinite amount of time.'
                 );
             }
             return new CanReserveResponse(

@@ -3,7 +3,6 @@
 namespace LogisticsBundle\Controller\Admin;
 
 use CommonBundle\Entity\User\Person\Academic;
-use DateTime;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap;
@@ -91,7 +90,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                         $amount = '0';
                         $comment = '';
                         foreach ($formData as $formKey => $formValue) {
-                            $split = explode("-", $formKey);
+                            $split = explode('-', $formKey);
                             $input = $split[0];
                             $type = $split[1];
                             $mappingId = $split[2];
@@ -162,8 +161,6 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
-
-
     public function reviewOrderAction()
     {
         $this->initAjax();
@@ -186,7 +183,8 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
                 $newOrder = $orderForm->hydrateObject(
                     $this->recreateOrder(
                         $this->getLastOrderByRequest($order->getRequest()),
-                        $academic->getUnit($this->getCurrentAcademicYear())->getName())
+                        $academic->getUnit($this->getCurrentAcademicYear())->getName()
+                    )
                 );
                 $newOrder->review();
 
@@ -218,7 +216,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -285,7 +283,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -766,10 +764,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllByOrderQuery($order)->getResult();
         foreach ($mappings as $mapping) {
             if (!$mapping->isApproved()) {
-                return False;
+                return false;
             }
         }
-        return True;
+        return true;
     }
 
     /**
@@ -783,10 +781,10 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
             ->findAllByOrderQuery($order)->getResult();
         foreach ($mappings as $mapping) {
             if (!$mapping->isRejected()) {
-                return False;
+                return false;
             }
         }
-        return True;
+        return true;
     }
 
     /**
@@ -798,9 +796,9 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $articleNames = array();
         $diff = $this->mergeArraysUnique($a1, $a2);          // Gets the union of old and new articles
-        foreach ($diff as $mapping){
+        foreach ($diff as $mapping) {
             $name = $mapping->getArticle()->getName();
-            if (!in_array($name, $articleNames)){
+            if (!in_array($name, $articleNames)) {
                 $articleNames[] = $mapping->getArticle()->getName();
             }
         }
