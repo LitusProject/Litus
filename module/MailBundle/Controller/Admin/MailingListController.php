@@ -227,7 +227,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $member->setEmail($mail);
 
                 try {
-                    $insert = $directory->members->insert($list_mail, $member);
+                    $directory->members->insert($list_mail, $member);
                 } catch (\Exception $e) {
                 }
 
@@ -372,7 +372,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $directory = new \Google_Service_Directory($client);
         try {
-            $delete = $directory->groups->delete($list_email);
+            $directory->groups->delete($list_email);
         } catch (\Exception $e) {
         }
 
@@ -407,7 +407,7 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $directory = new \Google_Service_Directory($client);
         try {
-            $delete = $directory->members->delete($list_email, $email);
+            $directory->members->delete($list_email, $email);
         } catch (\Exception $e) {
         }
 

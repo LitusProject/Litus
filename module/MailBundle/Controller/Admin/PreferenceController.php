@@ -191,7 +191,7 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
 //        $api = $this->sibGetAPI();
         $client = new Client();
 
-        $response = $client->request(
+        $client->request(
             'DELETE',
             'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name,
             array(

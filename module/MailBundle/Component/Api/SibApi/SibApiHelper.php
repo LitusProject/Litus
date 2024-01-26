@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use MailBundle\Controller\Admin\PreferenceController;
 use SendinBlue\Client\Api;
 use SendinBlue\Client\Configuration;
+use SendinBlue\Client\Model\CreateContact;
 
 class SibApiHelper extends PreferenceController
 {
@@ -88,9 +89,10 @@ class SibApiHelper extends PreferenceController
             },
             $preferences
         );
+        $data = array();
         $data['exportAttributes'] = $attributes;
         $requestContactExport = new \SendinBlue\Client\Model\RequestContactExport($data);
-        $notifyUrl = $requestContactExport->getNotifyUrl();
+//        $notifyUrl = $requestContactExport->getNotifyUrl();
 
         try {
             $apiInstance->requestContactExport($requestContactExport);
@@ -123,10 +125,11 @@ class SibApiHelper extends PreferenceController
             $this->config
         );
 
+        $data = array();
         $data['email'] = $email;
         $data['attributes'] = array($attributeName => $value);
         $data['updateEnabled'] = true;
-        $createContact = new \SendinBlue\Client\Model\CreateContact($data);
+        $createContact = new CreateContact($data);
 
         try {
             $apiInstance->createContact($createContact);
@@ -148,7 +151,8 @@ class SibApiHelper extends PreferenceController
         $offset = 0;
         $limit = 1000;
         $emails = $this->getUserEmails($offset, $limit); // add ids from first 1000 contacts (limit imposed by sendinblue)
-        while (count($emails) % 1000 == 0) { // take next thousand, as long as they exist
+        $length = count($emails);
+        while ($length % 1000 == 0) { // take next thousand, as long as they exist
             $offset += 1000;
             $emails = array_merge($emails, $this->getUserEmails($offset, $limit));
         }
@@ -209,6 +213,7 @@ class SibApiHelper extends PreferenceController
     {
         $s = 0;
         $i = 0;
+        $aStrPos = array();
         while (is_integer($i)) {
             $i = mb_stripos($haystack, $needle, $s);
             if (is_integer($i)) {
