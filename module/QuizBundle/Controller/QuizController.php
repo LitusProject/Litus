@@ -247,7 +247,8 @@ class QuizController extends \CommonBundle\Component\Controller\ActionController
 
         $totals_with_tiebreaker = array(); // [ [index] => [teamid, totalPoints], tiebreaker considered
         $equal_scores = array(); // Deel van $totals_by_index met dezelfde totalPoints
-        for ($i = 0; $i < count($totals_by_index); $i++) {
+        $length = count($totals_by_index);
+        for ($i = 0; $i < $length; $i++) {
             error_log($i);
             $equal_scores[] = $totals_by_index[$i];
             if ($i < count($totals_by_index) - 1 && $totals_by_index[$i + 1][1] == $totals_by_index[$i][1]) {
