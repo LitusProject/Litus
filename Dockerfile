@@ -120,9 +120,9 @@ RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.10/m
     npm==10.24.1-r0 && \
   npm install -g less
 
-RUN curl -fsSL -o /tmp/fop-2.7-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.7-bin.tar.gz && \
-  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.7-bin.tar.gz fop-2.7/fop && \
-  rm /tmp/fop-2.7-bin.tar.gz
+RUN curl -fsSL -o /tmp/fop-2.9-bin.tar.gz https://downloads.apache.org/xmlgraphics/fop/binaries/fop-2.9-bin.tar.gz && \
+  tar --strip-components=1 -C /opt -xzf /tmp/fop-2.9-bin.tar.gz fop-2.9/fop && \
+  rm /tmp/fop-2.9-bin.tar.gz
 
 RUN mv "${PHP_INI_DIR}/php.ini-production" "${PHP_INI_DIR}/php.ini"
 
