@@ -16,8 +16,6 @@ class Frame extends \CommonBundle\Component\Hydrator\Hydrator
 {
     protected function doHydrate(array $data, $object = null)
     {
-        $isbig = false;
-        $hasposter = false;
 
         if ($object === null) {
             $object = new FrameEntity();
