@@ -576,7 +576,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     {
         $this->initAjax();
 
-        $event = $this->getEventEntity();
         $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
         $data = json_decode($this->getRequest()->getContent());

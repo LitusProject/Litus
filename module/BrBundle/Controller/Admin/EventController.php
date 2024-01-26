@@ -5,7 +5,6 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
 use DateInterval;
-use DateTime;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -190,8 +189,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         if ($event === null) {
             return new ViewModel();
         }
-
-        $now = new DateTime();
 
         $repository = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Visitor');
