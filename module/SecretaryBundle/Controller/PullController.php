@@ -44,8 +44,6 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                 if ($form->isValid()) {
                     $formData = $form->getData();
 
-                    $guestEmail = $formData['guest_form']['guest_email'];
-
                     $guestInfo = new GuestInfo(
                         $formData['guest_form']['guest_first_name'],
                         $formData['guest_form']['guest_last_name'],
@@ -145,7 +143,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                     $payLinkDomain = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.pay_link_domain');
-                    $payLink = 'https://vtk.be' . '/secretary/pull/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
+                    $payLink = $payLinkDomain . '/secretary/pull/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
 
                     $this->redirect()->toUrl($payLink);
                 }
