@@ -13,6 +13,7 @@ class Ban extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
 //        $data = $this->stdExtract($object);
+        $data = array();
         $data['start_timestamp'] = $object->getStartTimestamp()->format('d/m/Y H:i');
         $data['end_timestamp'] = $object->getEndTimestamp() ? $object->getEndTimestamp()->format('d/m/Y H:i') : ' ';
         $data['person']['id'] = $object->getPerson()->getId();

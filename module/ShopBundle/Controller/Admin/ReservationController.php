@@ -42,7 +42,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
 
         $totalReservations = 0;
-        for ($i = 0; $i < sizeof($result); $i++) {
+        $length = count($result);
+        for ($i = 0; $i < $length; $i++) {
             $totalReservations += $result[$i][1];
             $totalAmount = $this->getEntityManager()
                 ->getRepository('ShopBundle\Entity\Session\Stock')
@@ -106,9 +107,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
             $this->getEntityManager()->persist($salesSession);
             $this->getEntityManager()->flush();
-        }
-        // no ban present yet -> create one
-        else {
+        } else { // no ban present yet -> create one
             $noShowConfig = $this->getNoShowConfig();
 
             // Get total amount of warnings for person (past, present and future)
