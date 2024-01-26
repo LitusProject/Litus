@@ -452,7 +452,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
                         continue;
                     }
 
-                    $name = $data[0];
+//                    $name = $data[0];
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
                         ->findOneByUsername($data[1]);
