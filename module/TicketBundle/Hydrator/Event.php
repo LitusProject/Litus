@@ -39,6 +39,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $calendarEvent = null;
         }
 
+        $form = null;
         if ($data['form'] !== '') {
             $form = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Form')

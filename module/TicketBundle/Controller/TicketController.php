@@ -49,6 +49,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $person = $this->getPersonEntity();
 
         $formSpecification = $this->getFormEntity($event->getForm());
+        $infoForm = null;
+        $entries = null;
         if ($formSpecification !== null) {
             $now = new DateTime();
             if ($now < $formSpecification->getStartDate() || $now > $formSpecification->getEndDate() || !$formSpecification->isActive()) {
