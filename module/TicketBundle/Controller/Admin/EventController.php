@@ -219,10 +219,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $sales_accumulated = array();
-        for ($i = 0; $i < sizeof($sales_each_day); $i++) {
+        $length = count($sales_each_day);
+        for ($i = 0; $i < $length; $i++) {
             $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
         }
 
+        $salesGraphData = array();
         $salesGraphData['labels'] = $dates;
         $salesGraphData['dataset'] = $sales_accumulated;
 
@@ -266,10 +268,12 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $sales_accumulated = array();
-        for ($i = 0; $i < sizeof($sales_each_day); $i++) {
+        $length = count($sales_each_day);
+        for ($i = 0; $i < $length; $i++) {
             $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
         }
 
+        $salesGraphData = array();
         $salesGraphData['labels'] = $dates;
         $salesGraphData['dataset'] = $sales_accumulated;
 

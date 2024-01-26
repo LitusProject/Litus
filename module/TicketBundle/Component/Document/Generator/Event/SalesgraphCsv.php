@@ -18,7 +18,8 @@ class SalesgraphCsv extends \CommonBundle\Component\Document\Generator\Csv
         $data = $salesGraphData['dataset'];
 
         $result = array();
-        for ($i = 0; $i < sizeof($labels); $i++) {
+        $length = count($labels);
+        for ($i = 0; $i < $length; $i++) {
             $result[] = array(
                 date('d/m/Y H:i', $labels[$i] / 1000),
                 $data[$i],

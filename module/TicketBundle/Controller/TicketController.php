@@ -276,9 +276,9 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                             $formData['guest_form']['guest_identification'],
                         );
 
-                        if ($formData['guest_form']['picture']) {
-                            $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
-                        }
+//                        if ($formData['guest_form']['picture']) {
+//                            $image = new \Imagick($formData['guest_form']['picture']['tmp_name']);
+//                        }
 
                         do {
                             $newFileName = sha1(uniqid());
@@ -1101,7 +1101,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $command = 'pwsh ' . ' ' . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
 
         try {
-            $query = shell_exec("$command 2>&1");
+            shell_exec($command . ' 2>&1');
         } catch (\Exception $e) {
             $this->getSentryClient()->logException($e);
         }

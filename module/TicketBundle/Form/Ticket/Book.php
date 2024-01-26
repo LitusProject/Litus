@@ -265,7 +265,8 @@ class Book extends \CommonBundle\Component\Form\Bootstrap\Form
             $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         } elseif (count($urls) > 1) {
             $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
-            for ($i = 1; $i <= count($urls) - 2; $i++) {
+            $length = count($urls);
+            for ($i = 1; $i <= $length - 2; $i++) {
                 $text .= ', ' . str_replace(array('url', 'here'), array($urls[$i], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');
             }
             $and = $this->getServiceLocator()->get('translator')->translate('and');
