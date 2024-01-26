@@ -347,8 +347,8 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
                 )
             )
             ->orderBy('s.startDate', 'ASC')
-            ->setParameter('now_plus_margin', (new DateTime())->modify("+$marginInMinutes minutes"))
-            ->setParameter('now_minus_margin', (new DateTime())->modify("-$marginInMinutes minutes"))
+            ->setParameter('now_plus_margin', (new DateTime())->modify('+' . $marginInMinutes . 'minutes'))
+            ->setParameter('now_minus_margin', (new DateTime())->modify('-' . $marginInMinutes . 'minutes'))
             ->setParameter('person', $person->getId())
             ->getQuery()
             ->getResult();
