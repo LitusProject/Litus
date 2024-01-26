@@ -221,11 +221,7 @@ class SibApiHelper extends PreferenceController
                 $s = $i + mb_strlen($needle);
             }
         }
-        if (isset($aStrPos)) {
-            return $aStrPos;
-        } else {
-            return array();
-        }
+        return $aStrPos;
     }
 
     public function getContactDetails($id)
