@@ -116,7 +116,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $comingRequests = array();
         // Gets last order for every request
-        $lastOrders = array();
+//        $lastOrders = array();
         foreach ($requests as $request) {
             $lastOrder = $this->getLastOrderByRequest($request);
             if ($lastOrder && $now <= $lastOrder->getStartDate() && $lastOrder->getStartDate() <= $nextMonday) {
