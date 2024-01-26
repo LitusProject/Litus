@@ -397,15 +397,14 @@ class Event extends \CommonBundle\Entity\Node
      * @param EntityManager $em
      * @return boolean
      */
-    public function hasTicket(EntityManager $em)
+    public function hasTicket(EntityManager $em): bool
     {
-        $tickets = $em->getRepository('TicketBundle\Entity\Event')
+        $ticket = $em->getRepository('TicketBundle\Entity\Event')
             ->findOneByEvent($this);
-        if (is_null($tickets)) {
+        if (is_null($ticket)) {
             return false;
         }
-//        error_log(json_encode($tickets));
-        return (count($tickets) > 0) && $tickets->isStillBookable();
+        return $ticket->isStillBookable();
     }
 
     /**
