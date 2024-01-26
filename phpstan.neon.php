@@ -2,6 +2,6 @@
 
 return array(
     'parameters' => array(
-        'tmpDir' => getenv("PHPSTAN_TMP_DIR", true) ?: "",
+        'tmpDir' => getenv("PHPSTAN_TMP_DIR", true) ?: "/tmp/phpstan",
     ),
 );
