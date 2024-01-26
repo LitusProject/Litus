@@ -36,10 +36,8 @@ class CommuController extends \ApiBundle\Component\Controller\ActionController\A
             ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
             ->findBetween($start, $end);
 
-        $count = 0;
         $result = array();
         foreach ($openingHours as $openingHour) {
-            $count++;
             $result[] = array(
                 'start_date' => $openingHour->getStart()->format('Y-m-d H:i'),
                 'end_date'   => $openingHour->getEnd()->format('Y-m-d H:i'),
