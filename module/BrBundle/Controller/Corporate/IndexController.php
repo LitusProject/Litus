@@ -66,7 +66,7 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
 
         $person = $this->getCorporateEntity();
 
-        if ($person === null) {
+        if (is_null($person)) {
             foreach ($events as $event) {
                 $event->atEvent = false;
             }
