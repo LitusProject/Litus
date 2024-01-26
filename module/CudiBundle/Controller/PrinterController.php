@@ -117,7 +117,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
                     $payLinkDomain = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.pay_link_domain');
-                    $payLink = 'https://vtk.be' . '/cudi/printer/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
+                    $payLink = $payLinkDomain . '/cudi/printer/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
 
                     $this->redirect()->toUrl($payLink);
                 }
@@ -316,7 +316,7 @@ class PrinterController extends \CommonBundle\Component\Controller\ActionControl
         $command = 'pwsh ' . ' ' . $scriptPath . " '". $clientId . "' '" . $clientSecret . "' '" . $universityMail . "' '" . $amount . "'";
 
         try {
-            $query = shell_exec("$command 2>&1");
+            shell_exec($command . ' 2>&1');
         } catch (\Exception $e) {
             $this->getSentryClient()->logException($e);
         }

@@ -28,15 +28,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $closeRegister = $lastSession->getCloseRegister();
         if (!is_null($closeRegister)) {
             $amounts = $lastSession->getCloseRegister()->getMoneyUnitAmounts();
-            for ($i = 0; $i < sizeof($amounts); $i++) {
+            $length = count($amounts);
+            for ($i = 0; $i < $length; $i++) {
                 $amounts[$i] = $amounts[$i]->getAmount();
             }
         } else {
             error_log('fill money units array with zeros');
-            $amounts = array_fill(0, sizeof($units), 0);
+            $amounts = array_fill(0, count($units), 0);
         }
 
-        for ($i = 0; $i < sizeof($units); $i++) {
+        $length = count($units);
+        for ($i = 0; $i < $length; $i++) {
             $unit = $units[$i];
             $amount = $amounts[$i];
 //            $amount = $amounts[$i]->getAmount();
@@ -81,16 +83,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $closeRegister = $lastSession->getCloseRegister();
         if (!is_null($closeRegister)) {
             $amounts = $lastSession->getCloseRegister()->getBankDeviceAmounts();
-            for ($i = 0; $i < sizeof($amounts); $i++) {
+            $length = count($amounts);
+            for ($i = 0; $i < $length; $i++) {
                 $amounts[$i] = $amounts[$i]->getAmount() / 100;
             }
         } else {
             error_log('fill device array with zeros');
-            $amounts = array_fill(0, sizeof($devices), 0);
+            $amounts = array_fill(0, count($devices), 0);
         }
 
-
-        for ($i = 0; $i < sizeof($devices); $i++) {
+        $length = count($devices);
+        for ($i = 0; $i < $length; $i++) {
             $device = $devices[$i];
             $amount = $amounts[$i];
 //            $amount = (($amounts[$i]->getAmount())/100);
