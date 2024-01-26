@@ -59,15 +59,18 @@ class Preference
      */
     private $preferenceMappings;
 
-    /**
-     * Creates a new mailing preference.
-     *
-     * @param string $name The name of this mailing preference that will be shown on the account page
-     * @param string $description The description of this mailing preference that will be shown on the account page
-     * @param string $attribute The attribute name of this mailing preference in SendInBlue
-     * @param bool $defaultValue The default preference value of this mailing preference for each user
-     */
-    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false) {
+//    /**
+//     * Creates a new mailing preference.
+//     *
+//     * @param string $name The name of this mailing preference that will be shown on the account page
+//     * @param string $description The description of this mailing preference that will be shown on the account page
+//     * @param string $attribute The attribute name of this mailing preference in SendInBlue
+//     * @param bool $defaultValue The default preference value of this mailing preference for each user
+//     */
+//    public function __construct($name=null, $description=null, $attribute=null, $defaultValue=false) {
+//    }
+
+    public function __construct() {
     }
 
     /**

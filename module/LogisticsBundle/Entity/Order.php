@@ -182,10 +182,10 @@ class Order
 
 
     /**
-     * @param Request  $request
+     * @param Request|null  $request
      * @param string $updator
      */
-    public function __construct($contact, Request $request, string $updator, string $status='')
+    public function __construct($contact, $request, string $updator, string $status='')
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();

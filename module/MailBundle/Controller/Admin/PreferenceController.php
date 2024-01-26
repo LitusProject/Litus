@@ -189,14 +189,14 @@ class PreferenceController extends \MailBundle\Component\Controller\AdminControl
      * @throws GuzzleException
      */
     public function sibRemoveAttribute(string $name) {
-        $api = $this->sibGetAPI();
+//        $api = $this->sibGetAPI();
         $client = new Client();
 
         $response = $client->request('DELETE', 'https://api.sendinblue.com/v3/contacts/attributes/normal/'.$name, [
             'body' => '{"type":"boolean"}',
             'headers' => [
                 'accept' => 'application/json',
-                'api-key' => $api,
+//                'api-key' => $api,
                 'content-type' => 'application/json',
             ],
         ]);

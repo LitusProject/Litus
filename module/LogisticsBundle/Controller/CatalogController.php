@@ -305,20 +305,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
             ->findAllByOrderQuery($order)->getResult();
 
-        if (isset($unfinishedRequestsOrders[$order->getId()])) {
-            $this->flashMessenger()->error(
-                'Error',
-                'You cannot edit a Job that has an open request.'
-            );
-
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'overview',
-                )
-            );
-        }
-
         $form = $this->getForm('logistics_catalog_order_edit', array('academic' => $academic, 'academicYear' => $this->getCurrentAcademicYear(true), 'order' => $order));
 
         if ($this->getRequest()->isPost()) {

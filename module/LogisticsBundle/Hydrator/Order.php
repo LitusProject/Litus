@@ -21,7 +21,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new OrderEntity($data['contact']);
+            $object = new OrderEntity($data['contact'], null, null);
         }
 
         $creator = $this->getPersonEntity();
