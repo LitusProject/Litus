@@ -505,7 +505,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'rows'       => 2,
                             'class'      => 'count',
-                            'data-count' => 200,
+                            'data-count' => 300,
                             'style'      => 'resize: none;',
                         ),
                         'options'    => array(
@@ -517,7 +517,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name'    => 'FieldLength',
                                         'options' => array(
-                                            'max_length'      => 200,
+                                            'max_length'      => 300,
                                             'new_line_length' => 75,
                                         ),
                                     ),
