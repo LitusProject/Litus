@@ -214,17 +214,32 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $conflicts = array();
         // Loop over all made mappings
+        $d = 1;
         foreach ($mappings as $map) {
+            error_log('=== ' . $d . ' ===');
+            $d += 1;
+            foreach ($mappings as $c) {
+                error_log($c->getArticle()->getName());
+            }
+            error_log('===');
             // Find overlaps
             $overlapping_maps = $this->findOverlapping($mappings, $map);
             // Delete map so it doesn't pop up twice
             $mappings = array_udiff(
-                array($map),
+                $mappings,
                 $overlapping_maps,
                 function ($obj_a, $obj_b) {
-                    return $obj_a->getId() - $obj_b->getId();
+                    error_log($obj_a->getArticle()->getName());
+                    error_log($obj_a->getId());
+                    error_log($obj_b->getArticle()->getName());
+                    error_log($obj_b->getId());
+                    return $obj_a->getArticle()->getName() === $obj_b->getArticle()->getName();
                 }
             );
+
+            foreach ($mappings as $v) {
+                error_log($v->getArticle()->getName());
+            }
 
             // Look if all overlapping article amounts surpass the amount available
             $total = 0;
