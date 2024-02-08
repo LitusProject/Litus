@@ -65,6 +65,9 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
 
     public function findAllOverlappingByOrderArticleQuery(ArticleEntity $article, OrderEntity $order)
     {
+        $margin_hours = @unserialize($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('logistics.request_margin_hours'));
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
             ->from('LogisticsBundle\Entity\Order\OrderArticleMap', 'm')
@@ -83,8 +86,8 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
                 )
             )
             ->setParameter('article', $article)
-            ->setParameter('startDate', $order->getStartDate())
-            ->setParameter('endDate', $order->getEndDate())
+            ->setParameter('startDate', $order->getStartDate()->modify('-' . $margin_hours . ' hour'))
+            ->setParameter('endDate', $order->getEndDate()->modify('+' . $margin_hours . ' hour'))
             ->setParameter('now', new DateTime())
             ->getQuery();
     }

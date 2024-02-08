@@ -156,6 +156,11 @@ VTK
         'description' => '',
     ),
     array(
+        'key'         => 'logistics.request_margin_hours',
+        'value'       => '1',
+        'description' => 'Hour margin before and after a request for overlaps',
+    ),
+    array(
         'key'         => 'logistics.catalog_search_max_results',
         'value'       => 50,
         'description' => '',
