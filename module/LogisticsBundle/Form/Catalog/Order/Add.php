@@ -129,6 +129,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     'input' => array(
                         'validators' => array(
                             array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
+                            array(
                                 'name'    => 'DateCompare',
                                 'options' => array(
                                     'first_date' => 'now',
@@ -150,6 +156,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'options'  => array(
                     'input' => array(
                         'validators' => array(
+                            array(
+                                'name'    => 'Date',
+                                'options' => array(
+                                    'format' => 'd/m/Y H:i',
+                                ),
+                            ),
                             array(
                                 'name'    => 'DateCompare',
                                 'options' => array(

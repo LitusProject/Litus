@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
+use DateTime;
 use Doctrine\ORM\Exception\NotSupported;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -130,7 +131,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'],
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -139,7 +140,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'],
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -150,7 +151,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'],
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -179,14 +180,44 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                $newOrder = $this->recreateOrder($order, $academic->getFullName());
-                $this->getEntityManager()->persist($newOrder);
+
 
 //                $order->overwrite();
 //                $this->getEntityManager()->flush();
 
                 $formData = $form->getData();
                 $total = 0;
+
+                // Check if requested amount is higher than amount owned
+                foreach ($formData as $formKey => $formValue) {
+                    $articleId = substr($formKey, 8, strlen($formKey));
+                    if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
+                        $article = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Article')
+                            ->findOneById($articleId);
+
+                        if ($formValue > $article->getAmountOwned()) {
+                            $this->flashMessenger()->error(
+                                'Warning',
+                                'The amount requested for ' . $article->getName() . ' exceeds the owned amount!'
+                            );
+
+                            $this->redirect()->toRoute(
+                                'logistics_catalog',
+                                array(
+                                    'action' => 'catalog',
+                                    'order'  => $order->getId(),
+                                )
+                            );
+
+                            return new ViewModel();
+                        }
+                    }
+                }
+
+                $newOrder = $this->recreateOrder($order, $academic->getFullName());
+                $this->getEntityManager()->persist($newOrder);
+
                 foreach ($formData as $formKey => $formValue) {
                     $articleId = substr($formKey, 8, strlen($formKey));
                     if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
@@ -262,6 +293,26 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $formData = $form->getData();
+                $now = new DateTime('now');
+                if ($formData['start_date'] < $now) {
+                    $this->flashMessenger()->error(
+                        'Warning',
+                        'The request start date should be after today.'
+                    );
+
+                    $this->redirect()->toRoute('logistics_catalog', array('action' => 'addOrder'));
+                    return new ViewModel();
+
+                } else if ($formData['end_date'] < $formData['start_date']) {
+                    $this->flashMessenger()->error(
+                        'Warning',
+                        'The request end date should be after start data.'
+                    );
+
+                    $this->redirect()->toRoute('logistics_catalog', array('action' => 'addOrder'));
+                    return new ViewModel();
+                }
                 $order = $form->hydrateObject(
                     new Order($academic, new Request($academic), $academic->getFullName())
                 );
@@ -867,7 +918,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 foreach ($mappings as $map) {
                     $articleBody .= "\t* " . $map->getArticle()->getName() . str_repeat(' ', 35 - strlen($map->getArticle()->getName())) . 'aantal: ' . $map->getAmount() . "\r\n";
                 }
-                error_log($articleBody);
                 $headers = new Headers();
                 $headers->addHeaders(
                     array(
