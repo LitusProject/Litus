@@ -367,7 +367,7 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
     private function findOverlapping(array $array, OrderArticleMap $mapping)
     {
-        $margin_hours = @unserialize($this->getEntityManager()
+        $margin_hours = unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.request_margin_hours'));
         $start = $mapping->getOrder()->getStartDate();
