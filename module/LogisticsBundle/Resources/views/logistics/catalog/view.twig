@@ -74,11 +74,22 @@
             </div>
             <div class="col-md-7">
                 <h1 class="pull-left">{{ translate('Articles') }}</h1>
+{#                TODO: add translation for update#}
                 {% if not order.isCanceled() and not order.isRemoved() and order.getId() == lastOrders[0].getId() %}
                     <a class="btn btn-primary pull-right grow" style="margin-top: 25px;"
                        href="{{ url('logistics_catalog', {'action': 'catalog', 'order': order.getId()}) }}">
-                        Update
+                        {{ translate('Articles') }}
                     </a>
+                    {% if hasAccess('logistics_inventory', 'index') %}
+                        <a class="btn btn-primary pull-right grow" style="margin-top: 25px; margin-right: 10px; {#background-color: #4d878e; border-color: #4d878e  #}"
+                           href="{{ url('logistics_catalog', {'action': 'inventory', 'order': order.getId()}) }}">
+                            {{ translate('Flesserke') }}
+                        </a>
+                        <a class="btn btn-primary pull-right grow" style="margin-top: 25px; margin-right: 10px; {#background-color: #4d878e; border-color: #4d878e  #}"
+                           href="{{ url('logistics_catalog', {'action': 'inventory', 'order': order.getId()}) }}">
+                            {{ translate('C&G') }}
+                        </a>
+                    {% endif %}
                 {% endif %}
 
                 {#     Article body       #}

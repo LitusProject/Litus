@@ -39,7 +39,7 @@ return array(
             'index',
         ),
         'logistics_catalog' => array(
-            'addOrder', 'editOrder', 'overview', 'catalog', 'cancelRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search',
+            'addOrder', 'editOrder', 'overview', 'catalog', 'cancelRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search', 'inventory',
         ),
         'logistics_inventory' => array(
             'index', 'add', 'edit', 'reserve',

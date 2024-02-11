@@ -11,6 +11,7 @@ use Laminas\Mail\Headers;
 use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
+use LogisticsBundle\Entity\Inventory;
 use LogisticsBundle\Entity\Order;
 use LogisticsBundle\Entity\Order\OrderArticleMap as Map;
 use LogisticsBundle\Entity\Request;
@@ -180,8 +181,6 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-
-
 //                $order->overwrite();
 //                $this->getEntityManager()->flush();
 
@@ -263,13 +262,149 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 
         return new ViewModel(
             array(
-                'isPraesidium' => $academic->isPraesidium($this->getCurrentAcademicYear()),
-                'articles'     => $allArticles,
-                'categories'   => Article::$POSSIBLE_CATEGORIES,
-                'units'        => $this->getAllActiveUnits($articles),
-                'form'         => $form,
-                'searchForm'   => $searchForm,
-                'order'        => $order,
+                'isPraesidium'          => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'articles'              => $allArticles,
+                'categories'            => Article::$POSSIBLE_CATEGORIES,
+                'units'                 => $this->getAllActiveUnits($articles),
+                'form'                  => $form,
+                'searchForm'            => $searchForm,
+                'order'                 => $order,
+            )
+        );
+    }
+
+    public function inventoryAction(): ViewModel
+    {
+        $academic = $this->getAcademicEntity();
+        if ($academic === null) {
+            return $this->notFoundAction();
+        }
+
+        $order = $this->getOrderEntity();
+        if ($order === null) {
+            return $this->notFoundAction();
+        }
+        $request = $order->getRequest();
+
+        // Check if authenticated to modify order articles
+        if ($academic !== $order->getCreator()
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
+                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+        ) {
+            return $this->notFoundAction();
+        }
+
+//      Load in all inventory articles
+        $articles = array();
+        if ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
+            || $academic->isPraesidium($this->getCurrentAcademicYear())) {
+            $articles = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Inventory')
+                ->findAllNotZeroQuery()->getResult();
+        }
+
+//      Form to fill in articles
+        $form = $this->getForm(
+            'logistics_catalog_inventory_inventory',
+            array(
+                'articles'  => $articles,
+            )
+        );
+
+//        TODO: Implement it also in inventory
+//      Form to search articles
+        $searchForm = $this->getForm('logistics_catalog_inventory_search');
+
+//        TODO: change this to inventory + make inventory entity connected with mapped/put it into the article template
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $total = 0;
+
+                // Check if requested amount is higher than amount owned
+                foreach ($formData as $formKey => $formValue) {
+                    $articleId = substr($formKey, 8, strlen($formKey));
+                    if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
+                        $article = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Article')
+                            ->findOneById($articleId);
+
+                        if ($formValue > $article->getAmountOwned()) {
+                            $this->flashMessenger()->error(
+                                'Warning',
+                                'The amount requested for ' . $article->getName() . ' exceeds the owned amount!'
+                            );
+
+                            $this->redirect()->toRoute(
+                                'logistics_catalog',
+                                array(
+                                    'action' => 'inventory',
+                                    'order'  => $order->getId(),
+                                )
+                            );
+
+                            return new ViewModel();
+                        }
+                    }
+                }
+
+                $newOrder = $this->recreateOrder($order, $academic->getFullName());
+                $this->getEntityManager()->persist($newOrder);
+
+                foreach ($formData as $formKey => $formValue) {
+                    $articleId = substr($formKey, 8, strlen($formKey));
+                    if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
+                        $total += $formValue;
+
+                        $article = $this->getEntityManager()
+                            ->getRepository('LogisticsBundle\Entity\Article')
+                            ->findOneById($articleId);
+
+//                        $oldAmount = $mapped[$articleId]['amount'] ?: 0;
+//                        $booking = new Map($newOrder, $article, $formValue, $oldAmount);
+
+//                        $this->getEntityManager()->persist($booking);
+                    }
+                }
+
+                if ($total == 0) {
+                    $this->flashMessenger()->warn(
+                        'Warning',
+                        'You have not booked any articles!'
+                    );
+                } else {
+                    $this->getEntityManager()->flush();
+
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The articles have been booked!'
+                    );
+                    $this->sendAlertMails($request);
+                    $this->sendMailToLogi($request);
+                }
+                $this->redirect()->toRoute(
+                    'logistics_catalog',
+                    array(
+                        'action' => 'view',
+                        'order'  => $newOrder->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+//        TODO: add all the necessary connections
+        return new ViewModel(
+            array(
+                'isPraesidium'          => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'articles'              => $articles,
+                'categories'            => Inventory::$possibleCategories,
+                'form'                  => $form,
+                'searchForm'            => $searchForm,
+                'order'                 => $order,
             )
         );
     }
@@ -293,9 +428,11 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
             $form->setData($formData);
 
             if ($form->isValid()) {
-                $formData = $form->getData();
                 $now = new DateTime('now');
-                if ($formData['start_date'] < $now) {
+                $start = DateTime::createFromFormat('d#m#Y H#i', $form->get('start_date')->getValue());
+                $end = DateTime::createFromFormat('d#m#Y H#i', $form->get('end_date')->getValue());
+
+                if ($start < $now) {
                     $this->flashMessenger()->error(
                         'Warning',
                         'The request start date should be after today.'
@@ -304,7 +441,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     $this->redirect()->toRoute('logistics_catalog', array('action' => 'addOrder'));
                     return new ViewModel();
 
-                } else if ($formData['end_date'] < $formData['start_date']) {
+                } else if ($end < $start) {
                     $this->flashMessenger()->error(
                         'Warning',
                         'The request end date should be after start data.'
