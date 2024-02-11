@@ -380,7 +380,15 @@ class Bookguest extends \CommonBundle\Component\Form\Bootstrap\Form
         $urls = explode(',', $this->event->getTermsUrl());
         $text = $this->getServiceLocator()->get('translator')->translate('I have read and accept the terms and conditions specified');
         $here = $this->getServiceLocator()->get('translator')->translate('here');
+
         if (count($urls) == 1) {
+            if ($urls[0] == '') {
+                $defaultTerms = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('ticket.terms_and_conditions');
+                $urls[0] = $defaultTerms;
+            }
+
             $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>.');
         } elseif (count($urls) > 1) {
             $text .= ' ' . str_replace(array('url', 'here'), array($urls[0], $here), '<a href="url" target="_blank"><strong><u>here</u></strong></a>');

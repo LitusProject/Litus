@@ -130,4 +130,9 @@ VTK',
         'value'       => 'VTK',
         'description' => 'The signature name for subscription mails',
     ),
+    array(
+        'key'         => 'ticket.terms_and_conditions',
+        'value'       => 'https://vtk.be/page/algemene-voorwaarden-ticketverkoop/',
+        'description' => 'The terms and conditions for the ticket sale',
+    ),
 );
