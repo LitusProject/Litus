@@ -68,6 +68,7 @@ class OrderArticleMap extends \CommonBundle\Component\Doctrine\ORM\EntityReposit
         $margin_hours = strval(unserialize($this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('logistics.request_margin_hours')));
+        $margin_hours = $margin_hours? :1;
 
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('m')
