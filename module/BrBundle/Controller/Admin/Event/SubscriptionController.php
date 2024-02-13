@@ -198,9 +198,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $item = (object) array();
             $item->id = $subscription->getId();
             $item->name = $subscription->getFirstName().' '.$subscription->getLastName();
+            $item->email = $subscription->getEmail();
             $item->university = $subscription->getUniversityString();
             $item->study = $subscription->getStudyString();
-            $item->reception = $subscription->isAtNetworkReception();
+            $item->specialization = $subscription->getSpecialization();
+            $item->year = $subscription->getStudyYearString();
+            $item->food = $subscription->getFoodString();
             $item->qr = $subscription->getQrCode();
             $result[] = $item;
         }

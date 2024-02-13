@@ -388,6 +388,14 @@ class Subscription
     }
 
     /**
+     * @return string
+     */
+    public function getStudyYearString(): string
+    {
+        return self::POSSIBLE_STUDY_YEARS[$this->getStudyYear()];
+    }
+
+    /**
      * @param string $studyYear
      */
     public function setStudyYear(string $studyYear): void
