@@ -132,7 +132,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? false,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -141,7 +141,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? false,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -152,7 +152,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $articleInfo = array(
                     'article'       => $art,
                     'mapped'        => $mapped[$art->getId()]['amount'] ?? 0,
-                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? False,
+                    'accepted'      => $mapped[$art->getId()]['accepted'] ?? false,
                     'orderedAmount' => $this->findOverlappingAcceptedAmount($art, $order),
                 );
 
@@ -289,7 +289,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         // Check if authenticated to modify order articles
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-                || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
         ) {
             return $this->notFoundAction();
         }
@@ -297,7 +297,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
 //      Load in all inventory articles
         $articles = array();
         if ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
-            || $academic->isPraesidium($this->getCurrentAcademicYear())) {
+            || $academic->isPraesidium($this->getCurrentAcademicYear())
+        ) {
             $articles = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Inventory')
                 ->findAllNotZeroQuery()->getResult();
@@ -354,13 +355,13 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                 $this->getEntityManager()->persist($newOrder);
 
                 foreach ($formData as $formKey => $formValue) {
-                    $articleId = substr($formKey, 8, strlen($formKey));
+//                    $articleId = substr($formKey, 8, strlen($formKey));
                     if (substr($formKey, 0, 8) == 'article-' && $formValue != '' && $formValue != '0') {
                         $total += $formValue;
 
-                        $article = $this->getEntityManager()
-                            ->getRepository('LogisticsBundle\Entity\Article')
-                            ->findOneById($articleId);
+//                        $article = $this->getEntityManager()
+//                            ->getRepository('LogisticsBundle\Entity\Article')
+//                            ->findOneById($articleId);
 
 //                        $oldAmount = $mapped[$articleId]['amount'] ?: 0;
 //                        $booking = new Map($newOrder, $article, $formValue, $oldAmount);
@@ -439,8 +440,8 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     );
 
                     $this->redirect()->toRoute('logistics_catalog', array('action' => 'addOrder'));
-                    return new ViewModel();
 
+                    return new ViewModel();
                 } else if ($end < $start) {
                     $this->flashMessenger()->error(
                         'Warning',

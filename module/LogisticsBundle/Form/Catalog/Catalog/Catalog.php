@@ -36,15 +36,15 @@ class Catalog extends \CommonBundle\Component\Form\Bootstrap\Form
                                 array('name' => 'StringTrim'),
                             ),
                             'validators' => array(
-//                                array('name' => 'Digits',),
+                //                                array('name' => 'Digits',),
                                 array('name' => 'Int'),
-//                                array(
-//                                    'name'    => 'Between',
-//                                    'options' => array(
-//                                        'min' => 0,
-//                                        'max' => $mapping->getAmountAvailable(),
-//                                    ),
-//                                ),
+                //                                array(
+                //                                    'name'    => 'Between',
+                //                                    'options' => array(
+                //                                        'min' => 0,
+                //                                        'max' => $mapping->getAmountAvailable(),
+                //                                    ),
+                //                                ),
                             ),
                         ),
                     ),
