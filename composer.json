@@ -63,7 +63,8 @@
         "phpstan/phpstan": "^1.10",
         "slevomat/coding-standard": "^8.1",
         "squizlabs/php_codesniffer": "^3.7",
-        "wp-coding-standards/wpcs": "^3.0"
+        "wp-coding-standards/wpcs": "^3.0",
+        "phpro/grumphp-shim": "^1.13"
     },
     "autoload": {
         "psr-4": {
@@ -101,7 +102,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "phpro/grumphp-shim": true
         }
     }
 }
