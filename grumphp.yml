@@ -14,5 +14,3 @@ grumphp:
             memory_limit: "-1"
         phpcs:
             warning_severity: 0
-        file_size:
-            max_size: 2M
