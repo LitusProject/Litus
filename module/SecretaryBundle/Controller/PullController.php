@@ -87,7 +87,7 @@ class PullController extends \CommonBundle\Component\Controller\ActionController
                     $payLinkDomain = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\General\Config')
                         ->getConfigValue('ticket.pay_link_domain');
-                    $payLink = 'https://vtk.be' . '/secretary/pull/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
+                    $payLink = $payLinkDomain . '/secretary/pull/pay/' . $booked_ticket[0]->getId() . '/code/' . $booked_ticket[0]->getNumber();
 
                     $this->redirect()->toUrl($payLink);
                 }

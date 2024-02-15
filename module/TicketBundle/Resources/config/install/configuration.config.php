@@ -75,7 +75,7 @@ VTK',
     ),
     array(
         'key'         => 'ticket.pay_link_domain',
-        'value'       => 'vtk.be',
+        'value'       => 'https://vtk.be',
         'description' => 'The domain for the paylink used in generated emails',
     ),
     array(
