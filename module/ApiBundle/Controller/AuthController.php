@@ -70,6 +70,14 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             'email'     => $person->getEmail(),
         );
 
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($person->getId());
+        if ($academic !== null) {
+            $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear()) !== null ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus() : '';
+            $result['organization_status'] = $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)) !== null ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() : '';
+            $result['in_workinggroup'] = $academic->isInWorkingGroup($this->getCurrentAcademicYear()) ?? false;
+        }
         return new ViewModel(
             array(
                 'result' => (object) $result,
