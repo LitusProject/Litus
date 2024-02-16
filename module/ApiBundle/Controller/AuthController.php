@@ -68,6 +68,9 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             'username'  => $person->getUsername(),
             'full_name' => $person->getFullName(),
             'email'     => $person->getEmail(),
+            'university_status' => '',
+            'organization_status' => '',
+            'in_workinggroup' => false
         );
 
         $academic = $this->getEntityManager()
