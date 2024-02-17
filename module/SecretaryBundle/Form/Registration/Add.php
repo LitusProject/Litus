@@ -208,16 +208,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                     array(
-                        'type'  => 'checkbox',
+                        'type'  => 'hidden',
                         'name'  => 'primary_email',
                         'label' => 'I want to receive e-mail at my personal e-mail address',
                         'value' => true,
                     ),
                     array(
-                        'type'  => 'checkbox',
+                        'type'  => 'hidden',
                         'name'  => 'no_mail',
                         'label' => "I don't want to receive any Corporate Relations mails",
-                        'value' => true,
+                        'value' => false,
                     ),
                     array(
                         'type'  => 'checkbox',

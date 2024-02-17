@@ -20,9 +20,44 @@
         <div class="spacer40"></div>
         <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Mailing Preferences') }}</small></h1>
         <div class="lineDecoration"></div>
+    </div>
 
-        <div style="height: 50px"></div>
+    <div class="container">
+        <div style="height: 60px"></div>
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('Email Address')}}</h3>
+            </div>
 
+            <div style="height: 15px"></div>
+            <p>Choose on which email address you want to receive our email: </p>
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox"  class="use_personal_email" {% if usePersonalEmail %}checked="checked"{% endif %}>Personal:</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ personalEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">(change)</a></u></p>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox"  class="use_university_email" {% if useUniversityEmail %}checked="checked"{% endif %}>University</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ universityEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">(change)</a></u></p>
+                </label>
+            </div>
+
+            <div class="buttonHolder">
+                <a class="myVtkButton preference_subscribe_button" href="{{ url('common_account', {'action': 'savePreferences'}) }}">{{ translate('Save Preferences') }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 15px"></div>
+
+    <div class="container">
+        <div style="height: 60px"></div>
         <div class="contentBlock">
             <div class="headingHolder">
                 <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>
@@ -34,9 +69,9 @@
                     <div class="checkbox">
                         <label>
                             <div style="height: 1px"></div>
-                            <b><input type="checkbox"  class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}</b>
+                            <b><input type="checkbox" class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}</b>
                             <div style="height: 1px"></div>
-                            <p {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getDescription() }}</p>
+                            <p>{{ preferenceMapping.getPreference().getDescription() }}</p>
                         </label>
                     </div>
                 {% endfor %}
@@ -63,9 +98,20 @@
             $('.flashmessage .close').click(function () {
                 $(this).closest('.flashmessage').removeClass('in');
             });
+
+            // Only one of the email address checkboxes can be checked
+            $('.use_personal_email, .use_university_email').change(function () {
+                var $checkboxes = $('.use_personal_email, .use_university_email');
+                $checkboxes.not(this).prop('checked', false);
+            });
         });
 
         function saveChanges() {
+            // email address preferences
+            var use_personal_email = $('.use_personal_email').is(':checked');
+            var use_university_email = $('.use_university_email').is(':checked');
+
+            // email preferences
             var preference_mappings_true = [];
             var preference_mappings_false = [];
             $('.preference_checkbox:checked').each(function () {
@@ -74,7 +120,13 @@
             $('.preference_checkbox:not(:checked)').each(function () {
                 preference_mappings_false.push($(this).data('id'));
             });
-            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false},
+
+            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {
+                    "preference_mappings_true": preference_mappings_true,
+                    "preference_mappings_false": preference_mappings_false,
+                    "use_personal_email": use_personal_email,
+                    "use_university_email": use_university_email,
+                },
                 function (data) {
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');

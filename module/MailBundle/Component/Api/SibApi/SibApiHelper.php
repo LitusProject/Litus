@@ -10,6 +10,7 @@ use MailBundle\Controller\Admin\PreferenceController;
 use SendinBlue\Client\Api;
 use SendinBlue\Client\Configuration;
 use SendinBlue\Client\Model\CreateContact;
+use SendinBlue\Client\Model\UpdateContact;
 
 class SibApiHelper extends PreferenceController
 {
@@ -112,6 +113,7 @@ class SibApiHelper extends PreferenceController
             }
         }
         return SibApiHelperResponse::successful();
+//        return SibApiHelperResponse::unsuccessful(new \Exception("error"));
     }
 
     /**
@@ -136,6 +138,25 @@ class SibApiHelper extends PreferenceController
             return SibApiHelperResponse::successful();
         } catch (Exception $e) {
             error_log('Exception when calling Sendinblue ContactsApi->createContact with data: Email: ' . $email . ', Attribute: ' . $attributeName . ', Value: ' . $value . ', ErrorMessage: ' . $e->getMessage());
+            return SibApiHelperResponse::unsuccessful($e);
+        }
+    }
+
+    public function updateEmail(string $originalEmail, string $newEmail)
+    {
+        $apiInstance = new Api\ContactsApi(
+            new HttpClient(),
+            $this->config
+        );
+
+        $updateContact = new UpdateContact();
+        $updateContact['attributes'] = array('EMAIL'=>$newEmail);
+
+        try {
+            $apiInstance->updateContact($originalEmail, $updateContact);
+            return SibApiHelperResponse::successful();
+        } catch (Exception $e) {
+            error_log('Exception when calling ContactsApi->updateContact: with data: Original Email: ' . $originalEmail . ', ErrorMessage: ' . $e->getMessage());
             return SibApiHelperResponse::unsuccessful($e);
         }
     }
