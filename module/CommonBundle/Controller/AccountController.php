@@ -526,8 +526,6 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
             $data = $this->getRequest()->getPost()->toArray();
 
-            ### Sendinblue Updates ###
-
             $subscribedPreferences = array();
             if (isset($data['preference_mappings_true'])) {
                 foreach ($data['preference_mappings_true'] as $id) {
