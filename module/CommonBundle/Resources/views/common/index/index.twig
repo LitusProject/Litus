@@ -31,6 +31,31 @@
             </ul>
         </div>
     {% endif %} #}
+    {% if newsItems|length > 0 %}
+        <div class="vtk-home-technical">
+            <div style="padding: 20px 15px" class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for item in newsItems %}
+                            <div style="background-color: white; padding: 20px;">
+                                <h4>{{ item.getTitle(language) }}
+                                    <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small>
+                                </h4>
+
+                                <div>
+                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
+                                    <div style="height: 10px"></div>
+                                    <a class="button blue unfilled"
+                                       href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 
     {% for notification in notifications %}
         <div class="alert alert-info notification">
