@@ -70,7 +70,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
             'email'     => $person->getEmail(),
             'university_status' => '',
             'organization_status' => '',
-            'in_workinggroup' => false
+            'in_workinggroup' => false,
         );
 
         $academic = $this->getEntityManager()
