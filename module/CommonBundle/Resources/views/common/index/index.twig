@@ -114,29 +114,29 @@
     <div class="vtk-home-technical">
         <div style="padding: 20px 15px" class="container">
             <div class="row">
-                {% if newsItems|length > 0 %}
-                    <div class="col-md-6">
-                        <h2>{{ translate('Latest news') }}</h2>
-                        {% for item in newsItems %}
-                            <div style="background-color: white; padding: 20px; margin-bottom: 20px">
-                                <h4>{{ item.getTitle(language) }}
-                                    <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small>
-                                </h4>
+{#                {% if newsItems|length > 0 %}#}
+{#                    <div class="col-md-6">#}
+{#                        <h2>{{ translate('Latest news') }}</h2>#}
+{#                        {% for item in newsItems %}#}
+{#                            <div style="background-color: white; padding: 20px; margin-bottom: 20px">#}
+{#                                <h4>{{ item.getTitle(language) }}#}
+{#                                    <small>&mdash; {{ dateLocalized(item.getCreationTime(), 'd MMMM') }}</small>#}
+{#                                </h4>#}
 
-                                <div>
-                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>
-                                    <div style="height: 10px"></div>
-                                    <a class="button blue unfilled"
-                                       href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>
-                                </div>
-                            </div>
-                            {# {% else %}
-                            <div class="alert alert-warning">
-                                {{ translate('No news items were posted recently.') }}
-                            </div> #}
-                        {% endfor %}
-                    </div>
-                {% endif %}
+{#                                <div>#}
+{#                                    <p>{{ hideEmail(item.getSummary(300, language)) | replace({'<p>': '', '</p>': '', '<br>': '', '<br />': ''})|raw }}</p>#}
+{#                                    <div style="height: 10px"></div>#}
+{#                                    <a class="button blue unfilled"#}
+{#                                       href="{{ url('news', {'action': 'view', 'name': item.getName(language)}) }}">{{ translate('Read More') }}</a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            #}{# {% else %}#}
+{#                            <div class="alert alert-warning">#}
+{#                                {{ translate('No news items were posted recently.') }}#}
+{#                            </div> #}
+{#                        {% endfor %}#}
+{#                    </div>#}
+{#                {% endif %}#}
             </div>
             <div class="row">
                 {# TO DO CUDI STUFF GOED ZETTEN #}
