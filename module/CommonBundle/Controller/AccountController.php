@@ -496,8 +496,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
-        $usePersonalEmail = $academic->getEmailAddressPreference() == 'personal';
-        $useUniversityEmail = $academic->getEmailAddressPreference() == 'university';
+        $usePersonalEmail = $academic->getEmail() == $academic->getPersonalEmail();
+        $useUniversityEmail = $academic->getEmail() == $academic->getUniversityEmail();
 
         $personalEmail = $academic->getPersonalEmail();
         $universityEmail = $academic->getUniversityEmail();
@@ -516,14 +516,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function savePreferencesAction()
     {
+        error_log("save preferences action");
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();
         }
+
         $sibApiHelper = new SibApiHelper($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
-
             $data = $this->getRequest()->getPost()->toArray();
 
             $subscribedPreferences = array();
@@ -563,25 +564,20 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $saveLocalSuccessful = $this->savePreferencesLocal($academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail);
 
             if (!$saveSibSuccessful || !$saveLocalSuccessful) {
-                $this->flashMessenger()->error(
-                    'Error',
-                    'Something went wrong!'
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'error'),
+                    )
                 );
             }
             else {
-                $this->flashMessenger()->success(
-                    'Success',
-                    'Your preferences are successfully updated!'
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'success'),
+                    )
                 );
             }
         }
-
-        $this->redirect()->toRoute(
-            'common_account',
-            array(
-                'action' => 'profile',
-            )
-        );
 
         return new ViewModel();
     }

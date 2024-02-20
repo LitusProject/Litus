@@ -162,7 +162,7 @@
                 </div>
 
                 <div>
-                    <div class="accountInfo" style="display: inline-block">Email Address</div>
+                    <div class="accountInfo" style="display: inline-block">{{ translate("Email Address") }}</div>
                     <div style="display: inline-block">{{ emailAddress }}&nbsp;</div>
                 </div>
 
@@ -170,7 +170,7 @@
                 {% for preferenceMapping in preferenceMappings %}
                     <div>
                         <div class="accountInfo" style="display: inline-block">{{preferenceMapping.getPreference().getName()}}</div>
-                        <div style="display: inline-block">{{ preferenceMapping.getValue() ? "Yes" : "No" }}&nbsp;</div>
+                        <div style="display: inline-block">{{ preferenceMapping.getValue() ? translate("Yes") : translate("No") }}&nbsp;</div>
                     </div>
                 {% endfor %}
                 <div style="height: 30px"></div>

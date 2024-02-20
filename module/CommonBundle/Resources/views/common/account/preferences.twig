@@ -1,6 +1,8 @@
 {% extends 'site/base.twig' %}
 
 {% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
     <div class="page-alert">
         <div class="flashmessage alert alert-success fade" id="preferences_saved_success">
             <button type="button" class="close">&times;</button>
@@ -30,26 +32,26 @@
             </div>
 
             <div style="height: 15px"></div>
-            <p>Choose on which email address you want to receive our email: </p>
+            <p>{{ translate("Choose on which email address you want to receive our email") }}: </p>
             <div class="checkbox">
                 <label>
                     <div style="height: 1px"></div>
-                    <b><input type="checkbox"  class="use_personal_email" {% if usePersonalEmail %}checked="checked"{% endif %}>Personal:</b>
+                    <b><input type="checkbox"  class="use_personal_email" {% if usePersonalEmail %}checked="checked"{% endif %}>{{ translate("Personal") }}</b>
                     <div style="height: 1px"></div>
-                    <p>{{ personalEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">(change)</a></u></p>
+                    <p>{{ personalEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">({{ translate("change") }})</a></u></p>
                 </label>
             </div>
             <div class="checkbox">
                 <label>
                     <div style="height: 1px"></div>
-                    <b><input type="checkbox"  class="use_university_email" {% if useUniversityEmail %}checked="checked"{% endif %}>University</b>
+                    <b><input type="checkbox"  class="use_university_email" {% if useUniversityEmail %}checked="checked"{% endif %}>{{ translate("University") }}</b>
                     <div style="height: 1px"></div>
-                    <p>{{ universityEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">(change)</a></u></p>
+                    <p>{{ universityEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">({{ translate("change") }})</a></u></p>
                 </label>
             </div>
 
             <div class="buttonHolder">
-                <a class="myVtkButton preference_subscribe_button" href="{{ url('common_account', {'action': 'savePreferences'}) }}">{{ translate('Save Preferences') }}</a>
+                <a class="myVtkButton preference_subscribe_button" href="#">{{ translate('Save Preferences') }}</a>
             </div>
         </div>
     </div>
@@ -79,7 +81,7 @@
             {% endif %}
 
             <div class="buttonHolder">
-                <a class="myVtkButton preference_subscribe_button" href="{{ url('common_account', {'action': 'savePreferences'}) }}">{{ translate('Save Preferences') }}</a>
+                <a class="myVtkButton preference_subscribe_button" href="#">{{ translate('Save Preferences') }}</a>
             </div>
 
         </div>
