@@ -161,27 +161,6 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
 
         $type = $this->getParam('type');
 
-        if (!in_array($type, array('company', 'student'))) {
-            return new ViewModel();
-        }
-
-        // Get the correct form by profile type and check whether there already exists one of this type!
-        if ($type == 'company') {
-            foreach ($profiles as $p) {
-                if ($p instanceof CompanyProfile) {
-                    return new ViewModel();
-                }
-            }
-            $form = $this->getForm('br_career_match_company_add');
-        } else {
-            foreach ($profiles as $p) {
-                if ($p instanceof StudentProfile) {
-                    return new ViewModel();
-                }
-            }
-            $form = $this->getForm('br_career_match_student_add');
-        }
-
         $sp = true;
         $cp = true;
         foreach ($profiles as $p) {
@@ -193,92 +172,12 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             }
         }
 
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $profile = null;
-                if ($type == 'company') {
-                    $profile = new CompanyProfile();
-                } elseif ($type == 'student') {
-                    $profile = new StudentProfile();
-                }
-                $this->getEntityManager()->persist($profile);
-
-                $map = new ProfileStudentMap($person, $profile);
-                $this->getEntityManager()->persist($map);
-
-                // Add new features with their importances
-                foreach ($formData as $key => $val) {
-                    if (str_contains($key, 'feature_') && $val != 0) {
-                        $id = substr($key, strlen('feature_'));
-                        if (str_contains($key, 'sector_feature_')) {
-                            $id = substr($key, strlen('sector_feature_'));
-                        }
-                        $map = new ProfileFeatureMap(
-                            $this->getEntityManager()
-                                ->getRepository('BrBundle\Entity\Match\Feature')
-                                ->findOneById($id), 
-                            $profile,
-                            $val
-                        );
-                        $this->getEntityManager()->persist($map);
-                        $profile->addFeature($map);
-                    }
-                }
-
-                $this->getEntityManager()->flush();
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The profile was successfully created!'
-                );
-
-                // REDIRECT TO OTHER FORM
-                if ($type == 'company' && $sp) {
-                    $this->redirect()->toRoute(
-                        'br_career_match',
-                        array(
-                            'action' => 'addProfile',
-                            'type'   => 'student',
-                        )
-                    );
-                } elseif ($type == 'student' && $cp) {
-                    $this->redirect()->toRoute(
-                        'br_career_match',
-                        array(
-                            'action' => 'addProfile',
-                            'type'   => 'company',
-                        )
-                    );
-                } else {
-                    $this->redirect()->toRoute(
-                        'br_career_match',
-                        array(
-                            'action' => 'overview',
-                        )
-                    );
-                }
-
-                return new ViewModel();
-            }
+        // REDIRECT TO OTHER FORM
+        if ($type == 'company' && $sp) {
+            $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-companies');
+        } else {
+            $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-students');
         }
-
-        return new ViewModel(
-            array(
-                'form'          => $form,
-                'type'          => $type,
-                'gdpr_text'     => unserialize(
-                    $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\General\Config')
-                        ->getConfigValue('br.match_career_profile_GDPR_text')
-                )[$this->getLanguage()->getAbbrev()],
-                'sector_points' => $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('br.match_sector_feature_max_points'),
-            )
-        );
     }
 
     public function viewProfileAction()
