@@ -6,7 +6,6 @@ use BrBundle\Entity\Company;
 use BrBundle\Entity\Connection;
 use BrBundle\Entity\Match\Profile\CompanyProfile;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
-use BrBundle\Entity\Match\Profile\ProfileStudentMap;
 use BrBundle\Entity\Match\Profile\StudentProfile;
 use BrBundle\Entity\Match\Wave;
 use Laminas\Mail\Message;
@@ -155,25 +154,10 @@ class MatchController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-        $profiles = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Match\Profile\ProfileStudentMap')
-            ->findByStudent($person);
-
         $type = $this->getParam('type');
-
-        $sp = true;
-        $cp = true;
-        foreach ($profiles as $p) {
-            if ($p->getProfile()->getProfileType() == 'student') {
-                $sp = false;
-            }
-            if ($p->getProfile()->getProfileType() == 'company') {
-                $cp = false;
-            }
-        }
-
+        
         // REDIRECT TO OTHER FORM
-        if ($type == 'company' && $sp) {
+        if ($type == 'company') {
             $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-companies');
         } else {
             $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-students');

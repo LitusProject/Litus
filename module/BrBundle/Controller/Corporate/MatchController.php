@@ -3,7 +3,6 @@
 namespace BrBundle\Controller\Corporate;
 
 use BrBundle\Entity\Match\Profile\CompanyProfile;
-use BrBundle\Entity\Match\Profile\ProfileCompanyMap;
 use BrBundle\Entity\Match\Profile\ProfileFeatureMap;
 use BrBundle\Entity\Match\Profile\StudentProfile;
 use BrBundle\Entity\Match\Wave;
@@ -154,12 +153,11 @@ class MatchController extends \BrBundle\Component\Controller\CorporateController
             return new ViewModel();
         }
 
-        if ($type == 'company' ) {
+        if ($type == 'company') {
             $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-companies');
         } else {
             $this->redirect()->toUrl('https://www.vtkjobfair.be/matching-software-students');
         }
-
     }
 
     public function viewProfileAction()
