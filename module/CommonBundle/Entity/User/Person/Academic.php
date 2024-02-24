@@ -9,6 +9,7 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Google\Service\ServiceUsage\Enum;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -110,6 +111,23 @@ class Academic extends \CommonBundle\Entity\User\Person
      * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $preferenceMappings;
+
+    /**
+     * @var String The email address on which the user wants to receive email
+     *
+     * Possible values: 'personal', 'university'
+     *
+     * @ORM\Column(type="string", options={"default" = "personal"})
+     */
+    private $emailAddressPreference;
+
+    /**
+     * @var Boolean If the user has unsubscribed from all email
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $unsubscribed;
+
 
     public function __construct()
     {
@@ -496,5 +514,60 @@ class Academic extends \CommonBundle\Entity\User\Person
     public function getPreferenceMappings()
     {
         return $this->preferenceMappings->toArray();
+    }
+
+    /**
+     * @return String
+     */
+    public function getEmailAddressPreference()
+    {
+        return $this->emailAddressPreference;
+    }
+
+    /**
+     * @param string $preference Should be either 'personal' or 'university'
+     *
+     * @return $this
+     */
+    public function setEmailAddressPreference(string $preference)
+    {
+        $this->emailAddressPreference = $preference;
+
+        return $this;
+    }
+
+    /**
+     * @return $this Toggles the user's email address preference between 'personal' and 'university'
+     */
+    public function toggleEmailAddressPreference()
+    {
+        if ($this->emailAddressPreference == 'personal') {
+            $this->emailAddressPreference = 'university';
+        }
+        else {
+            $this->emailAddressPreference = 'personal';
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param bool $unsubscribed
+     *
+     * @return $this
+     */
+    public function setUnsubscribed(bool $unsubscribed)
+    {
+        $this->unsubscribed = $unsubscribed;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUnsubscribed()
+    {
+        return $this->unsubscribed;
     }
 }

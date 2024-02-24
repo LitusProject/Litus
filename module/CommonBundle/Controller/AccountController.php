@@ -170,6 +170,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'profileForm'        => $profileForm,
                 'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'preferenceMappings' => $academic->getPreferenceMappings(),
+                'emailAddress'       => $academic->getEmail(),
             )
         );
     }
@@ -495,93 +496,103 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         $this->syncPreferenceMappings($academic, $preferenceMappings, $preferences);
 
+        $usePersonalEmail = $academic->getEmail() == $academic->getPersonalEmail();
+        $useUniversityEmail = $academic->getEmail() == $academic->getUniversityEmail();
+
+        $personalEmail = $academic->getPersonalEmail();
+        $universityEmail = $academic->getUniversityEmail();
+
         return new ViewModel(
             array(
+                'unsubscribed' => $academic->getUnsubscribed(),
                 'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
                 'preferenceMappings' => $academic->getPreferenceMappings(),
+                'usePersonalEmail' => $usePersonalEmail,
+                'useUniversityEmail' => $useUniversityEmail,
+                'personalEmail' => $personalEmail,
+                'universityEmail' => $universityEmail,
             )
         );
     }
 
     public function savePreferencesAction()
     {
+        error_log("save preferences action");
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();
         }
-        $email = $academic->getPersonalEmail();
-        $sibApiHelper = new SibApiHelper($this->getEntityManager());
 
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost()->toArray();
 
-            $subscribedPreferences = array();
-            if (isset($data['preference_mappings_true'])) {
-                foreach ($data['preference_mappings_true'] as $id) {
-                    $preferenceMapping = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
-                        ->findOnebyId($id);
-                    $subscribedPreferences[] = $preferenceMapping;
+            if (!($data['use_personal_email'] == "false" && $data['use_university_email'] == "false")) {
+
+                // unsubscribed
+                $unsubscribed = $data['unsubscribed'] == "true";
+
+                // change of email address
+                if ($data['use_university_email'] == "true") {
+                    $newEmail = $academic->getUniversityEmail();
                 }
-            }
-
-            $notSubscribedPreferences = array();
-            if (isset($data['preference_mappings_false'])) {
-                foreach ($data['preference_mappings_false'] as $id) {
-                    $preferenceMapping = $this->getEntityManager()
-                        ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
-                        ->findOnebyId($id);
-                    $notSubscribedPreferences[] = $preferenceMapping;
+                else {
+                    $newEmail = $academic->getPersonalEmail();
                 }
-            }
 
-            $enableSibApi = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('mail.enable_sib_api');
-            if ($enableSibApi == '1') {
-                $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $subscribedPreferences, true);
-                $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($email, $notSubscribedPreferences, false);
+                // change of preferences
+                $subscribedPreferences = array();
+                if (isset($data['preference_mappings_true'])) {
+                    foreach ($data['preference_mappings_true'] as $id) {
+                        $preferenceMapping = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                            ->findOnebyId($id);
+                        $subscribedPreferences[] = $preferenceMapping;
+                    }
+                }
+                $notSubscribedPreferences = array();
+                if (isset($data['preference_mappings_false'])) {
+                    foreach ($data['preference_mappings_false'] as $id) {
+                        $preferenceMapping = $this->getEntityManager()
+                            ->getRepository('CommonBundle\Entity\User\PreferenceMapping')
+                            ->findOnebyId($id);
+                        $notSubscribedPreferences[] = $preferenceMapping;
+                    }
+                }
 
-                if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success) {
-                    $this->flashMessenger()->success(
-                        'Error',
-                        'Something went wrong when updating your preferences. Please feel free to reach out to us.'
-                    );
-                    $this->redirect()->toRoute(
-                        'common_account',
+                $enableSibApi = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('mail.enable_sib_api');
+
+                $saveSibSuccessful = true;
+                if ($enableSibApi == '1') {
+                    $saveSibSuccessful = $this->savePreferencesSib(new SibApiHelper($this->getEntityManager()), $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail);
+                }
+                $saveLocalSuccessful = $this->savePreferencesLocal($academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail, $unsubscribed);
+
+                if (!$saveSibSuccessful || !$saveLocalSuccessful) {
+                    return new ViewModel(
                         array(
-                            'action' => 'profile',
+                            'result' => (object) array('status' => 'error'),
                         )
                     );
-                    return new ViewModel();
+                }
+                else {
+                    return new ViewModel(
+                        array(
+                            'result' => (object) array('status' => 'success'),
+                        )
+                    );
                 }
             }
-            foreach ($subscribedPreferences as $prefMap) {
-                $prefMap->setValue(true);
-                $this->getEntityManager()->persist($prefMap);
-                $this->getEntityManager()->flush();
+            else {
+                return new ViewModel(
+                    array(
+                        'result' => (object) array('status' => 'nomail'),
+                    )
+                );
             }
-            foreach ($notSubscribedPreferences as $prefMap) {
-                $prefMap->setValue(false);
-                $this->getEntityManager()->persist($prefMap);
-                $this->getEntityManager()->flush();
-            }
-
-            $this->getEntityManager()->persist($academic);
-            $this->getEntityManager()->flush();
-
-            $this->flashMessenger()->success(
-                'Success',
-                'Your preferences have been successfully saved!'
-            );
         }
 
-        $this->redirect()->toRoute(
-            'common_account',
-            array(
-                'action' => 'profile',
-            )
-        );
         return new ViewModel();
     }
 
@@ -905,5 +916,55 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         }
 
         return sibApiHelperResponse::successful();
+    }
+
+    private function savePreferencesSib($sibApiHelper, $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail) {
+        // unsubscribed boolean is reflected in sib by setting all attributes to false
+
+        // update email if changed
+        $responseUpdateEmail = SibApiHelperResponse::successful();
+        if ($academic->getEmail() != $newEmail) {
+            $responseUpdateEmail = $sibApiHelper->updateEmail($academic->getEmail(), $newEmail);
+        }
+
+        // update preferences
+        $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($newEmail, $subscribedPreferences, true);
+        $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($newEmail, $notSubscribedPreferences, false);
+
+        if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success || !$responseUpdateEmail->success) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function savePreferencesLocal(Academic $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail, $unsubscribed)
+    {
+        // update unsubscribed boolean
+        $academic->setUnsubscribed($unsubscribed);
+
+        // update email if changed
+        if ($academic->getEmail() != $newEmail) {
+            $academic->setEmail($newEmail);
+
+            $academic->toggleEmailAddressPreference();
+        }
+
+        // update preferences
+        foreach ($subscribedPreferences as $prefMap) {
+            $prefMap->setValue(true);
+            $this->getEntityManager()->persist($prefMap);
+            $this->getEntityManager()->flush();
+        }
+        foreach ($notSubscribedPreferences as $prefMap) {
+            $prefMap->setValue(false);
+            $this->getEntityManager()->persist($prefMap);
+            $this->getEntityManager()->flush();
+        }
+
+        $this->getEntityManager()->persist($academic);
+        $this->getEntityManager()->flush();
+
+        return true;
     }
 }
