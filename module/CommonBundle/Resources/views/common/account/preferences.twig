@@ -16,6 +16,12 @@
                 {{ translate('An error occurred while saving your mailing preferences!') }}
             </div>
         </div>
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="no_mail_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('You need to select at least one email address! If you want to unsubscribe, please use the button under \"Mailing Preferences\".') }}
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -65,6 +71,15 @@
                 <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>
             </div>
 
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox" class="unsubscribe_checkbox" {% if unsubscribed %}checked="checked"{% endif %}>{{ translate('Unsubscribe') }}</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ translate('Warning: some actions on the site (such as ordering sandwiches, books or tickets) will still trigger emails being sent.') }}</p>
+                </label>
+            </div>
+
             {% if preferencesEnabled %}
                 <div style="height: 15px"></div>
                 {% for preferenceMapping in preferenceMappings %}
@@ -106,6 +121,18 @@
                 var $checkboxes = $('.use_personal_email, .use_university_email');
                 $checkboxes.not(this).prop('checked', false);
             });
+
+            // Disable/enable preference checkboxes if unsubscribe button is checked/unchecked
+            $('.unsubscribe_checkbox').change(function() {
+                if ($(this).prop('checked')) {
+                    $('.preference_checkbox').prop('checked', false).prop('disabled', true);
+                } else {
+                    $('.preference_checkbox').prop('disabled', false);
+                }
+            });
+
+            // Trigger change event for unsubscribe checkbox to handle initial state
+            $('.unsubscribe_checkbox').trigger('change');
         });
 
         function saveChanges() {
@@ -114,6 +141,7 @@
             var use_university_email = $('.use_university_email').is(':checked');
 
             // email preferences
+            var unsubscribed = $('.unsubscribe_checkbox').is(':checked');
             var preference_mappings_true = [];
             var preference_mappings_false = [];
             $('.preference_checkbox:checked').each(function () {
@@ -124,6 +152,7 @@
             });
 
             $.post('{{ url('common_account', {"action": "savePreferences"})}}', {
+                    "unsubscribed": unsubscribed,
                     "preference_mappings_true": preference_mappings_true,
                     "preference_mappings_false": preference_mappings_false,
                     "use_personal_email": use_personal_email,
@@ -133,10 +162,17 @@
                     if (data && 'success' == data.status) {
                         $('.flashmessage').removeClass('in');
                         $('#preferences_saved_success').addClass('in');
+                    } else  if (data && 'nomail' == data.status) {
+                        errorNoMail();
                     } else {
                         errorSave();
                     }
                 }, 'json').error(errorSave);
+        }
+
+        function errorNoMail() {
+            $('.flashmessage').removeClass('in');
+            $('#no_mail_error').addClass('in');
         }
 
         function errorSave() {

@@ -121,6 +121,13 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $emailAddressPreference;
 
+    /**
+     * @var Boolean If the user has unsubscribed from all email
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $unsubscribed;
+
 
     public function __construct()
     {
@@ -542,5 +549,25 @@ class Academic extends \CommonBundle\Entity\User\Person
         }
 
         return $this;
+    }
+
+    /**
+     * @param bool $unsubscribed
+     *
+     * @return $this
+     */
+    public function setUnsubscribed(bool $unsubscribed)
+    {
+        $this->unsubscribed = $unsubscribed;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUnsubscribed()
+    {
+        return $this->unsubscribed;
     }
 }
