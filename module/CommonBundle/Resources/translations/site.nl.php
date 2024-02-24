@@ -186,5 +186,5 @@ return array(
     'Eerstejaars' => 'Eerstejaars',
     'Blijf als eerstejaars op de hoogte over alle belangrijke zaken over jullie studies en activiteiten om nieuwe vrienden te maken.' => 'Blijf als eerstejaars op de hoogte over alle belangrijke zaken over jullie studies en activiteiten om nieuwe vrienden te maken.',
     'Media' => 'Media',
-    'Mis niets van onze nieuwste fotoalbums en aftermovies' => 'Mis niets van onze nieuwste fotoalbums en aftermovies',
+    'Mis niets van onze nieuwste fotoalbums en aftermovies.' => 'Mis niets van onze nieuwste fotoalbums en aftermovies.',
 );

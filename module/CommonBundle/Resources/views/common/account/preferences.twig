@@ -86,9 +86,9 @@
                     <div class="checkbox">
                         <label>
                             <div style="height: 1px"></div>
-                            <b><input type="checkbox" class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}</b>
+                            <b><input type="checkbox" class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ translate(preferenceMapping.getPreference().getName()) }}</b>
                             <div style="height: 1px"></div>
-                            <p>{{ preferenceMapping.getPreference().getDescription() }}</p>
+                            <p>{{ translate(preferenceMapping.getPreference().getDescription()) }}</p>
                         </label>
                     </div>
                 {% endfor %}
