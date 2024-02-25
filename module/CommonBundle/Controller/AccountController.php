@@ -168,7 +168,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'profileForm'        => $profileForm,
-                'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'preferencesEnabled' => true,
                 'preferenceMappings' => $academic->getPreferenceMappings(),
                 'emailAddress'       => $academic->getEmail(),
             )
@@ -505,7 +505,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return new ViewModel(
             array(
                 'unsubscribed' => $academic->getUnsubscribed(),
-                'preferencesEnabled' => $academic->isPraesidium($this->getCurrentAcademicYear()),
+                'preferencesEnabled' => true,
                 'preferenceMappings' => $academic->getPreferenceMappings(),
                 'usePersonalEmail' => $usePersonalEmail,
                 'useUniversityEmail' => $useUniversityEmail,
