@@ -182,4 +182,8 @@ return array(
     'Blijf als eerstejaars op de hoogte over alle belangrijke zaken over jullie studies en activiteiten om nieuwe vrienden te maken.' => 'Keep track of all important news on your studies and activities to meet new people!',
     'Media' => 'Media',
     'Mis niets van onze nieuwste fotoalbums en aftermovies.' => 'Stay tuned on our newest photos and aftermovies.',
+    'Bakske' => 'Bakske',
+    'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken' => 'Receive our weekly magazine. Attention! Our magazine is written in Dutch. From now on it is integrated in the News letter so if you want to receive it via mail you also need to select the preference "New letter".',
+    'Gepersonaliseerde Nieuwsbrief' => 'Personalized Newsletter',
+    'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!' => 'Receive our weekly news letter. Its content is entirely based on your mailing preferences!',
 );

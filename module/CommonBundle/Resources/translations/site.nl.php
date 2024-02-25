@@ -187,4 +187,8 @@ return array(
     'Blijf als eerstejaars op de hoogte over alle belangrijke zaken over jullie studies en activiteiten om nieuwe vrienden te maken.' => 'Blijf als eerstejaars op de hoogte over alle belangrijke zaken over jullie studies en activiteiten om nieuwe vrienden te maken.',
     'Media' => 'Media',
     'Mis niets van onze nieuwste fotoalbums en aftermovies.' => 'Mis niets van onze nieuwste fotoalbums en aftermovies.',
+    'Bakske' => 'Bakske',
+    'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken' => 'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken',
+    'Gepersonaliseerde Nieuwsbrief' => 'Gepersonaliseerde Nieuwsbrief',
+    'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!' => 'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!',
 );
