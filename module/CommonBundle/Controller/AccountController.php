@@ -517,7 +517,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
     public function savePreferencesAction()
     {
-        error_log("save preferences action");
+        error_log('save preferences action');
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             return new ViewModel();
@@ -526,16 +526,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         if ($this->getRequest()->isPost()) {
             $data = $this->getRequest()->getPost()->toArray();
 
-            if (!($data['use_personal_email'] == "false" && $data['use_university_email'] == "false")) {
-
+            if (!($data['use_personal_email'] == 'false' && $data['use_university_email'] == 'false')) {
                 // unsubscribed
-                $unsubscribed = $data['unsubscribed'] == "true";
+                $unsubscribed = $data['unsubscribed'] == 'true';
 
                 // change of email address
-                if ($data['use_university_email'] == "true") {
+                if ($data['use_university_email'] == 'true') {
                     $newEmail = $academic->getUniversityEmail();
-                }
-                else {
+                } else {
                     $newEmail = $academic->getPersonalEmail();
                 }
 
@@ -575,16 +573,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                             'result' => (object) array('status' => 'error'),
                         )
                     );
-                }
-                else {
+                } else {
                     return new ViewModel(
                         array(
                             'result' => (object) array('status' => 'success'),
                         )
                     );
                 }
-            }
-            else {
+            } else {
                 return new ViewModel(
                     array(
                         'result' => (object) array('status' => 'nomail'),
@@ -918,7 +914,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return sibApiHelperResponse::successful();
     }
 
-    private function savePreferencesSib($sibApiHelper, $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail) {
+    private function savePreferencesSib($sibApiHelper, $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail)
+    {
         // unsubscribed boolean is reflected in sib by setting all attributes to false
 
         // update email if changed
@@ -931,11 +928,7 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $responseSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($newEmail, $subscribedPreferences, true);
         $responseNotSubscribedPreferences = $sibApiHelper->createOrUpdateContactWithMultipleAttributes($newEmail, $notSubscribedPreferences, false);
 
-        if (!$responseSubscribedPreferences->success || !$responseNotSubscribedPreferences->success || !$responseUpdateEmail->success) {
-            return false;
-        }
-
-        return true;
+        return $responseSubscribedPreferences->success && $responseNotSubscribedPreferences->success && $responseUpdateEmail->success;
     }
 
     private function savePreferencesLocal(Academic $academic, $subscribedPreferences, $notSubscribedPreferences, $newEmail, $unsubscribed)

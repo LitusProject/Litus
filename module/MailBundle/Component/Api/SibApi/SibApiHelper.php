@@ -150,7 +150,7 @@ class SibApiHelper extends PreferenceController
         );
 
         $updateContact = new UpdateContact();
-        $updateContact['attributes'] = array('EMAIL'=>$newEmail);
+        $updateContact['attributes'] = array('EMAIL' => $newEmail);
 
         try {
             $apiInstance->updateContact($originalEmail, $updateContact);

@@ -9,7 +9,6 @@ use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Google\Service\ServiceUsage\Enum;
 
 /**
  * This is the entity for an academic person, e.g. a student or professor.
@@ -127,7 +126,6 @@ class Academic extends \CommonBundle\Entity\User\Person
      * @ORM\Column(type="boolean", options={"default" = false})
      */
     private $unsubscribed;
-
 
     public function __construct()
     {
@@ -543,8 +541,7 @@ class Academic extends \CommonBundle\Entity\User\Person
     {
         if ($this->emailAddressPreference == 'personal') {
             $this->emailAddressPreference = 'university';
-        }
-        else {
+        } else {
             $this->emailAddressPreference = 'personal';
         }
 
