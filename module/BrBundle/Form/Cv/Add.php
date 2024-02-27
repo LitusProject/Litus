@@ -200,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'textarea',
                         'name'       => 'additional_diplomas',
-                        'label'      => 'Additional Diplomas (e.g. driver\'s license)',
+                        'label'      => 'Additional Studies/Diplomas',
                         'attributes' => array(
                             'rows'       => 2,
                             'class'      => 'count',
