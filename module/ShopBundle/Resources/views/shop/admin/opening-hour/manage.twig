@@ -17,8 +17,24 @@
         </div>
     </div>
 
+    <aside>
+        {% if hasAccess('shop_admin_shop_openinghour', 'schedule') %}
+            <div class="sidebox">
+                <div class="title">Make schedule</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to make opening hours via the schedule!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('shop_admin_shop_openinghour', {"action": "schedule"}) }}">&rarr; Schedule</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
     <div id="controller_action">
-        <table class="full_width manage">
+        <table class="manage">
 
             <tr>
                 <th width="180px">Person</th>
