@@ -111,7 +111,7 @@
                             } else if ('noBookings' == data.error) {
                                 $('#add_queue_success').removeClass('in');
                                 $('#add_queue_error').addClass('in')
-                                    .find('.content').html('There are no bookings for you.');
+                                    .find('.content').html('You have a timeslot, but there are currently no articles assigned to you. Please come back later, when your reserved articles are also assigned to you in your VTK profile.');
                             } else if ('rejected' == data.error) {
                                 $('#add_queue_success').removeClass('in');
                                 $('#add_queue_error').addClass('in')
