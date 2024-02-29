@@ -13,11 +13,11 @@
         <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'subjects'}) }}"{% endif %}>
             {{ translate('Subjects') }}
         </a>
-{#    <li class="{% if getParam('action') == 'preferences' %}active{% endif %} {% if getParam('action') == 'add' %}enabled{% endif %}">#}
-{#        <a {% if getParam('action') == 'add' %}class="enabled"{% else %}href="{{ url('secretary_registration', {'action': 'preferences'}) }}"{% endif %}>#}
-{#            {{ translate('Preferences') }}#}
-{#        </a>#}
-{#    </li>#}
+    <li class="{% if getParam('action') == 'preferences' %}active{% endif %} {% if getParam('action') == 'add' %}disabled{% endif %}">
+        <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'preferences'}) }}"{% endif %}>
+            {{ translate('Preferences') }}
+        </a>
+    </li>
     </li>
     <li class="{% if getParam('action') == 'complete' %}active{% endif %} {% if getParam('action') == 'add' %}disabled{% endif %}">
         <a {% if getParam('action') == 'add' %}class="disabled"{% else %}href="{{ url('secretary_registration', {'action': 'complete'}) }}"{% endif %}>

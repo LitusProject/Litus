@@ -135,6 +135,7 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->organizationMap = new ArrayCollection();
         $this->unitMap = new ArrayCollection();
         $this->preferenceMappings = new ArrayCollection();
+        $this->emailAddressPreference = 'personal';
     }
 
     /**

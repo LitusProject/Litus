@@ -173,6 +173,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                 $formData = $this->getRequest()->getPost()->toArray();
                 $formData['academic']['university_identification'] = $this->getParam('identification');
 
+                error_log(json_encode($formData));
+
                 $form->setData($formData);
 
                 if (isset($formData['organization_info']['organization'])) {
@@ -195,6 +197,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $formData = $form->getData();
                     $metaData = $form->hydrateObject();
                     $academic = $metaData->getAcademic();
+
+                    error_log(json_encode($academic->getEmailAddressPreference()));
 
                     $this->getEntityManager()->persist($academic);
                     $this->getEntityManager()->persist($metaData);
