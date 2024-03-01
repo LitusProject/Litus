@@ -34,6 +34,8 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             )
         );
         $data['preference_mappings'] = $object->getPreferenceMappings();
+        $data['email_address_preference'] = $object->getEmailAddressPreference();
+        $data['unsubscribed'] = $object->getUnsubscribed();
 
         $data = array_merge(
             $data,
@@ -111,6 +113,14 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             foreach ($data['preference_mappings'] as $preferenceMapping) {
                 $object->addPreferenceMapping($preferenceMapping);
             }
+        }
+
+        if (isset($data['email_address_preference'])) {
+            $object->setEmailAddressPreference($data['email_address_preference']);
+        }
+
+        if (isset($data['unsubscribed'])) {
+            $object->setUnsubscribed($data['unsubscribed']);
         }
 
         $studentDomain = $this->getEntityManager()

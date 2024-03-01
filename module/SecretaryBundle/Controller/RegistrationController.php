@@ -198,7 +198,7 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     $metaData = $form->hydrateObject();
                     $academic = $metaData->getAcademic();
 
-                    error_log(json_encode($academic->getEmailAddressPreference()));
+                    error_log(json_encode("unsubscribed: " . $academic->getUnsubscribed()));
 
                     $this->getEntityManager()->persist($academic);
                     $this->getEntityManager()->persist($metaData);
@@ -254,6 +254,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
 
                     $this->getEntityManager()->flush();
 
+                    error_log("registration complete");
+
                     $authentication = new Authentication(
                         new ShibbolethAdapter(
                             $this->getEntityManager(),
@@ -268,13 +270,18 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                     }
                     $this->getEntityManager()->flush();
 
+                    error_log("code complete");
+
                     $authentication->authenticate(
                         $this->getParam('identification'),
                         '',
                         true
                     );
 
+                    error_log("authentication complete");
+
                     if ($isicRedirect) {
+                        error_log("isicRedirect");
                         $this->redirect()->toRoute(
                             'cudi_isic',
                             array(
@@ -291,6 +298,8 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             'You are succesfully registered!'
                         );
 
+                        error_log("secretary registration redirect");
+
                         $this->redirect()->toRoute(
                             'secretary_registration',
                             array(
@@ -298,9 +307,11 @@ class RegistrationController extends \SecretaryBundle\Component\Controller\Regis
                             )
                         );
                     }
-
+                    error_log("test");
                     return new ViewModel();
                 }
+
+                error_log("test 2");
 
                 return new ViewModel(
                     array(
