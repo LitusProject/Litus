@@ -5,7 +5,7 @@
     {% if sportInfo is not null %}
         <div class="alert alert-info">
             <a class="close" data-dismiss="alert">&times;</a>
-            <h4>{{ translate('24h Run') }}</h4>
+            <h4>{{ translate('event Run') }}</h4>
             {% if sportInfo.behind == 0 %}
                 {{ translate('We have run already %laps% laps and we are the first team.')|replace({'%laps%': sportInfo.nbLaps}) }}
             {% else %}
@@ -64,17 +64,87 @@
         </div>
     {% endfor %}
 
-    <div class="vtk-home-header">
-        <div class="vtk-home-image">
-            <div class="container" style="text-align: center">
-                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>
-                <div class="vtk-home-titleDecoration"></div>
-                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner
-                    in crime since 1920</h2>
-                <div style="height: 100px"></div>
+    <div class="banner_event" style="font-family: 'Lulo Clean One Bold';">
+        <div class="container container_event">
+            <div class="grid-container">
+                <div class="right_up_event">
+                    <a class="visible-xs link_icon" href="https://vtkjobfair.be">
+                        {#                        <i class="fa-solid fa-arrow-up-right-from-square" style="color: #ffffff;"></i>#}
+                    </a>
+                    <div style="font-size: 20px">200+ companies</div>
+                    <div style="font-size: 12px">jobfair.vtk.be</div>
+                    <div style="font-size: 12px">10h-19h</div>
+                </div>
+                <div class="left_mid_event hidden-xs">
+                    <svg id="svg-container" width="600" height="400">
+                        <g id="dust-cloud"></g>
+                    </svg>
+                </div>
+                <div class="right_mid_event">
+                    <div>
+                        <div class="top-font">VTK</div>
+                        <div class="mid-font">Jobfair</div>
+                        <div class="end-font" style="padding-top: 40px">Brabanthal</div>
+                        <div class="end-font">March 14th</div>
+                    </div>
+                </div>
+                <div class="right_mid_button_event">
+                    <a class="hidden-xs" href="https://vtkjobfair.be">
+                        <div class="button_event" style="background: #ffffff4d;">
+                            Register
+                        </div>
+                    </a>
+                </div>
+                <div class="left_under_event">
+                    <div style="border-bottom: 1px solid; border-bottom-color: whitesmoke; width: 80%">Envision more.</div>
+                </div>
+                {# BUTTONS #}
+                <div class="right_under_event">
+                    {#            <a class="button_event hidden-xs"  style="margin-right: 20%"#}
+                    {#               href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>#}
+                    {#            <a class="button_event hidden-sm hidden-xs"#}
+                    {#               href="/page/24-urenloop/">{{ translate('24h Run') }}</a>#}
+                    {#            <a class="button_event"#}
+                    {#               href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>#}
+                    {#            <a class="button_event"#}
+                    {#               href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
+                    {# COUNTDOWN #}
+                    <div class="countdown_container">
+                        <ul id="countdown">
+                            <li id="days">
+                                <div class="number">00</div>
+                                <div class="label-c">D</div>
+                            </li>
+                            <li id="hours">
+                                <div class="number">00</div>
+                                <div class="label-c">H</div>
+                            </li>
+                            <li id="minutes">
+                                <div class="number">00</div>
+                                <div class="label-c">M</div>
+                            </li>
+                            <li id="seconds">
+                                <div class="number">00</div>
+                                <div class="label-c">S</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+{#    <div class="vtk-home-header">#}
+{#        <div class="vtk-home-image">#}
+{#            <div class="container" style="text-align: center">#}
+{#                <h1 class="vtk-hometitle">{{ translate('welcome to') }} VTK</h1>#}
+{#                <div class="vtk-home-titleDecoration"></div>#}
+{#                <h2 class="vtk-home-subtitle" style="color: white; font-weight: 500">Vlaamse Technische Kring - partner#}
+{#                    in crime since 1920</h2>#}
+{#                <div style="height: 100px"></div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 {#    <div class="vtk-home-header">                   #}{#banner 24ul#}
 {#        <div class="row container_24h">#}
@@ -262,38 +332,7 @@
                     </div>
                 </div>
             </div>
-{#            <div class="row container_24h">#}
-{#                <div class="buttons_24h">#}
-{#                    <a class="button_24h hidden-xs"  style="margin-right: 20%"#}
-{#                       href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>#}
-{#                    <a class="button_24h hidden-sm hidden-xs"#}
-{#                       href="/page/24-urenloop/">{{ translate('24h Run') }}</a>#}
-{#                        <a class="button_24h"#}
-{#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>#}
-{#                        <a class="button_24h"#}
-{#                           href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
-{#                    <div class="countdown_container">#}
-{#                        <ul id="countdown">#}
-{#                            <li id="days">#}
-{#                                <div class="number">00</div>#}
-{#                                <div class="label-c">D</div>#}
-{#                            </li>#}
-{#                            <li id="hours">#}
-{#                                <div class="number">00</div>#}
-{#                                <div class="label-c">H</div>#}
-{#                            </li>#}
-{#                            <li id="minutes">#}
-{#                                <div class="number">00</div>#}
-{#                                <div class="label-c">M</div>#}
-{#                            </li>#}
-{#                            <li id="seconds">#}
-{#                                <div class="number">00</div>#}
-{#                                <div class="label-c">S</div>#}
-{#                            </li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
+
         </div>
     </div>
 
@@ -474,94 +513,194 @@
             }
         });
 
-        // 24 URENLOOP COUNTDOWN
+        // EVENT COUNTDOWN
         //
         // /* --------------------------
         // * GLOBAL VARS
         // * -------------------------- */
         // // The date you want to count down to
-        // var targetDate = new Date("2023/10/24 20:00:00");
+        var targetDate = new Date("2024/03/14 10:00:00");
         //
         // // Other date related variables
-        // var days;
-        // var hrs;
-        // var min;
-        // var sec;
+        var days;
+        var hrs;
+        var min;
+        var sec;
         //
         // /* --------------------------
         //  * ON DOCUMENT LOAD
         //  * -------------------------- */
-        // $(function() {
-        //     // Calculate time until launch date
-        //     timeToLaunch();
-        //     // Transition the current countdown from 0
-        //     numberTransition('#days .number', days, 1000, 'swing');
-        //     numberTransition('#hours .number', hrs, 1000, 'swing');
-        //     numberTransition('#minutes .number', min, 1000, 'swing');
-        //     numberTransition('#seconds .number', sec, 1000, 'swing');
-        //     // Begin Countdown
-        //     setTimeout(countDownTimer,1001);
-        // });
+        $(function() {
+            // Calculate time until launch date
+            timeToLaunch();
+            // Transition the current countdown from 0
+            numberTransition('#days .number', days, 1000, 'swing');
+            numberTransition('#hours .number', hrs, 1000, 'swing');
+            numberTransition('#minutes .number', min, 1000, 'swing');
+            numberTransition('#seconds .number', sec, 1000, 'swing');
+            // Begin Countdown
+            setTimeout(countDownTimer,1001);
+        });
         //
         // /* --------------------------
         //  * FIGURE OUT THE AMOUNT OF
         //    TIME LEFT BEFORE LAUNCH
         //  * -------------------------- */
-        // function timeToLaunch(){
-        //     // Get the current date
-        //     var currentDate = new Date();
-        //
-        //     // Find the difference between dates
-        //     var diff = Math.abs(Math.floor((currentDate - targetDate)/1000));
-        //
-        //     // Check number of days until target
-        //     days = Math.floor(diff/(24*60*60));
-        //     sec = diff - days * 24*60*60;
-        //
-        //     // Check number of hours until target
-        //     hrs = Math.floor(sec/(60*60));
-        //     sec = sec - hrs * 60*60;
-        //
-        //     // Check number of minutes until target
-        //     min = Math.floor(sec/(60));
-        //     sec = sec - min * 60;
-        // }
+        function timeToLaunch(){
+            // Get the current date
+            var currentDate = new Date();
+
+            // Find the difference between dates
+            var diff = Math.abs(Math.floor((currentDate - targetDate)/1000));
+
+            // Check number of days until target
+            days = Math.floor(diff/(24*60*60));
+            sec = diff - days * 24*60*60;
+
+            // Check number of hours until target
+            hrs = Math.floor(sec/(60*60));
+            sec = sec - hrs * 60*60;
+
+            // Check number of minutes until target
+            min = Math.floor(sec/(60));
+            sec = sec - min * 60;
+        }
         //
         // /* --------------------------
         //  * DISPLAY THE CURRENT
         //    COUNT TO LAUNCH
         //  * -------------------------- */
-        // function countDownTimer(){
-        //
-        //     // Figure out the time to launch
-        //     timeToLaunch();
-        //
-        //     // Write to countdown component
-        //     $( "#days .number" ).text(days);
-        //     $( "#hours .number" ).text(hrs);
-        //     $( "#minutes .number" ).text(min);
-        //     $( "#seconds .number" ).text(sec);
-        //
-        //     // Repeat the check every second
-        //     setTimeout(countDownTimer,1000);
-        // }
-        //
+        function countDownTimer(){
+
+            // Figure out the time to launch
+            timeToLaunch();
+
+            // Write to countdown component
+            $( "#days .number" ).text(days);
+            $( "#hours .number" ).text(hrs);
+            $( "#minutes .number" ).text(min);
+            $( "#seconds .number" ).text(sec);
+
+            // Repeat the check every second
+            setTimeout(countDownTimer,1000);
+        }
+
         // /* --------------------------
         //  * TRANSITION NUMBERS FROM 0
         //    TO CURRENT TIME UNTIL LAUNCH
         //  * -------------------------- */
-        // function numberTransition(id, endPoint, transitionDuration, transitionEase){
-        //     // Transition numbers from 0 to the final number
-        //     $({numberCount: $(id).text()}).animate({numberCount: endPoint}, {
-        //         duration: transitionDuration,
-        //         easing:transitionEase,
-        //         step: function() {
-        //             $(id).text(Math.floor(this.numberCount));
-        //         },
-        //         complete: function() {
-        //             $(id).text(this.numberCount);
-        //         }
-        //     });
-        // }
+        function numberTransition(id, endPoint, transitionDuration, transitionEase){
+            // Transition numbers from 0 to the final number
+            $({numberCount: $(id).text()}).animate({numberCount: endPoint}, {
+                duration: transitionDuration,
+                easing:transitionEase,
+                step: function() {
+                    $(id).text(Math.floor(this.numberCount));
+                },
+                complete: function() {
+                    $(id).text(this.numberCount);
+                }
+            });
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MotionPathPlugin.min.js"></script>
+    <script>
+        // Function to create a circle element
+        function createCircle(x, y, color) {
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("cx", x);
+            circle.setAttribute("cy", y);
+            circle.setAttribute("r", 2); // Adjust the radius of the points
+            circle.setAttribute("fill", color); // Set color
+            return circle;
+        }
+
+        // Function to animate a single dust particle
+        function animateParticle(circle, x, y) {
+            var duration = 5; // Random duration for variety
+            var A = 10 + 0.5 * Math.sqrt(x**2 + y**2)
+            var B = 20 - 0.5 * Math.sqrt(x**2 + y**2)
+            var a = 0
+            var b = 0
+            var d = x + 0.0005*y
+
+            gsap.to(circle, {
+                duration: duration,
+                x: "+=" + A * Math.sin(a + d), // Move the point radially
+                y: "+=" + B * Math.sin(b) + A * Math.cos(d), // Move the point radially
+                ease: "sine.inOut",
+                repeat: -1, // Repeat indefinitely
+                yoyo: true, // Reverse the animation
+                // delay: index * 0.05 // Add a slight delay for stagger effect
+            });
+        }
+
+        // Get SVG container and dust cloud group
+        var dustCloud = document.getElementById("dust-cloud");
+
+        // Define the number of rings and angular divisions
+        var numR = 10;
+
+        // Define the spacing between points
+        var spacingR = 15;
+
+        // Create and animate dust particles
+        for (var i = 0; i < numR; i++) {
+            var numTh = 2 * 3 * i + 1;
+            var spacingTh = 2 * Math.PI / numTh;
+            for (var j = 0; j < numTh; j++) {
+                var x = i * spacingR * Math.cos(j * spacingTh) + numR/2 * spacingR + 250;
+                var y = i * spacingR * Math.sin(j * spacingTh) + numR/2 * spacingR + 100;
+                // Calculate color based on radial position
+                var color = interpolateColor(i / numR, "#0482ef", "#56d6fe", "#007fec", "#c574e8"); // Interpolate from light blue to lighter lilac
+                var circle = createCircle(x, y, color);
+                dustCloud.appendChild(circle);
+                animateParticle(circle, x, y);
+            }
+        }
+
+        // Function to interpolate color among four colors
+        function interpolateColor(fraction, color1, color2, color3, color4) {
+            if (fraction <= 0.25) {
+                return interpolateTwoColors((fraction * 4), color1, color2);
+            } else if (fraction <= 0.5) {
+                return interpolateTwoColors(((fraction - 0.25) * 4), color2, color3);
+            } else if (fraction <= 0.75) {
+                return interpolateTwoColors(((fraction - 0.5) * 4), color3, color4);
+            } else {
+                return interpolateTwoColors(((fraction - 0.75) * 4), color4, color1);
+            }
+        }
+
+        // Function to interpolate color between two colors
+        function interpolateTwoColors(fraction, color1, color2) {
+            color1 = hexToRgb(color1);
+            color2 = hexToRgb(color2);
+            var r = Math.round(color1.r + fraction * (color2.r - color1.r));
+            var g = Math.round(color1.g + fraction * (color2.g - color1.g));
+            var b = Math.round(color1.b + fraction * (color2.b - color1.b));
+            return rgbToHex(r, g, b);
+        }
+
+        // Function to convert hex color to RGB
+        function hexToRgb(hex) {
+            var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+                return r + r + g + g + b + b;
+            });
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        // Function to convert RGB color to hex
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
     </script>
 {% endblock %}
