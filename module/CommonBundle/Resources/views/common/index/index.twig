@@ -76,7 +76,7 @@
                     <div style="font-size: 12px">10h-19h</div>
                 </div>
                 <div class="left_mid_event hidden-xs">
-                    <svg id="svg-container" width="600" height="400">
+                    <svg id="svg-container" width="600" height="600">
                         <g id="dust-cloud"></g>
                     </svg>
                 </div>
@@ -619,11 +619,11 @@
 
         // Function to animate a single dust particle
         function animateParticle(circle, x, y) {
-            var duration = 5; // Random duration for variety
-            var A = 10 + 0.5 * Math.sqrt(x**2 + y**2)
-            var B = 20 - 0.5 * Math.sqrt(x**2 + y**2)
+            var duration = 4; // Random duration for variety
+            var A = 0.6*(10 + 0.5 * Math.sqrt(x**2 + y**2))
+            var B = 0.6*(20 - 0.5 * Math.sqrt(x**2 + y**2))
             var a = 0
-            var b = 0
+            var b = y
             var d = x + 0.0005*y
 
             gsap.to(circle, {
@@ -644,15 +644,15 @@
         var numR = 10;
 
         // Define the spacing between points
-        var spacingR = 15;
+        var spacingR = 10;
 
         // Create and animate dust particles
         for (var i = 0; i < numR; i++) {
             var numTh = 2 * 3 * i + 1;
             var spacingTh = 2 * Math.PI / numTh;
             for (var j = 0; j < numTh; j++) {
-                var x = i * spacingR * Math.cos(j * spacingTh) + numR/2 * spacingR + 250;
-                var y = i * spacingR * Math.sin(j * spacingTh) + numR/2 * spacingR + 100;
+                var x = i * spacingR * Math.cos(j * spacingTh) + numR/2 * spacingR + 250 + 15*Math.random();
+                var y = i * spacingR * Math.sin(j * spacingTh) + numR/2 * spacingR + 175 + 15*Math.random();
                 // Calculate color based on radial position
                 var color = interpolateColor(i / numR, "#0482ef", "#56d6fe", "#007fec", "#c574e8"); // Interpolate from light blue to lighter lilac
                 var circle = createCircle(x, y, color);
