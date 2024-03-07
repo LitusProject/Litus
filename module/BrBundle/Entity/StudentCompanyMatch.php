@@ -60,6 +60,11 @@ class StudentCompanyMatch
         $this->year = $year;
     }
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getCompany(): Company
     {
         return $this->company;

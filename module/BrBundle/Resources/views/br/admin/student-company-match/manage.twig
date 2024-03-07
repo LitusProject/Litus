@@ -30,19 +30,20 @@
             </thead>
 
             <tbody>
-                {% for match in matches %}
-                    <tr class="item item-{{ match.getId() }}">
-                        <td>{{ match.getAcademic().getFullName() }}</td>
-                        <td>{{ match.getCompany().getName() }}</td>
-                        <td class="actions">
-                            <ul>
-                                {% if hasAccess('br_admin_match', 'delete') %}
-                                    <li><a href="#" class="delete" data-id="{{ match.getId() }}" data-name="{{ match.getAcademic().getFullName() }}">Delete</a></li>
-                                {% endif %}
-                            </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
+            {% for match in matches %}
+                <tr class="item item-{{ match.getId() }}">
+                    <td>{{ match.getAcademic().getFullName() }}</td>
+                    <td>{{ match.getCompany().getName() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('br_admin_studentcompanymatch', 'edit') %}
+                            <a href="{{ url('br_admin_studentcompanymatch', {"action": "edit", "id": match.getId()}) }}" class="edit">Edit</a>                                {% endif %}
+                        {% if hasAccess('br_admin_studentcompanymatch', 'delete') %}
+                            <a href="#" class="delete" data-id="{{ match.getId() }}"
+                               data-name="{{ match.getAcademic().getFullName() }} &#8660; {{ match.getCompany().getName() }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
 
@@ -89,7 +90,7 @@
             var id = $this.data('id');
             removeMatch.find('.delete').unbind('click').click(function () {
                 $.post('{{ url('br_admin_studentcompanymatch', {"action": "delete"})}}' + id, function (data) {
-                    if (data && 'success' == data.status) {
+                    if (data && 'success' === data.status) {
                         $('.flashmessage').addClass('hide');
                         $('.match_removed_success').removeClass('hide');
                         $('.item-' + id).remove();

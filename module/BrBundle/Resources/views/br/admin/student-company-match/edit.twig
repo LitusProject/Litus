@@ -1,0 +1,11 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/student-company-match/partials/navigation.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        <h1>Edit</h1>
+        {{ forms.renderForm(propertiesForm) }}
+    </div>
+{% endblock %}

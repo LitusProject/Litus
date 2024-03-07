@@ -3,15 +3,11 @@
 
     <nav id="controller_nav">
         <ul>
+            {% if hasAccess('br_admin_studentcompanymatch', 'edit') %}
+                <li><a {% if 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url('br_admin_studentcompanymatch', {"action": "edit", "id": match.getId()}) }}">Add</a></li>
+            {% endif %}
             {% if hasAccess('br_admin_studentcompanymatch', 'manage') %}
-                <li>
-                    <a
-                        {% if 'manage' == getParam('action') %} class="active" {% endif %}
-                        href="{{ url('br_admin_studentcompanymatch', {"action": "manage"}) }}"
-                    >
-                        Manage
-                    </a>
-                </li>
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{  url('br_admin_studentcompanymatch', {'action': 'manage' }) }}">Manage</a></li>
             {% endif %}
         </ul>
     </nav>

@@ -319,10 +319,11 @@ return array(
         'br_admin_studentcompanymatch' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/match[/:action[/:academicyear][/:field/:string]][/]',
+                'route'       => '/admin/br/match[/:action[/:academicyear][/:id][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    'id'       => '[a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'br_admin_studentcompanymatch',

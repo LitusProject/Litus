@@ -2,6 +2,7 @@
 
 namespace BrBundle\Controller\Admin;
 
+use BrBundle\Entity\StudentCompanyMatch;
 use CommonBundle\Component\Controller\ActionController\AdminController;
 use CommonBundle\Component\Util\AcademicYear;
 use Laminas\View\Model\ViewModel;
@@ -29,8 +30,88 @@ class StudentCompanyMatchController extends AdminController
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
-                'academicYears'      => $academicYears,
+                'academicYears' => $academicYears,
                 'matches' => $student_company_matches,
+            )
+        );
+    }
+
+    public function addAction()
+    {
+        $person = $this->getAuthentication()->getPersonObject();
+        if ($person == null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_match_add');
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->persist(
+                    $form->hydrateObject()
+                );
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The match was succesfully created!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_studentcompanymatch',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function editAction()
+    {
+        $student_company_match = $this->getMatchEntity();
+        if ($student_company_match === null) {
+            return new ViewModel();
+        }
+
+        $form = $this->getForm('br_match_edit', array('studentCompanyMatch' => $student_company_match));
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The match was successfully edited!'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_studentcompanymatch',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }
@@ -63,5 +144,29 @@ class StudentCompanyMatchController extends AdminController
         }
 
         return $academicYear;
+    }
+
+    /**
+     * @return StudentCompanyMatch|null
+     */
+    private function getMatchEntity()
+    {
+        $event = $this->getEntityById('BrBundle\Entity\StudentCompanyMatch');
+        if (!($event instanceof StudentCompanyMatch)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No Match was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'br_admin_studentcompanymatch',
+                array(
+                    'action' => 'manage',
+                )
+            );
+            return null;
+        }
+
+        return $event;
     }
 }

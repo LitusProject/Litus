@@ -60,7 +60,7 @@ return array(
             'manage', 'search',
         ),
         'br_admin_studentcompanymatch' => array(
-            'manage',
+            'manage', 'add', 'edit', 'delete',
         ),
         'br_career_index' => array(
             'index', 'calendar',
