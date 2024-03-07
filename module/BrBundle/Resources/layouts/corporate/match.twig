@@ -14,31 +14,18 @@
             <h3 style="color:white;">{{ translate('Find your match with our students!') }}</h3>
             <p style="color: white;">{{ bannerText }}</p>
             <div style="height: 20px;"></div>
-            {% if needs_sp and needs_cp %}
-                <div style="color:white;"><h4 style="color:white;">{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please create your Profile so you can start matching!') }}</div>
-            {% elseif needs_sp or needs_cp %}
-                <div style="color:white;"><h4 style="color:white;">{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please finish creating your Profile so you can start matching!') }}</div>
-            {% endif %}
-            <div style="height: 20px;"></div>
-
-            {% if needs_cp %}
-                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'company' }) }}">{{ translate('Create Profile') }}</a>
-            {% elseif needs_sp %}
-                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'addProfile', 'type': 'student' }) }}">{{ translate('Create Profile') }}</a>
-            {% else %}
-                <a class="button yellow unfilled" href="{{ url('br_corporate_match', {'action': 'viewProfile' }) }}">{{ translate('View Profile') }}</a>
-            {% endif %}
+            <a class="button yellow unfilled"
+               href="{{ linkToMatchingSoftware }}">{{ translate('Create Profile') }}</a>
         </div>
 
         <div style="height: 20px;"></div>
         <h2>Matches</h2>
         <div class="pageTitleDeco"></div>
         <div style="height: 20px"></div>
-        {% include 'br/corporate/match/partials/navigation.twig' %}
         <div style="height: 20px"></div>
 
         <div class="row">
-{#            <div class="col-md-3"></div>#}
+            {#            <div class="col-md-3"></div> #}
 
             <div class="col-md-12">
                 <table class="table table-hover full-width">
@@ -53,7 +40,8 @@
                             </td>
                             <td width="230" style="vertical-align: middle;">
                                 {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
-                                    <a class="button blue pull-right cv_search" data-toggle="modal" data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
+                                    <a class="button blue pull-right cv_search" data-toggle="modal"
+                                       data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -94,8 +82,8 @@
 
 {% block content_script %}
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('.cv_search').bind("click", function(){
+        $(document).ready(function () {
+            $('.cv_search').bind("click", function () {
 
             });
         });
