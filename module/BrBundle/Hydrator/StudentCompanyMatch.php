@@ -31,7 +31,6 @@ class StudentCompanyMatch extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        // TODO fix extract
         return $this->stdExtract($object, self::$stdKeys);
     }
 }

@@ -211,6 +211,7 @@ return array(
             '@admin_js',
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
+            '@common_remote_typeahead',
         ),
         'br_corporate_auth' => array(
             '@bootstrap_css',

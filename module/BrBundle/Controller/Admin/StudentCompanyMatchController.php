@@ -46,12 +46,21 @@ class StudentCompanyMatchController extends AdminController
         $form = $this->getForm('br_match_add');
 
         if ($this->getRequest()->isPost()) {
-            $form->setData($this->getRequest()->getPost());
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
 
             if ($form->isValid()) {
-                $this->getEntityManager()->persist(
-                    $form->hydrateObject()
-                );
+                $academic = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['person']['id']);
+
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']['id']);
+
+                $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear());
+
+                $this->getEntityManager()->persist($student_company_match);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -91,6 +100,17 @@ class StudentCompanyMatchController extends AdminController
             $form->setData($formData);
 
             if ($form->isValid()) {
+                $academic = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                    ->findOneById($formData['person']['id']);
+
+                $company = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Company')
+                    ->findOneById($formData['company']['id']);
+
+                $student_company_match
+                    ->setAcademic($academic)
+                    ->setCompany($company);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -112,6 +132,7 @@ class StudentCompanyMatchController extends AdminController
         return new ViewModel(
             array(
                 'form' => $form,
+                'match' => $student_company_match,
             )
         );
     }

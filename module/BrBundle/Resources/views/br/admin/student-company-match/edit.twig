@@ -6,6 +6,47 @@
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         <h1>Edit</h1>
-        {{ forms.renderForm(propertiesForm) }}
+        {{ forms.renderForm(form) }}
     </div>
 {% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Set initial value
+            $('[name="person[id]"]').val('{{ match.getAcademic().getId() }}');
+            $('[name="person[value]"]').val('{{ match.getAcademic().getFullName() }}' + ' - ' + '{{ match.getAcademic().getUniversityIdentification() }}');
+
+            $('#person').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="person[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="person[id]"]').val('');
+                }
+            });
+
+            // Set initial value
+            $('[name="company[id]"]').val('{{ match.getCompany().getId() }}');
+            $('[name="company[value]"]').val('{{ match.getCompany().getName() }}');
+
+            $('#company').typeaheadRemote(
+                {
+                    source: '{{ url('br_admin_company_typeahead', {})}}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="company[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="company[id]"]').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

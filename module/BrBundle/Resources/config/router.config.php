@@ -104,6 +104,19 @@ return array(
                 ),
             ),
         ),
+        'br_admin_company_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/company/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'br_admin_company',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
         'br_admin_cv_entry' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(

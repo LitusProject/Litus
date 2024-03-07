@@ -3,11 +3,11 @@
 namespace BrBundle\Form\Admin\Match;
 
 /**
- * Edit an event.
+ * Edit a match.
  *
  * @author Robbe Serry <robbe.serry@vtk.be>
  */
-class Edit extends \BrBundle\Form\Admin\Match\Add
+class Edit extends Add
 {
     public function init()
     {
