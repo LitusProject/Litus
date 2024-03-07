@@ -298,11 +298,6 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         => 'br.wave_nb_top_matches',
-        'value'       => 5,
-        'description' => 'The amount of matches in a companies\' wave',
-    ),
-    array(
         'key'         => 'br.match_career_banner_text',
         'value'       => 'Hier komt nog mooie text van BR',
         'description' => 'banner text on career/match/overview',
@@ -311,26 +306,6 @@ Example content of this section.
         'key'         => 'br.match_corporate_banner_text',
         'value'       => 'Ook hier komt nog mooie text van BR',
         'description' => 'banner text on corporate/match/overview',
-    ),
-    array(
-        'key'         => 'br.match_profile_max_importances',
-        'value'       => serialize(
-            array(
-                100 => 5,
-                200 => 3,
-            )
-        ),
-        'description' => 'The maximum allowed features per importance value',
-    ),
-    array(
-        'key'         => 'br.match_career_profile_GDPR_text',
-        'description' => 'I agree that this data can be used to contact companies',
-        'value'       => serialize(
-            array(
-                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
-                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".',
-            )
-        ),
     ),
     array(
         'key'         => 'br.career_page_text',
@@ -471,62 +446,6 @@ Bestaand Bedrijf: {{ oldCompany }}.
             )
         ),
         'description' => '',
-    ),
-    array(
-        'key'         => 'br.match_mail',
-        'value'       => 'bedrijvenrelaties@vtk.be',
-        'description' => 'The mail address from where matching software notifications should be sent.',
-    ),
-    array(
-        'key'         => 'br.match_mail_name',
-        'value'       => 'VTK Bedrijvenrelaties',
-        'description' => '',
-    ),
-    array(
-        'key'         => 'br.match_first_interested_mail_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'First interested student',
-                'content' => 'Beste
-Een student heeft zijn data doorgestuurd naar jou op het Matching Software platform!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication',
-    ),
-    array(
-        'key'         => 'br.match_wave_companies_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'Generated new matches',
-                'content' => 'Beste
-Er zijn nieuwe matches!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used',
-    ),
-    array(
-        'key'         => 'br.match_wave_students_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'Generated new matches',
-                'content' => 'Beste
-Er zijn nieuwe matches!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent to all students that have matches, when the button in the admin is used',
-    ),
-    array(
-        'key'         => 'br.match_sector_feature_max_points',
-        'value'       => 6,
-        'description' => 'The amount of points to be distributed between the sectors.',
-    ),
-    array(
-        'key'         => 'br.match_enable_first_interested_mail',
-        'value'       => 1,
-        'description' => 'Enable sending a mail when the first person sends their data to a company.',
     ),
     array(
         'key'         => 'br.google_qr_api',

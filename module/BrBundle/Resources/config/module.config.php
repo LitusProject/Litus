@@ -26,10 +26,6 @@ return Config::create(
                 'productname'                 => Component\Validator\ProductName::class,
                 'productName'                 => Component\Validator\ProductName::class,
                 'ProductName'                 => Component\Validator\ProductName::class,
-                'FeatureImportanceConstraint' => Component\Validator\FeatureImportanceConstraint::class,
-                'featureImportanceConstraint' => Component\Validator\FeatureImportanceConstraint::class,
-                'SectorImportanceConstraint'  => Component\Validator\SectorImportanceConstraint::class,
-                'sectorImportanceConstraint'  => Component\Validator\SectorImportanceConstraint::class,
             ),
         ),
     )

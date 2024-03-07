@@ -132,13 +132,6 @@ class Company
     private $cvBookArchiveYears;
 
     /**
-     * @var string The Email address to use for matching software.
-     *
-     * @ORM\Column(name="matching_software_email", type="string", nullable=true)
-     */
-    private $matchingEmail;
-
-    /**
      * @var ArrayCollection The company's contacts
      *
      * @ORM\OneToMany(targetEntity="BrBundle\Entity\User\Person\Corporate", mappedBy="company")
@@ -665,21 +658,5 @@ class Company
         $this->cvBookArchiveYears = serialize($archiveYears);
 
         return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getMatchingSoftwareEmail()
-    {
-        return $this->matchingEmail;
-    }
-
-    /**
-     * @param string|null $matchingEmail
-     */
-    public function setMatchingSoftwareEmail($matchingEmail)
-    {
-        $this->matchingEmail = $matchingEmail;
     }
 }

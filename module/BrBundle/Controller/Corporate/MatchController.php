@@ -57,7 +57,7 @@ class MatchController extends CorporateController
 
         return new ViewModel(
             array(
-                'matches'            => $matches ?? null,
+                'matches'            => $matches,
                 'bannerText'         => $bannerText,
                 'academicYear'       => $this->getCurrentAcademicYear()->getCode(),
                 'academicYearObject' => $this->getCurrentAcademicYear(),

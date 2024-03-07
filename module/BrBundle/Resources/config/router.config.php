@@ -299,66 +299,6 @@ return array(
                 ),
             ),
         ),
-        'br_admin_match_match' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/match[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_match',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_feature' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/feature[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_feature',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_profile' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/profile[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_profile',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_wave' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/wave[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_wave',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
         'br_admin_job' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -669,11 +609,6 @@ return array(
         'br_admin_invoice'            => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'           => 'BrBundle\Controller\Admin\OverviewController',
         'br_admin_request'            => 'BrBundle\Controller\Admin\RequestController',
-
-        'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
-        'br_admin_match_profile'      => 'BrBundle\Controller\Admin\Match\ProfileController',
-        'br_admin_match_match'        => 'BrBundle\Controller\Admin\Match\MatchController',
-        'br_admin_match_wave'         => 'BrBundle\Controller\Admin\Match\WaveController',
 
         'br_corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',
