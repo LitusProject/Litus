@@ -205,6 +205,13 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
         ),
+        'br_admin_studentcompanymatch' => array(
+            '@common_jquery',
+            '@admin_css',
+            '@admin_js',
+            '@bootstrap_js_transition',
+            '@bootstrap_js_modal',
+        ),
         'br_corporate_auth' => array(
             '@bootstrap_css',
             '@corporate_css',

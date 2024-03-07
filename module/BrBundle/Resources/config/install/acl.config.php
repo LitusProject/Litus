@@ -59,6 +59,9 @@ return array(
         'br_admin_job' => array(
             'manage', 'search',
         ),
+        'br_admin_studentcompanymatch' => array(
+            'manage',
+        ),
         'br_career_index' => array(
             'index', 'calendar',
         ),

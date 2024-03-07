@@ -316,6 +316,20 @@ return array(
                 ),
             ),
         ),
+        'br_admin_studentcompanymatch' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/match[/:action[/:academicyear][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                ),
+                'defaults'    => array(
+                    'controller' => 'br_admin_studentcompanymatch',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'br_career_index' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -609,6 +623,7 @@ return array(
         'br_admin_invoice'            => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'           => 'BrBundle\Controller\Admin\OverviewController',
         'br_admin_request'            => 'BrBundle\Controller\Admin\RequestController',
+        'br_admin_studentcompanymatch' => 'BrBundle\Controller\Admin\StudentCompanyMatchController',
 
         'br_corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',
