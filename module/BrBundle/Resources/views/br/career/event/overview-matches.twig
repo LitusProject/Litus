@@ -49,7 +49,6 @@
                     <th>{{ translate('Study') }}</th>
                     <th>{{ translate('Specialization') }}</th>
                     <th class="hidden-xs">{{ translate('Email') }}</th>
-                    <th class="hidden-xs">{{ translate('Phone') }}</th>
                     <th class="hidden-xs">{{ translate('CV Book') }}</th>
                     <th class="hidden-xs">{{ translate('Notes') }}</th>
                     <th>{{ translate('Actions') }}</th>
@@ -61,8 +60,6 @@
                         <td>{{ match.getSubscription().getStudyString() }}</td>
                         <td>{% if match.getSubscription().getSpecialization() == '' %}/{% endif %}{{ match.getSubscription().getSpecialization() }}</td>
                         <td class="hidden-xs">{{ match.getSubscription().getEmail() }}</td>
-                        <td class="hidden-xs">{{ match.getSubscription().getPhoneNumber() }}</td>
-{#                        <td class="hidden-xs">{{ match.getStudentCv(entityManager, academicYearObject) }}</td>#}
                         <td class="actions">
                             {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
                                 <a class="button blue pull-left cv_search" data-toggle="modal" data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
