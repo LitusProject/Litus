@@ -1,0 +1,44 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/student-company-match/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#person').typeaheadRemote(
+                {
+                    source: '{{ url('common_admin_academic_typeahead', {}) }}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="person[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="person[id]"]').val('');
+                }
+            });
+            $('#company').typeaheadRemote(
+                {
+                    source: '{{ url('br_admin_company_typeahead', {}) }}',
+                    items: 20,
+                }
+            ).change(function (e) {
+                if ($(this).data('value')) {
+                    $('[name="company[id]"]').val($(this).data('value').id);
+                } else {
+                    $('[name="company[id]"]').val('');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+

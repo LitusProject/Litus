@@ -53,23 +53,14 @@ return array(
         'br_admin_request' => array(
             'reject', 'approve', 'manage', 'view',
         ),
-        'br_admin_match_feature' => array(
-            'manage', 'add', 'edit', 'delete', 'bonusMalus',
-        ),
-        'br_admin_match_profile' => array(
-            'manage', 'add', 'edit', 'delete', 'matches', 'deleteAllStudentProfiles', 'deleteAllCompanyProfiles',
-        ),
-        'br_admin_match_match' => array(
-            'manage', 'view', 'delete', 'generateMatches', 'stats', 'sendMailStudents', 'sendMailCompanies', 'deleteAll',
-        ),
-        'br_admin_match_wave' => array(
-            'manage', 'delete', 'add', 'generateWaves', 'view',
-        ),
         'br_admin_communication' => array(
             'add', 'manage', 'delete', 'view',
         ),
         'br_admin_job' => array(
             'manage', 'search',
+        ),
+        'br_admin_studentcompanymatch' => array(
+            'manage', 'add', 'edit', 'delete', 'csv',
         ),
         'br_career_index' => array(
             'index', 'calendar',
@@ -87,7 +78,7 @@ return array(
             'view', 'overview', 'file', 'search',
         ),
         'br_career_match' => array(
-            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'sendData',
+            'overview',
         ),
         'br_cv_index' => array(
             'cv', 'edit', 'complete', 'delete', 'download', 'uploadProfileImage',
@@ -111,7 +102,7 @@ return array(
             'edit',
         ),
         'br_corporate_match' => array(
-            'overview', 'addProfile', 'editProfile', 'viewMatch', 'viewProfile', 'interested', 'stats',
+            'overview',
         ),
     ),
 );

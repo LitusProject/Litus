@@ -104,6 +104,19 @@ return array(
                 ),
             ),
         ),
+        'br_admin_company_typeahead' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/company/typeahead[/:string][/]',
+                'constraints' => array(
+                    'string' => '[%a-zA-Z0-9:.,_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'br_admin_company',
+                    'action'     => 'typeahead',
+                ),
+            ),
+        ),
         'br_admin_cv_entry' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -299,66 +312,6 @@ return array(
                 ),
             ),
         ),
-        'br_admin_match_match' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/match[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_match',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_feature' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/feature[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_feature',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_profile' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/profile[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_profile',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
-        'br_admin_match_wave' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '/admin/br/match/wave[/:action[/:id][/page/:page]][/]',
-                'constraints' => array(
-                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'     => '[0-9_-]*',
-                    'page'   => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'br_admin_match_wave',
-                    'action'     => 'manage',
-                ),
-            ),
-        ),
         'br_admin_job' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -372,6 +325,21 @@ return array(
                 ),
                 'defaults'    => array(
                     'controller' => 'br_admin_job',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
+        'br_admin_studentcompanymatch' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/br/match[/:action[/:academicyear][/:id][/:field/:string]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'academicyear' => '[0-9]{4}-[0-9]{4}',
+                    'id'       => '[a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'br_admin_studentcompanymatch',
                     'action'     => 'manage',
                 ),
             ),
@@ -669,11 +637,7 @@ return array(
         'br_admin_invoice'            => 'BrBundle\Controller\Admin\InvoiceController',
         'br_admin_overview'           => 'BrBundle\Controller\Admin\OverviewController',
         'br_admin_request'            => 'BrBundle\Controller\Admin\RequestController',
-
-        'br_admin_match_feature'      => 'BrBundle\Controller\Admin\Match\FeatureController',
-        'br_admin_match_profile'      => 'BrBundle\Controller\Admin\Match\ProfileController',
-        'br_admin_match_match'        => 'BrBundle\Controller\Admin\Match\MatchController',
-        'br_admin_match_wave'         => 'BrBundle\Controller\Admin\Match\WaveController',
+        'br_admin_studentcompanymatch' => 'BrBundle\Controller\Admin\StudentCompanyMatchController',
 
         'br_corporate_index'          => 'BrBundle\Controller\Corporate\IndexController',
         'br_corporate_cv'             => 'BrBundle\Controller\Corporate\CvController',

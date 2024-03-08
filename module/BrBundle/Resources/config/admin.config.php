@@ -46,10 +46,6 @@ return array(
                     'title' => 'Events',
                     'help'  => 'Here you can manage all events by VTK Corporate Relations.',
                 ),
-                'br_admin_match_match' => array(
-                    'title' => 'Matching Software',
-                    'help'  => 'Here you can manage all Matches.',
-                ),
                 'br_admin_communication' => array(
                     'title' => 'Communications',
                     'help'  => 'Here you can view all outgoing communications.',
@@ -58,6 +54,10 @@ return array(
                     'title' => 'Jobs',
                     'help'  => 'Here you can view all jobs.',
                 ),
+                'br_admin_studentcompanymatch' => array(
+                    'title' => 'Matches',
+                    'help'  => 'Here you can view all matches.',
+                ),
             ),
             'controllers' => array(
                 'br_admin_company_event',
@@ -65,6 +65,7 @@ return array(
                 'br_admin_company_user',
                 'br_admin_company_logo',
                 'br_admin_job',
+                'br_admin_studentcompanymatch',
             ),
         ),
     ),
