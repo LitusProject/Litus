@@ -2,9 +2,11 @@
 
 namespace BrBundle\Controller\Admin;
 
+use BrBundle\Entity\Company;
 use BrBundle\Entity\StudentCompanyMatch;
 use CommonBundle\Component\Controller\ActionController\AdminController;
 use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\User\Person\Academic;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -152,6 +154,104 @@ class StudentCompanyMatchController extends AdminController
         return new ViewModel(
             array(
                 'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $form = $this->getForm('br_match_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $matchData = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 10000, ',');
+
+                while ($data !== false) {
+                    $matchData[] = $data;
+                    $data = fgetcsv($open, 10000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+
+                foreach ($matchData as $data) {
+                    if (in_array(null, array_slice($data, 0, 9))) {
+                        continue;
+                    }
+
+                    $rnumber = $data[0];
+                    $company_name = $data[1];
+
+                    $academic = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                        ->findOneByUsername($rnumber);
+
+                    if (is_null($academic)) {
+                        continue;
+                    }
+
+                    $company = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Company')
+                        ->findOneBy(array('name' => $company_name));
+
+                    if (is_null($company)) {
+                        continue;
+                    }
+
+                    $student_company_match = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+                        ->findOneBy(
+                            array(
+                                'academic' => $academic,
+                                'company' => $company,
+                                'year' => $this->getCurrentAcademicYear(),
+                            )
+                        );
+
+                    if (!is_null($student_company_match)) {
+                        continue;
+                    }
+
+                    assert($academic instanceof Academic);
+                    assert($company instanceof Company);
+                    $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear());
+                    $this->getEntityManager()->persist($student_company_match);
+                    $this->getEntityManager()->flush();
+
+                    $count += 1;
+                }
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' matches added'
+                );
+
+                $this->redirect()->toRoute(
+                    'br_admin_studentcompanymatch',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
             )
         );
     }
