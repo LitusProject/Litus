@@ -132,18 +132,4 @@ class StudentCompanyMatch
         }
         return $entry;
     }
-
-    /**
-     * @param EntityManager $em
-     * @param AcademicYear  $academicYear
-     * @return boolean
-     */
-    public function doesCompanyHavePage(EntityManager $em, AcademicYear $academicYear)
-    {
-        $page = $em
-            ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneActiveBySlug($this->getCompany()->getSlug(), $academicYear);
-
-        return !is_null($page);
-    }
 }

@@ -26,14 +26,10 @@
                     <tr>
                         <td style="vertical-align: middle">
                             <strong style="font-size: 16px">{{ match.getCompany().getName() }}</strong>
-                            <br>
-                            <a href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ match.getCompany().getWebsite() }}</a>
                         </td>
-                        <td style="width:330px" style="vertical-align: middle;">
-                            {% if match.doesCompanyHavePage(em,ay) %}
-                                <a class="button"
-                                   href="{{ url('br_career_company', {'action': 'view', 'company': match.getCompany().getSlug() }) }}">{{ translate('View Company') }}</a>
-                            {% endif %}
+                        <td style="vertical-align: middle;">
+                            <a class="button blue pull-right"
+                               href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>
                         </td>
 
                     </tr>
