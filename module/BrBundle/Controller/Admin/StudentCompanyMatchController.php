@@ -137,6 +137,25 @@ class StudentCompanyMatchController extends AdminController
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        $student_company_match = $this->getMatchEntity();
+        if ($student_company_match === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($student_company_match);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear|void
      */
