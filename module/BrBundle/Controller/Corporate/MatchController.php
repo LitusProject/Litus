@@ -9,6 +9,7 @@ use Laminas\View\Model\ViewModel;
  * MatchController
  *
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Robbe Serry <robbe.serry@vtk.be>
  */
 class MatchController extends CorporateController
 {
@@ -24,16 +25,32 @@ class MatchController extends CorporateController
                 'Error',
                 'Your company is not attending this year\'s Jobfair!'
             );
-            return new ViewModel();
+            return new ViewModel(
+                array(
+                    'linkToMatchingSoftware' => 'https://www.vtkjobfair.be/matching-software-companies',
+                )
+            );
+        }
+
+        if (!in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Your company has no access to the CV-book'
+            );
+            return new ViewModel(
+                array(
+                    'linkToMatchingSoftware' => 'https://www.vtkjobfair.be/matching-software-companies',
+                )
+            );
         }
 
         $bannerText = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('br.match_corporate_banner_text');
 
-
-        $matches = array();
-        // TODO Get matches
+        $matches = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+            ->findAllByCompanyAndYear($person->getCompany(), $this->getCurrentAcademicYear());
 
         $gradesMapEnabled = false;
         $gradesMap = array();
@@ -46,10 +63,12 @@ class MatchController extends CorporateController
                 $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('br.cv_grades_map')
             );
-            foreach ($matches as $match) {
+            foreach ($matches as $key => $match) {
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
-                if ($entry != false) {
+                if ($entry) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
+                } else {
+                    unset($matches[$key]);
                 }
             }
         }

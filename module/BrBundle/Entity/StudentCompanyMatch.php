@@ -4,6 +4,7 @@ namespace BrBundle\Entity;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -119,5 +120,30 @@ class StudentCompanyMatch
         $this->year = $year;
 
         return $this;
+    }
+
+    public function getStudentCv(EntityManager $em, AcademicYear $ay)
+    {
+        $entry = $em->getRepository('BrBundle\Entity\Cv\Entry')
+            ->findOneByAcademicAndAcademicYear($ay, $this->academic);
+
+        if (is_null($entry)) {
+            return false;
+        }
+        return $entry;
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param AcademicYear  $academicYear
+     * @return boolean
+     */
+    public function doesCompanyHavePage(EntityManager $em, AcademicYear $academicYear)
+    {
+        $page = $em
+            ->getRepository('BrBundle\Entity\Company\Page')
+            ->findOneActiveBySlug($this->getCompany()->getSlug(), $academicYear);
+
+        return !is_null($page);
     }
 }

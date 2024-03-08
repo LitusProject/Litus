@@ -9,6 +9,7 @@ use Laminas\View\Model\ViewModel;
  * MatchController
  *
  * @author Robin Wroblowski <robin.wroblowski@vtk.be>
+ * @author Robbe Serry <robbe.serry@vtk.be>
  */
 class MatchController extends CareerController
 {
@@ -20,8 +21,8 @@ class MatchController extends CareerController
         }
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Connection')
-            ->findByStudent($person);
+            ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+            ->findAllByStudentAndYear($person, $this->getCurrentAcademicYear());
 
         $bannerText = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -30,7 +31,6 @@ class MatchController extends CareerController
         return new ViewModel(
             array(
                 'matches'    => $matches,
-                'lastUpdate' => new \DateTime(), // TODO!!
                 'bannerText' => $bannerText,
                 'em'         => $this->getEntityManager(),
                 'ay'         => $this->getCurrentAcademicYear(),

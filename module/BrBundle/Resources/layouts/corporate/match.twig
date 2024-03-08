@@ -32,13 +32,11 @@
                     {% for match in matches %}
                         <tr>
                             <td>
-                                <strong>{{ match.getStudent().getFullName() }}</strong>
+                                <strong style="font-size: 16px">{{ match.getAcademic().getFullName() }}</strong>
                                 <br/>
-                                {{ match.getStudent().getEMail() }}
-                                <br/>
-                                {{ match.getMatchPercentage() }} %
+                                {{ match.getAcademic().getEmail() }}
                             </td>
-                            <td width="230" style="vertical-align: middle;">
+                            <td style="width:230px" style="vertical-align: middle;">
                                 {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
                                     <a class="button blue pull-right cv_search" data-toggle="modal"
                                        data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
