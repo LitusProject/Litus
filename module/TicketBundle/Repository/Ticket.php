@@ -218,12 +218,11 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $tickets;
     }
 
-    public function findAllByAcademic(Academic $academic)
-    {
+    public function findAllByAcademic(Academic $academic) {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
-            ->leftJoin('t.person', 'p')
+            ->join('t.person', 'p')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->orX(
@@ -239,13 +238,17 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
 
-        $tickets = array();
+        $startDates = [];
+        $tickets = [];
+
+        // Populate start dates and tickets arrays
         foreach ($resultSet as $ticket) {
-            // sort by start date of event
-            $tickets[$ticket->getFullName() . '-' . $ticket->getEvent()->getActivity()->getStartDate()->format('Y-m-d H:i:s')] = $ticket;
+            $startDates[] = $ticket->getEvent()->getActivity()->getStartDate();
+            $tickets[] = $ticket;
         }
 
-        ksort($tickets);
+        // Sort tickets based on start dates
+        array_multisort($startDates, SORT_ASC, $tickets);
 
         return $tickets;
     }
