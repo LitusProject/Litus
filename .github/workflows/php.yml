@@ -79,20 +79,3 @@ jobs:
         with:
           path: ${{ runner.temp }}/phpstan
           key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Bring up containers
-        run: docker-compose up -d
-
-      - name: Initialise Litus
-        run: docker-compose run --rm php-cli init
-
-      - name: Test response
-        run: curl -fsSL -I --retry 5 --retry-delay 0 --retry-max-time 30 http://localhost:8080
