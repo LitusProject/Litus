@@ -4,6 +4,7 @@ namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -210,6 +211,38 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $tickets = array();
         foreach ($resultSet as $ticket) {
             $tickets[$ticket->getFullName() . '-' . $ticket->getId()] = $ticket;
+        }
+
+        ksort($tickets);
+
+        return $tickets;
+    }
+
+    public function findAllByAcademic(Academic $academic)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->leftJoin('t.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    ),
+                    $query->expr()->eq('p.username', ':username')
+                )
+            )
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
+            ->setParameter('username', $academic->getUsername())
+            ->getQuery()
+            ->getResult();
+
+        $tickets = array();
+        foreach ($resultSet as $ticket) {
+            // sort by start date of event
+            $tickets[$ticket->getFullName() . '-' . $ticket->getEvent()->getActivity()->getStartDate()->format('Y-m-d H:i:s')] = $ticket;
         }
 
         ksort($tickets);

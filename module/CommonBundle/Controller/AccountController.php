@@ -14,6 +14,7 @@ use Laminas\View\Model\ViewModel;
 use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Component\Api\SibApi\SibApiHelperResponse;
 use SecretaryBundle\Entity\Registration;
+use TicketBundle\Entity\Ticket;
 
 /**
  * Handles account page.
@@ -48,6 +49,15 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
             $total += $booking->getArticle()->getSellPrice() * $booking->getNumber();
         }
 
+        // Tickets and ticket urls
+        $myTickets = $this->findTickets($academic);
+        $myTicketUrls = array_map(
+            function ($ticket) {
+                return $ticket->getQrSourceUrl($this);
+            },
+            $myTickets
+        );
+
         // Shifts
         $myShifts = $this->getEntityManager()
             ->getRepository('ShiftBundle\Entity\Shift')
@@ -81,11 +91,14 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
                 'bookings'         => $bookings,
                 'futureBookings'   => $futureBookings,
                 'total'            => $total,
+                'tickets'          => $myTickets,
+                'ticketUrls'       => $myTicketUrls,
                 'shifts'           => $myShifts,
                 'timeslots'        => $mySlots,
                 'reservations'     => $reservations,
                 'shopName'         => $this->getShopName(),
                 'consumptions'     => $consumptions,
+                'isPraesidium'     => $academic->isPraesidium($this->getCurrentAcademicYear()),
             )
         );
     }
@@ -959,5 +972,19 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         $this->getEntityManager()->flush();
 
         return true;
+    }
+
+    private function findTickets(Academic $academic)
+    {
+        $allTickets = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByAcademic($academic);
+
+        return array_filter(
+            $allTickets,
+            function (Ticket $ticket) {
+                return $ticket->getEvent()->getActivity()->getStartDate() >= new DateTime('now');
+            }
+        );
     }
 }
