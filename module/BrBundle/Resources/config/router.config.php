@@ -332,11 +332,14 @@ return array(
         'br_admin_studentcompanymatch' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/br/match[/:action[/:academicyear][/:id][/:field/:string]][/]',
+                'route'       => '/admin/br/match[/:action[/:academicyear][/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'academicyear' => '[0-9]{4}-[0-9]{4}',
                     'id'       => '[a-zA-Z0-9_-]*',
+                    'page'   => '[0-9]*',
+                    'field'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'string' => '[a-zA-Z][%a-zA-Z0-9:.,_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'br_admin_studentcompanymatch',

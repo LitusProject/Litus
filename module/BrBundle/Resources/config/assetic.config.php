@@ -212,6 +212,8 @@ return array(
             '@bootstrap_js_transition',
             '@bootstrap_js_modal',
             '@common_remote_typeahead',
+            '@gollum_css',
+            '@gollum_js',
         ),
         'br_corporate_auth' => array(
             '@bootstrap_css',
