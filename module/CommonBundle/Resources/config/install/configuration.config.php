@@ -483,4 +483,9 @@ You can remove any installed cookies from your computer or mobile device at any 
         'value'       => 'Secret Value',
         'description' => 'Client Secret for Student Card API basic authentication',
     ),
+    array(
+        'key'         => 'common.shape_of_dots',
+        'value'       => '',
+        'description' => 'A shape of dots that is used to create a particle dust effect',
+    )
 );

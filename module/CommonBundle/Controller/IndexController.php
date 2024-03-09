@@ -22,6 +22,12 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             ->getRepository('NotificationBundle\Entity\Node\Notification')
             ->findAllActive();
 
+        $cloudDustInputData = json_decode($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.shape_of_dots'), true);
+
+//        die(json_encode($cloudDustInputData));
+
         return new ViewModel(
             array(
                 'bookings'           => $this->getBookings(),
@@ -43,6 +49,7 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'videos'             => $this->getVideos(),
+                'cloudDustInputData' => $cloudDustInputData,
             )
         );
     }

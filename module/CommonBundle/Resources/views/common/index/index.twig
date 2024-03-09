@@ -64,72 +64,12 @@
         </div>
     {% endfor %}
 
-    <div class="banner_event" style="font-family: 'Lulo Clean One Bold';">
+    <div class="banner_event" style="font-family: 'Lulo Clean One Bold';" width="100vw" height="100vh">
         <div class="container container_event">
             <div class="grid-container">
-                <div class="right_up_event">
-                    <a class="visible-xs link_icon" href="https://vtkjobfair.be" target="_blank" rel="noopener">
-                        {#                        <i class="fa-solid fa-arrow-up-right-from-square" style="color: #ffffff;"></i>#}
-                    </a>
-                    <div style="font-size: 20px">200+ companies</div>
-                    <div style="font-size: 12px">jobfair.vtk.be</div>
-                    <div style="font-size: 12px">10h-19h</div>
-                </div>
-                <div class="left_mid_event hidden-xs">
-                    <svg id="svg-container" width="600" height="600">
+                    <svg id="svg-container" width="100vw" height="100vh" style="margin-left: 30vw; margin-top: 10vh;">
                         <g id="dust-cloud"></g>
                     </svg>
-                </div>
-                <div class="right_mid_event">
-                    <div>
-                        <div class="top-font">VTK</div>
-                        <div class="mid-font">Jobfair</div>
-                        <div class="end-font" style="padding-top: 40px">Brabanthal</div>
-                        <div class="end-font">March 14th</div>
-                    </div>
-                </div>
-                <div class="right_mid_button_event">
-                    <a class="hidden-xs" href="https://vtkjobfair.be" target="_blank" rel="noopener">
-                        <div class="button_event" style="background: #ffffff4d;">
-                            Register
-                        </div>
-                    </a>
-                </div>
-                <div class="left_under_event">
-                    <div style="border-bottom: 1px solid; border-bottom-color: whitesmoke; width: 80%">Envision more.</div>
-                </div>
-                {# BUTTONS #}
-                <div class="right_under_event">
-                    {#            <a class="button_event hidden-xs"  style="margin-right: 20%"#}
-                    {#               href="https://youtu.be/GTy8z7hUbuo?feature=shared">Promovideo</a>#}
-                    {#            <a class="button_event hidden-sm hidden-xs"#}
-                    {#               href="/page/24-urenloop/">{{ translate('24h Run') }}</a>#}
-                    {#            <a class="button_event"#}
-                    {#               href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Training') }}</a>#}
-                    {#            <a class="button_event"#}
-                    {#               href="{{ url('calendar', {'action': 'view', 'name': event.getName()}) }}">{{ translate('Sport') }}</a>#}
-                    {# COUNTDOWN #}
-                    <div class="countdown_container">
-                        <ul id="countdown">
-                            <li id="days">
-                                <div class="number">00</div>
-                                <div class="label-c">D</div>
-                            </li>
-                            <li id="hours">
-                                <div class="number">00</div>
-                                <div class="label-c">H</div>
-                            </li>
-                            <li id="minutes">
-                                <div class="number">00</div>
-                                <div class="label-c">M</div>
-                            </li>
-                            <li id="seconds">
-                                <div class="number">00</div>
-                                <div class="label-c">S</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -619,22 +559,27 @@
 
         // Function to animate a single dust particle
         function animateParticle(circle, x, y) {
-            var duration = 4; // Random duration for variety
-            var A = 0.6*(10 + 0.5 * Math.sqrt(x**2 + y**2))
-            var B = 0.6*(20 - 0.5 * Math.sqrt(x**2 + y**2))
-            var a = 0
-            var b = y
-            var d = x + 0.0005*y
+            var duration = 5; // Random duration for variety
+            var A = randomInRange(5, 200); // Random amplitude for x-direction
+            var B = randomInRange(5, 200); // Random amplitude for y-direction
+            var a = randomInRange(0, 3600); // Random angle for x-direction
+            var b = randomInRange(0, 3600); // Random angle for y-direction
+            var d = randomInRange(0.5, 15); // Random offset for x-direction
 
             gsap.to(circle, {
                 duration: duration,
-                x: "+=" + A * Math.sin(a + d), // Move the point radially
-                y: "+=" + B * Math.sin(b) + A * Math.cos(d), // Move the point radially
+                x: "+=" + A * Math.sin(a + x * d), // Move the point radially
+                y: "+=" + B * Math.sin(b) + A * Math.cos(x * d), // Move the point radially
                 ease: "sine.inOut",
                 repeat: -1, // Repeat indefinitely
                 yoyo: true, // Reverse the animation
                 // delay: index * 0.05 // Add a slight delay for stagger effect
             });
+        }
+
+        // Function to generate a random number within a range
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
         }
 
         // Get SVG container and dust cloud group
@@ -644,21 +589,29 @@
         var numR = 10;
 
         // Define the spacing between points
-        var spacingR = 10;
+        var spacingR = 15;
 
         // Create and animate dust particles
-        for (var i = 0; i < numR; i++) {
-            var numTh = 2 * 3 * i + 1;
-            var spacingTh = 2 * Math.PI / numTh;
-            for (var j = 0; j < numTh; j++) {
-                var x = i * spacingR * Math.cos(j * spacingTh) + numR/2 * spacingR + 250 + 15*Math.random();
-                var y = i * spacingR * Math.sin(j * spacingTh) + numR/2 * spacingR + 175 + 15*Math.random();
-                // Calculate color based on radial position
-                var color = interpolateColor(i / numR, "#0482ef", "#56d6fe", "#007fec", "#c574e8"); // Interpolate from light blue to lighter lilac
-                var circle = createCircle(x, y, color);
-                dustCloud.appendChild(circle);
-                animateParticle(circle, x, y);
-            }
+        var inputData = {{ cloudDustInputData | json_encode | raw }};
+
+        var scaleFactor = 0.2;
+        for (var i = 0; i < inputData.length; i++) {
+            var point = inputData[i];
+            var x = point.x;
+            var y = point.y;
+
+            var rescaledX = Math.round(x * scaleFactor);
+            var rescaledY = Math.round(y * scaleFactor);
+
+            // console.log("x: " + rescaledX + ", y: " + rescaledY)
+
+            var color = rgbToHex(point.color[0], point.color[1], point.color[2]);
+            console.log(color);
+
+            // Create a circle using the coordinate and color data
+            var circle = createCircle(rescaledX, rescaledY, color);
+            dustCloud.appendChild(circle);
+            animateParticle(circle, rescaledX, rescaledY);
         }
 
         // Function to interpolate color among four colors
