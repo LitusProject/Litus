@@ -193,5 +193,5 @@ return array(
     'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!' => 'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!',
 
     'Pay' => 'Betaal',
-    'You currently have no upcoming events.' => 'Je hebt momenteel geen aankomende evenementen.'
+    'You currently have no upcoming events.' => 'Je hebt momenteel geen aankomende evenementen.',
 );
