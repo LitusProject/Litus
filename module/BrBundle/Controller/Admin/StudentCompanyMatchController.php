@@ -7,6 +7,7 @@ use BrBundle\Entity\StudentCompanyMatch;
 use CommonBundle\Component\Controller\ActionController\AdminController;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Entity\User\Person\Academic;
+use Doctrine\ORM\Query;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -24,16 +25,33 @@ class StudentCompanyMatchController extends AdminController
             ->getRepository('CommonBundle\Entity\General\AcademicYear')
             ->findAll();
 
-        $student_company_matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\StudentCompanyMatch')
-            ->findAllByAcademicYearQuery($academicYear)
-            ->getResult();
+        $paginator = null;
+        if ($this->getParam('field') !== null) {
+            $matches = $this->search();
+            if ($matches === null) {
+                return new ViewModel();
+            }
+
+            $paginator = $this->paginator()->createFromQuery(
+                $matches,
+                $this->getParam('page')
+            );
+        }
+
+        if (is_null($paginator)) {
+            $student_company_matches = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+                ->findAllByAcademicYearQuery($academicYear);
+
+            $paginator = $this->paginator()->createFromQuery($student_company_matches, $this->getParam('page'));
+        }
 
         return new ViewModel(
             array(
                 'activeAcademicYear' => $academicYear,
                 'academicYears' => $academicYears,
-                'matches' => $student_company_matches,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
             )
         );
     }
@@ -256,6 +274,34 @@ class StudentCompanyMatchController extends AdminController
         );
     }
 
+    public function searchAction()
+    {
+        $this->initAjax();
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        $matches = $this->search()
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($matches as $m) {
+            $item = (object) array();
+            $item->id = $m->getId();
+            $item->student = $m->getAcademic()->getFullName();
+            $item->company = $m->getCompany()->getName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return \CommonBundle\Entity\General\AcademicYear|void
      */
@@ -308,5 +354,23 @@ class StudentCompanyMatchController extends AdminController
         }
 
         return $event;
+    }
+
+    /**
+     * @return Query|null
+     */
+    private function search(): ?Query
+    {
+        switch ($this->getParam('field')) {
+            case 'student':
+                return $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+                    ->findAllByStudentNameAndYearQuery($this->getParam('string'), $this->getAcademicYear());
+            case 'company':
+                return $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\StudentCompanyMatch')
+                    ->findAllByCompanyNameAndYearQuery($this->getParam('string'), $this->getAcademicYear());
+        }
+        return null;
     }
 }

@@ -6,8 +6,6 @@ grumphp:
                 - "var_dump"
                 - "exit;"
                 - "console.log"
-                - " dd(" # add space to avoid false positives on "add"
-                - "dump("
         phpstan:
             autoload_file: ~
             configuration: ~

@@ -16,7 +16,7 @@ use Doctrine\ORM\Query;
 class StudentCompanyMatch extends EntityRepository
 {
     /**
-     * @param  AcademicYear $academicYear
+     * @param AcademicYear $academicYear
      * @return Query
      */
     public function findAllByAcademicYearQuery(AcademicYear $academicYear)
@@ -32,8 +32,8 @@ class StudentCompanyMatch extends EntityRepository
     }
 
     /**
-     * @param  \BrBundle\Entity\Company $company
-     * @param  AcademicYear $academicYear
+     * @param \BrBundle\Entity\Company $company
+     * @param AcademicYear $academicYear
      * @return Query
      */
     public function findAllByCompanyAndYear(\BrBundle\Entity\Company $company, AcademicYear $academicYear)
@@ -52,9 +52,9 @@ class StudentCompanyMatch extends EntityRepository
     }
 
     /**
-     * @param  Academic $student
-     * @param  AcademicYear $academicYear
-     * @return Query
+     * @param Academic $student
+     * @param AcademicYear $academicYear
+     * @return float|int|mixed|string
      */
     public function findAllByStudentAndYear(Academic $student, AcademicYear $academicYear)
     {
@@ -69,5 +69,65 @@ class StudentCompanyMatch extends EntityRepository
             ->setParameter('year', $academicYear)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param string $name
+     * @param AcademicYear $academicYear
+     * @return Query
+     */
+    public function findAllByStudentNameAndYearQuery(string $name, AcademicYear $academicYear): Query
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\StudentCompanyMatch', 'm')
+            ->innerJoin('m.academic', 'a')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.firstName', "' '")),
+                                $query->expr()->lower('a.lastName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like(
+                            $query->expr()->concat(
+                                $query->expr()->lower($query->expr()->concat('a.lastName', "' '")),
+                                $query->expr()->lower('a.firstName')
+                            ),
+                            ':name'
+                        ),
+                        $query->expr()->like('a.universityIdentification', ':name')
+                    ),
+                    $query->expr()->eq('m.year', ':year')
+                )
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('year', $academicYear)
+            ->getQuery();
+    }
+
+    /**
+     * @param string $name
+     * @param AcademicYear $academicYear
+     * @return Query
+     */
+    public function findAllByCompanyNameAndYearQuery(string $name, AcademicYear $academicYear): Query
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('BrBundle\Entity\StudentCompanyMatch', 'm')
+            ->innerJoin('m.company', 'c')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('c.name'), ':name'),
+                    $query->expr()->eq('m.year', ':year')
+                ),
+            )
+            ->setParameter('name', '%' . strtolower($name) . '%')
+            ->setParameter('year', $academicYear)
+            ->getQuery();
     }
 }
