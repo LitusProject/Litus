@@ -50,6 +50,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'multiple' => true,
                         'options'  => $this->createUnitsArray(),
                         'value'    => $this->academic->getUnit($this->academicYear),
+                        'style'    => 'height: 150px',
                     ),
                 )
             );
@@ -216,9 +217,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
             ->findAllActiveAndDisplayedQuery()->getResult();
 
-        $unitsArray = array(
-            '' => '',
-        );
+        $unitsArray = array();
         foreach ($units as $unit) {
             $unitsArray[$unit->getId()] = $unit->getName();
         }
