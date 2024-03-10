@@ -50,15 +50,22 @@ class StudentCompanyMatch
     private $year;
 
     /**
+     * @var array The list of categories of the match
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $categories;
+
+    /**
      * @param Company      $company  The company
      * @param Academic     $academic The academic
      * @param AcademicYear $year     The current academic year.
      */
-    public function __construct(Company $company, Academic $academic, AcademicYear $year)
+    public function __construct(Company $company, Academic $academic, AcademicYear $year, array $categories)
     {
         $this->company = $company;
         $this->academic = $academic;
         $this->year = $year;
+        $this->categories = $categories;
     }
 
     public function getId(): int
@@ -81,7 +88,7 @@ class StudentCompanyMatch
      *
      * @return Academic
      */
-    public function getAcademic()
+    public function getAcademic(): Academic
     {
         return $this->academic;
     }
@@ -89,10 +96,10 @@ class StudentCompanyMatch
     /**
      * Changes the academic
      *
-     * @param  Academic $academic The new value
+     * @param Academic $academic The new value
      * @return StudentCompanyMatch
      */
-    public function setAcademic($academic)
+    public function setAcademic(Academic $academic): StudentCompanyMatch
     {
         $this->academic = $academic;
 
@@ -104,7 +111,7 @@ class StudentCompanyMatch
      *
      * @return AcademicYear
      */
-    public function getYear()
+    public function getYear(): AcademicYear
     {
         return $this->year;
     }
@@ -112,12 +119,35 @@ class StudentCompanyMatch
     /**
      * Changes the year of this match to the given value.
      *
-     * @param  AcademicYear $year The new value
+     * @param AcademicYear $year The new value
      * @return StudentCompanyMatch
      */
-    public function setYear($year)
+    public function setYear(AcademicYear $year): StudentCompanyMatch
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * Retrieves the categories
+     *
+     * @return array
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Changes the categories
+     *
+     * @param  array $categories The new value
+     * @return StudentCompanyMatch
+     */
+    public function setCategories(array $categories): StudentCompanyMatch
+    {
+        $this->categories = $categories;
 
         return $this;
     }
