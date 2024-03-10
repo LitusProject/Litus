@@ -189,4 +189,5 @@ return array(
 
     'Pay' => 'Pay',
     'You currently have no upcoming events.' => 'You currently have no upcoming events.',
+    'My Tickets' => 'My Tickets',
 );

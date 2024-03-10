@@ -194,4 +194,5 @@ return array(
 
     'Pay' => 'Betaal',
     'You currently have no upcoming events.' => 'Je hebt momenteel geen aankomende evenementen.',
+    'My Tickets' => 'Mijn Tickets',
 );
