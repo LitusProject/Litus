@@ -664,4 +664,32 @@ class Ticket
             $controller->getMailTransport()->send($mail);
         }
     }
+
+    public function getQrSourceUrl($controller)
+    {
+        if (!($this->getEvent()->getQrEnabled())) {
+            return '';
+        }
+
+        $url = $controller->url()
+            ->fromRoute(
+                'ticket',
+                array('action' => 'qr',
+                    'id'       => $this->getEvent()->getRandId(),
+                    'qr'       => $this->getQrCode(),
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+        $url = str_replace('liv.', '', $url);
+
+        return str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $controller->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+    }
 }

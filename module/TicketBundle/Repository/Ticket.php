@@ -4,6 +4,7 @@ namespace TicketBundle\Repository;
 
 use CommonBundle\Entity\General\AcademicYear;
 use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use TicketBundle\Entity\Event as EventEntity;
 
 /**
@@ -213,6 +214,41 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         }
 
         ksort($tickets);
+
+        return $tickets;
+    }
+
+    public function findAllByAcademic(Academic $academic) {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $resultSet = $query->select('t')
+            ->from('TicketBundle\Entity\Ticket', 't')
+            ->join('t.person', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->eq('t.status', ':booked'),
+                        $query->expr()->eq('t.status', ':sold')
+                    ),
+                    $query->expr()->eq('p.username', ':username')
+                )
+            )
+            ->setParameter('booked', 'booked')
+            ->setParameter('sold', 'sold')
+            ->setParameter('username', $academic->getUsername())
+            ->getQuery()
+            ->getResult();
+
+        $startDates = [];
+        $tickets = [];
+
+        // Populate start dates and tickets arrays
+        foreach ($resultSet as $ticket) {
+            $startDates[] = $ticket->getEvent()->getActivity()->getStartDate();
+            $tickets[] = $ticket;
+        }
+
+        // Sort tickets based on start dates
+        array_multisort($startDates, SORT_ASC, $tickets);
 
         return $tickets;
     }
