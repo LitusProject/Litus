@@ -57,7 +57,7 @@ class Request
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="contact", referencedColumnName="id")
      */
-    private $contact;
+    private Academic $contact;
 
     /**
      * //     * @param Academic $contact
@@ -170,7 +170,7 @@ class Request
      * @param Academic $contact
      * @return Request
      */
-    public function setContact($contact)
+    public function setContact(Academic $contact): self
     {
         $this->contact = $contact;
 
@@ -180,7 +180,7 @@ class Request
     /**
      * @return Academic
      */
-    public function getContact()
+    public function getContact(): Academic
     {
         return $this->contact;
     }

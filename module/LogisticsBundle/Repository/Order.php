@@ -111,9 +111,10 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
             ->from('LogisticsBundle\Entity\Order', 'o')
+            ->join('o.units', 'u')
             ->where(
                 $query->expr()->andx(
-                    $query->expr()->eq('o.unit', ':unit'),
+                    $query->expr()->eq('u', ':unit'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.removed', 'FALSE')
                 )

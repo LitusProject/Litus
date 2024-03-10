@@ -452,7 +452,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
                     return new ViewModel();
                 }
                 $order = $form->hydrateObject(
-                    new Order($academic, new Request($academic), $academic->getFullName())
+                    new Order('', new Request($academic), $academic->getFullName())
                 );
                 $order->approve();
                 $this->getEntityManager()->persist($order);
@@ -950,7 +950,7 @@ class CatalogController extends \LogisticsBundle\Component\Controller\LogisticsC
         $new->setStartDate($order->getStartDate());
         $new->setEndDate($order->getEndDate());
         $new->setName($order->getName());
-        $new->setUnit($order->getUnit());
+        $new->setUnits($order->getUnits());
         $new->pending();
         # In comment: should be fixed later on when adding van system
         # $new->setNeedsRide($order->needsRide());

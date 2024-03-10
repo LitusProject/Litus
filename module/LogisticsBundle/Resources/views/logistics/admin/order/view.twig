@@ -48,11 +48,17 @@
                         {% if oldOrder %}<td>{{ oldOrder.getContact() }}</td>{% endif %}
                         <td>{{ order.getContact() }}</td>
                     </tr>
-                    {% if order.getUnit() %}
+                    {% if order.getUnits() %}
                         <tr>
                             <td>Unit</td>
-                            {% if oldOrder %}<td>{{ oldOrder.getUnit().getName() }}</td>{% endif %}
-                            <td>{{ order.getUnit().getName() }}</td>
+                            {% if oldOrder %}
+                                <td>{% for unit in oldOrder.getUnits() %}
+                                        {{ unit.getName() }}{% if oldOrder.getUnits()|length > 1 %}, {% endif %}
+                                    {% endfor %}</td>
+                            {% endif %}
+                            <td>{% for unit in order.getUnits() %}
+                                    {{ unit.getName() }}{% if order.getUnits()|length > 1 %}, {% endif %}
+                                {% endfor %}</td>
                         </tr>
                     {% endif %}
                     <tr>

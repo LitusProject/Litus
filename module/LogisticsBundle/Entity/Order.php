@@ -6,6 +6,8 @@ use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use LogisticsBundle\Entity\Request;
@@ -32,35 +34,35 @@ class Order
      *
      * @ORM\Column(type="string", length=100)
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string The description of the order
      *
      * @ORM\Column(type="text")
      */
-    private $description;
+    private string $description;
 
     /**
-     * @var string Internal Comment
+     * @var string|null Internal Comment
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $internalComment;
+    private ?string $internalComment = '';
 
     /**
-     * @var string External Comment
+     * @var string|null External Comment
      *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $externalComment;
+    private ?string $externalComment = '';
 
     /**
      * @var string The mail-address for the contact for this order
      *
      * @ORM\Column(name="email", type="text", nullable=true)
      */
-    private $email;
+    private string $email;
 
     /**
      * @var Location the location of the order
@@ -68,7 +70,7 @@ class Order
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
      * @ORM\JoinColumn(name="location", referencedColumnName="id")
      */
-    private $location;
+    private Location $location;
 
 //    /**
 //     * @var Academic The contact used in this order
@@ -83,7 +85,7 @@ class Order
      *
      * @ORM\Column(name="contact", type="text", nullable=true)
      */
-    private $contact;
+    private string $contact;
 
     /**
      * @var Person The creator used in this order
@@ -91,85 +93,89 @@ class Order
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id", nullable =true)
      */
-    private $creator;
+    private Person $creator;
 
     /**
-     * @var Unit The unit of the order: gives access to the whole unit to view the order
+     * @var ArrayCollection The units associated with the order: gives access to the whole unit to view the order
      *
-     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
-     * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToMany(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
+     * @ORM\JoinTable(
+     *       name="order_unit",
+     *       joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id")},
+     *       inverseJoinColumns={@ORM\JoinColumn(name="unit_id", referencedColumnName="id")}
+     *  )
      */
-    private $unit;
+    private Collection $units;
 
     /**
      * @var DateTime The last time this order was updated.
      *
      * @ORM\Column(type="datetime")
      */
-    private $dateUpdated;
+    private DateTime $dateUpdated;
 
     /**
      * @var string The person who updated this particular order
      *
      * @ORM\Column(name="updator", type="text", nullable=true)
      */
-    private $updator;
+    private string $updator;
 
     /**
      * @var DateTime The start date and time of this order.
      *
      * @ORM\Column(name="start_date", type="datetime")
      */
-    private $startDate;
+    private DateTime $startDate;
 
     /**
      * @var DateTime The end date and time of this order.
      *
      * @ORM\Column(name="end_date", type="datetime")
      */
-    private $endDate;
+    private DateTime $endDate;
 
     /**
      * @var boolean If this order has been approved by our Logistics team
      *
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $approved;
+    private bool $approved;
 
     /**
      * @var boolean If this order has been removed.
      *
      * @ORM\Column(type="boolean", options={"default" = false})
      */
-    private $removed;
+    private bool $removed;
 
     /**
      * @var boolean If this order has been rejected.
      *
      * @ORM\Column(type="boolean", options={"default" = false})
      */
-    private $rejected;
+    private bool $rejected;
 
     /**
      * @var boolean If this order has been reviewed.
      *
      * @ORM\Column(type="boolean", options={"default" = false})
      */
-    private $reviewed;
+    private bool $reviewed;
 
     /**
      * @var boolean If this order has been canceled.
      *
      * @ORM\Column(type="boolean", options={"default" = false})
      */
-    private $canceled;
+    private bool $canceled;
 
     /**
      * @var boolean If this order needs a ride (een kar-rit, auto-rit of dergelijke).
      *
      * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
      */
-    private $needsRide;
+    private bool $needsRide;
 
     /**
      * @var Request The Request of the mapping
@@ -177,16 +183,19 @@ class Order
      * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Request", cascade={"persist"})
      * @ORM\JoinColumn(name="referenced_Request", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $referencedRequest;
+    private Request $referencedRequest;
 
     /**
+     * @param string $contact
      * @param Request|null $request
-     * @param string       $updator
+     * @param string $updator
+     * @param string $status
      */
-    public function __construct($contact, $request, string $updator, string $status = '')
+    public function __construct(string $contact, ?Request $request, string $updator, string $status = '')
     {
         $this->contact = $contact;
         $this->dateUpdated = new DateTime();
+        $this->units = new ArrayCollection();
         $this->updator = $updator;
         $this->removed = false;
         $this->rejected = false;
@@ -231,16 +240,16 @@ class Order
      */
     public function setStatus(string $status)
     {
-        if ($status == 'removed') {
+        if ($status === 'removed') {
             $this->remove();
         }
-        if ($status == 'rejected') {
+        if ($status === 'rejected') {
             $this->reject();
-        } elseif ($status == 'approved') {
+        } elseif ($status === 'approved') {
             $this->approve();
-        } elseif ($status == 'reviewed') {
+        } elseif ($status === 'reviewed') {
             $this->review();
-        } elseif ($status == 'canceled') {
+        } elseif ($status === 'canceled') {
             $this->cancel();
         }
         return $this->pending();        // Default is pending
@@ -438,7 +447,7 @@ class Order
      * @param  string $internalComment
      * @return Order
      */
-    public function setInternalComment($internalComment)
+    public function setInternalComment($internalComment): self
     {
         $this->internalComment = $internalComment;
 
@@ -446,9 +455,9 @@ class Order
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getInternalComment()
+    public function getInternalComment(): ?string
     {
         return $this->internalComment;
     }
@@ -457,7 +466,7 @@ class Order
      * @param  string $externalComment
      * @return Order
      */
-    public function setExternalComment($externalComment)
+    public function setExternalComment($externalComment): self
     {
         $this->externalComment = $externalComment;
 
@@ -465,9 +474,9 @@ class Order
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getExternalComment()
+    public function getExternalComment(): ?string
     {
         return $this->externalComment;
     }
@@ -509,20 +518,46 @@ class Order
     }
 
     /**
-     * @return Unit
+     * @return Collection
      */
-    public function getUnit()
+    public function getUnits(): Collection
     {
-        return $this->unit;
+        return $this->units;
+    }
+
+    /**
+     * @param  Collection $units
+     * @return Order
+     */
+    public function setUnits(Collection $units): self
+    {
+        $this->units = $units;
+
+        return $this;
     }
 
     /**
      * @param  Unit $unit
      * @return Order
      */
-    public function setUnit($unit)
+    public function addUnit(Unit $unit): self
     {
-        $this->unit = $unit;
+        if (!$this->units->contains($unit)) {
+            $this->units->add($unit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Unit $unit
+     * @return Order
+     */
+    public function removeUnit(Unit $unit): self
+    {
+        if ($this->units->contains($unit)) {
+            $this->units->removeElement($unit);
+        }
 
         return $this;
     }
@@ -617,10 +652,13 @@ class Order
 
     /**
      * @param string $contact
+     * @return Order
      */
-    public function setContact($contact)
+    public function setContact(string $contact): self
     {
         $this->contact = $contact;
+
+        return $this;
     }
 
     /**

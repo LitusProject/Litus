@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Hydrator;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use LogisticsBundle\Entity\Order as OrderEntity;
 
 /**
@@ -24,6 +25,7 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
             $object = new OrderEntity($data['contact'], null, null);
         }
 
+        $object->setContact($data['contact']);
         $creator = $this->getPersonEntity();
         $object->setCreator($creator);
         $object->setLocation(
@@ -31,11 +33,17 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
                 ->getRepository('CommonBundle\Entity\General\Location')
                 ->findOneById($data['location'])
         );
-        $object->setUnit(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-                ->findOneById($data['unit'])
-        );
+
+        $units = new ArrayCollection();
+        foreach ($data['unit'] as $unitId) {
+            $units->add(
+                $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                    ->findOneById($unitId)
+            );
+        }
+        $object->setUnits($units);
+
         if (isset($data['name']) && $data['name'] !== null) {
             $object->setName($data['name']);
         }
@@ -63,8 +71,9 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         $data = $this->stdExtract($object, self::$stdKeys);
 
         $data['location'] = $object->getLocation()->getId();
-        if ($object->getUnit()) {
-            $data['unit'] = $object->getUnit()->getId();
+        $data['unit'] = array();
+        foreach ($object->getUnits() as $unit) {
+            $data['unit'][] = $unit->getId();
         }
         $data['name'] = $object->getName();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');

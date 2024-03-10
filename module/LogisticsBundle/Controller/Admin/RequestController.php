@@ -204,13 +204,13 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
 
         $mappings = array();
         foreach ($lastOrders as $order) {
-            $mappings = array_merge(
-                $mappings,
-                $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
-                    ->findAllByOrderQuery($order)->getResult()
-            );
+            $mappings[] = $this->getEntityManager()
+                ->getRepository('LogisticsBundle\Entity\Order\OrderArticleMap')
+                ->findAllByOrderQuery($order)
+                ->getResult();
         }
+        // Merge the arrays outside the loop
+        $mappings = array_merge(...$mappings);
 
         $conflicts = array();
         // Loop over all made mappings
@@ -378,8 +378,8 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $overlapping = array();
         foreach ($array as $map) {
             if ($map->getArticle() === $mapping->getArticle()
-                && ($start <= $map->getOrder()->getStartDate() && $map->getOrder()->getStartDate() <= $end
-                || $start <= $map->getOrder()->getEndDate() && $map->getOrder()->getEndDate() <= $end)
+                && (($start <= $map->getOrder()->getStartDate() && $map->getOrder()->getStartDate() <= $end)
+                || ($start <= $map->getOrder()->getEndDate() && $map->getOrder()->getEndDate() <= $end))
             ) {
                 $overlapping[] = $map;
             }
@@ -408,21 +408,23 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $file = new CsvFile();
         $heading = array('ORDER');
 
-        $unitNameOrder = '';
-        if ($order->getUnit()) {
-            $unitNameOrder = $order->getUnit()->getName();
+        $unitNames = '';
+        if ($order->getUnits()) {
+            foreach ($order->getUnits() as $unit) {
+                $unitNames .= $unit()->getName() . ', ';
+            }
         }
 
         $results = array(
             array(
                 'Naam',
                 'Verantwoordelijke',
-                'Post',
+                'Post(en)',
             ),
             array(
                 $order->getName(),
-                $order->getContact(),
-                $unitNameOrder,
+                $order->getContact()->getFullName(),
+                $unitNames,
             ),
             array(
                 'Van',
@@ -472,14 +474,14 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
         $document = new CsvGenerator($heading, $results);
         $document->generateDocument($file);
 
-        if ($unitNameOrder) {
-            $unitNameOrder = '_' . $unitNameOrder;
+        if ($unitNames) {
+            $unitNames = '_' . $unitNames;
         }
 
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Disposition' => 'attachment; filename="Materiaal_' . $order->getStartDate()->format('Y-m-d') . $unitNameOrder . '_' . $order->getName() . '.csv"',
+                'Content-Disposition' => 'attachment; filename="Materiaal_' . $order->getStartDate()->format('Y-m-d') . $unitNames . '_' . $order->getName() . '.csv"',
                 'Content-Type'        => 'text/csv',
             )
         );

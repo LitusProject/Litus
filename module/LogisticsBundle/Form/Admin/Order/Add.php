@@ -71,6 +71,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Unit',
                 'required'   => true,
                 'attributes' => array(
+                    'multiple' => true,
                     'options' => $this->createUnitsArray(),
                     'id'      => 'order_review_unit',
                 ),

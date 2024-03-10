@@ -745,7 +745,7 @@ class OrderController extends \CommonBundle\Component\Controller\ActionControlle
         $new->setStartDate($order->getStartDate());
         $new->setEndDate($order->getEndDate());
         $new->setName($order->getName());
-        $new->setUnit($order->getUnit());
+        $new->setUnits($order->getUnits());
         $new->pending();
         # In comment: should be fixed later on when adding van system
         # $new->setNeedsRide($order->needsRide());

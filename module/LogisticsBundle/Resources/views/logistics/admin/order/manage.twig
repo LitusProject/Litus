@@ -66,7 +66,7 @@
 
                     <tr class="item item-{{ order.getId() }}">
                         <td>{{ order.getName() }}</td>
-                        <td>{{ order.getUnit().getName() }}</td>
+                        <td>{% for unit in order.getUnits() %}{{ unit.getName() }}{% if order.getUnits()|length > 1 %}, {% endif %} {% endfor %}</td>
                         <td>{{ order.getLocation().getName() }}</td>
                         <td>{{ order.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ order.getEndDate().format('d/m/Y H:i') }}</td>

@@ -54,8 +54,10 @@
                     {#     Personal info  #}
                     <div class="info-content">
                         <p>Contact: &emsp;&emsp;<b>{{ order.getContact() }}</b></p>
-                        {% if order.getUnit() %}
-                            <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{{ order.getUnit().getName() }}</b></p>
+                        {% if order.getUnits() %}
+                            <p>Unit: &emsp;&emsp;&emsp;&ensp;&nbsp;<b>{% for unit in order.getUnits() %}
+                                        {{ unit.getName() }}{% if order.getUnits()|length > 1 %}, {% endif %}
+                                    {% endfor %}</b></p>
                         {% endif %}
                         <p>Email: &emsp;&emsp;&emsp;<b>{{ order.getEmail() }}</b></p>
                     </div>
