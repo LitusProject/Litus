@@ -186,4 +186,6 @@ return array(
     'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken' => 'Receive our weekly magazine. Attention! Our magazine is written in Dutch. From now on it is integrated in the News letter so if you want to receive it via mail you also need to select the preference "New letter".',
     'Gepersonaliseerde Nieuwsbrief' => 'Personalized Newsletter',
     'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!' => 'Receive our weekly news letter. Its content is entirely based on your mailing preferences!',
+
+    'Pay' => 'Pay',
 );

@@ -191,4 +191,6 @@ return array(
     'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken' => 'Ontvang ons wekelijks kringblaadje via mail. Opgelet! Je ontvangt vanaf nu het Bakske via de Nieuwsbrief dus je moet ook de preference "Nieuwsbrief" aanvinken',
     'Gepersonaliseerde Nieuwsbrief' => 'Gepersonaliseerde Nieuwsbrief',
     'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!' => 'Ontvang onze wekelijkse nieuwsbrief. De inhoud hiervan is volledig gebaseerd op jouw mailing preferences!',
+
+    'Pay' => 'Betaal',
 );

@@ -256,12 +256,9 @@
                             </div>
                             <div class="flexStretch">
                                 <div class="buttons" style="text-align: right;padding-top: 5px">
-{#                                    {% if hasAccess('ticket', 'delete') and canRemoveReservations and ticket.getStatus() != 'Sold' %}#}
-                                        <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Remove') }}</a>
-{#                                    {% endif %}#}
-{#                                    {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' and isOnlinePayment %}#}
-                                        <a href="{{ url("ticket", {"action": "pay", "id": ticket.getId(), "code": ticket.getNumber()}) }}" class="btn btn-success btn-sm payTicket">{{ translate('Pay') }}</a>
-{#                                    {% endif %}#}
+                                    {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' and isOnlinePayment %}
+                                        <a href="{{ url("ticket", {"action": "pay", "id": ticket.getId(), "code": ticket.getNumber()}) }}" class="btn myVtkSuccessButton btn-sm payTicket" onclick="event.stopPropagation()" data-id="{{ ticket.getId() }}">{{ translate('Pay') }}</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
