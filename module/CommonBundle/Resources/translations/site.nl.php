@@ -195,4 +195,6 @@ return array(
     'Pay' => 'Betaal',
     'You currently have no upcoming events.' => 'Je hebt momenteel geen aankomende evenementen.',
     'My Tickets' => 'Mijn Tickets',
+    'There is no QR code for this event.' => 'Er is geen QR code voor dit evenement.',
+    'Your ticket is only reserved. You will receive the QR code after you pay the ticket.' => 'Je ticket is enkel gereserveerd. Je zal de QR code ontvangen als je het ticket betaald hebt.'
 );
