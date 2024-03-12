@@ -2,27 +2,22 @@
 
 namespace BrBundle\Hydrator;
 
+use CommonBundle\Component\Hydrator\Hydrator;
+
 /**
  * This hydrator hydrates/extracts StudentCompanyMatch data.
  *
  * @author Robbe Serry <robbe.Serry@vtk.be>
  */
-class StudentCompanyMatch extends \CommonBundle\Component\Hydrator\Hydrator
+class StudentCompanyMatch extends Hydrator
 {
-    /**
-     * @static @var string[] Key attributes to hydrate using the standard method.
-     */
-    private static $stdKeys = array();
-
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
             $object = new StudentCompanyMatch();
         }
 
-        // TODO fix hydrate
-
-        return $this->stdHydrate($data, $object, self::$stdKeys);
+        return $object;
     }
 
     protected function doExtract($object = null)
@@ -31,6 +26,9 @@ class StudentCompanyMatch extends \CommonBundle\Component\Hydrator\Hydrator
             return array();
         }
 
-        return $this->stdExtract($object, self::$stdKeys);
+        $data = array();
+        $data['categories'] = $object->getCategoriesAsString();
+
+        return $data;
     }
 }

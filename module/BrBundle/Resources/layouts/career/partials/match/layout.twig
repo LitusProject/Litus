@@ -20,19 +20,42 @@
     <div style="height: 20px"></div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 contentBlock">
             <table class="table table-hover full-width">
                 {% for match in matches %}
-                    <tr>
-                        <td style="vertical-align: middle">
-                            <strong style="font-size: 16px">{{ match.getCompany().getName() }}</strong>
-                        </td>
-                        <td style="vertical-align: middle;">
-                            <a class="button blue pull-right"
-                               href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>
-                        </td>
+                    <div class="groupHolder">
+                        <div class="groupHeader study-toggle" data-target="body-study-{{ match.getId() }}">
+                            <div style="display: flex; width: 100%; align-items: center;">
+                                <h4 style="margin: 0">{{ match.getCompany().getName() }}</h4>
+                                <a class="button blue" style="margin-left: auto; order: 2;" href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>
+                            </div>
+                        </div>
+                        <div id="body-study-{{ match.getId() }}" style="display: none;">
+                            {% if match.getCategories()|length > 0 %}
+                                {% for category in match.getCategories() %}
+                                    <div class="cvHolder">
+                                        <div class="groupFlexCenter entry-toggle">
+                                            <h4 style="margin-bottom: 0">{{ category }}</h4>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
 
-                    </tr>
+
+
+
+{#                    <tr>#}
+{#                        <td style="vertical-align: middle">#}
+{#                            <strong style="font-size: 16px">{{ match.getCompany().getName() }}</strong>#}
+{#                        </td>#}
+{#                        <td style="vertical-align: middle;">#}
+{#                            <a class="button blue pull-right"#}
+{#                               href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>#}
+{#                        </td>#}
+
+{#                    </tr>#}
                 {% else %}
                     {% block matches_error_message %}
                     {% endblock %}
@@ -42,4 +65,16 @@
             {% include 'site/partials/paginationControl.twig' %}
         </div>
     </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.study-toggle').click(function() {
+                var target = $(this).data('target');
+                var display = document.getElementById(target).style.display;
+                document.getElementById(target).style.display = display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
 {% endblock %}

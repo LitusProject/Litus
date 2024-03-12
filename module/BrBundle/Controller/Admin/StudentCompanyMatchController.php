@@ -78,7 +78,15 @@ class StudentCompanyMatchController extends AdminController
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']['id']);
 
-                $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear());
+                $categories = $formData['categories'];
+
+                if ($categories != '') {
+                    $categories = explode(';', $categories);
+                } else {
+                    $categories = array();
+                }
+
+                $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear(), $categories);
 
                 $this->getEntityManager()->persist($student_company_match);
                 $this->getEntityManager()->flush();
@@ -128,9 +136,13 @@ class StudentCompanyMatchController extends AdminController
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']['id']);
 
+                $categories = explode(';', $formData['categories']);
+
                 $student_company_match
                     ->setAcademic($academic)
-                    ->setCompany($company);
+                    ->setCompany($company)
+                    ->setCategories($categories);
+
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->success(
@@ -189,7 +201,7 @@ class StudentCompanyMatchController extends AdminController
             $matchData = array();
 
             $open = fopen($fileName, 'r');
-            if ($open != false) {
+            if ($open) {
                 $data = fgetcsv($open, 10000, ',');
 
                 while ($data !== false) {
@@ -205,12 +217,13 @@ class StudentCompanyMatchController extends AdminController
                 $count = 0;
 
                 foreach ($matchData as $data) {
-                    if (in_array(null, array_slice($data, 0, 9))) {
-                        continue;
-                    }
-
                     $rnumber = $data[0];
                     $company_name = $data[1];
+                    $categories = $data[2] ?? array();
+
+                    if ($categories != '') {
+                        $categories = explode(';', $categories);
+                    }
 
                     $academic = $this->getEntityManager()
                         ->getRepository('CommonBundle\Entity\User\Person\Academic')
@@ -244,7 +257,7 @@ class StudentCompanyMatchController extends AdminController
 
                     assert($academic instanceof Academic);
                     assert($company instanceof Company);
-                    $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear());
+                    $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear(), $categories);
                     $this->getEntityManager()->persist($student_company_match);
                     $this->getEntityManager()->flush();
 
@@ -288,10 +301,12 @@ class StudentCompanyMatchController extends AdminController
 
         $result = array();
         foreach ($matches as $m) {
+            assert($m instanceof StudentCompanyMatch);
             $item = (object) array();
             $item->id = $m->getId();
             $item->student = $m->getAcademic()->getFullName();
             $item->company = $m->getCompany()->getName();
+            $item->categories = $m->getCategoriesAsString();
             $result[] = $item;
         }
 
