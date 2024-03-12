@@ -3,7 +3,6 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Component\Controller\CareerController;
-use CommonBundle\Form\Admin\Unit\Academic;
 use Laminas\View\Model\ViewModel;
 
 /**
