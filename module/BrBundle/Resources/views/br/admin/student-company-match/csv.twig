@@ -6,7 +6,7 @@
     {% include 'admin/partials/flashMessenger.twig' %}
 
     <div id="controller_action">
-        The csv file should contain 2 columns, the first one with student r-numbers and the second one with the exact names of the companies.
+        The csv file should contain 2 or 3 columns, the first one with student r-numbers and the second one with the exact names of the companies. The third column is optional and contains the categories seperated by a ';'.
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
     </div>

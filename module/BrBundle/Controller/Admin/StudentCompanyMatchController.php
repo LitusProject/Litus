@@ -78,7 +78,13 @@ class StudentCompanyMatchController extends AdminController
                     ->getRepository('BrBundle\Entity\Company')
                     ->findOneById($formData['company']['id']);
 
-                $categories = explode(';', $formData['categories']);
+                $categories = $formData['categories'];
+
+                if ($categories != '') {
+                    $categories = explode(';', $categories);
+                } else {
+                    $categories = array();
+                }
 
                 $student_company_match = new StudentCompanyMatch($company, $academic, $this->getCurrentAcademicYear(), $categories);
 
@@ -213,9 +219,9 @@ class StudentCompanyMatchController extends AdminController
                 foreach ($matchData as $data) {
                     $rnumber = $data[0];
                     $company_name = $data[1];
-                    $categories = $data[2];
+                    $categories = $data[2] ?? array();
 
-                    if (!is_null($categories)) {
+                    if ($categories != '') {
                         $categories = explode(';', $categories);
                     }
 

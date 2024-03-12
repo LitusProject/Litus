@@ -65,7 +65,7 @@ class StudentCompanyMatch
         $this->company = $company;
         $this->academic = $academic;
         $this->year = $year;
-        $this->categories = $categories;
+        $this->categories = array_filter($categories);
     }
 
     public function getId(): int
@@ -159,7 +159,7 @@ class StudentCompanyMatch
      */
     public function setCategories(array $categories): StudentCompanyMatch
     {
-        $this->categories = $categories;
+        $this->categories = array_filter($categories);
 
         return $this;
     }
