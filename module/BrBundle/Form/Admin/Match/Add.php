@@ -55,6 +55,15 @@ class Add extends Form
             )
         );
 
+        $this->add(
+            array(
+                'type'     => 'text',
+                'name'     => 'categories',
+                'label'    => 'Categories',
+                'required' => false,
+            )
+        );
+
         $this->addSubmit('Add', 'company_add');
 
         if ($this->studentCompanyMatch !== null) {

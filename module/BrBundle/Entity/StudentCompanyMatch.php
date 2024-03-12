@@ -60,7 +60,7 @@ class StudentCompanyMatch
      * @param Academic     $academic The academic
      * @param AcademicYear $year     The current academic year.
      */
-    public function __construct(Company $company, Academic $academic, AcademicYear $year, array $categories)
+    public function __construct(Company $company, Academic $academic, AcademicYear $year, ?array $categories)
     {
         $this->company = $company;
         $this->academic = $academic;
@@ -78,9 +78,11 @@ class StudentCompanyMatch
         return $this->company;
     }
 
-    public function setCompany(Company $company): void
+    public function setCompany(Company $company): StudentCompanyMatch
     {
         $this->company = $company;
+
+        return $this;
     }
 
     /**
@@ -134,9 +136,19 @@ class StudentCompanyMatch
      *
      * @return array
      */
-    public function getCategories(): array
+    public function getCategories(): ?array
     {
         return $this->categories;
+    }
+
+    /**
+     * Retrieves the categories as a string
+     *
+     * @return array
+     */
+    public function getCategoriesAsString(): string
+    {
+        return $this->categories ? implode(';', $this->categories) : '';
     }
 
     /**
