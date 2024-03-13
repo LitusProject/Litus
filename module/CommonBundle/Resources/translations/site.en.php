@@ -192,4 +192,5 @@ return array(
     'My Tickets' => 'My Tickets',
     'There is no QR code for this event.' => 'There is no QR code for this event.',
     'Your ticket is only reserved. You will receive the QR code after you pay the ticket.' => 'Your ticket is only reserved. You will receive the QR code after you pay the ticket.',
+    'More events' => 'More events',
 );
