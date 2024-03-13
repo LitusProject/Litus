@@ -270,7 +270,7 @@
                             <div class="shiftDetails">
                                 <div style="height: 20px;"></div>
                                 {% if ticket.getEvent().getQrEnabled() %}
-                                    {% if ticket.getStatus() != 'Sold' and ticket.getQrCode() != null %}
+                                    {% if ticket.getStatus() == 'Sold' and ticket.getQrCode() != null %}
                                         <img style="max-width: 100%; max-height: 100%; display: block; margin: auto; float: left; padding: 10px 10px 10px 10px;" src="{{ticketUrls[index]}}">
                                     {% else %}
                                         <p>{{ translate('Your ticket is only reserved. You will receive the QR code after you pay the ticket.') }}</p>
