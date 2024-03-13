@@ -34,6 +34,7 @@
                 <tr>
                     <th>Student</th>
                     <th>Company</th>
+                    <th>Categories</th>
                     <th style="width: 120px">Action</th>
                 </tr>
             </table>
@@ -45,6 +46,7 @@
                     <tr>
                         <th>Student</th>
                         <th>Company</th>
+                        <th>Categories</th>
                         <th style="width: 120px">Action</th>
                     </tr>
                 </thead>
@@ -54,6 +56,7 @@
                     <tr class="item item-{{ match.getId() }}">
                         <td>{{ match.getAcademic().getFullName() }}</td>
                         <td>{{ match.getCompany().getName() }}</td>
+                        <td>{{ match.getCategoriesAsString() }}</td>
                         <td class="actions">
                             {% if hasAccess('br_admin_studentcompanymatch', 'edit') %}
                                 <a href="{{ url('br_admin_studentcompanymatch', {"action": "edit", "id": match.getId()}) }}"
@@ -114,6 +117,7 @@
                         $('#match_search table').append(row = $('<tr>', {class: 'item'}));
                         row.append('<td>' + this.student + '</td>')
                             .append('<td>' + this.company + '</td>')
+                            .append('<td>' + this.categories + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );

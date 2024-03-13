@@ -362,6 +362,7 @@ return array(
             '@bootstrap_js_popover',
             '@bootstrap_js_collapse',
             '@bootstrap_js_alert',
+            '@corporate_css',
         ),
         'br_cv_index' => array(
             '@bootstrap_css',
