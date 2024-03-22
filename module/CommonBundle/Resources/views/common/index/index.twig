@@ -65,12 +65,10 @@
     {% endfor %}
 
     <div class="banner_event" style="font-family: 'Lulo Clean One Bold';" width="100vw" height="100vh">
-        <div class="container container_event">
-            <div class="grid-container">
-                    <svg id="svg-container" width="100vw" height="100vh" style="margin-left: 30vw; margin-top: 10vh;">
-                        <g id="dust-cloud"></g>
-                    </svg>
-            </div>
+        <div id="banner" class="container container_event">
+            <svg id="svg-container" width="100%" height="100%" >
+                <g id="dust-cloud"></g>
+            </svg>
         </div>
     </div>
 
@@ -547,6 +545,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MotionPathPlugin.min.js"></script>
     <script>
+        const container = document.getElementById("banner");
+        const screenWidth = container.getBoundingClientRect().width;
+        const screenHeight = container.getBoundingClientRect().height;
+
         // Function to create a circle element
         function createCircle(x, y, color) {
             var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -585,70 +587,27 @@
         // Get SVG container and dust cloud group
         var dustCloud = document.getElementById("dust-cloud");
 
-        // Define the number of rings and angular divisions
-        var numR = 10;
-
-        // Define the spacing between points
-        var spacingR = 15;
-
         // Create and animate dust particles
         var inputData = {{ cloudDustInputData | json_encode | raw }};
+        console.log(inputData);
+        var scaleFactor = 0.15;
+        const logoWidth = scaleFactor * (1521 - 39);
+        const logoHeight = scaleFactor * (1260 - 45);
 
-        var scaleFactor = 0.2;
         for (var i = 0; i < inputData.length; i++) {
             var point = inputData[i];
             var x = point.x;
             var y = point.y;
 
-            var rescaledX = Math.round(x * scaleFactor);
-            var rescaledY = Math.round(y * scaleFactor);
-
-            // console.log("x: " + rescaledX + ", y: " + rescaledY)
+            var rescaledX = Math.round(x * scaleFactor) + (screenWidth - logoWidth)/2;
+            var rescaledY = Math.round(y * scaleFactor) + (screenHeight - logoHeight)/2;
 
             var color = rgbToHex(point.color[0], point.color[1], point.color[2]);
-            console.log(color);
 
             // Create a circle using the coordinate and color data
             var circle = createCircle(rescaledX, rescaledY, color);
             dustCloud.appendChild(circle);
             animateParticle(circle, rescaledX, rescaledY);
-        }
-
-        // Function to interpolate color among four colors
-        function interpolateColor(fraction, color1, color2, color3, color4) {
-            if (fraction <= 0.25) {
-                return interpolateTwoColors((fraction * 4), color1, color2);
-            } else if (fraction <= 0.5) {
-                return interpolateTwoColors(((fraction - 0.25) * 4), color2, color3);
-            } else if (fraction <= 0.75) {
-                return interpolateTwoColors(((fraction - 0.5) * 4), color3, color4);
-            } else {
-                return interpolateTwoColors(((fraction - 0.75) * 4), color4, color1);
-            }
-        }
-
-        // Function to interpolate color between two colors
-        function interpolateTwoColors(fraction, color1, color2) {
-            color1 = hexToRgb(color1);
-            color2 = hexToRgb(color2);
-            var r = Math.round(color1.r + fraction * (color2.r - color1.r));
-            var g = Math.round(color1.g + fraction * (color2.g - color1.g));
-            var b = Math.round(color1.b + fraction * (color2.b - color1.b));
-            return rgbToHex(r, g, b);
-        }
-
-        // Function to convert hex color to RGB
-        function hexToRgb(hex) {
-            var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-            hex = hex.replace(shorthandRegex, function (m, r, g, b) {
-                return r + r + g + g + b + b;
-            });
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? {
-                r: parseInt(result[1], 16),
-                g: parseInt(result[2], 16),
-                b: parseInt(result[3], 16)
-            } : null;
         }
 
         // Function to convert RGB color to hex
