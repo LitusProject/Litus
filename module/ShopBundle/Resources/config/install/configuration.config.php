@@ -77,6 +77,16 @@ return array(
         'description' => 'Enable the winner column when exporting a sales session to csv',
     ),
     array(
+        'key'         => 'shop.no-reply_mail',
+        'value'       => 'no-reply-theokot@vtk.be',
+        'description' => 'The shop no-reply email address',
+    ),
+    array(
+        'key'         => 'shop.no-reply_mail_name',
+        'value'       => 'VTK Theokot',
+        'description' => 'The signature name for shop no-reply mails',
+    ),
+    array(
         'key'         => 'shop.no_show_config',
         'value'       => serialize(
             array(
@@ -92,8 +102,7 @@ Bij deze ontvang je een mail als waarschuwing: als dit nog een keer gebeurt, ver
 
 Noot: we snappen volledig dat het kan gebeuren dat je onverwachts je bestelling niet kan afhalen. We stellen één van volgende oplossingen voor:
 - Geef je r-nummer door aan je vrienden, die dan zelf het broodje en/of slaatje komen afhalen.
-- Stuur een mail naar theokot@vtk.be, dan kunnen wij dit broodje/slaatje nog aan iemand anders verkopen.
-- Stuur een bericht naar Theokot_ (Instagram), Theokot (Facebook) of een privébericht naar één van de verantwoordelijken (te vinden op https://vtk.be/praesidium).
+- Verwijder je reservatie voor 11u.
 
 Het team hoopt op je begrip.
 Groentjes, het Theokotteam
@@ -108,8 +117,7 @@ We are sending this email as a warning: if this happens again, you will lose the
 
 Please note that we fully understand that unexpected circumstances may prevent you from collecting your order. We offer one of the following solutions:
 - Share your R-number with friends so that they can collect the sandwich and/or salad on your behalf.
-- Send an email to theokot@vtk.be so that we can sell the sandwich/salad to someone else.
-- Send a message to Theokot_ (Instagram), Theokot (Facebook), or a private message to one of the responsible individuals (found at https://vtk.be/praesidium).
+- Delete your reservation before 11am.
 
 The team hopes for your understanding.
 Best regards,
@@ -124,8 +132,12 @@ Dag {{ name }}
 
 Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Hierdoor moeten we op het einde van de dag jouw broodje gratis weggeven, of nog erger, weggooien. Bovendien werd dit item speciaal voor jou gereserveerd, waardoor andere studenten de kans op een lekker broodje mislopen.
 
-Het is helaas de tweede keer dat dit gebeurt. Hierdoor verlies je het privilege om een broodje/slaatje te bestellen voor 1 week. 
+Omdat dit al vaker is gebeurd, verlies je het privilege om een broodje/slaatje te bestellen voor 1 week. 
 Je bent uiteraard altijd nog welkom om croques, worstenbroodjes, drankjes... te kopen. 
+
+Noot: we snappen volledig dat het kan gebeuren dat je onverwachts je bestelling niet kan afhalen. We stellen één van volgende oplossingen voor:
+- Geef je r-nummer door aan je vrienden, die dan zelf het broodje en/of slaatje komen afhalen.
+- Verwijder je reservatie voor 11u.
 
 Het team hoopt op je begrip.
 Groentjes, het Theokotteam
@@ -136,26 +148,89 @@ Dear {{ name }}
 
 You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
 
-Unfortunately, this is the second time this has happened. As a consequence, you will lose the privilege of ordering a sandwich/salad for 1 week. However, you are still welcome to purchase croques, sausage rolls, beverages, and more.
+Because this has happened before, you will lose the privilege of ordering a sandwich/salad for 1 week. However, you are still welcome to purchase croques, sausage rolls, beverages, and more.
+
+Please note that we fully understand that unexpected circumstances may prevent you from collecting your order. We offer one of the following solutions:
+- Share your R-number with friends so that they can collect the sandwich and/or salad on your behalf.
+- Delete your reservation before 11am.
 
 The team hopes for your understanding.
 Best regards,
-The Theokot Team
-',
+The Theokot Team',
                     'ban_days'     => '7 days',
+                ),
+                '2' => array(
+                    'mail_subject' => 'VTK Theokot Warning',
+                    'mail_content' => '(English version below)
+
+Dag {{ name }}
+
+Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Hierdoor moeten we op het einde van de dag jouw broodje gratis weggeven, of nog erger, weggooien. Bovendien werd dit item speciaal voor jou gereserveerd, waardoor andere studenten de kans op een lekker broodje mislopen.
+
+Omdat dit al vaker is gebeurd, verlies je het privilege om een broodje/slaatje te bestellen voor 1 week. 
+Je bent uiteraard altijd nog welkom om croques, worstenbroodjes, drankjes... te kopen. 
+
+Noot: we snappen volledig dat het kan gebeuren dat je onverwachts je bestelling niet kan afhalen. We stellen één van volgende oplossingen voor:
+- Geef je r-nummer door aan je vrienden, die dan zelf het broodje en/of slaatje komen afhalen.
+- Verwijder je reservatie voor 11u.
+
+Het team hoopt op je begrip.
+Groentjes, het Theokotteam
+
+ENGLISH VERSION
+
+Dear {{ name }}
+
+You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
+
+Because this has happened before, you will lose the privilege of ordering a sandwich/salad for 1 week. However, you are still welcome to purchase croques, sausage rolls, beverages, and more.
+
+Please note that we fully understand that unexpected circumstances may prevent you from collecting your order. We offer one of the following solutions:
+- Share your R-number with friends so that they can collect the sandwich and/or salad on your behalf.
+- Delete your reservation before 11am.
+
+The team hopes for your understanding.
+Best regards,
+The Theokot Team',
+                    'ban_days'     => '7 days',
+                ),
+                'default' => array(
+                    'mail_subject' => 'VTK Theokot Warning',
+                    'mail_content' => '(English version below)
+
+Dag {{ name }}
+
+Je hebt onlangs een broodje en/of slaatje besteld in het Theokot en kwam dit niet ophalen binnen de aangeduide uren. Hierdoor moeten we op het einde van de dag jouw broodje gratis weggeven, of nog erger, weggooien. Bovendien werd dit item speciaal voor jou gereserveerd, waardoor andere studenten de kans op een lekker broodje mislopen.
+
+Omdat dit al vaker is gebeurd, verlies je het privilege om een broodje/slaatje te bestellen voor {{ ban_weeks }} weken. 
+Je bent uiteraard altijd nog welkom om croques, worstenbroodjes, drankjes... te kopen. 
+
+Noot: we snappen volledig dat het kan gebeuren dat je onverwachts je bestelling niet kan afhalen. We stellen één van volgende oplossingen voor:
+- Geef je r-nummer door aan je vrienden, die dan zelf het broodje en/of slaatje komen afhalen.
+- Verwijder je reservatie voor 11u.
+
+Het team hoopt op je begrip.
+Groentjes, het Theokotteam
+
+ENGLISH VERSION
+
+Dear {{ name }}
+
+You recently placed an order for a sandwich and/or salad at Theokot and did not pick it up within the specified hours. As a result, we are forced to either give away your sandwich for free at the end of the day or, even worse, discard it. Furthermore, this item was specifically reserved for you, potentially depriving other students of the opportunity to enjoy a delicious sandwich.
+
+Because this has happened before, you will lose the privilege of ordering a sandwich/salad for {{ ban_weeks }} weeks. However, you are still welcome to purchase croques, sausage rolls, beverages, and more.
+
+Please note that we fully understand that unexpected circumstances may prevent you from collecting your order. We offer one of the following solutions:
+- Share your R-number with friends so that they can collect the sandwich and/or salad on your behalf.
+- Delete your reservation before 11am.
+
+The team hopes for your understanding.
+Best regards,
+The Theokot Team',
+                    'ban_days'     => '{{ ban_weeks }}',
                 ),
             ),
         ),
         'description' => 'Holds a no-show warning email and a amount of ban days for each amount of warnings the user has',
-    ),
-    array(
-        'key'         => 'shop.no-reply_mail',
-        'value'       => 'no-reply-theokot@vtk.be',
-        'description' => 'The shop no-reply email address',
-    ),
-    array(
-        'key'         => 'shop.no-reply_mail_name',
-        'value'       => 'VTK Theokot',
-        'description' => 'The signature name for shop no-reply mails',
     ),
 );

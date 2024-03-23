@@ -18,6 +18,9 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
 
     /**
      * @var array Stores the amount of ban days related to each warning
+     *
+     * Current set-up of ban intervals: 0 days, 1 week, 1 week, 2 weeks, 3 weeks, 4 weeks, ...
+     * In the config, 'default_element' is the last element and is at index 3
      */
     private array $banDaysDictionary;
 
@@ -27,24 +30,30 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
         $this->banDaysDictionary = array();
 
         foreach ($configData as $index => $data) {
-            $index = (int)$index; // This conversion may not be necessary
-
-            $this->emailDictionary[$index]['subject'] = $data['mail_subject'];
-            $this->emailDictionary[$index]['content'] = $data['mail_content'];
-            $this->banDaysDictionary[$index] = $data['ban_days'];
+            if ($index === 'default_case') {
+                $this->emailDictionary['default_case']['subject'] = $data['mail_subject'];
+                $this->emailDictionary['default_case']['content'] = $data['mail_content'];
+                $this->banDaysDictionary['default_case'] = $data['ban_days'];
+            } else {
+                $index = (int)$index;
+                $this->emailDictionary[$index]['subject'] = $data['mail_subject'];
+                $this->emailDictionary[$index]['content'] = $data['mail_content'];
+                $this->banDaysDictionary[$index] = $data['ban_days'];
+            }
         }
     }
 
     /**
-     * Returns the amount of days of ban for the warningCount.
+     * Returns the ban interval for a certain warning count.
      *
      * @param integer $warningCount
      * @return mixed
      */
     public function getBanInterval(int $warningCount)
     {
-        if ($warningCount >= count($this->banDaysDictionary)) {
-            $warningCount = count($this->banDaysDictionary) - 1;
+        $default_index = array_search('default_case', array_keys($this->banDaysDictionary), true);
+        if ($warningCount >= $default_index) {
+            return 2 + $warningCount - $default_index . ' weeks';
         }
         return $this->banDaysDictionary[$warningCount];
     }
@@ -53,19 +62,23 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
      * Returns the warning email content for the warningCount.
      *
      * @param Person  $person
-     * @param integer $warningCount
+     * @param integer $warningCount The amount of warnings the person already has.
      * @return array|string|string[]
      */
-    public function getEmailContent(Person $person, int $warningCount)
+    public function getEmailContent(Person $person, int $warningCount, string $banInterval)
     {
-        if ($warningCount >= count($this->banDaysDictionary)) {
-            $warningCount = count($this->banDaysDictionary) - 1;
+        if ($warningCount >= count($this->banDaysDictionary) - 1) {
+            $warningCount = 'default_case';
         }
 
         $mailContent = $this->emailDictionary[$warningCount]['content'];
 
         $name = $person->getFirstName();
         $mailContent = str_replace('{{ name }}', $name, $mailContent);
+
+        $ban_interval_nl = $this->translateInterval($banInterval);
+        $mailContent = str_replace('{{ ban_interval_nl }}', $ban_interval_nl, $mailContent);
+        $mailContent = str_replace('{{ ban_interval_en }}', $banInterval, $mailContent);
 
         return $mailContent;
     }
@@ -78,10 +91,20 @@ class NoShowConfig extends \CommonBundle\Component\Controller\ActionController\A
      */
     public function getEmailSubject(int $warningCount)
     {
-        if ($warningCount >= count($this->banDaysDictionary)) {
-            $warningCount = count($this->banDaysDictionary) - 1;
+        if ($warningCount >= count($this->banDaysDictionary) - 1) {
+            $warningCount = 'default_case';
         }
 
         return $this->emailDictionary[$warningCount]['subject'];
+    }
+
+    private function translateInterval(string $interval)
+    {
+        $interval = str_replace('day', 'dag', $interval);
+        $interval = str_replace('days', 'dagen', $interval);
+        $interval = str_replace('week', 'week', $interval);
+        $interval = str_replace('weeks', 'weken', $interval);
+
+        return $interval;
     }
 }

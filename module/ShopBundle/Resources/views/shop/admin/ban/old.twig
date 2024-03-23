@@ -115,7 +115,7 @@
                                 actions = $('<td>', {'class': 'actions'})
                             );
                         {% if hasAccess('shop_admin_shop_ban', 'delete') %}
-                        actions.append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>'));
+                            actions.append($('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.name + '">Delete</a>'));
                         {% endif %}
                     });
                     $('#ban_search .delete').click(openDeleteModal);

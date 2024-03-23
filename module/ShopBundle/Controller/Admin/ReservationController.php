@@ -103,8 +103,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
 
         // if ban already present in sales session -> revert it
         if ($salesSession->containsBanForPerson($reservation->getPerson())) {
-            $salesSession->removeAllBansFromPerson($reservation->getPerson());
-
+            $salesSession->removeAllBansForPerson($reservation->getPerson());
             $this->getEntityManager()->persist($salesSession);
             $this->getEntityManager()->flush();
         } else { // no ban present yet -> create one
@@ -135,7 +134,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $this->getEntityManager()->flush();
 
             // Send warning email
-            $this->sendNoShowEmail($reservation->getPerson(), $warningCount);
+            $this->sendNoShowEmail($reservation->getPerson(), $warningCount, $banIntervalStr);
         }
 
         // front-end needs to update the no-show checkboxes of all the reservations of the person in real-time
@@ -320,11 +319,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         return new NoShowConfig($noShowConfigData);
     }
 
-    public function sendNoShowEmail(Person $person, int $warningCount)
+    public function sendNoShowEmail(Person $person, int $warningCount, string $banInterval)
     {
         $noShowConfig = $this->getNoShowConfig();
 
-        $mailContent = $noShowConfig->getEmailContent($person, $warningCount);
+        $mailContent = $noShowConfig->getEmailContent($person, $warningCount, $banInterval);
         $mailSubject = $noShowConfig->getEmailSubject($warningCount);
 
         // sender address
@@ -350,6 +349,8 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->addTo($person->getEmail(), $person->getFullName())
             ->setSubject($mailSubject)
             ->addBcc($shopAddress, $mailName);
+
+        error_log(json_encode($mail->getBody()));
 
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);

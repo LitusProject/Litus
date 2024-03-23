@@ -46,8 +46,6 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
         );
     }
 
-//    shop_reservationPermission_add
-
     public function addAction()
     {
         $form = $this->getForm('shop_reservation_ban_add');
@@ -89,6 +87,7 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
         $this->initAjax();
 
         $ban = $this->getBanEntity();
+        error_log($ban->getId());
 
         if ($ban === null) {
             return new ViewModel();
@@ -96,6 +95,8 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
 
         $this->getEntityManager()->remove($ban);
         $this->getEntityManager()->flush();
+
+        error_log('deleted');
 
         return new ViewModel(
             array(
@@ -147,7 +148,7 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
         $result = array();
         foreach ($bans as $ban) {
             $item = (object) array();
-            $item->id = $ban->getPerson()->getId();
+            $item->id = $ban->getId();
             $item->name = $ban->getPerson()->getFullName();
             $item->startTimestamp = $ban->getStartTimestamp()->format('d/m/Y H:i');
             $item->endTimestamp = $ban->getEndTimestamp() ? $ban->getEndTimestamp()->format('d/m/Y H:i') : '';
@@ -166,7 +167,6 @@ class BanController extends \CommonBundle\Component\Controller\ActionController\
      */
     private function search()
     {
-        error_log($this->getParam('string'));
         switch ($this->getParam('field')) {
             case 'name':
                 return $this->getEntityManager()
