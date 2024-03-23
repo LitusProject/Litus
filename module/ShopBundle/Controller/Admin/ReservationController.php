@@ -350,8 +350,6 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->setSubject($mailSubject)
             ->addBcc($shopAddress, $mailName);
 
-        error_log(json_encode($mail->getBody()));
-
         if (getenv('APPLICATION_ENV') != 'development') {
             $this->getMailTransport()->send($mail);
         }

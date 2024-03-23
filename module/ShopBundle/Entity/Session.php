@@ -259,7 +259,7 @@ class Session
      * @param Person $person
      * @return void
      */
-    public function removeAllBansFromPerson(Person $person)
+    public function removeAllBansForPerson(Person $person)
     {
         $elementsToRemove = array();
 
