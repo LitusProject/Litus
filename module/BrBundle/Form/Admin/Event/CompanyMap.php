@@ -79,7 +79,7 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
             $existingCompanyMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Event\CompanyMap')
                 ->findAllByEventAndCompany($this->event, $company);
 
-            if(count($existingCompanyMap) == 0) {
+            if (count($existingCompanyMap) == 0) {
                 $companyArray[$company->getId()] = $company->getName();
             }
         }

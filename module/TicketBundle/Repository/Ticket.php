@@ -218,7 +218,8 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         return $tickets;
     }
 
-    public function findAllByAcademic(Academic $academic) {
+    public function findAllByAcademic(Academic $academic)
+    {
         $query = $this->getEntityManager()->createQueryBuilder();
         $resultSet = $query->select('t')
             ->from('TicketBundle\Entity\Ticket', 't')
@@ -238,8 +239,8 @@ class Ticket extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
 
-        $startDates = [];
-        $tickets = [];
+        $startDates = array();
+        $tickets = array();
 
         // Populate start dates and tickets arrays
         foreach ($resultSet as $ticket) {

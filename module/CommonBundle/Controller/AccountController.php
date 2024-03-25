@@ -14,7 +14,6 @@ use Laminas\View\Model\ViewModel;
 use MailBundle\Component\Api\SibApi\SibApiHelper;
 use MailBundle\Component\Api\SibApi\SibApiHelperResponse;
 use SecretaryBundle\Entity\Registration;
-use TicketBundle\Entity\Ticket;
 
 /**
  * Handles account page.
@@ -51,9 +50,12 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
 
         // Tickets and ticket urls
         $myTickets = $this->findTickets($academic);
-        $myTicketUrls = array_map(function($ticket) {
-            return $ticket->getQrSourceUrl($this);
-        }, $myTickets);
+        $myTicketUrls = array_map(
+            function ($ticket) {
+                return $ticket->getQrSourceUrl($this);
+            },
+            $myTickets
+        );
 
         // Shifts
         $myShifts = $this->getEntityManager()
@@ -971,7 +973,8 @@ class AccountController extends \SecretaryBundle\Component\Controller\Registrati
         return true;
     }
 
-    private function findTickets(Academic $academic) {
+    private function findTickets(Academic $academic)
+    {
         $allTickets = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByAcademic($academic);

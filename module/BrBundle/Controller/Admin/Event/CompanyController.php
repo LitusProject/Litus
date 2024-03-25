@@ -58,7 +58,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                 $existingCompanyMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Event\CompanyMap')
                     ->findByEventAndCompany($eventObject, $company);
 
-                if(is_null($existingCompanyMap)) {
+                if (is_null($existingCompanyMap)) {
                     $objectMap = new CompanyMap($company, $eventObject);
                     $this->getEntityManager()->persist($objectMap);
                     $this->getEntityManager()->flush();
