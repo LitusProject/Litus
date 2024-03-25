@@ -43,7 +43,7 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         if ($eventObject === null) {
             return new ViewModel();
         }
-        $form = $this->getForm('br_admin_event_companyMap');
+        $form = $this->getForm('br_admin_event_companyMap', array('event' => $eventObject));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
@@ -55,21 +55,29 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
                     ->findOneById($formData['company']);
                 //TODO: Check if metadata exists for given company and give it to the companyMap
 
-                $objectMap = new CompanyMap($company, $eventObject);
+                $existingCompanyMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Event\CompanyMap')
+                    ->findByEventAndCompany($eventObject, $company);
 
-                $this->getEntityManager()->persist($objectMap);
-                $this->getEntityManager()->flush();
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The company was successfully added!'
-                );
+                if(is_null($existingCompanyMap)) {
+                    $objectMap = new CompanyMap($company, $eventObject);
+                    $this->getEntityManager()->persist($objectMap);
+                    $this->getEntityManager()->flush();
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The company was successfully added!'
+                    );
+                } else {
+                    $this->flashMessenger()->success(
+                        'Success',
+                        'The company was already added!'
+                    );
+                }
 
                 $this->redirect()->toRoute(
                     'br_admin_event_company',
                     array(
                         'action' => 'manage',
                         'event'  => $eventObject->getId(),
-                        'id'     => $objectMap->getCompany()->getId(),
                     )
                 );
             }
