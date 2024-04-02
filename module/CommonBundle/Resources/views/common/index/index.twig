@@ -389,38 +389,51 @@
         {% if myPocers.enable  %}
             {% if myPocers.pocItem is not null %}
                 {% if not myPocers.pocItem is empty %}
-                    <div class="col-md-12">
-                        <div class="page-header" style="margin-top: 20px;">
-                            <a class="heading" href={{pocUrlOverview}}>
-                                <h3>{{ translate('POC') }}</h3>
-                            </a>
+                    <div class="col-md-12" style="padding: 0">
+                        <div style="margin-bottom: 15px; height: 60px;">
+                            <div style="float: left">
+                                <a class="heading" href={{pocUrlOverview}}>
+                                    <h2>{{ translate('POC') }}</h2>
+                                </a>
+                            </div>
+                            <div style="float: right; padding-top: 15px; max-width: 62vw">{{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}</div>
                         </div>
-
-                        <div class="heading-spacer"></div>
                         <div>
-                            {{translate('The POC\'ers are elected! You can find your POC\'ers here!')}}
-
-                            {#                        {{translate('Visit the POC page for more ')}}#}
-                            {#                        <a href={{pocUrl}}>info</a>#}
-
                             {% for pocStuff in myPocers.pocItem%}
-                                <h3>{{ pocStuff['groupId'].getName() }}<small>&mdash;</small></h3>
-                                <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
-                                <div class="row">
-                                    {% for  poc in pocStuff['pocGroupList'] %}
-                                        <div class="col-xs-3 col-md-3">
-                                            <div class="thumbnail" style="height: 200px; text-align: center; border-style: none">
+                                <div style="background: whitesmoke; padding: 15px 0; border-radius: 10px; margin-bottom: 50px">
+                                    <h3 style="padding-left: 15px">{{ pocStuff['groupId'].getName() }}</h3>
+                                    <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
+                                    <div class="memberHolder" style="margin-bottom: 0">
+                                        {% for poc in pocStuff['pocGroupList'] %}
+                                            {#                   NEW                         #}
+                                            {# CONTAINER FOR PHOTO + PERSON INFO #}
+                                            <div class="member" style="margin: 10px">
                                                 {% if poc.getAcademic().getPhotoPath() %}
-                                                    <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
-                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 120px; height: 120px; object-fit: cover; border-radius: 50%" alt="">
+                                                    <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }})"></div>
                                                 {% else %}
-                                                    <img class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); height: 120px; width: 120px; margin-bottom: 0">
+                                                    <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png)"></div>
                                                 {% endif %}
-                                                <br>
-                                                <h4>{{ poc.getAcademic().getFullName() }}</h4>
+                                                <h4 style="margin-bottom: 15px">{{ poc.getAcademic().getFullName() }} </h4>
                                             </div>
-                                        </div>
-                                    {% endfor %}
+                                            {#                   NEW                         #}
+    {#                                        <div class="col-xs-4 col-md-3">#}
+
+
+                                                {#                   OLD                         #}
+    {#                                            <div class="thumbnail" style="height: 200px; text-align: center; border-style: none">#}
+    {#                                                {% if poc.getAcademic().getPhotoPath() %}#}
+    {#                                                    <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"#}
+    {#                                                         style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 120px; height: 120px; object-fit: cover; border-radius: 50%" alt="">#}
+    {#                                                {% else %}#}
+    {#                                                    <img class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); height: 120px; width: 120px; margin-bottom: 0">#}
+    {#                                                {% endif %}#}
+    {#                                                <br>#}
+    {#                                                <h4>{{ poc.getAcademic().getFullName() }}</h4>#}
+    {#                                            </div>#}
+                                                {#                   OLD                         #}
+    {#                                        </div>#}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
