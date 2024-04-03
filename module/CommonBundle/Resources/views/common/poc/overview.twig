@@ -26,28 +26,31 @@
     </div>
 
     {% for pocStuff in pocItem%}
-
-		<h3 class="container">{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;
-
-
-		 <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>
-
-		</small>{% endif %}</h3>
-		<div class="row container" style="position: relative; left: 19%">
-		 {% for  poc in pocStuff['pocGroupList'] %}
-                <div class="col-xs-4 col-md-2 container">
-                    <div class="thumbnail" style="height: 110px; text-align: center; border-style: none">
-                        {% if poc.getAcademic().getPhotoPath() %}
-                            <img class="profileImagePreloaded holderjs" data-url="{{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}"
-                                 style="background: url(?holder.js/90x67/auto/text:Image) no-repeat; width: 80px; height: 80px; object-fit: cover; border-radius: 50%" alt="">
-                        {% else %}
-                            <img data-src="holder.js/90x67/auto/text:Image"style="background:url(?holder.js/90x67/auto/text:Image) no-repeat; width: 90px; height: 67px;" alt="">
-                        {% endif %}
-                        <h6>{{ poc.getAcademic().getFullName() }}</h6>
-                    </div>
-                </div>
-             {% endfor %}
-          </div>
+        <div class="container" style="background: whitesmoke; padding: 15px 0; border-radius: 10px; margin-bottom: 50px">
+            <h3 style="padding-left: 15px">{{ pocStuff['groupId'].getName() }}
+{#                {% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}#}
+{#                    <small>&mdash;<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a></small>#}
+{#                {% endif %}#}
+            </h3>
+{#            <h3 class="container">{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;#}
+{#    #}
+{#    #}
+{#             <a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>#}
+{#    #}
+{#            </small>{% endif %}</h3>#}
+            <div class="memberHolder" style="margin-bottom: 0">
+             {% for poc in pocStuff['pocGroupList'] %}
+                 <div class="member" style="margin: 10px; min-width: 150px">
+                     {% if poc.getAcademic().getPhotoPath() %}
+                         <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}); width: 80px; height: 80px;"></div>
+                     {% else %}
+                         <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); width: 80px; height: 80px;"></div>
+                     {% endif %}
+                     <h5 style="margin-bottom: 15px">{{ poc.getAcademic().getFullName() }} </h5>
+                 </div>
+                 {% endfor %}
+            </div>
+        </div>
         {% endfor %}
 {% endblock %}
 

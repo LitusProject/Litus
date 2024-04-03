@@ -409,9 +409,9 @@
                                             {# CONTAINER FOR PHOTO + PERSON INFO #}
                                             <div class="member" style="margin: 10px">
                                                 {% if poc.getAcademic().getPhotoPath() %}
-                                                    <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }})"></div>
+                                                    <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ poc.getAcademic().getPhotoPath() }}); width: 120px; height: 120px;"></div>
                                                 {% else %}
-                                                    <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png)"></div>
+                                                    <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png); width: 120px; height: 120px;"></div>
                                                 {% endif %}
                                                 <h4 style="margin-bottom: 15px">{{ poc.getAcademic().getFullName() }} </h4>
                                             </div>
