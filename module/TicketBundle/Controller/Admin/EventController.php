@@ -363,11 +363,13 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $paginator = $this->paginator()
-            ->createFromArray($data,$this->getParam('page'));
+            ->createFromArray($data, $this->getParam('page'));
 
-        $amountSold = count($this->getEntityManager()
-            ->getRepository('TicketBundle\Entity\Ticket')
-            ->findAllByStatusAndEvent('sold',$event));
+        $amountSold = count(
+            $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findAllByStatusAndEvent('sold', $event)
+        );
 
         return new ViewModel(
             array(
@@ -375,7 +377,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
                 'paginationControl' => $this->paginator()->createControl(true),
                 'event' => $event,
                 'amountVisitors' => count($visitors),
-                'amountSold' => $amountSold
+                'amountSold' => $amountSold,
             )
         );
     }
