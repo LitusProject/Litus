@@ -9,6 +9,8 @@
         <h1>Event</h1>
         <p>Activity: <b>{{ event.getActivity().getTitle(language) }}</b></p>
         <p>Date: <b>{{ event.getActivity().getStartDate().format('d/m/Y H:i') }} - {{ event.getActivity().getEndDate().format('d/m/Y H:i') }}</b></p>
+        <p>Visitors: <b>{{ amountVisitors }} / {{ amountSold }}</b></p>
+
         <br />
         <table class="full_width manage">
             <thead>
@@ -20,7 +22,7 @@
             </thead>
 
             <tbody>
-            {% for visitor in data %}
+            {% for visitor in paginator %}
                 <tr class="item">
                     <td>{{ visitor[0] }}</td>
                     <td>{{ visitor[1].format('d/m/Y H:i') }}</td>
@@ -33,63 +35,5 @@
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
-    <div class="modal fade" id="removeEvent" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Litus Admin</span>
-                    /Delete Event
-                </div>
-                <div class="modal-body">
-                    <p>
-                        You are about to delete the following event: <b class="eventName"></b>!
-                        Please note that this operation cannot be undone!
-                    </p>
-                    <p>
-                        Are you sure you want to continue?
-                    </p>
-                    <div class="footer">
-                        <button class="delete">Yes</button>
-                        <button class="cancel" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
-{% block content_script %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('.item .delete').click(openModal);
-        });
-
-        function openModal(e) {
-            var $this = $(this);
-
-            e.preventDefault();
-            var removeEvent = $('#removeEvent');
-            removeEvent.find('.eventName').html($(this).data('name'));
-            var id = $this.data('id');
-            removeEvent.find('.delete').unbind('click').click(function () {
-                $.post('{{ url('ticket_admin_event', {"action": "delete"})}}' + id, function (data) {
-                    if (data && 'success' == data.status) {
-                        $('.flashmessage').addClass('hide');
-                        $('.event_removed_success').removeClass('hide');
-                        $('.item-' + id).remove();
-                        removeEvent.modal('hide');
-                    } else {
-                        errorRemove();
-                    }
-                }, 'json').error(errorRemove);
-            });
-            removeEvent.modal();
-        }
-
-        function errorRemove() {
-            $('.flashmessage').addClass('hide');
-            $('.event_removed_error').removeClass('hide');
-            $('#removeEvent').modal('hide');
-        }
-    </script>
-{% endblock %}

@@ -362,10 +362,20 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             }
         }
 
+        $paginator = $this->paginator()
+            ->createFromArray($data,$this->getParam('page'));
+
+        $amountSold = count($this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('sold',$event));
+
         return new ViewModel(
             array(
-                'data' => $data,
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
                 'event' => $event,
+                'amountVisitors' => count($visitors),
+                'amountSold' => $amountSold
             )
         );
     }
