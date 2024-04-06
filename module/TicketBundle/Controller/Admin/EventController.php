@@ -334,6 +334,42 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel();
     }
 
+    public function showVisitorsAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $visitors = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event\Visitor')
+            ->findAllByEventAndExitNull($event);
+        $data = array();
+        foreach ($visitors as $visitor) {
+            assert($visitor instanceof Event\Visitor);
+            $qrCode = $visitor->getQrCode();
+            $entryTime = $visitor->getEntryTime();
+            $ticketArray = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findOneByQREvent($event, $qrCode);
+            if (!is_null($ticketArray) && count($ticketArray) > 0) {
+                $ticket = $ticketArray[0];
+                if (!is_null($ticket)) {
+                    $namePerson = $ticket->getFullname();
+                    $visitorData = array($namePerson,$entryTime,$qrCode);
+                    $data[] = $visitorData;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+                'event' => $event,
+            )
+        );
+    }
+
     /**
      * @return Event|null
      */
