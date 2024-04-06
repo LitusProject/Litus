@@ -105,6 +105,20 @@
             </div>
         {% endif %}
 
+        {% if hasAccess('ticket_admin_event', 'show-visitors')%}
+            <div class="sidebox">
+                <div class="title">Show Visitors</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to show visitors.</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('ticket_admin_event', {'action': 'show-visitors', 'id': event.getId()}) }}">&rarr; Show Visitors</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="sidebox">
             <div class="title">Get Ticket Link</div>
             <div class="content">
