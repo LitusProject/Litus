@@ -5,7 +5,7 @@ return array(
         'ticket_admin_event' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/ticket/event[/:action[/:id]][/page/:page][/]',
+                'route'       => '/admin/ticket/event[/:action[/:id]][/page/:page][/:field/:string][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
