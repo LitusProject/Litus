@@ -8,6 +8,7 @@ use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Document\Generator\Event\SalesgraphCsv as SalesgraphCsvGenerator;
 use TicketBundle\Entity\Event;
+use TicketBundle\Entity\Ticket;
 
 /**
  * EventController
@@ -344,6 +345,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         $visitors = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Event\Visitor')
             ->findAllByEventAndExitNull($event);
+
+        $visitors = array_reverse($visitors);
         $data = array();
         foreach ($visitors as $visitor) {
             assert($visitor instanceof Event\Visitor);
@@ -382,6 +385,50 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
     }
 
+    public function searchVisitorsAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $tickets = $this->search($event);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($tickets, $numResults);
+
+        $result = array();
+        foreach ($tickets as $ticket) {
+            assert($ticket instanceof Ticket);
+            $qrCode = $ticket->getQrCode();
+            $visitorArray = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Event\Visitor')
+                ->findByEventAndQrAndExitNull($event, $qrCode);
+            if (!is_null($visitorArray) && count($visitorArray) > 0) {
+                $visitor = $visitorArray[0];
+                if (!is_null($visitor)) {
+                    assert($visitor instanceof Event\Visitor);
+                    $item = (object) array();
+                    $item->name = $ticket->getFullName();
+                    $item->entryTime = $visitor->getEntryTime()->format('d/m/Y H:i');
+                    $item->qrCode = $qrCode;
+                    $result[] = $item;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return Event|null
      */
@@ -406,5 +453,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    private function search(Event $event)
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPersonName($event, $this->getParam('string'));
+        }
     }
 }

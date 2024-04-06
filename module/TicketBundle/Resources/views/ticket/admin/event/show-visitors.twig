@@ -8,32 +8,86 @@
     <div id="controller_action">
         <h1>Event</h1>
         <p>Activity: <b>{{ event.getActivity().getTitle(language) }}</b></p>
-        <p>Date: <b>{{ event.getActivity().getStartDate().format('d/m/Y H:i') }} - {{ event.getActivity().getEndDate().format('d/m/Y H:i') }}</b></p>
+        <p>Date: <b>{{ event.getActivity().getStartDate().format('d/m/Y H:i') }}
+                - {{ event.getActivity().getEndDate().format('d/m/Y H:i') }}</b></p>
         <p>Visitors: <b>{{ amountVisitors }} / {{ amountSold }}</b></p>
 
-        <br />
-        <table class="full_width manage">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th style="width: 200px">Entry Time</th>
-                <th style="width: 150px">QR Code</th>
-            </tr>
-            </thead>
+        <br/>
 
-            <tbody>
-            {% for visitor in paginator %}
-                <tr class="item">
-                    <td>{{ visitor[0] }}</td>
-                    <td>{{ visitor[1].format('d/m/Y H:i') }}</td>
-                    <td>{{ visitor[2] }}</td>
+        <div id="visitor_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                Search:
+                <select id="searchField">
+                    <option value="name">Name</option>
+                </select>
+                is
+                <input type="text" id="searchString" size="30"/>
+            </div>
+
+            <table class="full_width manage visitors">
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 200px">Entry Time</th>
+                    <th style="width: 150px">QR Code</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 200px">Entry Time</th>
+                    <th style="width: 150px">QR Code</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for visitor in paginator %}
+                    <tr class="item">
+                        <td>{{ visitor[0] }}</td>
+                        <td>{{ visitor[1].format('d/m/Y H:i') }}</td>
+                        <td>{{ visitor[2] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
         {% include 'admin/partials/paginationControl.twig' %}
     </div>
 
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            {% if hasAccess('ticket_admin_event', 'search-visitors') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#visitor_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('ticket_admin_event', {'action': 'show-visitors', 'id': event.getId()}) }}',
+                url: '{{ url('ticket_admin_event', {'action': 'search-visitors', 'id': event.getId()}) }}',
+                display: function (data) {
+                    $('#visitor_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#visitor_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.entryTime + '</td>')
+                            .append('<td>' + this.qrCode + '</td>');
+                    });
+                    $('#visitor_search table').change();
+                },
+                clear: function () {
+                    $('#visitor_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+    </script>
 {% endblock %}
 
