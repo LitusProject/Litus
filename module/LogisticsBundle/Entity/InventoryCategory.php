@@ -2,6 +2,12 @@
 
 namespace LogisticsBundle\Entity;
 
+/**
+ * The entity for the categories for an inventory article
+ *
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\InventoryCategory")
+ * @ORM\Table(name="logistics_inventory_category")
+ */
 class InventoryCategory
 {
     /**

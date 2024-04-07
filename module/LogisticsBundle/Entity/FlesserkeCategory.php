@@ -2,6 +2,12 @@
 
 namespace LogisticsBundle\Entity;
 
+/**
+ * The entity for the categories for a flesserke article
+ *
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\FlesserkeCategory")
+ * @ORM\Table(name="logistics_flesserke_category")
+ */
 class FlesserkeCategory
 {
     /**
