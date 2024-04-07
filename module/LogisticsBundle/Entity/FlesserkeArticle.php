@@ -4,6 +4,12 @@ namespace LogisticsBundle\Entity;
 
 use DateTime;
 
+/**
+ * The entity for an expandable article
+ *
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\FlesserkeArticle")
+ * @ORM\Table(name="logistics_flesserke_article")
+ */
 class FlesserkeArticle extends AbstractArticle
 {
     /**

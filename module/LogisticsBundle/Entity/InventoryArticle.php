@@ -6,6 +6,12 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * The entity for a permanent article
+ *
+ * @ORM\Entity(repositoryClass="LogisticsBundle\Repository\InventoryArticle")
+ * @ORM\Table(name="logistics_inventory_article")
+ */
 class InventoryArticle extends AbstractArticle
 {
     /**

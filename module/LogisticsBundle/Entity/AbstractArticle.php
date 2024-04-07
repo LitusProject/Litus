@@ -11,7 +11,6 @@ use DateTime;
  *  - FlesserkeArticle
  *
  * @ORM\MappedSuperclass
- *
  */
 abstract class AbstractArticle
 {
