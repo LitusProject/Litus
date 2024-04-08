@@ -48,4 +48,74 @@ abstract class AbstractArticle
      * @ORM\Column(name="internal_comment", type="text", nullable=true)
      */
     private string $internalComment;
+
+    public function __construct()
+    {
+        $this->updateDate = new DateTime;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(string $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getUpdateDate(): DateTime
+    {
+        return $this->updateDate;
+    }
+
+    /**
+     * @return $this
+     *
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDate(): self
+    {
+        $this->updateDate = new DateTime();
+
+        return $this;
+    }
+
+    public function getExternalComment(): string
+    {
+        return $this->externalComment;
+    }
+
+    public function setExternalComment(string $externalComment): self
+    {
+        $this->externalComment = $externalComment;
+
+        return $this;
+    }
+
+    public function getInternalComment(): string
+    {
+        return $this->internalComment;
+    }
+
+    public function setInternalComment(string $internalComment): self
+    {
+        $this->internalComment = $internalComment;
+
+        return $this;
+    }
 }
