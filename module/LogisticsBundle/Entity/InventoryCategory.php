@@ -2,6 +2,8 @@
 
 namespace LogisticsBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * The entity for the categories for an inventory article
  *

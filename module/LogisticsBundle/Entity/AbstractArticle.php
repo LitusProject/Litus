@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Entity;
 
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The abstract class for a general article

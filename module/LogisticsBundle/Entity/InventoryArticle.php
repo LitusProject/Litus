@@ -6,6 +6,7 @@ use CommonBundle\Entity\General\Organization\Unit;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The entity for a permanent article
@@ -106,14 +107,14 @@ class InventoryArticle extends AbstractArticle
     /**
      * @var integer The amount of deposit that has to be paid for this article when rent by an external
      *
-     * @ORM\Column(name="deposit", type="integer", default=0)
+     * @ORM\Column(name="deposit", type="integer", options={"default" = 0})
      */
     private int $deposit;
 
     /**
      * @var integer The amount of rent that has to be paid for this article when rent by an external
      *
-     * @ORM\Column(name="rent", type="integer", default=0)
+     * @ORM\Column(name="rent", type="integer", options={"default" = 0})
      */
     private int $rent;
 
