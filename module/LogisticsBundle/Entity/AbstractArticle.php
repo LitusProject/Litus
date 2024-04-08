@@ -51,7 +51,7 @@ abstract class AbstractArticle
 
     public function __construct()
     {
-        $this->updateDate = new DateTime;
+        $this->updateDate = new DateTime();
     }
 
     public function getName(): string
