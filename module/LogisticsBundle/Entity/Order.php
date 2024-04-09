@@ -2,15 +2,14 @@
 
 namespace LogisticsBundle\Entity;
 
-use CommonBundle\Entity\General\Location;
 use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
-use LogisticsBundle\Entity\Request;
+use LogisticsBundle\Entity\Order\OrderFlesserkeArticleMap;
+use LogisticsBundle\Entity\Order\OrderInventoryArticleMap;
 
 /**
  * This is the entity for an order.
@@ -21,77 +20,57 @@ use LogisticsBundle\Entity\Request;
 class Order
 {
     /**
+     * @static
+     * @var array All the possible states allowed
+     */
+    public static array $STATES = array(
+        'requested' => 'requested',
+        'approved'  => 'approved',
+        'declined'  => 'declined',
+        'reviewed'  => 'reviewed',
+        'canceled'  => 'canceled',
+    );
+
+    /**
+     * @static
+     * @var array All the possible transportation modes
+     */
+    public static array $TRANSPORTS = array(
+        'self'        => 'self',
+        'car'         => 'car',
+        'van'         => 'van',
+        'cargo bike'  => 'cargo bike',
+    );
+
+    /**
      * @var integer The order's ID
      *
      * @ORM\Id
      * @ORM\Column(type="bigint")
      * @ORM\GeneratedValue
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string The order's name
+     * @var OrderHistory The category of this article
      *
-     * @ORM\Column(type="string", length=100)
+     * @ORM\ManyToOne(inversedBy="order", targetEntity="LogisticsBundle\Entity\OrderHistory")
+     * @ORM\JoinColumn(name="history", referencedColumnName="id")
      */
-    private string $name;
+    private OrderHistory $history;
 
     /**
-     * @var string The description of the order
+     * @var bool If this is the active order
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="active", type="boolean")
      */
-    private string $description;
-
-    /**
-     * @var string|null Internal Comment
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $internalComment = '';
-
-    /**
-     * @var string|null External Comment
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private ?string $externalComment = '';
-
-    /**
-     * @var string The mail-address for the contact for this order
-     *
-     * @ORM\Column(name="email", type="text", nullable=true)
-     */
-    private string $email;
-
-    /**
-     * @var Location the location of the order
-     *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Location")
-     * @ORM\JoinColumn(name="location", referencedColumnName="id")
-     */
-    private Location $location;
-
-//    /**
-//     * @var Academic The contact used in this order
-//     *
-//     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
-//     * @ORM\JoinColumn(name="contact", referencedColumnName="id")
-//     */
-//    private $contact;
-
-    /**
-     * @var string The contact name used in this order
-     *
-     * @ORM\Column(name="contact", type="text", nullable=true)
-     */
-    private string $contact;
+    private bool $active;
 
     /**
      * @var Person The creator used in this order
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
-     * @ORM\JoinColumn(name="creator", referencedColumnName="id", nullable =true)
+     * @ORM\JoinColumn(name="creator", referencedColumnName="id")
      */
     private Person $creator;
 
@@ -108,18 +87,32 @@ class Order
     private Collection $units;
 
     /**
-     * @var DateTime The last time this order was updated.
+     * @var DateTime The date this article was last updated
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="update_date", type="datetime")
      */
-    private DateTime $dateUpdated;
+    private DateTime $updateDate;
 
     /**
-     * @var string The person who updated this particular order
+     * @var string The order's name
      *
-     * @ORM\Column(name="updator", type="text", nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
-    private string $updator;
+    private string $name;
+
+    /**
+     * @var string The description of the order
+     *
+     * @ORM\Column(type="text")
+     */
+    private string $description;
+
+    /**
+     * @var string The location of the order
+     *
+     * @ORM\Column(type="string")
+     */
+    private string $location;
 
     /**
      * @var DateTime The start date and time of this order.
@@ -136,410 +129,91 @@ class Order
     private DateTime $endDate;
 
     /**
-     * @var boolean If this order has been approved by our Logistics team
+     * @var ArrayCollection The inventory articles in this order
      *
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderInventoryArticleMap", orphanRemoval=true)
+     * @ORM\JoinColumn(name="inventory_articles", referencedColumnName="id")
      */
-    private bool $approved;
+    private Collection $inventoryArticles;
 
     /**
-     * @var boolean If this order has been removed.
+     * @var ArrayCollection The flesserke articles in this order
      *
-     * @ORM\Column(type="boolean", options={"default" = false})
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderFlesserkeArticleMap", orphanRemoval=true)
+     * @ORM\JoinColumn(name="flesserke_articles", referencedColumnName="id")
      */
-    private bool $removed;
+    private Collection $flesserkeArticles;
 
     /**
-     * @var boolean If this order has been rejected.
+     * @var ArrayCollection The c&g articles in this order
      *
-     * @ORM\Column(type="boolean", options={"default" = false})
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderFlesserkeArticleMap", orphanRemoval=true)
+     * @ORM\JoinColumn(name="cg_articles", referencedColumnName="id")
      */
-    private bool $rejected;
+    private Collection $cgArticles;
 
     /**
-     * @var boolean If this order has been reviewed.
+     * @var string The status of this order.
      *
-     * @ORM\Column(type="boolean", options={"default" = false})
+     * @ORM\Column(name="status", type="string")
      */
-    private bool $reviewed;
+    private string $status;
 
     /**
-     * @var boolean If this order has been canceled.
+     * @var string If this order needs a ride (een kar-rit, auto-rit of dergelijke).
      *
-     * @ORM\Column(type="boolean", options={"default" = false})
+     * @ORM\Column(name="transport", type="string")
      */
-    private bool $canceled;
+    private string $transport;
 
-    /**
-     * @var boolean If this order needs a ride (een kar-rit, auto-rit of dergelijke).
-     *
-     * @ORM\Column(name="needs_ride", type="boolean", options={"default" = false}, nullable=true)
-     */
-    private bool $needsRide;
-
-    /**
-     * @var Request The Request of the mapping
-     *
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\Request", cascade={"persist"})
-     * @ORM\JoinColumn(name="referenced_Request", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private Request $referencedRequest;
-
-    /**
-     * @param string $contact
-     * @param Request|null $request
-     * @param string $updator
-     * @param string $status
-     */
-    public function __construct(string $contact, ?Request $request, string $updator, string $status = '')
+    public function getHistory(): OrderHistory
     {
-        $this->contact = $contact;
-        $this->dateUpdated = new DateTime();
-        $this->units = new ArrayCollection();
-        $this->updator = $updator;
-        $this->removed = false;
-        $this->rejected = false;
-        $this->referencedRequest = $request;
-        $this->setStatus($status);
+        return $this->history;
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function setHistory(OrderHistory $history): self
     {
-        return $this->referencedRequest;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatus()
-    {
-        if ($this->isRemoved()) {
-            return 'Removed';
-        }
-        if ($this->isRejected()) {
-            return 'Rejected';
-        }
-        if ($this->isApproved()) {
-            return 'Approved';
-        }
-        if ($this->isReviewed()) {
-            return 'Reviewed';
-        }
-        if ($this->isCanceled()) {
-            return 'Canceled';
-        }
-        return 'Pending';               // Default is pending
-    }
-
-    /**
-     * @param string $status
-     * @return self
-     */
-    public function setStatus(string $status)
-    {
-        if ($status === 'removed') {
-            $this->remove();
-        }
-        if ($status === 'rejected') {
-            $this->reject();
-        } elseif ($status === 'approved') {
-            $this->approve();
-        } elseif ($status === 'reviewed') {
-            $this->review();
-        } elseif ($status === 'canceled') {
-            $this->cancel();
-        }
-        return $this->pending();        // Default is pending
-    }
-
-    /**
-     * @return self
-     */
-    public function approve()
-    {
-        $this->approved = true;
-        $this->rejected = false;
-        $this->reviewed = false;
+        $this->history = $history;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function pending()
+    public function isActive(): bool
     {
-        $this->approved = false;
-        $this->rejected = false;
-        $this->removed = false;
-        $this->reviewed = false;
-        $this->canceled = false;
+        return $this->active;
+    }
+
+    public function activate(): self
+    {
+        $this->active = true;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function review()
+    public function deactivate(): self
     {
-        $this->approved = false;
-        $this->rejected = false;
-        $this->reviewed = true;
+        $this->active = false;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function reject()
+    public function getCreator(): Person
     {
-        $this->rejected = true;
-        $this->approved = false;
-        $this->reviewed = false;
+        return $this->creator;
+    }
+
+    public function setCreator(Person $creator): self
+    {
+        $this->creator = $creator;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function cancel()
-    {
-        $this->rejected = false;
-        $this->approved = false;
-        $this->reviewed = false;
-        $this->canceled = true;
-
-        return $this;
-    }
-
-    /**
-     * @return self
-     */
-    public function remove()
-    {
-        $this->canceled = false;
-        $this->removed = true;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRejected(): bool
-    {
-        return $this->rejected;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRemoved()
-    {
-        return $this->removed;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isApproved()
-    {
-        if ($this->approved === null) {
-            return false;
-        }
-
-        return $this->approved;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isPending()
-    {
-        if ($this->approved === null) {
-            return true;
-        }
-
-        return !$this->approved && !$this->rejected && !$this->removed;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isReviewed()
-    {
-        if ($this->reviewed === null) {
-            return false;
-        }
-
-        return $this->reviewed;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isCanceled()
-    {
-        if ($this->canceled === null) {
-            return false;
-        }
-
-        return $this->canceled;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param  string $name
-     * @return Order
-     */
-    public function setName($name)
-    {
-        if ($name === null || !is_string($name)) {
-            throw new InvalidArgumentException('Invalid name');
-        }
-
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param  string $description
-     * @return Order
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param  string $internalComment
-     * @return Order
-     */
-    public function setInternalComment($internalComment): self
-    {
-        $this->internalComment = $internalComment;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getInternalComment(): ?string
-    {
-        return $this->internalComment;
-    }
-
-    /**
-     * @param  string $externalComment
-     * @return Order
-     */
-    public function setExternalComment($externalComment): self
-    {
-        $this->externalComment = $externalComment;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getExternalComment(): ?string
-    {
-        return $this->externalComment;
-    }
-
-    /**
-     * @param  string $email
-     * @return Order
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function needsRide()
-    {
-        return $this->needsRide;
-    }
-
-    /**
-     * @param boolean $b
-     * @return boolean
-     */
-    public function setNeedsRide(bool $b)
-    {
-        return $this->needsRide = $b;
-    }
-
-    /**
-     * @return Collection
-     */
     public function getUnits(): Collection
     {
         return $this->units;
     }
 
-    /**
-     * @param  Collection $units
-     * @return Order
-     */
-    public function setUnits(Collection $units): self
-    {
-        $this->units = $units;
-
-        return $this;
-    }
-
-    /**
-     * @param  Unit $unit
-     * @return Order
-     */
     public function addUnit(Unit $unit): self
     {
         if (!$this->units->contains($unit)) {
@@ -549,147 +223,188 @@ class Order
         return $this;
     }
 
-    /**
-     * @param Unit $unit
-     * @return Order
-     */
     public function removeUnit(Unit $unit): self
     {
-        if ($this->units->contains($unit)) {
+        if ($this->units->removeElement($unit)) {
             $this->units->removeElement($unit);
         }
 
         return $this;
     }
 
-    /**
-     * @return Order
-     */
-    public function updateDate()
+    public function getUpdateDate(): DateTime
     {
-        $this->dateUpdated = new DateTime();
+        return $this->updateDate;
+    }
+
+    public function setUpdateDate(DateTime $updateDate): self
+    {
+        $this->updateDate = $updateDate;
 
         return $this;
     }
 
-    /**
-     * @return DateTime The last time this order was updated.
-     */
-    public function getUpdateDate()
+    public function getName(): string
     {
-        return $this->dateUpdated;
+        return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getUpdator()
+    public function setName(string $name): self
     {
-        return $this->updator;
+        $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @param  DateTime $startDate
-     * @return Order
-     */
-    public function setStartDate($startDate)
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function setLocation(string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function getStartDate(): DateTime
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(DateTime $startDate): self
     {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getStartDate()
+    public function getEndDate(): DateTime
     {
-        return $this->startDate;
+        return $this->endDate;
     }
 
-    /**
-     * @param  DateTime $endDate
-     * @return Order
-     */
-    public function setEndDate($endDate)
+    public function setEndDate(DateTime $endDate): self
     {
         $this->endDate = $endDate;
 
         return $this;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getEndDate()
+    public function getInventoryArticles(): Collection
     {
-        return $this->endDate;
+        return $this->inventoryArticles;
     }
 
-    /**
-     * @return Location
-     */
-    public function getLocation()
+    public function addInventoryArticle(OrderInventoryArticleMap $article): self
     {
-        return $this->location;
-    }
-
-    /**
-     * @param Location $location
-     */
-    public function setLocation($location)
-    {
-        $this->location = $location;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
-     * @param string $contact
-     * @return Order
-     */
-    public function setContact(string $contact): self
-    {
-        $this->contact = $contact;
+        if (!$this->inventoryArticles->contains($article)) {
+            $this->inventoryArticles->add($article);
+        }
 
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isCancellable()
+    public function removeInventoryArticle(OrderInventoryArticleMap $article): self
     {
-        return(!$this->isRemoved() && !$this->isPending());
+        if ($this->inventoryArticles->removeElement($article)) {
+            $this->inventoryArticles->removeElement($article);
+        }
+
+        return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isEditable()
+    public function getFlesserkeArticles(): Collection
     {
-        return !$this->isRemoved() && !$this->isRejected();
+        return $this->flesserkeArticles;
     }
 
-    /**
-     * @return Person
-     */
-    public function getCreator()
+    public function addFlesserkeArticle(OrderInventoryArticleMap $article): self
     {
-        return $this->creator;
+        if (!$this->inventoryArticles->contains($article)) {
+            $this->inventoryArticles->add($article);
+        }
+
+        return $this;
     }
 
-    /**
-     * @param Person $creator
-     */
-    public function setCreator(Person $creator)
+    public function removeFlesserkeArticle(OrderFlesserkeArticleMap $article): self
     {
-        $this->creator = $creator;
+        if ($this->flesserkeArticles->removeElement($article)) {
+            $this->flesserkeArticles->removeElement($article);
+        }
+
+        return $this;
+    }
+
+    public function getCgArticles(): Collection
+    {
+        return $this->cgArticles;
+    }
+
+    public function addCGArticle(CGArticle $article): self
+    {
+        if (!$this->cgArticles->contains($article)) {
+            $this->cgArticles->add($article);
+        }
+
+        return $this;
+    }
+
+    public function removeCGArticle(CGArticle $article): self
+    {
+        if ($this->cgArticles->removeElement($article)) {
+            $this->cgArticles->removeElement($article);
+        }
+
+        return $this;
+    }
+
+    public function getAllArticles(): Collection
+    {
+        return new ArrayCollection(
+            array_merge(
+                $this->getInventoryArticles()->toArray(),
+                $this->getFlesserkeArticles()->toArray(),
+                $this->getCgArticles()->toArray(),
+            )
+        );
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTransport(): string
+    {
+        return $this->transport;
+    }
+
+    public function setTransport(string $transport): self
+    {
+        $this->transport = $transport;
+
+        return $this;
     }
 }

@@ -56,6 +56,14 @@ class CGArticle extends AbstractArticle
      */
     private string $brand;
 
+    /**
+     * @var Order The order of this article
+     *
+     * @ORM\ManyToOne(inversedBy="cg_articles", targetEntity="LogisticsBundle\Entity\Order")
+     * @ORM\JoinColumn(name="order", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private Order $order;
+
     public function getUnit(): string
     {
         return $this->unit;
@@ -88,6 +96,18 @@ class CGArticle extends AbstractArticle
     public function setBrand(string $brand): self
     {
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getOrder(): Order
+    {
+        return $this->order;
+    }
+
+    public function setOrder(Order $order): self
+    {
+        $this->order = $order;
 
         return $this;
     }
