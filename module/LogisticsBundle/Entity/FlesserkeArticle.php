@@ -67,7 +67,7 @@ class FlesserkeArticle extends AbstractArticle
     /**
      * @var FlesserkeCategory The category of this article
      *
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\FlesserkeCategory")
+     * @ORM\ManyToOne(inversedBy="articles", targetEntity="LogisticsBundle\Entity\FlesserkeCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id")
      */
     private FlesserkeCategory $category;

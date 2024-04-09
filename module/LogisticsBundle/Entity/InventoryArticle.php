@@ -66,7 +66,7 @@ class InventoryArticle extends AbstractArticle
     /**
      * @var InventoryCategory The category of this article
      *
-     * @ORM\ManyToOne(targetEntity="LogisticsBundle\Entity\InventoryCategory")
+     * @ORM\ManyToOne(inversedBy="articles", targetEntity="LogisticsBundle\Entity\InventoryCategory")
      * @ORM\JoinColumn(name="category", referencedColumnName="id", nullable=true)
      */
     private InventoryCategory $category;

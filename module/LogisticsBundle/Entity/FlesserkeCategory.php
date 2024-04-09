@@ -2,6 +2,8 @@
 
 namespace LogisticsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,14 @@ class FlesserkeCategory
      */
     private string $description;
 
+    /**
+     * @var ArrayCollection The articles in this category
+     *
+     * @ORM\OneToMany(mappedBy="category", targetEntity="LogisticsBundle\Entity\FlesserkeArticle")
+     * @ORM\JoinColumn(name="articles", referencedColumnName="id")
+     */
+    private Collection $articles;
+
     public function getName(): string
     {
         return $this->name;
@@ -55,6 +65,29 @@ class FlesserkeCategory
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(FlesserkeArticle $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(FlesserkeArticle $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            $this->articles->removeElement($article);
+        }
 
         return $this;
     }
