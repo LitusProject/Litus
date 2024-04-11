@@ -4,8 +4,6 @@ namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Organization\Unit;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -72,16 +70,12 @@ class InventoryArticle extends AbstractArticle
     private InventoryCategory $category;
 
     /**
-     * @var ArrayCollection The units associated with the article
+     * @var Unit The unit associated with this article
      *
-     * @ORM\ManyToMany(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
-     * @ORM\JoinTable(
-     *       name="inventory_article_unit",
-     *       joinColumns={@ORM\JoinColumn(name="inventory_article_id", referencedColumnName="id")},
-     *       inverseJoinColumns={@ORM\JoinColumn(name="unit_id", referencedColumnName="id")}
-     *  )
+     * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
+     * @ORM\JoinTable(name="unit", referencedColumnName="id")
      */
-    private Collection $units;
+    private Unit $unit;
 
     /**
      * @var string The visibility of this article
@@ -154,25 +148,14 @@ class InventoryArticle extends AbstractArticle
         return $this;
     }
 
-    public function getUnits(): Collection
+    public function getUnit(): Unit
     {
-        return $this->units;
+        return $this->unit;
     }
 
-    public function addUnit(Unit $unit): self
+    public function setUnit(Unit $unit): self
     {
-        if (!$this->units->contains($unit)) {
-            $this->units->add($unit);
-        }
-
-        return $this;
-    }
-
-    public function removeUnit(Unit $unit): self
-    {
-        if ($this->units->removeElement($unit)) {
-            $this->units->removeElement($unit);
-        }
+        $this->unit = $unit;
 
         return $this;
     }

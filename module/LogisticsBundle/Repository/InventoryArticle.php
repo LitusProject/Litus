@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use LogisticsBundle\Entity\InventoryCategory;
 
 /**
@@ -50,6 +51,30 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * @param Unit $unit
+     * @return array
+     */
+    public function findAllByUnit(Unit $unit): array
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->innerJoin('a.unit', 'u')
+            ->where(
+                $query->expr()->eq('a.unit', ':unit')
+            )
+            ->setParameter('unit', $unit)
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+>>>>>>> 7825f2f264c30d57c20c93ac2f1bb851eded17c4
      * @param  string $location
      * @return array
      */
@@ -58,12 +83,14 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.location'), ':location')
             )
             ->setParameter('location', '%' . strtolower($location) . '%')
-            ->orderBy('a.name', 'ASC')
-            ->getQuery()
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')            ->getQuery()
             ->getResult();
     }
 
@@ -76,12 +103,14 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility')
             )
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
-            ->orderBy('a.name', 'ASC')
-            ->getQuery()
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')            ->getQuery()
             ->getResult();
     }
 
@@ -94,11 +123,14 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.status'), ':status')
             )
             ->setParameter('status', '%' . strtolower($status) . '%')
-            ->orderBy('a.name', 'ASC')
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -114,6 +146,7 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->andX(
                     $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility'),
@@ -124,7 +157,9 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->setParameter('status', '%' . strtolower($status) . '%')
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
             ->setParameter('category', $category)
-            ->orderBy('a.name', 'ASC')
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

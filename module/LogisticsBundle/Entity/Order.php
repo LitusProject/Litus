@@ -3,7 +3,7 @@
 namespace LogisticsBundle\Entity;
 
 use CommonBundle\Entity\General\Organization\Unit;
-use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -67,12 +67,12 @@ class Order
     private bool $active;
 
     /**
-     * @var Person The creator used in this order
+     * @var Academic The creator used in this order
      *
-     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id")
      */
-    private Person $creator;
+    private Academic $creator;
 
     /**
      * @var ArrayCollection The units associated with the order: gives access to the whole unit to view the order
@@ -85,6 +85,14 @@ class Order
      *  )
      */
     private Collection $units;
+
+    /**
+     * @var Academic The person who updated this order
+     *
+     * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person\Academic")
+     * @ORM\JoinColumn(name="updater", referencedColumnName="id")
+     */
+    private Academic $updater;
 
     /**
      * @var DateTime The date this article was last updated
@@ -166,6 +174,22 @@ class Order
      */
     private string $transport;
 
+    public function __construct(Academic $academic)
+    {
+        $this->creator = $academic;
+        $this->updater = $academic;
+        $this->units = new ArrayCollection();
+        $this->inventoryArticles = new ArrayCollection();
+        $this->flesserkeArticles = new ArrayCollection();
+        $this->cgArticles = new ArrayCollection();
+        $this->updateDate = new DateTime();
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getHistory(): OrderHistory
     {
         return $this->history;
@@ -197,12 +221,12 @@ class Order
         return $this;
     }
 
-    public function getCreator(): Person
+    public function getCreator(): Academic
     {
         return $this->creator;
     }
 
-    public function setCreator(Person $creator): self
+    public function setCreator(Academic $creator): self
     {
         $this->creator = $creator;
 
@@ -232,14 +256,31 @@ class Order
         return $this;
     }
 
+    public function getUpdater(): Academic
+    {
+        return $this->updater;
+    }
+
+    public function setUpdater(Academic $updater): self
+    {
+        $this->updater = $updater;
+
+        return $this;
+    }
+
     public function getUpdateDate(): DateTime
     {
         return $this->updateDate;
     }
 
-    public function setUpdateDate(DateTime $updateDate): self
+    /**
+     * @return $this
+     *
+     * @ORM\PreUpdate
+     */
+    public function setUpdateDate(): self
     {
-        $this->updateDate = $updateDate;
+        $this->updateDate = new DateTime();
 
         return $this;
     }

@@ -4,7 +4,9 @@ namespace LogisticsBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mvc\MvcEvent;
+use LogisticsBundle\Entity\Order;
 
 /**
  * We extend the CommonBundle controller.
@@ -96,25 +98,63 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return array|null
+     * @return Academic|null
      */
-    protected function getFathomInfo()
+    protected function getAcademicEntity(): ?Academic
     {
-        $enableFathom = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_fathom');
-
-        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authenticated! Login to get access to this service.'
+            );
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'index',
+                )
+            );
             return null;
         }
 
-        return array(
-            'url' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_url'),
-            'site_id' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_site_id'),
-        );
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not a student! Create a student account to get access to this service.'
+            );
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $academic;
+    }
+
+    /**
+     * @return Order|null
+     */
+    protected function getOrderEntity(): ?Order
+    {
+        $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
+        if (!($order instanceof Order)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No order was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_catalog',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $order;
     }
 }
