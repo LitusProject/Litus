@@ -291,7 +291,7 @@ return array(
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
-        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
+        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',
