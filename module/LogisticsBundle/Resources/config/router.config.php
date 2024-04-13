@@ -1,5 +1,7 @@
 <?php
 
+use Laminas\Router\Http\Segment;
+use LogisticsBundle\Controller\InventoryArticleController;
 use LogisticsBundle\Controller\OrderController;
 
 return array(
@@ -265,24 +267,24 @@ return array(
                 ),
             ),
         ),
-        'logistics_inventory' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/logistics/inventory[/:action[/page/:page][/:id]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'logistics_inventory',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
+//        'logistics_inventory' => array(
+//            'type'    => 'Laminas\Router\Http\Segment',
+//            'options' => array(
+//                'route'       => '[/:language]/logistics/inventory[/:action[/page/:page][/:id]][/]',
+//                'constraints' => array(
+//                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    'id'       => '[0-9]*',
+//                    'language' => '(en|nl)',
+//                    'page'     => '[0-9]*',
+//                ),
+//                'defaults'    => array(
+//                    'controller' => 'logistics_inventory',
+//                    'action'     => 'index',
+//                ),
+//            ),
+//        ),
         'logistics_order' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
+            'type'    => Segment::class,
             'options' => array(
                 'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
                 'constraints' => array(
@@ -292,6 +294,21 @@ return array(
                 ),
                 'defaults'    => array(
                     'controller' => 'logistics_order',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+        'logistics_inventory_article' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '[/:language]/logistics/inventory[/:action][/order[/:action[/:order]]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'order'    => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_inventory_article',
                     'action'     => 'index',
                 ),
             ),
@@ -309,6 +326,7 @@ return array(
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
         'logistics_order'                   => OrderController::class,
+        'logistics_inventory_article'       => InventoryArticleController::class,
 //        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',

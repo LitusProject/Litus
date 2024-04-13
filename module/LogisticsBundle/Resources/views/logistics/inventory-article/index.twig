@@ -1,0 +1,178 @@
+{% extends 'logistics/base.twig' %}
+
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Inventory') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if hasAccess('logistics_inventory_article', 'search')%}
+                <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while updating your preferences.') }}
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to book articles.') }}
+    {% else %}
+        {% if hasAccess('logistics_inventory_article', 'search')%}
+            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                {{ forms.renderForm(searchForm) }}
+
+                <table class="table mappings">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Name') }}</th>
+                        <th class="hidden-xs">{{ translate('Status') }}</th>
+                        <th class="hidden-xs">{{ translate('Amount') }}</th>
+                        <th style="min-width: 100px"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="spacer">
+                        <td colspan="7"></td>
+                    </tr>
+                    <tr class="category-title">
+                        <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if articles %}
+        <div id="viewArticlesPage">
+            <table class="table mappings">
+                <thead>
+                <tr>
+                    {#         TODO: fill in           #}
+                    <th>{{ translate('Name') }}</th>
+                    <th class="hidden-xs">{{ translate('Status') }}</th>
+                    <th class="hidden-xs">{{ translate('Amount') }}</th>
+                    <th style="min-width: 100px"></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for unit in units %}
+                    <tr class="spacer">
+                        <td colspan="7"></td>
+                    </tr>
+                    <tr id="{{ unit }}" class="category-name collapsed" data-content="{{ unit }}">
+                        <td colspan="7" style="padding: 0">
+                            <div>
+                                <button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left">
+                                    <b>{{ unit }}</b>
+                                    {#     <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>   #}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% for category in categories %}
+                        {% if unit == 'Logistiek' and category != '' %}
+                                <tr id="{{ category }}" class="category-name collapsed {{ unit }}" data-content="{{ category }}">
+                                    <td colspan="7" style="padding: 0">
+                                        <div>
+                                            <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
+                                                <b>{{ category }}</b>
+                                                <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                        {% endif %}
+
+                        {% for article in articles %}
+                            {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category
+                            and available > 0 %}
+                                <tr class="{{ unit }} {{ category }} hide">
+                                    {#           TODO: Fill in            #}
+                                    <td></td>
+                                    <td class="hidden-xs"></td>
+                                    <td class="hidden-xs"></td>
+                                    <td class="hidden-xs"></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        <div class="modal fade" id="searchRequest">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{ translate('Logistics') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('This function is coming soon!') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.category-name').click(collapseCategory);
+            $('.unit-name').click(collapseCategory);
+            $('#searchArticles').click(openSearchRequest);
+        });
+
+        function openSearchRequest(e) {
+            e.preventDefault();
+            var revertRequest = $('#searchRequest');
+            revertRequest.modal();
+        }
+
+        function collapseCategory(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var name = $this.data('content');
+            var category = document.getElementById(name);
+            var items = Array.from(document.getElementsByClassName(name));
+            console.log(category);
+            console.log(items);
+
+
+            var icon = $this.find('.ui-icon');
+
+            if (category.classList.contains("collapsed")) {
+                items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-s");
+                    icon.addClass("ui-icon-triangle-1-n");
+                    item.classList.remove('hide');
+                    if (item.classList.contains("collapsed")) {
+                        item.classList.remove("collapsed");
+                    }
+                    category.classList.remove("collapsed");
+                });
+            } else {
+                items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-n");
+                    icon.addClass("ui-icon-triangle-1-s");
+                    item.classList.add('hide');
+                    category.classList.add("collapsed");
+                });
+            }
+        }
+    </script>
+{% endblock %}
+

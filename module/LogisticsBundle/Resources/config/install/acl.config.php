@@ -47,5 +47,8 @@ return array(
         'logistics_order' => array(
             'index', 'view', 'add', 'edit', 'cancel', 'remove',
         ),
+        'logistics_inventory_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+        ),
     ),
 );

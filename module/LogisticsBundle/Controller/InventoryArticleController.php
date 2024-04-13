@@ -93,7 +93,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         return new ViewModel();
     }
 
-    public function addInventoryArticlesAction(): ViewModel
+    public function addArticlesAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -182,7 +182,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         );
     }
 
-    public function editInventoryArticlesAction(): ViewModel
+    public function editArticlesAction(): ViewModel
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
@@ -286,7 +286,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         );
     }
 
-    public function searchInventoryArticlesAction(): ViewModel
+    public function searchArticlesAction(): ViewModel
     {
         $this->initAjax();
 
@@ -364,6 +364,10 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
      */
     private function getAllActiveUnits(array $articles): array
     {
+        if (count($articles) === 0) {
+            return array();
+        }
+
         $unitsArray = array();
         foreach ($articles as $article) {
             if ($article->getUnit()) {

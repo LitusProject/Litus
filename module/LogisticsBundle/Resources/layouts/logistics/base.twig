@@ -27,9 +27,9 @@
                                 <a href="{{ url('logistics_order', {"language": language.getAbbrev()}) }}">{{ translate('Orders') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_inventory', 'index') %}
-                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Flesserke') }}</a>
+                        {% if hasAccess('logistics_inventory_article', 'index') %}
+                            <li {% if 'logistics_inventory_article' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_inventory_article', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_transport', 'index') %}
