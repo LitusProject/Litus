@@ -304,7 +304,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             );
         }
 
-        if ($academic->isInWorkingGroup($this->getCurrentAcademicYear())
+        if ($academic->isInWorkingGroup($this->getCurrentAcademicYear(true))
         ) {
             return array_merge(
                 $this->getEntityManager()

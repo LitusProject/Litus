@@ -21,6 +21,9 @@ return array(
             'logistics_inventory' => array(
                 'index',
             ),
+            'logistics_order' => array(
+                'index',
+            ),
         ),
     ),
 );

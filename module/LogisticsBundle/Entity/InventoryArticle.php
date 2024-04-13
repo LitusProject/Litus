@@ -73,7 +73,7 @@ class InventoryArticle extends AbstractArticle
      * @var Unit The unit associated with this article
      *
      * @ORM\ManyToOne(targetEntity="\CommonBundle\Entity\General\Organization\Unit")
-     * @ORM\JoinTable(name="unit", referencedColumnName="id")
+     * @ORM\JoinColumn(name="unit", referencedColumnName="id", onDelete="CASCADE")
      */
     private Unit $unit;
 

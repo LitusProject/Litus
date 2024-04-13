@@ -372,7 +372,7 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
     /**
      * @return array|null
      */
-    protected function getFathomInfo()
+    protected function getFathomInfo(): ?array
     {
         $enableFathom = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')

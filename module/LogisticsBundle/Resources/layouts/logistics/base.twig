@@ -22,9 +22,9 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        {% if hasAccess('logistics_catalog', 'overview') %}
-                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Requests') }}</a>
+                        {% if hasAccess('logistics_order', 'index') %}
+                            <li {% if 'logistics_order' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_order', {"language": language.getAbbrev()}) }}">{{ translate('Orders') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_inventory', 'index') %}

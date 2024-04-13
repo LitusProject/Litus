@@ -1,5 +1,7 @@
 <?php
 
+use LogisticsBundle\Controller\OrderController;
+
 return array(
     'routes' => array(
         'logistics_admin_driver' => array(
@@ -231,23 +233,23 @@ return array(
                 ),
             ),
         ),
-        'logistics_catalog' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'order'    => '[0-9]*',
-                    'request'  => '[0-9]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'logistics_catalog',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
+//        'logistics_catalog' => array(
+//            'type'    => 'Laminas\Router\Http\Segment',
+//            'options' => array(
+//                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
+//                'constraints' => array(
+//                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    'order'    => '[0-9]*',
+//                    'request'  => '[0-9]*',
+//                    'language' => '(en|nl)',
+//                    'page'     => '[0-9]*',
+//                ),
+//                'defaults'    => array(
+//                    'controller' => 'logistics_catalog',
+//                    'action'     => 'overview',
+//                ),
+//            ),
+//        ),
         'logistics_catalog_typeahead' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -279,6 +281,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_order' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'order'    => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_order',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -291,7 +308,8 @@ return array(
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
 
-        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
+        'logistics_order'                   => OrderController::class,
+//        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',

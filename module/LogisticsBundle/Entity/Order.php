@@ -24,11 +24,13 @@ class Order
      * @var array All the possible states allowed
      */
     public static array $STATES = array(
-        'requested' => 'requested',
-        'approved'  => 'approved',
-        'declined'  => 'declined',
-        'reviewed'  => 'reviewed',
-        'canceled'  => 'canceled',
+        'Requested' => 'Requested',
+        'Approved'  => 'Approved',
+        'Declined'  => 'Declined',
+        'Reviewed'  => 'Reviewed',
+        'Canceled'  => 'Canceled',
+        'Removed'   => 'Removed',
+        'Reverted'  => 'Reverted',
     );
 
     /**
@@ -36,10 +38,10 @@ class Order
      * @var array All the possible transportation modes
      */
     public static array $TRANSPORTS = array(
-        'self'        => 'self',
-        'car'         => 'car',
-        'van'         => 'van',
-        'cargo bike'  => 'cargo bike',
+        'Self'        => 'Self',
+        'Cargo bike'  => 'Cargo bike',
+        'Car'         => 'Car',
+        'Van'         => 'Van',
     );
 
     /**
@@ -54,7 +56,7 @@ class Order
     /**
      * @var OrderHistory The category of this article
      *
-     * @ORM\ManyToOne(inversedBy="order", targetEntity="LogisticsBundle\Entity\OrderHistory")
+     * @ORM\ManyToOne(inversedBy="order", targetEntity="LogisticsBundle\Entity\OrderHistory", cascade={"persist"})
      * @ORM\JoinColumn(name="history", referencedColumnName="id")
      */
     private OrderHistory $history;
@@ -139,7 +141,7 @@ class Order
     /**
      * @var ArrayCollection The inventory articles in this order
      *
-     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderInventoryArticleMap", orphanRemoval=true)
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\Order\OrderInventoryArticleMap", orphanRemoval=true)
      * @ORM\JoinColumn(name="inventory_articles", referencedColumnName="id")
      */
     private Collection $inventoryArticles;
@@ -147,7 +149,7 @@ class Order
     /**
      * @var ArrayCollection The flesserke articles in this order
      *
-     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderFlesserkeArticleMap", orphanRemoval=true)
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\Order\OrderFlesserkeArticleMap", orphanRemoval=true)
      * @ORM\JoinColumn(name="flesserke_articles", referencedColumnName="id")
      */
     private Collection $flesserkeArticles;
@@ -155,27 +157,29 @@ class Order
     /**
      * @var ArrayCollection The c&g articles in this order
      *
-     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\OrderFlesserkeArticleMap", orphanRemoval=true)
+     * @ORM\OneToMany(mappedBy="order", targetEntity="LogisticsBundle\Entity\CGArticle", orphanRemoval=true)
      * @ORM\JoinColumn(name="cg_articles", referencedColumnName="id")
      */
     private Collection $cgArticles;
 
     /**
-     * @var string The status of this order.
+     * @var string The status of this order
      *
      * @ORM\Column(name="status", type="string")
      */
     private string $status;
 
     /**
-     * @var string If this order needs a ride (een kar-rit, auto-rit of dergelijke).
+     * @var array The type of transportation this order needs
      *
-     * @ORM\Column(name="transport", type="string")
+     * @ORM\Column(name="transport", type="array")
      */
-    private string $transport;
+    private array $transport;
 
     public function __construct(Academic $academic)
     {
+        $this->active = true;
+        $this->history = new OrderHistory();
         $this->creator = $academic;
         $this->updater = $academic;
         $this->units = new ArrayCollection();
@@ -183,6 +187,20 @@ class Order
         $this->flesserkeArticles = new ArrayCollection();
         $this->cgArticles = new ArrayCollection();
         $this->updateDate = new DateTime();
+        $this->status = 'Requested';
+        $this->transport = array();
+    }
+
+    public function update(Order $order, Academic $academic): Order
+    {
+        $this->active = true;
+        $order->deactivate();
+
+        $this->updater = $academic;
+        $this->updateDate = new DateTime();
+        $this->status = 'Requested';
+
+        return $this;
     }
 
     public function getId(): int
@@ -236,6 +254,13 @@ class Order
     public function getUnits(): Collection
     {
         return $this->units;
+    }
+
+    public function setUnits(Collection $units): self
+    {
+        $this->units = $units;
+
+        return $this;
     }
 
     public function addUnit(Unit $unit): self
@@ -437,14 +462,32 @@ class Order
         return $this;
     }
 
-    public function getTransport(): string
+    public function getTransport(): array
     {
         return $this->transport;
     }
 
-    public function setTransport(string $transport): self
+    public function setTransport(array $transport): self
     {
         $this->transport = $transport;
+
+        return $this;
+    }
+
+    public function addTransport(string $transport): self
+    {
+        if (!in_array($transport, $this->transport, true)) {
+            $this->transport[] = $transport;
+        }
+
+        return $this;
+    }
+
+    public function removeTransport(string $transport): self
+    {
+        if (in_array($transport, $this->transport, true)) {
+            unset($this->transport[array_search($transport, $this->transport, true)]);
+        }
 
         return $this;
     }

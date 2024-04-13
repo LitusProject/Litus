@@ -4,6 +4,7 @@ namespace LogisticsBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CommonBundle\Entity\General\Config;
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mvc\MvcEvent;
 use LogisticsBundle\Entity\Order;
@@ -33,7 +34,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
                 $this->url()->fromRoute('logistics_auth', array('action' => 'login',))
             );
         $result->organizationUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getRepository(Config::class)
             ->getConfigValue('organization_url');
         $result->shibbolethUrl = $this->getShibbolethUrl();
 
@@ -48,14 +49,14 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
      *
      * @return array
      */
-    public function getAuthenticationHandler()
+    public function getAuthenticationHandler(): array
     {
         return array(
             'action'         => 'index',
             'controller'     => 'common_index',
 
-            'auth_route'     => 'logistics_catalog',
-            'redirect_route' => 'logistics_catalog',
+            'auth_route'     => 'logistics_order',
+            'redirect_route' => 'logistics_order',
         );
     }
 
@@ -107,12 +108,6 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
                 'Error',
                 'You are not authenticated! Login to get access to this service.'
             );
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'index',
-                )
-            );
             return null;
         }
 
@@ -122,12 +117,6 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             $this->flashMessenger()->error(
                 'Error',
                 'You are not a student! Create a student account to get access to this service.'
-            );
-            $this->redirect()->toRoute(
-                'logistics_catalog',
-                array(
-                    'action' => 'index',
-                )
             );
             return null;
         }
@@ -140,14 +129,14 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
      */
     protected function getOrderEntity(): ?Order
     {
-        $order = $this->getEntityById('LogisticsBundle\Entity\Order', 'order');
+        $order = $this->getEntityById(Order::class, 'order');
         if (!($order instanceof Order)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No order was found!'
             );
             $this->redirect()->toRoute(
-                'logistics_catalog',
+                'logistics_order',
                 array(
                     'action' => 'index',
                 )
