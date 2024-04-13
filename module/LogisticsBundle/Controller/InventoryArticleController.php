@@ -4,6 +4,8 @@ namespace LogisticsBundle\Controller;
 
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\View\Model\ViewModel;
+use LogisticsBundle\Entity\InventoryArticle;
+use LogisticsBundle\Entity\InventoryCategory;
 use RuntimeException;
 
 /**
@@ -22,7 +24,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
 
         $allArticles = $this->findAllArticlesByAcademic($academic);
         $categories = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\InventoryCategory')
+            ->getRepository(InventoryCategory::class)
             ->findAll();
         $units = $this->getAllActiveUnits($allArticles);
 
@@ -39,6 +41,12 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_inventory',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -51,6 +59,12 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_inventory',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -65,6 +79,12 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_inventory',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -77,12 +97,18 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
         $order = $this->getOrderEntity();
         if ($order === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         $allArticles = $order->getInventoryArticles()->toArray();
@@ -140,7 +166,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         }
 
         $categories = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\InventoryCategory')
+            ->getRepository(InventoryCategory::class)
             ->findAll();
 
         return new ViewModel(
@@ -160,12 +186,18 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
         $order = $this->getOrderEntity();
         if ($order === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         // Check if authenticated to modify order articles
@@ -179,7 +211,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
                     'action' => 'overview',
                 )
             );
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         $allArticles = $order->getInventoryArticles()->toArray();
@@ -238,7 +270,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         }
 
         $categories = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\InventoryCategory')
+            ->getRepository(InventoryCategory::class)
             ->findAll();
 
         return new ViewModel(
@@ -260,19 +292,24 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return new ViewModel();
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
         }
 
         $order = $this->getOrderEntity();
         if ($order === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         if ($academic !== $order->getCreator()
             && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-            || $academic->getUnit($this->getCurrentAcademicYear()) !== $order->getUnit())
+            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear())))
         ) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         // TODO: Implement
@@ -290,16 +327,16 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             $unit = $academic->getUnit($this->getCurrentAcademicYear(true));
             return array_merge(
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByUnit($unit),
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByVisibility('Praesidium'),
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByVisibility('Greater VTK'),
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByVisibility('Members'),
             );
         }
@@ -308,16 +345,16 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         ) {
             return array_merge(
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByVisibility('Greater VTK'),
                 $this->getEntityManager()
-                    ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+                    ->getRepository(InventoryArticle::class)
                     ->findAllByVisibility('Members'),
             );
         }
 
         return $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\InventoryArticle')
+            ->getRepository(InventoryArticle::class)
             ->findAllByVisibility('Members');
     }
 

@@ -121,4 +121,5 @@ return array(
     'Inventory'                                          => 'Flesserke',
     'Flesserke Form'                                     => 'Flesserke Form',
     'Reserve'                                            => 'Reserveer',
+    'Order'                                              => 'Order',
 );
