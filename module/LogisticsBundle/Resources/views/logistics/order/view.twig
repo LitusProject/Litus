@@ -53,7 +53,7 @@
                                     {% endfor %}
                                 </b></p>
                         {% endif %}
-{#                      TODO: Check if this is the proper way to fetch Email  #}
+                        {#      TODO: Check if this is the proper way to fetch Email  #}
                         <p style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">Email: &emsp;&emsp;&ensp;&nbsp;<b>{{ order.getCreator().getEmail() }}</b></p>
                     </div>
 
@@ -79,7 +79,7 @@
             </div>
             <div class="col-md-7">
                 <h1 class="pull-left">{{ translate('Articles') }}</h1>
-{#                TODO: add translation for update#}
+                {#            TODO: add translation for update      #}
                 {% if not order.getStatus() is same as('Canceled') and not order.getStatus() is same as('Removed') and order.getId() == history[0].getId() %}
                     <a class="btn btn-primary pull-right grow" style="margin-top: 25px;"
                        href="{{ url('logistics_order', {'action': 'order', 'order': order.getId()}) }}">
@@ -173,7 +173,8 @@
                                 {{ translate(oldOrder.getStatus()) }}
                             </td>
                             <td class="actions">
-                                {% if history[0].getId() != oldOrder.getId() and not history[0].getStatus() is same as('Canceled')  and not history[0].getStatus() is same as('Removed') %}
+                                {#                TODO: fix that "now" < order.getEndDate() comparison works                #}
+                                {% if history[0].getId() != oldOrder.getId() and not history[0].getStatus() is same as('Canceled')  and not history[0].getStatus() is same as('Removed') and "now" < order.getEndDate() %}
                                     <a href="#" class="btn btn-warning btn-sm edit revert" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
                                         {{ translate('Revert') }}
                                     </a>
@@ -183,7 +184,8 @@
                                         {{ translate('View') }}
                                     </a>
                                 {% endif %}
-                                {% if history[0].getId() == oldOrder.getId() %}
+                                {#                TODO: fix that "now" < order.getEndDate() comparison works                #}
+                                {% if history[0].getId() == oldOrder.getId() and "now" < order.getEndDate() %}
                                     {% if not history[0].getStatus() is same as('Removed') %}
                                         {% if not history[0].getStatus() is same as('Canceled') %}
                                             <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">

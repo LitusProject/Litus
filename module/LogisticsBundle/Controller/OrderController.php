@@ -22,6 +22,9 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
         $orders = $this->getEntityManager()
             ->getRepository(Order::class)
             ->findAllByCreator($academic);
+        $oldOrders = $this->getEntityManager()
+            ->getRepository(Order::class)
+            ->findAllOldByCreator($academic);
 
         $unit = $academic->getUnit($this->getCurrentAcademicYear(true));
 
@@ -31,13 +34,17 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 ->getRepository(Order::class)
                 ->findAllByUnit($unit);
             $orders = $this->mergeArraysUnique($orders, $unitOrders);
+            $unitOrders = $this->getEntityManager()
+                ->getRepository(Order::class)
+                ->findAllOldByUnit($unit);
+            $oldOrders = $this->mergeArraysUnique($oldOrders, $unitOrders);
         }
 
-         // TODO: add old orders as well
         return new ViewModel(
             array(
-                'orders' => $orders,
-                'fathom' => $this->getFathomInfo(),
+                'orders'    => $orders,
+                'oldOrders' => $oldOrders,
+                'fathom'    => $this->getFathomInfo(),
             )
         );
     }
