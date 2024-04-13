@@ -29,7 +29,7 @@
     {% if authenticatedPerson is null %}
         <div>{{ translate('Please login to view your orders.') }}</div>
     {% else %}
-        {% if not orders is empty %}
+        {% if not orders is empty or not oldOrders is empty %}
             <div class="row">
                 {% set onceRejected = false %}
                 {% set oncePending = false %}
@@ -47,17 +47,18 @@
                             <th>{{ translate('Actions') }}</th>
                         </tr>
                         </thead>
+                        {#        New orders        #}
                         {% for order in orders %}
                             <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %}">
-                                <td>{{ order.getName() }}</td>
-                                <td class="hidden-xs">{{ order.getCreator().getFullName() }}</td>
-                                <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td style="width: 15%">{{ order.getName() }}</td>
+                                <td class="hidden-xs" style="width: 17.5%">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs" style="width: 17.5%">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs" style="width: 17.5%">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
                                 <td class="hidden-xs item-{{ order.getId() }}-status"
-                                        {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %} style="color: #882a25; font-weight: bold;"{% endif %}>
+                                    style="width: 15%; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">
                                     {{ translate(order.getStatus()) }}
                                 </td>
-                                <td class="actions">
+                                <td class="actions" style="width: 17.5%">
                                     <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
                                         {{ translate('View') }}
                                     </a>
@@ -73,7 +74,30 @@
                                 </td>
                             </tr>
                         {% endfor %}
+                        {#        Old orders        #}
+                        {% for order in oldOrders %}
+                            <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %} collapsed hide" style="background: #D9DAd8">
+                                <td>{{ order.getName() }}</td>
+                                <td class="hidden-xs">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs item-{{ order.getId() }}-status"
+                                        {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %} style="color: #882a25; font-weight: bold;"{% endif %}>
+                                    {{ translate(order.getStatus()) }}
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                        {{ translate('View') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </table>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <a href="#" class="expand" style="display: inline-flex; align-items: center;">
+                            {{ translate('Old orders') }}<i class="ui-icon ui-icon-triangle-1-e"></i>
+                        </a>
+                    </div>
                 </div>
                 {% if onceRejected == true %}
                     <div class="flashmessage alert alert-warning fade in">
@@ -137,6 +161,7 @@
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
             $('.item .cancel').click(openCancelOrder);
             $('.item .delete').click(openRemoveOrder);
+            $('.expand').click(collapse);
         });
 
         function openCancelOrder(e) {
@@ -195,6 +220,37 @@
             $('.flashmessage').addClass('hidden');
             $('.order_removed_error').removeClass('hidden');
             $('#deleteOrder').modal('hide');
+        }
+
+        function collapse(e) {
+            e.preventDefault();
+            const icon = document.getElementsByClassName("ui-icon")[0];
+            const collapsedItems = Array.from(document.getElementsByClassName("collapsed"));
+            const expandedItems = Array.from(document.getElementsByClassName("expanded"));
+
+            console.log(icon);
+            console.log(collapsedItems);
+
+            if (collapsedItems.length > 0) {
+                icon.classList.remove("ui-icon-triangle-1-e");
+                icon.classList.add("ui-icon-triangle-1-s");
+                console.log(icon);
+                collapsedItems.forEach((item) => {
+                    console.log(item);
+                    item.classList.remove("hide");
+                    item.classList.remove("collapsed");
+                    item.classList.add("expanded");
+                    console.log(item);
+                });
+            } else {
+                icon.classList.remove("ui-icon-triangle-1-s");
+                icon.classList.add("ui-icon-triangle-1-e");
+                expandedItems.forEach((item) => {
+                    item.classList.add("hide");
+                    item.classList.add("collapsed");
+                    item.classList.remove("expanded");
+                });
+            }
         }
     </script>
 {% endblock %}

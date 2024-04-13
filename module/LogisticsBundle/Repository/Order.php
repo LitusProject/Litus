@@ -114,6 +114,31 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     }
 
     /**
+     * @param Academic $creator
+     * @return array
+     */
+    public function findAllOldByCreator(Academic $creator): array
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from(OrderEntity::class, 'o')
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('o.creator', ':creator'),
+                    $query->expr()->lt('o.endDate', ':now'),
+                    $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
+                )
+            )
+            ->orderBy('o.startDate', 'ASC')
+            ->setParameter('creator', $creator)
+            ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * @param Unit $unit
      * @return array
      */
@@ -127,6 +152,32 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->andx(
                     $query->expr()->eq('u', ':unit'),
                     $query->expr()->gt('o.endDate', ':now'),
+                    $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
+                )
+            )
+            ->orderBy('o.startDate', 'ASC')
+            ->setParameter('unit', $unit)
+            ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @param Unit $unit
+     * @return array
+     */
+    public function findAllOldByUnit(Unit $unit): array
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('o')
+            ->from(OrderEntity::class, 'o')
+            ->join('o.units', 'u')  // TODO: check if this works
+            ->where(
+                $query->expr()->andx(
+                    $query->expr()->eq('u', ':unit'),
+                    $query->expr()->lt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
                     $query->expr()->neq('o.status', ':status'),
                 )
