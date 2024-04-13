@@ -2,8 +2,9 @@
 
 namespace LogisticsBundle\Repository;
 
+use CommonBundle\Entity\General\Config;
 use CommonBundle\Entity\General\Organization\Unit;
-use CommonBundle\Entity\User\Person;
+use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
 use LogisticsBundle\Entity\Order as OrderEntity;
 
@@ -24,15 +25,17 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->getQuery()
             ->getResult();
     }
@@ -44,15 +47,17 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->lt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->getQuery()
             ->getResult();
     }
@@ -65,40 +70,45 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.name', ':name'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->setParameter('name', $name)
             ->getQuery()
             ->getResult();
     }
 
     /**
-     * @param  Person $creator
+     * @param  Academic $creator
      * @return array
      */
-    public function findAllByCreator(Person $creator): array
+    public function findAllByCreator(Academic $creator): array
     {
+
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.creator', ':creator'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('creator', $creator)
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->getQuery()
             ->getResult();
     }
@@ -111,18 +121,20 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->join('o.units', 'u')  // TODO: check if this works
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('u', ':unit'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('unit', $unit)
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->getQuery()
             ->getResult();
     }
@@ -135,7 +147,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.status', ':status'),
@@ -158,16 +170,18 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->eq('o.transport', ':transport'),
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                 )
             )
             ->orderBy('o.startDate', 'ASC')
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->setParameter('transport', $transport)
             ->getQuery()
             ->getResult();
@@ -180,15 +194,16 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     public function findAllOverlappingByOrder(OrderEntity $order): array
     {
         $margin_hours = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getRepository(Config::class)
             ->getConfigValue('logistics.request_margin_hours');
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('o')
-            ->from('LogisticsBundle\Entity\Order', 'o')
+            ->from(OrderEntity::class, 'o')
             ->where(
                 $query->expr()->andx(
                     $query->expr()->gt('o.endDate', ':now'),
                     $query->expr()->eq('o.active', 'TRUE'),
+                    $query->expr()->neq('o.status', ':status'),
                     $query->expr()->orX(
                         $query->expr()->between(':startDate', 'o.startDate', 'o.endDate'),
                         $query->expr()->between(':endDate', 'o.startDate', 'o.endDate'),
@@ -201,6 +216,7 @@ class Order extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('startDate', $order->getStartDate()->modify('-' . $margin_hours . ' hour'))
             ->setParameter('endDate', $order->getEndDate()->modify('+' . $margin_hours . ' hour'))
             ->setParameter('now', new DateTime())
+            ->setParameter('status', 'Removed')
             ->getQuery()
             ->getResult();
     }

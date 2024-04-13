@@ -4,6 +4,7 @@ namespace LogisticsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use LogisticsBundle\Entity\Order;
 
@@ -27,14 +28,14 @@ class OrderHistory
     /**
      * @var ArrayCollection The orders in this category
      *
-     * @ORM\OneToMany(mappedBy="history", targetEntity="LogisticsBundle\Entity\Order", orphanRemoval=true)
+     * @ORM\OneToMany(mappedBy="history", targetEntity="LogisticsBundle\Entity\Order", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="orders", referencedColumnName="id")
      */
     private Collection $orders;
 
     public function getOrders(): Collection
     {
-        return $this->orders;
+        return $this->orders->matching(Criteria::create()->orderBy(array('updateDate' => Criteria::DESC)));
     }
 
     public function getLastOrder(): Order

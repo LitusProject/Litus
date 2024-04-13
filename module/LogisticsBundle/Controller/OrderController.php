@@ -20,7 +20,7 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
         }
 
         $orders = $this->getEntityManager()
-            ->getRepository('LogisticsBundle\Entity\Order')
+            ->getRepository(Order::class)
             ->findAllByCreator($academic);
 
         $unit = $academic->getUnit($this->getCurrentAcademicYear(true));
@@ -28,11 +28,12 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
         if ($unit) {
             // TODO: check if this works
             $unitOrders = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Order')
+                ->getRepository(Order::class)
                 ->findAllByUnit($unit);
             $orders = $this->mergeArraysUnique($orders, $unitOrders);
         }
 
+         // TODO: add old orders as well
         return new ViewModel(
             array(
                 'orders' => $orders,
@@ -45,6 +46,12 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -54,10 +61,10 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
         }
 
         if ($academic !== $order->getCreator()
-            &&(!$academic->isPraesidium($this->getCurrentAcademicYear())
-            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear())))
+            &&(!$academic->isPraesidium($this->getCurrentAcademicYear(true))
+            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear(true))))
         ) {
-            return $this->notFoundAction();
+            return new viewModel();
         }
 
         $articles = $order->getAllArticles()->toArray();
@@ -76,6 +83,12 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -91,7 +104,6 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                // TODO: Fix that this form works
                 $order = $form->hydrateObject(
                     new Order($academic)
                 );
@@ -99,11 +111,12 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 $this->getEntityManager()->persist($order);
                 $this->getEntityManager()->flush();
 
+                // TODO: add send mails
+
                 $this->redirect()->toRoute(
-                    'logistics_catalog',
+                    'logistics_order',
                     array(
-                        'action' => 'inventory',
-                        'order'  => $order->getId(),
+                        'action' => 'index',
                     )
                 );
                 return new ViewModel();
@@ -121,6 +134,12 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
@@ -130,16 +149,16 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
         }
 
         if ($academic !== $order->getCreator()
-            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear())))
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear(true))
+            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear(true))))
         ) {
             $this->redirect()->toRoute(
-                'logistics_catalog',
+                'logistics_order',
                 array(
-                    'action' => 'overview',
+                    'action' => 'index',
                 )
             );
-            return $this->notFoundAction();
+            return new viewModel();
         }
 
         $form = $this->getForm(
@@ -155,8 +174,14 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
-                // TODO: Implement
-                $newOrder = clone $order;
+                $order = $form->hydrateObject(
+                    (clone $order)->update($order, $academic)
+                );
+
+                $this->getEntityManager()->persist($order);
+                $this->getEntityManager()->flush();
+
+                // TODO: add send mails
 
                 $this->flashMessenger()->success(
                     'Success',
@@ -164,9 +189,9 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
                 );
 
                 $this->redirect()->toRoute(
-                    'logistics_catalog',
+                    'logistics_order',
                     array(
-                        'action' => 'view', 'order' => $newOrder->getId(),
+                        'action' => 'view', 'order' => $order->getId(),
                     )
                 );
                 return new ViewModel();
@@ -187,29 +212,37 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
         $order = $this->getOrderEntity();
         if ($order === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         if ($academic !== $order->getCreator()
-            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear())))
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear(true))
+            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear(true))))
         ) {
             $this->redirect()->toRoute(
-                'logistics_catalog',
+                'logistics_order',
                 array(
-                    'action' => 'overview',
+                    'action' => 'index',
                 )
             );
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
-        $order->setStatus('canceled');
+        $order->setStatus('Canceled');
         $this->getEntityManager()->flush();
+
+        // TODO: add send mails
 
         return new ViewModel(
             array(
@@ -224,28 +257,37 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
             return new ViewModel();
         }
 
         $order = $this->getOrderEntity();
         if ($order === null) {
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
         if ($academic !== $order->getCreator()
-            && (!$academic->isPraesidium($this->getCurrentAcademicYear())
-            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear())))
+            && (!$academic->isPraesidium($this->getCurrentAcademicYear(true))
+            || !$order->getUnits()->contains($academic->getUnit($this->getCurrentAcademicYear(true))))
         ) {
             $this->redirect()->toRoute(
-                'logistics_catalog',
+                'logistics_order',
                 array(
-                    'action' => 'overview',
+                    'action' => 'index',
                 )
             );
-            return $this->notFoundAction();
+            return new ViewModel();
         }
 
-        // TODO: Implement
+        $order->setStatus('Removed');
+        $this->getEntityManager()->flush();
+
+        // TODO: add send mails
 
         return new ViewModel(
             array(
@@ -262,7 +304,7 @@ class OrderController extends \LogisticsBundle\Component\Controller\LogisticsCon
     private function mergeArraysUnique(array $a1, array $a2): array
     {
         foreach ($a2 as $e2) {
-            if (!in_array($e2, $a1)) {
+            if (!in_array($e2, $a1, true)) {
                 $a1[] = $e2;
             }
         }
