@@ -3,7 +3,6 @@
 namespace LogisticsBundle\Form\Catalog\Order;
 
 use CommonBundle\Entity\General\AcademicYear;
-use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person\Academic;
 use LogisticsBundle\Entity\Order;
 
@@ -15,7 +14,7 @@ use LogisticsBundle\Entity\Order;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Order';
+    protected $hydrator = \LogisticsBundle\Hydrator\Order::class;
 
     /**
      * @var Academic
@@ -31,10 +30,13 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         $this->add(
             array(
-                'type'    => 'text',
-                'name'    => 'name',
-                'label'   => 'Name',
-                'required'   => true,
+                'type'          => 'text',
+                'name'          => 'name',
+                'label'         => 'Name',
+                'required'      => true,
+                'attributes'    => array(
+                    'placeholder'   => 'Galabal IT',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -47,15 +49,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 
         $this->add(
             array(
-                'type'       => 'textarea',
-                'name'       => 'location',
-                'label'      => 'Location',
-                'attributes' => array(
-                    'rows' => 2,
+                'type'        => 'textarea',
+                'name'        => 'location',
+                'label'       => 'Location',
+                'placeholder' => 'CW-lab',
+                'attributes'  => array(
+                    'rows'    => 2,
                 ),
-                'required'   => true,
-                'options'    => array(
-                    'input' => array(
+                'required'    => true,
+                'options'     => array(
+                    'input'   => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -146,8 +149,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'attributes' => array(
                     'multiple' => true,
                     'options'  => Order::$TRANSPORTS,
+                    'value'    => 'Self',
                 ),
-                'value'    => 'Self',
             )
         );
 
@@ -170,48 +173,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         );
 
         $this->addSubmit('Next', 'btn btn-primary', 'submit');
-    }
-
-    /**
-     * @param $academic
-     * @return array
-     */
-    private function createUnitsArray($academic): array
-    {
-        // TODO: Check if this works
-        $units = array();
-
-        if ($academic->isPraesidium($this->getCurrentAcademicYear(true))
-            && $academic->isInWorkingGroup($this->getCurrentAcademicYear(true))
-        ) {
-            $units = array_merge(
-                $this->getEntityManager()
-                    ->getRepository(Unit::class)
-                    ->findAllActiveAndDisplayed()->getResult(),
-                $this->getEntityManager()
-                    ->getRepository(Unit::class)
-                    ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult(),
-            );
-        }
-
-        if ($academic->isPraesidium($this->getCurrentAcademicYear(true))) {
-            $units = $this->getEntityManager()
-                ->getRepository(Unit::class)
-                ->findAllActiveAndDisplayedQuery()->getResult();
-        }
-
-        if ($academic->isInWorkingGroup($this->getCurrentAcademicYear(true))) {
-            $units = $this->getEntityManager()
-                ->getRepository(Unit::class)
-                ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult();
-        }
-
-        $unitsArray = array();
-        foreach ($units as $unit) {
-            $unitsArray[$unit->getId()] = $unit->getName();
-        }
-
-        return $unitsArray;
     }
 
     /**

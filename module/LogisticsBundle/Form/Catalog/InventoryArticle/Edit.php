@@ -2,79 +2,38 @@
 
 namespace LogisticsBundle\Form\Catalog\InventoryArticle;
 
-use LogisticsBundle\Entity\Order;
+use LogisticsBundle\Entity\InventoryArticle;
 
 /**
- * Form used to edit articles of an order
+ * The form used to edit an existing InventoryArticle.
  *
- * @author Pedro Devogelaere
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class Edit extends \LogisticsBundle\Form\Catalog\InventoryArticle\Add
 {
     /**
-     * @var array
+     * @var InventoryArticle
      */
-    private array $articles = array();
-
-    /**
-     * @var Order
-     */
-    private Order $order;
+    private InventoryArticle $article;
 
     public function init(): void
     {
         parent::init();
 
-        foreach ($this->articles as $article) {
-            $mapping = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\OrderInventoryArticleMap')
-                ->findOneByOrderAndArticle($this->order, $article);
+        $this->remove('submit')
+            ->addSubmit('Update');
 
-            $this->add(
-                array(
-                    'type'       => 'text',
-                    'name'       => 'article-' . $article->getId(),
-                    'attributes' => array(
-                        'class'       => 'input-very-mini',
-                        'style'       => 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',
-                        'id'          => 'article-' . $article->getId(),
-                        'placeholder' => $mapping ? $mapping->getAmount() : '0',
-                    ),
-                    'options'    => array(
-                        'input' => array(
-                            'filters' => array(
-                                array('name' => 'StringTrim'),
-                            ),
-                            'validators' => array(
-                                array('name' => 'Int'),
-                            ),
-                        ),
-                    ),
-                )
-            );
-        }
-
-        $this->addSubmit('Update', 'btn btn-primary pull-right');
+        $hydrator = $this->getHydrator();
+        $this->populateValues($hydrator->extract($this->article));
     }
 
     /**
-     * @param  array $articles
+     * @param InventoryArticle $article
      * @return self
      */
-    public function setArticles(array $articles): self
+    public function setOrder(InventoryArticle $article): self
     {
-        $this->articles = $articles;
-
-        return $this;
-    }
-
-    /**
-     * @param Order $order
-     * @return self
-     */
-    public function setOrder(Order $order): self
-    {
-        $this->order = $order;
+        $this->article = $article;
 
         return $this;
     }

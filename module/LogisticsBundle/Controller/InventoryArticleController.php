@@ -42,7 +42,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             $this->redirect()->toRoute(
-                'logistics_inventory',
+                'logistics_inventory_article',
                 array(
                     'action' => 'index',
                 )
@@ -50,9 +50,40 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             return new ViewModel();
         }
 
-        // TODO: Implement
+        $form = $this->getForm(
+            'logistics_catalog_inventory-article_add',
+            array(
+                'academic'     => $academic,
+                'academicYear' => $this->getCurrentAcademicYear(true),
+            )
+        );
 
-        return new ViewModel();
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $article = $form->hydrateObject(
+                    new InventoryArticle()
+                );
+
+                $this->getEntityManager()->persist($article);
+                $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'logistics_inventory_article',
+                    array(
+                        'action' => 'index',
+                    )
+                );
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
     }
 
     public function editAction(): ViewModel
@@ -60,7 +91,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             $this->redirect()->toRoute(
-                'logistics_inventory',
+                'logistics_inventory_article',
                 array(
                     'action' => 'index',
                 )
@@ -80,7 +111,7 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
             $this->redirect()->toRoute(
-                'logistics_inventory',
+                'logistics_inventory_article',
                 array(
                     'action' => 'index',
                 )

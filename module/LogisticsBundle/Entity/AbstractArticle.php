@@ -37,14 +37,14 @@ abstract class AbstractArticle
     private DateTime $updateDate;
 
     /**
-     * @var string A comment which is also visible for people outside the article's unit(s)
+     * @var string A comment which is also visible for people outside the article's unit
      *
      * @ORM\Column(name="external_comment", type="text", nullable=true)
      */
     private string $externalComment;
 
     /**
-     * @var string A comment which is only visible for people inside the article's unit(s)
+     * @var string A comment which is only visible for people inside the article's unit
      *
      * @ORM\Column(name="internal_comment", type="text", nullable=true)
      */

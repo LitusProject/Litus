@@ -11,6 +11,9 @@
             {% if hasAccess('logistics_inventory_article', 'search')%}
                 <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
             {% endif %}
+            {% if hasAccess('logistics_inventory_article', 'add')%}
+                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success">{{ translate('New') }}</a>
+            {% endif %}
         </div>
     </div>
 
@@ -141,6 +144,7 @@
             revertRequest.modal();
         }
 
+        // TODO: fix this
         function collapseCategory(e) {
             var $this = $(this);
 

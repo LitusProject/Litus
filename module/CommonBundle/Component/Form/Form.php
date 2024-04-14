@@ -9,6 +9,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
 use CommonBundle\Component\Validator\FormAwareInterface;
+use CommonBundle\Entity\General\Organization\Unit;
 use Laminas\Form\FieldsetInterface as LaminasFieldsetInterface;
 use Laminas\Form\FormInterface;
 use Laminas\Hydrator\ClassMethods as ClassMethodsHydrator;
@@ -218,5 +219,47 @@ abstract class Form extends \Laminas\Form\Form implements InputFilterAwareInterf
         }
 
         return AcademicYear::getUniversityYear($this->getEntityManager());
+    }
+
+    /**
+     * @param $academic
+     * @return array
+     */
+    protected function createUnitsArray($academic): array
+    {
+        // TODO: Check if this works
+        $units = array();
+
+        if ($academic->isPraesidium($this->getCurrentAcademicYear(true))
+            && $academic->isInWorkingGroup($this->getCurrentAcademicYear(true))
+        ) {
+            $units = array_merge(
+                $this->getEntityManager()
+                    ->getRepository(Unit::class)
+                    ->findAllActiveAndDisplayed()->getResult(),
+                $this->getEntityManager()
+                    ->getRepository(Unit::class)
+                    ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult(),
+            );
+        }
+
+        if ($academic->isPraesidium($this->getCurrentAcademicYear(true))) {
+            $units = $this->getEntityManager()
+                ->getRepository(Unit::class)
+                ->findAllActiveAndDisplayedQuery()->getResult();
+        }
+
+        if ($academic->isInWorkingGroup($this->getCurrentAcademicYear(true))) {
+            $units = $this->getEntityManager()
+                ->getRepository(Unit::class)
+                ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult();
+        }
+
+        $unitsArray = array();
+        foreach ($units as $unit) {
+            $unitsArray[$unit->getId()] = $unit->getName();
+        }
+
+        return $unitsArray;
     }
 }

@@ -12,6 +12,7 @@ use LogisticsBundle\Entity\Order as OrderEntity;
  * @author Kristof Mariën <kristof.marien@litus.cc>
  * @author Bram Gotink <bram.gotink@litus.cc>
  * @author Matthias Swiggers <matthias.swiggers@vtk.be>
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class Order extends \CommonBundle\Component\Hydrator\Hydrator
 {
@@ -54,10 +55,8 @@ class Order extends \CommonBundle\Component\Hydrator\Hydrator
         foreach ($object->getUnits() as $unit) {
             $data['unit'][] = $unit->getId();
         }
-        $data['name'] = $object->getName();
         $data['start_date'] = $object->getStartDate()->format('d/m/Y H:i');
         $data['end_date'] = $object->getEndDate()->format('d/m/Y H:i');
-        $data['status'] = $object->getStatus();
 
         return $data;
     }
