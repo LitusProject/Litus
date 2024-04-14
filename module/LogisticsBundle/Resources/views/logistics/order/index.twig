@@ -59,7 +59,7 @@
                                     {{ translate(order.getStatus()) }}
                                 </td>
                                 <td class="actions" style="width: 17.5%">
-                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm">
                                         {{ translate('View') }}
                                     </a>
                                     {%if not order.getStatus() is same as('Canceled') %}
@@ -86,7 +86,7 @@
                                     {{ translate(order.getStatus()) }}
                                 </td>
                                 <td class="actions">
-                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm articles">
+                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm">
                                         {{ translate('View') }}
                                     </a>
                                 </td>

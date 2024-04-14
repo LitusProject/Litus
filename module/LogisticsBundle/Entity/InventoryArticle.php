@@ -62,12 +62,12 @@ class InventoryArticle extends AbstractArticle
     private string $spot;
 
     /**
-     * @var InventoryCategory The category of this article
+     * @var InventoryCategory|null The category of this article
      *
-     * @ORM\ManyToOne(inversedBy="articles", targetEntity="LogisticsBundle\Entity\InventoryCategory")
+     * @ORM\ManyToOne(inversedBy="articles", targetEntity="LogisticsBundle\Entity\InventoryCategory", cascade={"persist"})
      * @ORM\JoinColumn(name="category", referencedColumnName="id", nullable=true)
      */
-    private InventoryCategory $category;
+    private ?InventoryCategory $category;
 
     /**
      * @var Unit The unit associated with this article
@@ -92,11 +92,11 @@ class InventoryArticle extends AbstractArticle
     private string $status;
 
     /**
-     * @var DateTime The warranty of this article
+     * @var DateTime|null The warranty of this article
      *
      * @ORM\Column(name="warranty_date", type="datetime", nullable=true)
      */
-    private DateTime $warrantyDate;
+    private ?DateTime $warrantyDate;
 
     /**
      * @var integer The amount of deposit that has to be paid for this article when rent by an external
@@ -111,6 +111,18 @@ class InventoryArticle extends AbstractArticle
      * @ORM\Column(name="rent", type="integer", options={"default" = 0})
      */
     private int $rent;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->category = null;
+        $this->warrantyDate = null;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
 
     public function getLocation(): string
     {
@@ -136,7 +148,7 @@ class InventoryArticle extends AbstractArticle
         return $this;
     }
 
-    public function getCategory(): InventoryCategory
+    public function getCategory(): ?InventoryCategory
     {
         return $this->category;
     }
@@ -184,7 +196,7 @@ class InventoryArticle extends AbstractArticle
         return $this;
     }
 
-    public function getWarrantyDate(): DateTime
+    public function getWarrantyDate(): ?DateTime
     {
         return $this->warrantyDate;
     }

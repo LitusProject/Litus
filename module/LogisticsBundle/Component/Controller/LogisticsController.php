@@ -7,6 +7,7 @@ use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Entity\General\Config;
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mvc\MvcEvent;
+use LogisticsBundle\Entity\InventoryArticle;
 use LogisticsBundle\Entity\Order;
 
 /**
@@ -145,5 +146,28 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
         }
 
         return $order;
+    }
+
+    /**
+     * @return InventoryArticle|null
+     */
+    protected function getInventoryArticleEntity(): ?InventoryArticle
+    {
+        $article = $this->getEntityById(InventoryArticle::class, 'article');
+        if (!($article instanceof InventoryArticle)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No article was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_inventory_article',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $article;
     }
 }

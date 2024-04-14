@@ -25,7 +25,7 @@
     </div>
 
     {% if authenticatedPerson is null %}
-        {{ translate('Please login to book articles.') }}
+        {{ translate('Please login to view articles.') }}
     {% else %}
         {% if hasAccess('logistics_inventory_article', 'search')%}
             <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
@@ -34,10 +34,16 @@
                 <table class="table mappings">
                     <thead>
                     <tr>
-                        <th>{{ translate('Name') }}</th>
-                        <th class="hidden-xs">{{ translate('Status') }}</th>
-                        <th class="hidden-xs">{{ translate('Amount') }}</th>
-                        <th style="min-width: 100px"></th>
+                        <th style="width: 20%">{{ translate('Name') }}</th>
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                        {% endif %}
+                        <th class="hidden-xs" style="width: 20%">{{ translate('External comment') }}</th>
+                        <th style="width: 10%">{{ translate('Amount') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'edit') %}
+                            <th style="width: 10%">{{ translate('Actions') }}</th>
+                        {% endif %}
                     </tr>
                     </thead>
                     <tbody>
@@ -57,11 +63,16 @@
             <table class="table mappings">
                 <thead>
                 <tr>
-                    {#         TODO: fill in           #}
-                    <th>{{ translate('Name') }}</th>
-                    <th class="hidden-xs">{{ translate('Status') }}</th>
-                    <th class="hidden-xs">{{ translate('Amount') }}</th>
-                    <th style="min-width: 100px"></th>
+                    <th style="width: 20%">{{ translate('Name') }}</th>
+                    <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                    {% if hasAccess('logistics_inventory_article', 'add') %}
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                    {% endif %}
+                    <th class="hidden-xs" style="width: 20%">{{ translate('External comment') }}</th>
+                    <th style="width: 10%">{{ translate('Amount') }}</th>
+                    {% if hasAccess('logistics_inventory_article', 'edit') %}
+                        <th style="width: 10%">{{ translate('Actions') }}</th>
+                    {% endif %}
                 </tr>
                 </thead>
 
@@ -80,34 +91,86 @@
                             </div>
                         </td>
                     </tr>
+                    {% if unit == 'Logistiek' %}
+                        {% for category in categories %}
+                            <tr id="{{ category }}" class="category-name collapsed {{ unit }}" data-content="{{ category }}">
+                                <td colspan="7" style="padding: 0">
+                                    <div>
+                                        <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
+                                            <b>{{ category }}</b>
+                                            <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
 
-                    {% for category in categories %}
-                        {% if unit == 'Logistiek' and category != '' %}
-                                <tr id="{{ category }}" class="category-name collapsed {{ unit }}" data-content="{{ category }}">
-                                    <td colspan="7" style="padding: 0">
-                                        <div>
-                                            <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
-                                                <b>{{ category }}</b>
-                                                <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                        {% endif %}
-
+                            {% for article in articles %}
+                                {% if article.getCategory() == category %}
+                                    <tr class="{{ unit }} {{ category }} hide">
+                                        <td>{{ article.getName() }}</td>
+                                        <td class="hidden-xs">{{ article.getStatus() }}</td>
+                                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                                            <td class="hidden-xs">
+                                                {% if article.getInternalComment()|length > 1 %}
+                                                    <a rel="popover" data-original-title="{{ translate('Internal comment') }}"
+                                                       data-content="{{ article.getInternalComment() }}"
+                                                       class="label label-info">{{ translate('Comment') }}</a>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                        <td class="hidden-xs">
+                                            {% if article.getExternalComment()|length > 1 %}
+                                                <a rel="popover" data-original-title="{{ translate('External comment') }}"
+                                                   data-content="{{ article.getExternalComment() }}"
+                                                   class="label label-info">{{ translate('Comment') }}</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ article.getAmount() }}</td>
+                                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                                            <td class="actions">
+                                                <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-sm">
+                                                    {{ translate('Edit') }}
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
                         {% for article in articles %}
-                            {% if map['article'].getUnit().getName() == unit and map['article'].getCategory() == category
-                            and available > 0 %}
+                            {% if article.getUnit().getName() == unit %}
                                 <tr class="{{ unit }} {{ category }} hide">
-                                    {#           TODO: Fill in            #}
-                                    <td></td>
-                                    <td class="hidden-xs"></td>
-                                    <td class="hidden-xs"></td>
-                                    <td class="hidden-xs"></td>
+                                    <td>{{ article.getName() }}</td>
+                                    <td class="hidden-xs">{{ article.getStatus() }}</td>
+                                    {% if hasAccess('logistics_inventory_article', 'add') %}
+                                        <td class="hidden-xs">
+                                            {% if article.getInternalComment()|length > 1 %}
+                                                <a rel="popover" data-original-title="{{ translate('Internal comment') }}"
+                                                   data-content="{{ article.getInternalComment() }}"
+                                                   class="label label-info">{{ translate('Comment') }}</a>
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                    <td class="hidden-xs">
+                                        {% if article.getExternalComment()|length > 1 %}
+                                            <a rel="popover" data-original-title="{{ translate('External comment') }}"
+                                               data-content="{{ article.getExternalComment() }}"
+                                               class="label label-info">{{ translate('Comment') }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ article.getAmount() }}</td>
+                                    {% if hasAccess('logistics_inventory_article', 'add') %}
+                                        <td class="actions">
+                                            <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-sm">
+                                                {{ translate('Edit') }}
+                                            </a>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                             {% endif %}
                         {% endfor %}
-                    {% endfor %}
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
@@ -136,6 +199,9 @@
             $('.category-name').click(collapseCategory);
             $('.unit-name').click(collapseCategory);
             $('#searchArticles').click(openSearchRequest);
+
+            $('[rel=tooltip]').tooltip();
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
         });
 
         function openSearchRequest(e) {

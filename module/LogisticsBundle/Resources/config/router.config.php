@@ -301,10 +301,10 @@ return array(
         'logistics_inventory_article' => array(
             'type'    => Segment::class,
             'options' => array(
-                'route'       => '[/:language]/logistics/inventory[/:action][/order[/:action[/:order]]][/]',
+                'route'       => '[/:language]/logistics/inventory[/:action[/:article]][/]',
                 'constraints' => array(
                     'language' => '(en|nl)',
-                    'order'    => '[0-9]*',
+                    'article'  => '[0-9]*',
                     'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(

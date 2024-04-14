@@ -99,9 +99,46 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             return new ViewModel();
         }
 
-        // TODO: Implement
+        $article = $this->getInventoryArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
 
-        return new ViewModel();
+        $form = $this->getForm(
+            'logistics_catalog_inventory-article_edit',
+            array(
+                'academic'     => $academic,
+                'academicYear' => $this->getCurrentAcademicYear(true),
+                'article'      => $article,
+            )
+        );
+
+        if ($this->getRequest()->isPost()) {
+            $form->setData($this->getRequest()->getPost());
+
+            if ($form->isValid()) {
+                $form->hydrateObject(
+                    $article
+                );
+
+                $this->getEntityManager()->flush();
+
+                $this->redirect()->toRoute(
+                    'logistics_inventory_article',
+                    array(
+                        'action' => 'index',
+                    )
+                );
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form'    => $form,
+                'article' => $article,
+            ),
+        );
     }
 
     public function searchAction(): ViewModel

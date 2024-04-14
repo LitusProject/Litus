@@ -3,7 +3,8 @@
 namespace LogisticsBundle\Hydrator;
 
 use CommonBundle\Entity\General\Organization\Unit;
-use LogisticsBundle\Entity\Order as OrderEntity;
+use LogisticsBundle\Entity\InventoryArticle as InventoryArticleEntity;
+use LogisticsBundle\Entity\InventoryCategory;
 
 /**
  * This hydrator hydrates/extracts InventoryArticle data.
@@ -18,12 +19,20 @@ class InventoryArticle extends \CommonBundle\Component\Hydrator\Hydrator
     /**
      * @static @var string[] Key attributes to hydrate using the standard method.
      */
-    private static array $stdKeys = array('name', 'amount', 'location', 'spot', 'category', 'visibility', 'status', 'deposit', 'rent', 'external_comment', 'internal_comment');
+    private static array $stdKeys = array('name', 'amount', 'location', 'spot', 'visibility', 'status', 'deposit', 'rent', 'external_comment', 'internal_comment');
 
     protected function doHydrate(array $data, $object = null): object
     {
         if ($object === null) {
-            $object = new OrderEntity($this->getPersonEntity());
+            $object = new InventoryArticleEntity();
+        }
+
+        if ($data['category']) {
+            $object->setCategory(
+                $this->getEntityManager()
+                    ->getRepository(InventoryCategory::class)
+                    ->findOneById($data['category'])
+            );
         }
 
         $object->setUnit(
@@ -47,8 +56,13 @@ class InventoryArticle extends \CommonBundle\Component\Hydrator\Hydrator
 
         $data = $this->stdExtract($object, self::$stdKeys);
 
-        $data['unit'] = $object->getUnit->getId();
-        $data['warranty_date'] = $object->getWarrantyDate()->format('d/m/Y H:i');
+        $data['unit'] = $object->getUnit()->getId();
+        if ($object->getCategory()) {
+            $data['category'] = $object->getCategory()->getId();
+        }
+        if ($object->getWarrantyDate()) {
+            $data['warranty_date'] = $object->getWarrantyDate()->format('d/m/Y H:i');
+        }
 
         return $data;
     }

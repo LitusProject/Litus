@@ -31,7 +31,7 @@ class Edit extends \LogisticsBundle\Form\Catalog\InventoryArticle\Add
      * @param InventoryArticle $article
      * @return self
      */
-    public function setOrder(InventoryArticle $article): self
+    public function setArticle(InventoryArticle $article): self
     {
         $this->article = $article;
 

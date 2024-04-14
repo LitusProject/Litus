@@ -40,10 +40,15 @@ class InventoryCategory
     /**
      * @var ArrayCollection The articles in this category
      *
-     * @ORM\OneToMany(mappedBy="category", targetEntity="LogisticsBundle\Entity\InventoryArticle")
+     * @ORM\OneToMany(mappedBy="category", targetEntity="LogisticsBundle\Entity\InventoryArticle", cascade={"persist"})
      * @ORM\JoinColumn(name="articles", referencedColumnName="id")
      */
     private Collection $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     public function getName(): string
     {
