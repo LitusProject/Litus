@@ -152,14 +152,26 @@ a:focus {
     border-radius: 20px;
 }
 
-.collapse-btn{
-    background-color: #e9e8fc;
+tr.unit, tr.category {
     border: none;
-    padding: 6px 20px;
-    width: 100%;
-    text-align: left;
 }
 
+.collapse-btn{
+    border: none;
+    width: 100%;
+    text-align: left;
+    border-radius: 5px;
+}
+
+.collapse-btn.unit{
+    background-color: #D2D0F5;
+    padding: 8px;
+}
+
+.collapse-btn.category{
+    background-color: #e9e8fc;
+    padding: 6px 20px;
+}
 
 .grow {
     transition: all .2s ease-in-out;
