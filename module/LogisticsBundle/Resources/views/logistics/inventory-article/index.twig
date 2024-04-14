@@ -8,7 +8,7 @@
         </div>
         <div class="pull-right" style="margin-top: 30px;">
             {% if hasAccess('logistics_inventory_article', 'search')%}
-                <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+                <input type="text" id="searchString" class="search" placeholder={{ translate('Search') }} />
             {% endif %}
             {% if hasAccess('logistics_inventory_article', 'add')%}
                 <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 5px">{{ translate('New') }}</a>
@@ -27,10 +27,10 @@
         {{ translate('Please login to view articles.') }}
     {% else %}
         {% if hasAccess('logistics_inventory_article', 'search')%}
-            <div id="searchArticlesPage" style="display: none; margin-top: 10px;">
+            <div id="searchPage" style="display: none; margin-top: 10px;">
                 {{ forms.renderForm(searchForm) }}
 
-                <table class="table mappings">
+                <table class="table articles">
                     <thead>
                     <tr>
                         <th style="width: 20%">{{ translate('Name') }}</th>
@@ -46,19 +46,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="spacer">
-                        <td colspan="7"></td>
-                    </tr>
-                    <tr class="category-title">
-                        <td colspan="7"><i>{{ translate('No articles found') }}</i></td>
-                    </tr>
+                        <tr class="spacer">
+                            <td colspan="7"></td>
+                        </tr>
+                        <tr class="category-title">
+                            <td colspan="7"><i>{{ translate('No articles found') }}</i></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         {% endif %}
 
         {% if articles %}
-        <div id="viewArticlesPage">
+        <div id="defaultPage">
             <table class="table mappings">
                 <thead>
                 <tr>
@@ -127,6 +127,7 @@
                                         <td>{{ article.getAmount() }}</td>
                                         {% if hasAccess('logistics_inventory_article', 'edit') %}
                                             <td class="actions">
+                                                {#           TODO: add detail pop-up              #}
                                                 <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
                                                     {{ translate('Edit') }}
                                                 </a>
@@ -161,6 +162,7 @@
                                     <td>{{ article.getAmount() }}</td>
                                     {% if hasAccess('logistics_inventory_article', 'edit') %}
                                         <td class="actions">
+                                            {#           TODO: add detail pop-up              #}
                                             <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
                                                 {{ translate('Edit') }}
                                             </a>
@@ -201,6 +203,38 @@
 
             $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            $.searchDatabase({
+                defaultPage:    $('#defaultPage'),
+                searchDiv:      $('#searchPage'),
+                searchString:   $('#searchString'),
+                searchPage:     '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
+                url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
+                display: function (data) {
+                    const table = $('#searchPage table');
+                    table.find('tr.item').remove();
+                    $(data).each(function () {
+                        table.append(row = $('<tr>', {class: 'item item-' + this.id}));
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.status + '</td>')
+                            .append('<td>' + this.internalComment + '</td>')
+                            .append('<td>' + this.externalComment + '</td>')
+                            .append('<td>' + this.amount + '</td>')
+                            // TODO: add actions
+                            .append('<td>' + '</td>');
+                    });
+                    table.change();
+                    $('.unassignTicket').click(openUnassignModal);
+                    $('.deleteTicket').click(openDeleteModal);
+                    $('.saleTicket').click(openSaleModal);
+                    $('.undoSaleTicket').click(openUndoSaleModal);
+
+                    $('#defaultPage').remove();
+                },
+                clear: function () {
+                    $('#searchPage table').find('tr.item').remove();
+                }
+            });
         });
 
         function openSearchRequest(e) {

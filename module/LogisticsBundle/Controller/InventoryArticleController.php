@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Controller;
 
+use CommonBundle\Entity\General\Config;
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\InventoryArticle;
@@ -28,11 +29,14 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             ->findAll();
         $units = $this->getAllActiveUnits($allArticles);
 
+        $searchForm = $this->getForm('logistics_catalog_inventory-article_search');
+
         return new ViewModel(
             array(
                 'units'         => $units,
                 'categories'    => $categories,
                 'articles'      => $allArticles,
+                'searchForm'    => $searchForm,
             )
         );
     }
@@ -156,9 +160,35 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             return new ViewModel();
         }
 
-        // TODO: Implement
+        $numResults = $this->getEntityManager()
+            ->getRepository(Config::class)
+            ->getConfigValue('search_max_results');
 
-        return new ViewModel();
+        $articles = $this->getEntityManager()
+            ->getRepository(InventoryArticle::class)
+            ->findAllByNameQuery($this->getParam('string'))
+            ->setMaxResults($numResults)
+            ->getResult();
+
+        $result = array();
+        foreach ($articles as $article) {
+            assert($article instanceof InventoryArticle);
+            $item = (object) array();
+            $item->id = $article->getId();
+            $item->name = $article->getName();
+            $item->status = $article->getStatus();
+            $item->internalComment = $article->getInternalComment();
+            $item->externalComment = $article->getExternalComment();
+            $item->amount = $article->getAmount();
+
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
 
     public function addArticlesAction(): ViewModel

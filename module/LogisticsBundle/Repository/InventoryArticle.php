@@ -3,6 +3,8 @@
 namespace LogisticsBundle\Repository;
 
 use CommonBundle\Entity\General\Organization\Unit;
+use Doctrine\ORM\Query;
+use LogisticsBundle\Entity\InventoryArticle as InventoryArticleEntity;
 use LogisticsBundle\Entity\InventoryCategory;
 
 /**
@@ -14,30 +16,29 @@ use LogisticsBundle\Entity\InventoryCategory;
 class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @return array
+     * @return Query|null
      */
-    public function findAll(): array
+    public function findAllQuery(): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
      * @param  string $name
-     * @return array
+     * @return Query|null
      */
-    public function findAllByName(string $name): array
+    public function findAllByName(string $name): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.name'), ':name')
@@ -46,21 +47,18 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
-<<<<<<< HEAD
-=======
      * @param Unit $unit
-     * @return array
+     * @return Query|null
      */
-    public function findAllByUnit(Unit $unit): array
+    public function findAllByUnitQuery(Unit $unit): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->eq('a.unit', ':unit')
@@ -69,20 +67,18 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
->>>>>>> 7825f2f264c30d57c20c93ac2f1bb851eded17c4
      * @param  string $location
-     * @return array
+     * @return Query|null
      */
-    public function findAllByLocation(string $location): array
+    public function findAllByLocationQuery(string $location): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.location'), ':location')
@@ -90,19 +86,19 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->setParameter('location', '%' . strtolower($location) . '%')
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
-            ->addOrderBy('a.name', 'ASC')            ->getQuery()
-            ->getResult();
+            ->addOrderBy('a.name', 'ASC')
+            ->getQuery();
     }
 
     /**
      * @param  string $visibility
-     * @return array
+     * @return Query|null
      */
-    public function findAllByVisibility(string $visibility): array
+    public function findAllByVisibilityQuery(string $visibility): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility')
@@ -110,19 +106,19 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
-            ->addOrderBy('a.name', 'ASC')            ->getQuery()
-            ->getResult();
+            ->addOrderBy('a.name', 'ASC')            
+            ->getQuery();
     }
 
     /**
      * @param  string $status
-     * @return array
+     * @return Query|null
      */
-    public function findAllByStatus(string $status): array
+    public function findAllByStatusQuery(string $status): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->like($query->expr()->lower('a.status'), ':status')
@@ -131,21 +127,20 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
      * @param string $visibility
      * @param string $status
      * @param InventoryCategory $category
-     * @return array
+     * @return Query|null
      */
-    public function findAllByVisibilityAndStatusAndCategory(string $visibility, string $status, InventoryCategory $category): array
+    public function findAllByVisibilityAndStatusAndCategoryQuery(string $visibility, string $status, InventoryCategory $category): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
-            ->from('LogisticsBundle\Entity\InventoryArticle', 'a')
+            ->from(InventoryArticleEntity::class, 'a')
             ->innerJoin('a.unit', 'u')
             ->where(
                 $query->expr()->andX(
@@ -160,7 +155,6 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->orderBy('u.name', 'ASC')
             ->addOrderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }
