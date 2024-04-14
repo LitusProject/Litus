@@ -39,26 +39,25 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>{{ translate('Order') }}</th>
-                            <th class="hidden-xs">{{ translate('Creator') }}</th>
-                            <th class="hidden-xs">{{ translate('Start date') }}</th>
-                            <th class="hidden-xs">{{ translate('End date') }}</th>
-                            <th class="hidden-xs">{{ translate('Status') }}</th>
-                            <th>{{ translate('Actions') }}</th>
+                            <th style="width: 15%">{{ translate('Order') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('Creator') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('Start date') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('End date') }}</th>
+                            <th style="width: 15%; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">{{ translate('Status') }}</th>
+                            <th style="width: 17.5%">{{ translate('Actions') }}</th>
                         </tr>
                         </thead>
                         {#        New orders        #}
                         {% for order in orders %}
                             <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %}">
-                                <td style="width: 15%">{{ order.getName() }}</td>
-                                <td class="hidden-xs" style="width: 17.5%">{{ order.getCreator().getFullName() }}</td>
-                                <td class="hidden-xs" style="width: 17.5%">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs" style="width: 17.5%">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs item-{{ order.getId() }}-status"
-                                    style="width: 15%; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">
+                                <td style="vertical-align: middle;">{{ order.getName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="item-{{ order.getId() }}-status" style="vertical-align: middle;">
                                     {{ translate(order.getStatus()) }}
                                 </td>
-                                <td class="actions" style="width: 17.5%">
+                                <td class="actions">
                                     <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm">
                                         {{ translate('View') }}
                                     </a>
@@ -77,12 +76,12 @@
                         {#        Old orders        #}
                         {% for order in oldOrders %}
                             <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %} collapsed hide" style="background: #D9DAd8">
-                                <td>{{ order.getName() }}</td>
-                                <td class="hidden-xs">{{ order.getCreator().getFullName() }}</td>
-                                <td class="hidden-xs">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
-                                <td class="hidden-xs item-{{ order.getId() }}-status"
-                                        {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %} style="color: #882a25; font-weight: bold;"{% endif %}>
+                                <td style="vertical-align: middle;">{{ order.getName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="item-{{ order.getId() }}-status"
+                                    style="vertical-align: middle; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">
                                     {{ translate(order.getStatus()) }}
                                 </td>
                                 <td class="actions">
@@ -158,18 +157,17 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true, 'container': 'body'});
             $('.item .cancel').click(openCancelOrder);
             $('.item .delete').click(openRemoveOrder);
             $('.expand').click(collapse);
         });
 
         function openCancelOrder(e) {
-            // Gets the object bound to the modal: an order
-            var $this = $(this);
             e.preventDefault();
-            var cancelOrder = $('#cancelOrder');
-            var id = $this.data('id');
+            // Gets the object bound to the modal: an order
+            const $this = $(this);
+            const cancelOrder = $('#cancelOrder');
+            const id = $this.data('id');
             cancelOrder.find('.orderName').html($(this).data('name'));
             cancelOrder.find('.confirm').unbind('click').click(function () {
                 $.post('{{ url('logistics_order', {"action": "cancel"})}}' + id, function (data) {
@@ -187,11 +185,10 @@
         }
 
         function openRemoveOrder(e) {
-            var $this = $(this);
             e.preventDefault();
-
-            var deleteOrder = $('#deleteOrder');
-            var id = $this.data('id');
+            const $this = $(this);
+            const deleteOrder = $('#deleteOrder');
+            const id = $this.data('id');
             deleteOrder.find('.orderName').html($(this).data('name'));
             deleteOrder.find('.confirm').unbind('click').click(function () {
                 $.post('{{ url('logistics_order', {"action": "remove"})}}' + id, function (data) {
@@ -209,15 +206,17 @@
         }
 
         function errorCancel() {
-            $('.flashmessage').addClass('in');
-            $('.flashmessage').addClass('hidden');
+            const flashmessage = $('.flashmessage');
+            flashmessage.addClass('in');
+            flashmessage.addClass('hidden');
             $('.order_canceled_error').removeClass('hidden');
             $('#cancelOrder').modal('hide');
         }
 
         function errorRemove() {
-            $('.flashmessage').addClass('in');
-            $('.flashmessage').addClass('hidden');
+            const flashmessage = $('.flashmessage');
+            flashmessage.addClass('in');
+            flashmessage.addClass('hidden');
             $('.order_removed_error').removeClass('hidden');
             $('#deleteOrder').modal('hide');
         }

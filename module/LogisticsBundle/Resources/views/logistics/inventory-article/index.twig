@@ -1,5 +1,4 @@
 {% extends 'logistics/base.twig' %}
-
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
@@ -12,7 +11,7 @@
                 <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
             {% endif %}
             {% if hasAccess('logistics_inventory_article', 'add')%}
-                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success">{{ translate('New') }}</a>
+                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 5px">{{ translate('New') }}</a>
             {% endif %}
         </div>
     </div>
@@ -28,7 +27,7 @@
         {{ translate('Please login to view articles.') }}
     {% else %}
         {% if hasAccess('logistics_inventory_article', 'search')%}
-            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+            <div id="searchArticlesPage" style="display: none; margin-top: 10px;">
                 {{ forms.renderForm(searchForm) }}
 
                 <table class="table mappings">
@@ -51,7 +50,7 @@
                         <td colspan="7"></td>
                     </tr>
                     <tr class="category-title">
-                        <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                        <td colspan="7"><i>{{ translate('No articles found') }}</i></td>
                     </tr>
                     </tbody>
                 </table>
@@ -106,7 +105,7 @@
 
                             {% for article in articles %}
                                 {% if article.getCategory() == category %}
-                                    <tr class="{{ unit }} {{ category }} hide">
+                                    <tr class="{{ category }} hide">
                                         <td>{{ article.getName() }}</td>
                                         <td class="hidden-xs">{{ article.getStatus() }}</td>
                                         {% if hasAccess('logistics_inventory_article', 'add') %}
@@ -196,8 +195,8 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.category').click(collapseCategory);
-            $('.unit').click(collapseCategory);
+            $('.unit').click(collapse);
+            $('.category').click(collapse);
             $('#searchArticles').click(openSearchRequest);
 
             $('[rel=tooltip]').tooltip();
@@ -206,22 +205,18 @@
 
         function openSearchRequest(e) {
             e.preventDefault();
-            var revertRequest = $('#searchRequest');
+            const revertRequest = $('#searchRequest');
             revertRequest.modal();
         }
 
         // TODO: fix that this collapses in a better way
-        function collapseCategory(e) {
-            var $this = $(this);
-
+        function collapse(e) {
             e.preventDefault();
-            var name = $this.data('content');
-            var category = document.getElementById(name);
-            var items = Array.from(document.getElementsByClassName(name));
-            console.log(category);
-            console.log(items);
-
-            var icon = $this.find('.ui-icon');
+            const $this = $(this);
+            const name = $this.data('content');
+            const category = document.getElementById(name);
+            const items = Array.from(document.getElementsByClassName(name));
+            const icon = $this.find('.ui-icon');
 
             if (category.classList.contains("collapsed")) {
                 items.forEach((item) => {
