@@ -1,5 +1,4 @@
 {% extends 'logistics/base.twig' %}
-{% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
     <div class="page-header" style="overflow: hidden; margin-top: 10px">
@@ -11,7 +10,7 @@
                 <input type="text" id="searchString" class="search" placeholder={{ translate('Search') }} />
             {% endif %}
             {% if hasAccess('logistics_inventory_article', 'add')%}
-                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 5px">{{ translate('New') }}</a>
+                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 10px">{{ translate('New') }}</a>
             {% endif %}
         </div>
     </div>
@@ -27,30 +26,26 @@
         {{ translate('Please login to view articles.') }}
     {% else %}
         {% if hasAccess('logistics_inventory_article', 'search')%}
-            <div id="searchPage" style="display: none; margin-top: 10px;">
-                {{ forms.renderForm(searchForm) }}
-
-                <table class="table articles">
+            <div id="article_search" style="display: none; margin-top: 10px;">
+                <table class="table">
                     <thead>
-                    <tr>
-                        <th style="width: 20%">{{ translate('Name') }}</th>
-                        <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
-                        {% if hasAccess('logistics_inventory_article', 'add') %}
-                            <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
-                        {% endif %}
-                        <th class="hidden-xs" style="width: 20%">{{ translate('External comment') }}</th>
-                        <th style="width: 10%">{{ translate('Amount') }}</th>
-                        {% if hasAccess('logistics_inventory_article', 'edit') %}
-                            <th style="width: 10%">{{ translate('Actions') }}</th>
-                        {% endif %}
-                    </tr>
+                        <tr>
+                            <th style="width: 20%">{{ translate('Name') }}</th>
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                            {% if hasAccess('logistics_inventory_article', 'add') %}
+                                <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                            {% endif %}
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Comment') }}</th>
+                            <th style="width: 10%">{{ translate('Amount') }}</th>
+                            {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                <th style="width: 10%">{{ translate('Actions') }}</th>
+                            {% endif %}
+                        </tr>
                     </thead>
+
                     <tbody>
                         <tr class="spacer">
                             <td colspan="7"></td>
-                        </tr>
-                        <tr class="category-title">
-                            <td colspan="7"><i>{{ translate('No articles found') }}</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -58,21 +53,21 @@
         {% endif %}
 
         {% if articles %}
-        <div id="defaultPage">
-            <table class="table mappings">
+        <div id="default_page">
+            <table class="table">
                 <thead>
-                <tr>
-                    <th style="width: 20%">{{ translate('Name') }}</th>
-                    <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
-                    {% if hasAccess('logistics_inventory_article', 'add') %}
-                        <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
-                    {% endif %}
-                    <th class="hidden-xs" style="width: 20%">{{ translate('External comment') }}</th>
-                    <th style="width: 10%">{{ translate('Amount') }}</th>
-                    {% if hasAccess('logistics_inventory_article', 'edit') %}
-                        <th style="width: 10%">{{ translate('Actions') }}</th>
-                    {% endif %}
-                </tr>
+                    <tr>
+                        <th style="width: 20%">{{ translate('Name') }}</th>
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                        {% endif %}
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Comment') }}</th>
+                        <th style="width: 10%">{{ translate('Amount') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'edit') %}
+                            <th style="width: 10%">{{ translate('Actions') }}</th>
+                        {% endif %}
+                    </tr>
                 </thead>
 
                 <tbody>
@@ -80,7 +75,7 @@
                     <tr class="spacer">
                         <td colspan="7"></td>
                     </tr>
-                    <tr id="{{ unit }}" class="unit collapsed" data-content="{{ unit }}">
+                    <tr id="{{ unit }}" class="unit-collapse collapsed" data-content="{{ unit }}">
                         <td colspan="7" style="padding: 0">
                             <div>
                                 <button type="button" class="collapse-btn unit">
@@ -92,7 +87,7 @@
                     </tr>
                     {% if unit == 'Logistiek' %}
                         {% for category in categories %}
-                            <tr id="{{ category }}" class="category collapsed {{ unit }}" data-content="{{ category }}">
+                            <tr id="{{ category }}" class="category-collapse collapsed {{ unit }}" data-content="{{ category }}">
                                 <td colspan="7" style="padding: 0">
                                     <div>
                                         <button type="button" class="collapse-btn category">
@@ -105,7 +100,7 @@
 
                             {% for article in articles %}
                                 {% if article.getCategory() == category %}
-                                    <tr class="{{ category }} hide">
+                                    <tr class="item {{ category }} hide">
                                         <td>{{ article.getName() }}</td>
                                         <td class="hidden-xs">{{ article.getStatus() }}</td>
                                         {% if hasAccess('logistics_inventory_article', 'add') %}
@@ -119,7 +114,7 @@
                                         {% endif %}
                                         <td class="hidden-xs">
                                             {% if article.getExternalComment()|length > 1 %}
-                                                <a rel="popover" data-original-title="{{ translate('External comment') }}"
+                                                <a rel="popover" data-original-title="{{ translate('Comment') }}"
                                                    data-content="{{ article.getExternalComment() }}"
                                                    class="label label-info">{{ translate('Comment') }}</a>
                                             {% endif %}
@@ -140,7 +135,7 @@
                     {% else %}
                         {% for article in articles %}
                             {% if article.getUnit().getName() == unit %}
-                                <tr class="{{ unit }} {{ category }} hide">
+                                <tr class="item {{ unit }} hide">
                                     <td>{{ article.getName() }}</td>
                                     <td class="hidden-xs">{{ article.getStatus() }}</td>
                                     {% if hasAccess('logistics_inventory_article', 'add') %}
@@ -154,7 +149,7 @@
                                     {% endif %}
                                     <td class="hidden-xs">
                                         {% if article.getExternalComment()|length > 1 %}
-                                            <a rel="popover" data-original-title="{{ translate('External comment') }}"
+                                            <a rel="popover" data-original-title="{{ translate('Comment') }}"
                                                data-content="{{ article.getExternalComment() }}"
                                                class="label label-info">{{ translate('Comment') }}</a>
                                         {% endif %}
@@ -197,44 +192,58 @@
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.unit').click(collapse);
-            $('.category').click(collapse);
-            $('#searchArticles').click(openSearchRequest);
+            $('.unit-collapse').click(collapse);
+            $('.category-collapse').click(collapse);
 
             $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+            {% if hasAccess('logistics_inventory_article', 'search') %}
+                $.searchDatabase({
+                    default_page:    $('#default_page'),
+                    searchDiv:      $('#article_search'),
+                    searchString:   $('#searchString'),
+                    searchField:    $('<select id="searchField"><option value="name">Name</option></select>'),
+                    article_search:     '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
+                    url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
+                    display: function (data) {
+                        const table = $('#article_search table');
+                        table.find('tr.item').remove();
+                        $(data).each(function () {
+                            table.append(row = $('<tr>', {class: 'item item-' + this.id}));
+                            console.log(this);
+                            console.log(table);
+                            row.append('<td>' + this.name + '</td>')
+                                .append('<td>' + this.status + '</td>')
+                                {% if hasAccess('logistics_inventory_article', 'add') %}
+                                    .append(
+                                        internalComment = $('<td>')
+                                    )
+                                {% endif %}
+                                .append(
+                                    externalComment = $('<td>')
+                                )
+                                .append('<td>' + this.amount + '</td>')
+                                // TODO: add actions
+                                .append(
+                                    actions = $('<td>', {'class': 'actions'})
+                                );
+                            {% if hasAccess('logistics_inventory_article', 'add') %}
+                                internalComment.append('<a rel="popover" data-original-title="{{ translate('Internal comment') }}" data-content="' + this.internalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                            {% endif %}
+                            externalComment.append('<a rel="popover" data-original-title="{{ translate('Comment') }}" data-content="' + this.externalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                            {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">Job</a>');
+                            {% endif %}
+                        });
+                        table.change();
 
-            $.searchDatabase({
-                defaultPage:    $('#defaultPage'),
-                searchDiv:      $('#searchPage'),
-                searchString:   $('#searchString'),
-                searchPage:     '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
-                url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
-                display: function (data) {
-                    const table = $('#searchPage table');
-                    table.find('tr.item').remove();
-                    $(data).each(function () {
-                        table.append(row = $('<tr>', {class: 'item item-' + this.id}));
-                        row.append('<td>' + this.name + '</td>')
-                            .append('<td>' + this.status + '</td>')
-                            .append('<td>' + this.internalComment + '</td>')
-                            .append('<td>' + this.externalComment + '</td>')
-                            .append('<td>' + this.amount + '</td>')
-                            // TODO: add actions
-                            .append('<td>' + '</td>');
-                    });
-                    table.change();
-                    $('.unassignTicket').click(openUnassignModal);
-                    $('.deleteTicket').click(openDeleteModal);
-                    $('.saleTicket').click(openSaleModal);
-                    $('.undoSaleTicket').click(openUndoSaleModal);
-
-                    $('#defaultPage').remove();
-                },
-                clear: function () {
-                    $('#searchPage table').find('tr.item').remove();
-                }
-            });
+                        $('#default_page').remove();
+                    },
+                    clear: function () {
+                        $('#article_search table').find('tr.item').remove();
+                    }
+                });
+            {% endif %}
         });
 
         function openSearchRequest(e) {
@@ -248,11 +257,15 @@
             e.preventDefault();
             const $this = $(this);
             const name = $this.data('content');
-            const category = document.getElementById(name);
+            const collapsable = document.getElementById(name);
             const items = Array.from(document.getElementsByClassName(name));
             const icon = $this.find('.ui-icon');
 
-            if (category.classList.contains("collapsed")) {
+            console.log(name)
+            console.log(collapsable)
+            console.log(items)
+
+            if (collapsable.classList.contains("collapsed")) {
                 items.forEach((item) => {
                     icon.removeClass("ui-icon-triangle-1-e");
                     icon.addClass("ui-icon-triangle-1-s");
@@ -260,14 +273,14 @@
                     if (item.classList.contains("collapsed")) {
                         item.classList.remove("collapsed");
                     }
-                    category.classList.remove("collapsed");
+                    collapsable.classList.remove("collapsed");
                 });
             } else {
                 items.forEach((item) => {
                     icon.removeClass("ui-icon-triangle-1-s");
                     icon.addClass("ui-icon-triangle-1-e");
                     item.classList.add('hide');
-                    category.classList.add("collapsed");
+                    collapsable.classList.add("collapsed");
                 });
             }
         }

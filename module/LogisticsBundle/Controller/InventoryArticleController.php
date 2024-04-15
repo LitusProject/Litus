@@ -164,11 +164,15 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
             ->getRepository(Config::class)
             ->getConfigValue('search_max_results');
 
+        error_log($this->getParam('string'));
+
         $articles = $this->getEntityManager()
             ->getRepository(InventoryArticle::class)
             ->findAllByNameQuery($this->getParam('string'))
             ->setMaxResults($numResults)
             ->getResult();
+
+        error_log(json_encode($articles));
 
         $result = array();
         foreach ($articles as $article) {
@@ -183,6 +187,8 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
 
             $result[] = $item;
         }
+
+        error_log('3');
 
         return new ViewModel(
             array(

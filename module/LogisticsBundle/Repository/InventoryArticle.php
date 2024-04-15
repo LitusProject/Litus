@@ -34,7 +34,7 @@ class InventoryArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
      * @param  string $name
      * @return Query|null
      */
-    public function findAllByName(string $name): ?Query
+    public function findAllByNameQuery(string $name): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')

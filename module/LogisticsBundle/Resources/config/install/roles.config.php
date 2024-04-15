@@ -25,7 +25,7 @@ return array(
                 'index',
             ),
             'logistics_inventory_article' => array(
-                'index',
+                'index', 'search',
             ),
         ),
     ),

@@ -198,6 +198,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@admin_js',
         ),
         'logistics_inventory' => array(
             '@common_jquery',
@@ -220,6 +221,7 @@ return array(
             '@common_jqueryui_datepicker',
             '@common_jqueryui_css',
             '@common_jqueryui_datepicker_css',
+            '@admin_js',
         ),
     ),
 

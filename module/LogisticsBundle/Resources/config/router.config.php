@@ -301,7 +301,7 @@ return array(
         'logistics_inventory_article' => array(
             'type'    => Segment::class,
             'options' => array(
-                'route'       => '[/:language]/logistics/inventory[/:action[/:article]][/]',
+                'route'       => '[/:language]/logistics/inventory[/:action[/:article][/:field/:string]][/]',
                 'constraints' => array(
                     'language' => '(en|nl)',
                     'article'  => '[0-9]*',
