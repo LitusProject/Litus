@@ -195,16 +195,17 @@
             $('.unit-collapse').click(collapse);
             $('.category-collapse').click(collapse);
 
-            $('[rel=tooltip]').tooltip();
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
             {% if hasAccess('logistics_inventory_article', 'search') %}
                 $.searchDatabase({
-                    defaultPage:   $('#default_page'),
+                    defaultPage:    $('#default_page'),
                     searchDiv:      $('#article_search'),
                     searchString:   $('#searchString'),
                     searchField:    $('<select id="searchField"><option value="name"></option></select>'),
-                    articleSearch: '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
-                    url:           '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
+                    basePage:       '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
+                    allResultsText: 'Back to inventory',
+                    url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
                     display: function (data) {
                         const table = $('#article_search table');
                         table.find('tr.item').remove();
@@ -234,8 +235,10 @@
                                 externalComment.append('<a rel="popover" data-original-title="{{ translate('Comment') }}" data-content="' + this.externalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
                             }
                             {% if hasAccess('logistics_inventory_article', 'edit') %}
-                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">Edit</a>');
+                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">{{ translate('Edit') }}</a>');
                             {% endif %}
+
+                            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
                         });
                         table.change();
 
@@ -262,10 +265,6 @@
             const collapsable = document.getElementById(name);
             const items = Array.from(document.getElementsByClassName(name));
             const icon = $this.find('.ui-icon');
-
-            console.log(name)
-            console.log(collapsable)
-            console.log(items)
 
             if (collapsable.classList.contains("collapsed")) {
                 items.forEach((item) => {

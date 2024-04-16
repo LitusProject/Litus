@@ -8,6 +8,7 @@
             searchField: null,
             allResultsText: 'All Results',
             url: '',
+            basePage: null,
             minLength: 3,
             display: function () {}
         };
@@ -97,9 +98,21 @@
                         success: function (e) {
                             indicator.spin(false);
                             if (opts.searchDiv) {
-                                opts.searchDiv.find('.moreResults').toggle(e.length >= 1 && opts.searchPage != '');
-                                if (e.length >= 1 && opts.searchPage != '')
-                                    opts.searchDiv.find('.moreResults a').attr('href', opts.searchPage + opts.searchField.val() + '/' + opts.searchString.val());
+                                if (!(opts.searchDiv.is(':visible'))) {
+                                    if (opts.searchDiv)
+                                        opts.searchDiv.show();
+                                    opts.defaultPage.hide();
+                                }
+                                if (opts.basePage && !(opts.searchPage)) {
+                                    opts.searchDiv.find('.moreResults a').attr('href', opts.basePage);
+                                }
+                                opts.searchDiv.find('.moreResults').toggle(e.length >= 1 && (opts.searchPage || opts.basePage));
+                                if (e.length >= 1 && (opts.searchPage || opts.basePage))
+                                    if (opts.basePage && !(opts.searchPage)) {
+                                        opts.searchDiv.find('.moreResults a').attr('href', opts.basePage);
+                                    } else {
+                                        opts.searchDiv.find('.moreResults a').attr('href', opts.searchPage + opts.searchField.val() + '/' + opts.searchString.val());
+                                    }
                             }
                             opts.display(e);
                         },
