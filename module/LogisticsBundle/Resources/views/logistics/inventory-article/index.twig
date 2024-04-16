@@ -26,7 +26,7 @@
         {{ translate('Please login to view articles.') }}
     {% else %}
         {% if hasAccess('logistics_inventory_article', 'search')%}
-            <div id="article_search" style="display: none; margin-top: 10px;">
+            <div id="article_search" style="display: none; margin-top: 20px;">
                 <table class="table">
                     <thead>
                         <tr>
@@ -199,19 +199,17 @@
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
             {% if hasAccess('logistics_inventory_article', 'search') %}
                 $.searchDatabase({
-                    default_page:    $('#default_page'),
+                    defaultPage:   $('#default_page'),
                     searchDiv:      $('#article_search'),
                     searchString:   $('#searchString'),
-                    searchField:    $('<select id="searchField"><option value="name">Name</option></select>'),
-                    article_search:     '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
-                    url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
+                    searchField:    $('<select id="searchField"><option value="name"></option></select>'),
+                    articleSearch: '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
+                    url:           '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
                     display: function (data) {
                         const table = $('#article_search table');
                         table.find('tr.item').remove();
                         $(data).each(function () {
                             table.append(row = $('<tr>', {class: 'item item-' + this.id}));
-                            console.log(this);
-                            console.log(table);
                             row.append('<td>' + this.name + '</td>')
                                 .append('<td>' + this.status + '</td>')
                                 {% if hasAccess('logistics_inventory_article', 'add') %}
@@ -228,11 +226,15 @@
                                     actions = $('<td>', {'class': 'actions'})
                                 );
                             {% if hasAccess('logistics_inventory_article', 'add') %}
-                                internalComment.append('<a rel="popover" data-original-title="{{ translate('Internal comment') }}" data-content="' + this.internalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                                if (this.internalComment.length) {
+                                    internalComment.append('<a rel="popover" data-original-title="{{ translate('Internal comment') }}" data-content="' + this.internalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                                }
                             {% endif %}
-                            externalComment.append('<a rel="popover" data-original-title="{{ translate('Comment') }}" data-content="' + this.externalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                            if (this.externalComment.length) {
+                                externalComment.append('<a rel="popover" data-original-title="{{ translate('Comment') }}" data-content="' + this.externalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                            }
                             {% if hasAccess('logistics_inventory_article', 'edit') %}
-                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">Job</a>');
+                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">Edit</a>');
                             {% endif %}
                         });
                         table.change();
