@@ -80,7 +80,7 @@
                             <div>
                                 <button type="button" class="collapse-btn unit">
                                     <b>{{ unit }}</b>
-                                    <i class="ui-icon ui-icon-triangle-1-e" style="float: right"></i>
+                                    <i class="ui-icon ui-icon-triangle-1-e unit" style="float: right"></i>
                                 </button>
                             </div>
                         </td>
@@ -92,7 +92,7 @@
                                     <div>
                                         <button type="button" class="collapse-btn category">
                                             <b>{{ category }}</b>
-                                            <i class="ui-icon ui-icon-triangle-1-e" style="float: right"></i>
+                                            <i class="ui-icon ui-icon-triangle-1-e category" style="float: right"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -263,28 +263,86 @@
             const $this = $(this);
             const name = $this.data('content');
             const collapsable = document.getElementById(name);
-            const items = Array.from(document.getElementsByClassName(name));
+            const items = Array.from(document.getElementsByClassName(`[data-content="${name}"]`));
             const icon = $this.find('.ui-icon');
 
             if (collapsable.classList.contains("collapsed")) {
+                // Collapsing
                 items.forEach((item) => {
-                    icon.removeClass("ui-icon-triangle-1-e");
-                    icon.addClass("ui-icon-triangle-1-s");
-                    item.classList.remove('hide');
-                    if (item.classList.contains("collapsed")) {
-                        item.classList.remove("collapsed");
-                    }
-                    collapsable.classList.remove("collapsed");
+                    const subItems = Array.from(document.getElementsByClassName(`[data-content="${item.dataset.content}"]`));
+                    console.log(subItems);
+                    const subItemIcon = item.querySelector('.ui-icon');
+                    subItemIcon.classList.remove("ui-icon-triangle-1-e");
+                    subItemIcon.classList.add("ui-icon-triangle-1-s");
+                    subItems.forEach((subItem) => {
+                        subItem.classList.remove("hide");
+                        subItem.classList.remove("collapsed");
+                    });
+                    item.classList.remove("hide");
+                    item.classList.remove("collapsed");
                 });
+                icon.removeClass("ui-icon-triangle-1-s");
+                icon.addClass("ui-icon-triangle-1-e");
+                collapsable.classList.remove("collapsed");
             } else {
+                // Expanding
                 items.forEach((item) => {
-                    icon.removeClass("ui-icon-triangle-1-s");
-                    icon.addClass("ui-icon-triangle-1-e");
-                    item.classList.add('hide');
-                    collapsable.classList.add("collapsed");
+                    const subItems = Array.from(document.getElementsByClassName(`[data-content="${item.dataset.content}"]`));
+                    console.log(subItems);
+                    const subItemIcon = item.querySelector('.ui-icon');
+                    subItemIcon.classList.remove("ui-icon-triangle-1-s");
+                    subItemIcon.classList.add("ui-icon-triangle-1-e");
+                    subItems.forEach((subItem) => {
+                        subItem.classList.remove("hide");
+                        subItem.classList.add("collapsed");
+                    });
                 });
+                icon.removeClass("ui-icon-triangle-1-s");
+                icon.addClass("ui-icon-triangle-1-e");
+                collapsable.classList.add("collapsed");
             }
         }
+
+        // function collapse(e) {
+        //     e.preventDefault();
+        //     const $this = $(this);
+        //     const name = $this.data('content');
+        //     const collapsable = document.getElementById(name);
+        //     const items = Array.from(document.getElementsByClassName(name));
+        //     const icon = $this.find('.ui-icon');
+        //
+        //     if (collapsable.classList.contains("collapsed")) {
+        //         items.forEach((item) => {
+        //             icon.removeClass("ui-icon-triangle-1-e");
+        //             icon.addClass("ui-icon-triangle-1-s");
+        //             item.classList.remove('hide');
+        //             if (item.classList.contains("collapsed")) {
+        //                 item.classList.remove("collapsed");
+        //             }
+        //             collapsable.classList.remove("collapsed");
+        //         });
+        //     } else {
+        //         items.forEach((item) => {
+        //             const subItemName = `[data-content="${item.dataset.content}"]`;
+        //             const subItems = Array.from(document.querySelectorAll(subItemName));
+        //             const subItemIcon = subItems.map(subItem => subItem.querySelector('.ui-icon'));
+        //
+        //             subItemIcon.forEach(icon => {
+        //                 icon.classList.remove("ui-icon-triangle-1-s");
+        //                 icon.classList.add("ui-icon-triangle-1-e");
+        //             });
+        //
+        //             subItems.forEach((subItem) => {
+        //                 subItem.classList.remove('hide');
+        //                 subItem.classList.add("collapsed");
+        //             });
+        //
+        //             icon.removeClass("ui-icon-triangle-1-s");
+        //             icon.addClass("ui-icon-triangle-1-e");
+        //             item.classList.add('hide');
+        //             collapsable.classList.add("collapsed");
+        //         });
+        //     }
+        // }
     </script>
 {% endblock %}
-

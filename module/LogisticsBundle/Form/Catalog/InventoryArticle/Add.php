@@ -126,15 +126,12 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                     'attributes' => array(
-                        'options'  => $this->getEntityManager()
-                            ->getRepository(InventoryCategory::class)
-                            ->findAll(),
+                        'options'  => $this->createCategoriesArray(),
                     ),
                 )
             );
         }
 
-        $units = $this->createUnitsArray($this->academic);
         if ($this->academic->getUnit($this->academicYear)) {
             $this->add(
                 array(
@@ -150,7 +147,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                     'attributes' => array(
-                        'options'  => $units,
+                        'options'  => $this->createUnitsArray($this->academic),
                         'value'    => $this->academic->getUnit($this->academicYear)->getId(),
                     ),
                 )
@@ -325,5 +322,23 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->academicYear = $academicYear;
 
         return $this;
+    }
+
+    /**
+     * @param $academic
+     * @return array
+     */
+    protected function createCategoriesArray(): array
+    {
+        $categories = $this->getEntityManager()
+            ->getRepository(InventoryCategory::class)
+            ->findAll();
+
+        $categoriesArray = array();
+        foreach ($categories as $category) {
+            $categoriesArray[$category->getId()] = $category->getName();
+        }
+
+        return $categoriesArray;
     }
 }
