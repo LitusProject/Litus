@@ -8,9 +8,9 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 {
     public function indexAction()
     {
-            $articles = $this->getEntityManager()
-                ->getRepository('LogisticsBundle\Entity\Inventory')
-                ->findAllNotZeroQuery();
+        $articles = $this->getEntityManager()
+            ->getRepository('LogisticsBundle\Entity\Inventory')
+            ->findAllNotZeroQuery();
 
         return new ViewModel(
             array(
