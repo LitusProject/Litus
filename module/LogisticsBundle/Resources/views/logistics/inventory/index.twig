@@ -66,7 +66,7 @@
                 </tr>
                 </thead>
                 {% set today = "now"|date('d/m/Y') %}
-                {% for article in paginator %}
+                {% for article in articles %}
 {#                     {% if article.getExpiryDate() %}{% set exp = "19/02/2025"|date('Y-m-d') %}{% endif %}#}
                         <tr class="item item-{{ article.getId() }}"
 {#                            style="{% if article.getExpiryDate() %}#}

@@ -8,17 +8,13 @@ class InventoryController extends \LogisticsBundle\Component\Controller\Logistic
 {
     public function indexAction()
     {
-        $paginator = $this->paginator()->createFromQuery(
-            $this->getEntityManager()
+            $articles = $this->getEntityManager()
                 ->getRepository('LogisticsBundle\Entity\Inventory')
-                ->findAllNotZeroQuery(),
-            $this->getParam('page')
-        );
+                ->findAllNotZeroQuery();
 
         return new ViewModel(
             array(
-                'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
+                'articles'         => $articles,
             )
         );
     }
