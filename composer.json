@@ -48,7 +48,7 @@
         "sendinblue/api-v3-sdk": "8.4.2",
         "sentry/sentry": "^1.9",
         "symfony/console": "^3.4",
-        "symfony/event-dispatcher": "^4.4",
+        "symfony/event-dispatcher": "^5.4",
         "twitter/bootstrap": "^3.3",
         "widmogrod/zf2-assetic-module": "^2.4",
 
