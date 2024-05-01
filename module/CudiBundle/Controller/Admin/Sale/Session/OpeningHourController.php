@@ -175,7 +175,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'nb_registered'     => $formData['nb-registered_' . $startHour . '-' . $endHour . '_' . $split[2]],
                             'members_only'      => false,
                             'members_visible'   => true,
-                            'final_signin_date' => $startDate,
+                            'final_signin_date' => $endDate,
                             'is_cudi_timeslot'  => true,
                         );
 

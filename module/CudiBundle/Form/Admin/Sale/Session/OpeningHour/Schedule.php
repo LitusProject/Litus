@@ -85,7 +85,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'       => 'nb-registered_12:30-14:00_' . $day->format('d/m/Y'),
                     'label'      => 'Registries',
                     'attributes' => array(
-                        'value' => '50',
+                        'value' => '60',
                         'class' => 'registries select1' . $day->format('d'),
                     ),
                     'options'    => array(
@@ -164,7 +164,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
                     'name'       => 'nb-registered_18:00-19:00_' . $day->format('d/m/Y'),
                     'label'      => 'Registries',
                     'attributes' => array(
-                        'value' => '50',
+                        'value' => '60',
                         'class' => 'registries select2' . $day->format('d'),
                     ),
                     'options'    => array(
