@@ -11,6 +11,9 @@ return array(
         'api_br' => array(
             'add-company','edit-company-name', 'add-cv-book',  'add-page-visible', 'is-page-visible', 'get-cv-years', 'get-company-id', 'send-activation', 'add-user', 'get-user-id', 'getSubscriptions',
         ),
+        'api_burgieclan' => array(
+            'get-courses',
+        ),
         'api_calendar' => array(
             'activeEvents', 'poster',
         ),

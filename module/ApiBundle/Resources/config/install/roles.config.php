@@ -18,6 +18,9 @@ return array(
         'parents' => array(
         ),
         'actions' => array(
+            'api_burgieclan' => array(
+                'get-courses',
+            ),
             'api_cudi' => array(
                 'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'signIn', 'signInStatus',
             ),
