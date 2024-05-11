@@ -13,10 +13,23 @@ use SecretaryBundle\Entity\Syllabus\Enrollment\Subject;
 class BurgieclanController extends ApiController
 {
     /**
-     * input: {
-     *      "key": "api key",
-     *      "company": "company name",
-     * }
+     * output:
+     * {
+     *     "0": {
+     *         "name": "Course 1",
+     *         "code": "H0XXXX",
+     *         "credits": 5,
+     *         "semester": 2
+     *     },
+     *      "1": {
+     *         "name": "Course 2",
+     *         "code": "G0XXXX",
+     *         "credits": 4,
+     *         "semester": 2,
+     *     },
+     *     ...
+     * },
+ * }
      */
     public function getCoursesAction()
     {
