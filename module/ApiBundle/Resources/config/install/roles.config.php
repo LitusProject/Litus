@@ -8,7 +8,8 @@ return array(
         'actions' => array(
             'api_oauth' => array(
                 'authorize', 'shibboleth',
-            ),'api_auth' => array(
+            ),
+            'api_auth' => array(
                 'me',
             ),
         ),
