@@ -28,8 +28,7 @@ class BurgieclanController extends ApiController
      *         "semester": 2,
      *     },
      *     ...
-     * },
- * }
+     * }
      */
     public function getCoursesAction()
     {
