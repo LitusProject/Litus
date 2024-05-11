@@ -1,5 +1,7 @@
 <?php
 
+use ApiBundle\Controller\BurgieclanController;
+
 return array(
     'routes' => array(
         'api_admin_key' => array(
@@ -40,6 +42,18 @@ return array(
                 ),
                 'defaults'    => array(
                     'controller' => 'api_br',
+                ),
+            ),
+        ),
+        'api_burgieclan' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/api/burgieclan[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'api_burgieclan',
                 ),
             ),
         ),
@@ -200,6 +214,7 @@ return array(
         'api_calendar'  => 'ApiBundle\Controller\CalendarController',
         'api_config'    => 'ApiBundle\Controller\ConfigController',
         'api_br'        => 'ApiBundle\Controller\BrController',
+        'api_burgieclan' => BurgieclanController::class,
         'api_commu'     => 'ApiBundle\Controller\CommuController',
         'api_cudi'      => 'ApiBundle\Controller\CudiController',
         'api_door'      => 'ApiBundle\Controller\DoorController',
