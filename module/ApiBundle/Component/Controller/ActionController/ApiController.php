@@ -105,7 +105,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
                 return $error;
             }
         } else {
-            $error = $this->error(401, 'No key or OAuth token was provided');
+            $error = $this->error(401, 'No key or OAuth token was provided or the token was invalid');
             $error->setOptions($result->getOptions());
             $e->setResult($error);
 
