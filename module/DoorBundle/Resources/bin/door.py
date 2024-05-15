@@ -23,7 +23,7 @@ import sys
 ##################
 
 # The pin on the pi used for control of the lock.
-GPIO_PORT       = 15
+GPIO_PORT       = 7 # GPIO port 4, physical pin 7
 
 # API settings
 API_HOST        = ''
