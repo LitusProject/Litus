@@ -32,6 +32,9 @@ return array(
         'api_fak' => array(
             'add-checkin', 'add-checkin-username',
         ),
+        'api_healthcheck' => array(
+            'ping',
+        ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',
         ),

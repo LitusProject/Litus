@@ -1,6 +1,7 @@
 <?php
 
 use ApiBundle\Controller\BurgieclanController;
+use ApiBundle\Controller\HealthCheckController;
 
 return array(
     'routes' => array(
@@ -50,7 +51,7 @@ return array(
             'options' => array(
                 'route'       => '/api/burgieclan[/:action][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'api_burgieclan',
@@ -135,6 +136,20 @@ return array(
                 ),
             ),
         ),
+        'api_healthcheck' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/api/healthcheck[/:action][/]',
+                'constraints' => array(
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'language' => '(en|nl)',
+                ),
+                'defaults'    => array(
+                    'controller' => 'api_healthcheck',
+                    'action'     => 'ping',
+                ),
+            ),
+        ),
         'api_mail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -208,21 +223,22 @@ return array(
     ),
 
     'controllers' => array(
-        'api_admin_key' => 'ApiBundle\Controller\Admin\KeyController',
+        'api_admin_key'   => 'ApiBundle\Controller\Admin\KeyController',
 
-        'api_auth'      => 'ApiBundle\Controller\AuthController',
-        'api_calendar'  => 'ApiBundle\Controller\CalendarController',
-        'api_config'    => 'ApiBundle\Controller\ConfigController',
-        'api_br'        => 'ApiBundle\Controller\BrController',
-        'api_burgieclan' => BurgieclanController::class,
-        'api_commu'     => 'ApiBundle\Controller\CommuController',
-        'api_cudi'      => 'ApiBundle\Controller\CudiController',
-        'api_door'      => 'ApiBundle\Controller\DoorController',
-        'api_fak'       => 'ApiBundle\Controller\FakController',
-        'api_mail'      => 'ApiBundle\Controller\MailController',
-        'api_member'    => 'ApiBundle\Controller\MemberController',
-        'api_news'      => 'ApiBundle\Controller\NewsController',
-        'api_oauth'     => 'ApiBundle\Controller\OAuthController',
-        'api_shift'     => 'ApiBundle\Controller\ShiftController',
+        'api_auth'        => 'ApiBundle\Controller\AuthController',
+        'api_calendar'    => 'ApiBundle\Controller\CalendarController',
+        'api_config'      => 'ApiBundle\Controller\ConfigController',
+        'api_br'          => 'ApiBundle\Controller\BrController',
+        'api_burgieclan'  => BurgieclanController::class,
+        'api_commu'       => 'ApiBundle\Controller\CommuController',
+        'api_cudi'        => 'ApiBundle\Controller\CudiController',
+        'api_door'        => 'ApiBundle\Controller\DoorController',
+        'api_fak'         => 'ApiBundle\Controller\FakController',
+        'api_healthcheck' => HealthCheckController::class,
+        'api_mail'        => 'ApiBundle\Controller\MailController',
+        'api_member'      => 'ApiBundle\Controller\MemberController',
+        'api_news'        => 'ApiBundle\Controller\NewsController',
+        'api_oauth'       => 'ApiBundle\Controller\OAuthController',
+        'api_shift'       => 'ApiBundle\Controller\ShiftController',
     ),
 );

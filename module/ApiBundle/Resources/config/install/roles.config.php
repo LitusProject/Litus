@@ -12,6 +12,9 @@ return array(
             'api_auth' => array(
                 'me',
             ),
+            'api_healthcheck' => array(
+                'ping',
+            ),
         ),
     ),
     'student' => array(
