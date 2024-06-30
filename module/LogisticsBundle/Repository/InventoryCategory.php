@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\InventoryCategory as InventoryCategoryEntity;
 
 /**
@@ -13,15 +14,14 @@ use LogisticsBundle\Entity\InventoryCategory as InventoryCategoryEntity;
 class InventoryCategory extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @return array
+     * @return Query|null
      */
-    public function findAll(): array
+    public function findAllQuery(): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('c')
             ->from(InventoryCategoryEntity::class, 'c')
             ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }

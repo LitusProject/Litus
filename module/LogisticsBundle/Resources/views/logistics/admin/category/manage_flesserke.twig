@@ -1,0 +1,116 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/category/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width category_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The category was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width category_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a category. A category can't be deleted if it still has articles assigned to it.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+
+        <div id="normal_page">
+
+            <table class="full_width manage">
+                <tr>
+                    <th style="width: 25%">Name</th>
+                    <th style="width: 60%">Description</th>
+                    <th style="width: 15%">Actions</th>
+                </tr>
+
+                {% for category in paginator %}
+
+                    <tr class="item item-{{ category.getId() }}">
+                        <td>{{ category.getName() }}</td>
+                        <td>{{ category.getDescription }}</td>
+                        <td class="actions">
+                            {% if hasAccess('logistics_admin_category', 'edit_flesserke') %}
+                                <a href="{{ url('logistics_admin_category', {"action": "edit_flesserke", "id": category.getId()}) }}" class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('logistics_admin_category', 'delete_flesserke') %}
+                                <a href="#" class="delete" data-id="{{ category.getId() }}" data-name="{{ category.getName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeCategory" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Category
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following category: <b class="categoryName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeCategory = $('#removeCategory');
+            removeCategory.find('.categoryName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeCategory.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('logistics_admin_category', {"action": "delete_flesserke"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.category_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeCategory.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeCategory.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.category_removed_error').removeClass('hide');
+            $('#removeCategory').modal('hide');
+        }
+
+    </script>
+{% endblock %}

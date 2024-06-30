@@ -1,6 +1,7 @@
 <?php
 
 use Laminas\Router\Http\Segment;
+use LogisticsBundle\Controller\Admin\CategoryController as Category;
 use LogisticsBundle\Controller\FlesserkeArticleController;
 use LogisticsBundle\Controller\InventoryArticleController;
 use LogisticsBundle\Controller\OrderController;
@@ -142,6 +143,21 @@ return array(
                 'defaults'    => array(
                     'controller' => 'logistics_admin_inventory',
                     'action'     => 'manage',
+                ),
+            ),
+        ),
+        'logistics_admin_category' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '/admin/logistics/category[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_admin_category',
+                    'action'     => 'manage_inventory',
                 ),
             ),
         ),
@@ -340,6 +356,7 @@ return array(
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
+        'logistics_admin_category'          => Category::class,
 
         'logistics_order'                   => OrderController::class,
         'logistics_inventory_article'       => InventoryArticleController::class,

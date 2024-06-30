@@ -1,0 +1,20 @@
+<header id="controller_header">
+    <div class="title"><span class="category">Categories</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('logistics_admin_category', 'add_flesserke') %}
+                <li><a {% if 'add_flesserke' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_category', {"action": "add_flesserke"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_category', 'manage_flesserke') %}
+                <li><a {% if 'manage_flesserke' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_category', {"action": "manage_flesserke"}) }}">Flesserke</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_category', 'add_inventory') %}
+                <li><a {% if 'add_inventory' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_category', {"action": "add_inventory"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('logistics_admin_category', 'manage_inventory') %}
+                <li><a {% if 'manage_inventory' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_category', {"action": "manage_inventory"}) }}">Inventory</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

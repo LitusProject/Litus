@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\FlesserkeCategory as FlesserkeCategoryEntity;
 
 /**
@@ -13,15 +14,14 @@ use LogisticsBundle\Entity\FlesserkeCategory as FlesserkeCategoryEntity;
 class FlesserkeCategory extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @return array
+     * @return Query|null
      */
-    public function findAll(): array
+    public function findAllQuery(): Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('c')
             ->from(FlesserkeCategoryEntity::class, 'c')
             ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }
