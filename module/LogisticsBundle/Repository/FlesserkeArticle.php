@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Repository;
 
+use Doctrine\ORM\Query;
 use LogisticsBundle\Entity\FlesserkeCategory;
 
 /**
@@ -13,24 +14,23 @@ use LogisticsBundle\Entity\FlesserkeCategory;
 class FlesserkeArticle extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
     /**
-     * @return array
+     * @return Query|null
      */
-    public function findAll(): array
+    public function findAllQuery(): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\FlesserkeArticle', 'a')
             ->orderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
      * @param  string $name
-     * @return array
+     * @return Query
      */
-    public function findAllByName(string $name): array
+    public function findAllByNameQuery(string $name): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
@@ -41,15 +41,14 @@ class FlesserkeArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->setParameter('name', '%' . strtolower($name) . '%')
             ->orderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
      * @param  string $brand
-     * @return array
+     * @return Query|null
      */
-    public function findAllByBrand(string $brand): array
+    public function findAllByBrandQuery(string $brand): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
@@ -60,15 +59,14 @@ class FlesserkeArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             ->setParameter('brand', '%' . strtolower($brand) . '%')
             ->orderBy('a.category', 'ASC')
             ->addOrderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 
     /**
      * @param FlesserkeCategory $category
-     * @return array
+     * @return Query|null
      */
-    public function findAllByCategory(FlesserkeCategory $category): array
+    public function findAllByCategoryQuery(FlesserkeCategory $category): ?Query
     {
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
@@ -78,7 +76,6 @@ class FlesserkeArticle extends \CommonBundle\Component\Doctrine\ORM\EntityReposi
             )
             ->setParameter('category', $category)
             ->orderBy('a.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
 }

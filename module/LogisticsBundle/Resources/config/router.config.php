@@ -1,6 +1,7 @@
 <?php
 
 use Laminas\Router\Http\Segment;
+use LogisticsBundle\Controller\FlesserkeArticleController;
 use LogisticsBundle\Controller\InventoryArticleController;
 use LogisticsBundle\Controller\OrderController;
 
@@ -313,6 +314,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_flesserke_article' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '[/:language]/logistics/flesserke[/:action[/:article][/:field/:string]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'article'  => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_flesserke_article',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -327,6 +343,7 @@ return array(
 
         'logistics_order'                   => OrderController::class,
         'logistics_inventory_article'       => InventoryArticleController::class,
+        'logistics_flesserke_article'       => FlesserkeArticleController::class,
 //        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',

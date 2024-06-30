@@ -45,6 +45,16 @@ class FlesserkeCategory
      */
     private Collection $articles;
 
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
     public function getId(): int
     {
         return $this->id;

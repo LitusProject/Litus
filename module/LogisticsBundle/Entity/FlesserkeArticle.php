@@ -79,6 +79,11 @@ class FlesserkeArticle extends AbstractArticle
      */
     private DateTime $expirationDate;
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     public function getBarcode(): string
     {
         return $this->barcode;

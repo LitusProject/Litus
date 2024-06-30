@@ -50,5 +50,8 @@ return array(
         'logistics_inventory_article' => array(
             'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
         ),
+        'logistics_flesserke_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+        ),
     ),
 );

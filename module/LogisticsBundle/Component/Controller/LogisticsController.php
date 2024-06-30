@@ -7,6 +7,7 @@ use CommonBundle\Component\Controller\Exception\HasNoAccessException;
 use CommonBundle\Entity\General\Config;
 use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mvc\MvcEvent;
+use LogisticsBundle\Entity\FlesserkeArticle;
 use LogisticsBundle\Entity\InventoryArticle;
 use LogisticsBundle\Entity\Order;
 
@@ -161,6 +162,29 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
             );
             $this->redirect()->toRoute(
                 'logistics_inventory_article',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $article;
+    }
+
+    /**
+     * @return FlesserkeArticle|null
+     */
+    protected function getFlesserkeArticleEntity(): ?FlesserkeArticle
+    {
+        $article = $this->getEntityById(FlesserkeArticle::class, 'article');
+        if (!($article instanceof FlesserkeArticle)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No article was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_flesserke_article',
                 array(
                     'action' => 'index',
                 )
