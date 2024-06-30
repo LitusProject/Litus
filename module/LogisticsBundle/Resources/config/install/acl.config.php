@@ -26,6 +26,9 @@ return array(
         'logistics_admin_inventory' => array(
             'add', 'manage',
         ),
+        'logistics_admin_category' => array(
+            'manage_inventory', 'add_inventory', 'edit_inventory', 'delete_inventory', 'manage_flesserke', 'add_flesserke', 'edit_flesserke', 'delete_flesserke',
+        ),
         'logistics_transport' => array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),
@@ -43,6 +46,15 @@ return array(
         ),
         'logistics_inventory' => array(
             'index', 'add', 'edit', 'reserve',
+        ),
+        'logistics_order' => array(
+            'index', 'view', 'add', 'edit', 'cancel', 'remove',
+        ),
+        'logistics_inventory_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+        ),
+        'logistics_flesserke_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
         ),
     ),
 );

@@ -1,5 +1,11 @@
 <?php
 
+use Laminas\Router\Http\Segment;
+use LogisticsBundle\Controller\Admin\CategoryController as Category;
+use LogisticsBundle\Controller\FlesserkeArticleController;
+use LogisticsBundle\Controller\InventoryArticleController;
+use LogisticsBundle\Controller\OrderController;
+
 return array(
     'routes' => array(
         'logistics_admin_driver' => array(
@@ -140,6 +146,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_admin_category' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '/admin/logistics/category[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_admin_category',
+                    'action'     => 'manage_inventory',
+                ),
+            ),
+        ),
         'logistics_transport' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -231,23 +252,23 @@ return array(
                 ),
             ),
         ),
-        'logistics_catalog' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
-                'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'order'    => '[0-9]*',
-                    'request'  => '[0-9]*',
-                    'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'logistics_catalog',
-                    'action'     => 'overview',
-                ),
-            ),
-        ),
+//        'logistics_catalog' => array(
+//            'type'    => 'Laminas\Router\Http\Segment',
+//            'options' => array(
+//                'route'       => '[/:language]/logistics[/catalog[/:action[/:order][/request/:request][/page/:page]]][/]',
+//                'constraints' => array(
+//                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    'order'    => '[0-9]*',
+//                    'request'  => '[0-9]*',
+//                    'language' => '(en|nl)',
+//                    'page'     => '[0-9]*',
+//                ),
+//                'defaults'    => array(
+//                    'controller' => 'logistics_catalog',
+//                    'action'     => 'overview',
+//                ),
+//            ),
+//        ),
         'logistics_catalog_typeahead' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -263,18 +284,78 @@ return array(
                 ),
             ),
         ),
-        'logistics_inventory' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
+//        'logistics_inventory' => array(
+//            'type'    => 'Laminas\Router\Http\Segment',
+//            'options' => array(
+//                'route'       => '[/:language]/logistics/inventory[/:action[/page/:page][/:id]][/]',
+//                'constraints' => array(
+//                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+//                    'id'       => '[0-9]*',
+//                    'language' => '(en|nl)',
+//                    'page'     => '[0-9]*',
+//                ),
+//                'defaults'    => array(
+//                    'controller' => 'logistics_inventory',
+//                    'action'     => 'index',
+//                ),
+//            ),
+//        ),
+        'logistics_order' => array(
+            'type'    => Segment::class,
             'options' => array(
-                'route'       => '[/:language]/logistics/inventory[/:action[/page/:page][/:id]][/]',
+                'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
                 'constraints' => array(
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'id'       => '[0-9]*',
                     'language' => '(en|nl)',
-                    'page'     => '[0-9]*',
+                    'order'    => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'logistics_inventory',
+                    'controller' => 'logistics_order',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+        'logistics_inventory_article' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '[/:language]/logistics/inventory[/:action[/:article][/:field/:string]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'article'  => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_inventory_article',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+        'logistics_flesserke_article' => array(
+            'type'    => Segment::class,
+            'options' => array(
+                'route'       => '[/:language]/logistics/flesserke[/:action[/:article][/:field/:string]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'article'  => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_flesserke_article',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+        'logistics_order' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'order'    => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_order',
                     'action'     => 'index',
                 ),
             ),
@@ -290,8 +371,13 @@ return array(
         'logistics_admin_piano_reservation' => 'LogisticsBundle\Controller\Admin\PianoReservationController',
         'logistics_admin_lease'             => 'LogisticsBundle\Controller\Admin\LeaseController',
         'logistics_admin_inventory'         => 'LogisticsBundle\Controller\Admin\InventoryController',
+        'logistics_admin_category'          => Category::class,
 
-        'logistics_catalog'                 => 'LogisticsBundle\Controller\CatalogController',
+        'logistics_order'                   => OrderController::class,
+        'logistics_inventory_article'       => InventoryArticleController::class,
+        'logistics_flesserke_article'       => FlesserkeArticleController::class,
+
+//        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',
         'logistics_piano'                   => 'LogisticsBundle\Controller\PianoController',

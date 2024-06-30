@@ -4,7 +4,12 @@ namespace LogisticsBundle\Component\Controller;
 
 use CommonBundle\Component\Controller\ActionController\Exception\ShibbolethUrlException;
 use CommonBundle\Component\Controller\Exception\HasNoAccessException;
+use CommonBundle\Entity\General\Config;
+use CommonBundle\Entity\User\Person\Academic;
 use Laminas\Mvc\MvcEvent;
+use LogisticsBundle\Entity\FlesserkeArticle;
+use LogisticsBundle\Entity\InventoryArticle;
+use LogisticsBundle\Entity\Order;
 
 /**
  * We extend the CommonBundle controller.
@@ -31,7 +36,7 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
                 $this->url()->fromRoute('logistics_auth', array('action' => 'login',))
             );
         $result->organizationUrl = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getRepository(Config::class)
             ->getConfigValue('organization_url');
         $result->shibbolethUrl = $this->getShibbolethUrl();
 
@@ -46,14 +51,14 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
      *
      * @return array
      */
-    public function getAuthenticationHandler()
+    public function getAuthenticationHandler(): array
     {
         return array(
             'action'         => 'index',
             'controller'     => 'common_index',
 
-            'auth_route'     => 'logistics_catalog',
-            'redirect_route' => 'logistics_catalog',
+            'auth_route'     => 'logistics_order',
+            'redirect_route' => 'logistics_order',
         );
     }
 
@@ -96,25 +101,97 @@ class LogisticsController extends \CommonBundle\Component\Controller\ActionContr
     }
 
     /**
-     * @return array|null
+     * @return Academic|null
      */
-    protected function getFathomInfo()
+    protected function getAcademicEntity(): ?Academic
     {
-        $enableFathom = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_fathom');
-
-        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+        if (!$this->getAuthentication()->isAuthenticated()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not authenticated! Login to get access to this service.'
+            );
             return null;
         }
 
-        return array(
-            'url' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_url'),
-            'site_id' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_site_id'),
-        );
+        $academic = $this->getAuthentication()->getPersonObject();
+
+        if (!($academic instanceof Academic)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'You are not a student! Create a student account to get access to this service.'
+            );
+            return null;
+        }
+
+        return $academic;
+    }
+
+    /**
+     * @return Order|null
+     */
+    protected function getOrderEntity(): ?Order
+    {
+        $order = $this->getEntityById(Order::class, 'order');
+        if (!($order instanceof Order)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No order was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_order',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $order;
+    }
+
+    /**
+     * @return InventoryArticle|null
+     */
+    protected function getInventoryArticleEntity(): ?InventoryArticle
+    {
+        $article = $this->getEntityById(InventoryArticle::class, 'article');
+        if (!($article instanceof InventoryArticle)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No article was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_inventory_article',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $article;
+    }
+
+    /**
+     * @return FlesserkeArticle|null
+     */
+    protected function getFlesserkeArticleEntity(): ?FlesserkeArticle
+    {
+        $article = $this->getEntityById(FlesserkeArticle::class, 'article');
+        if (!($article instanceof FlesserkeArticle)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No article was found!'
+            );
+            $this->redirect()->toRoute(
+                'logistics_flesserke_article',
+                array(
+                    'action' => 'index',
+                )
+            );
+            return null;
+        }
+
+        return $article;
     }
 }

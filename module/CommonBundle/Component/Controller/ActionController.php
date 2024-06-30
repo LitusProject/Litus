@@ -579,4 +579,27 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         curl_close($curl);
         return json_decode($response)->access_token;
     }
+
+    /**
+     * @return array|null
+     */
+    protected function getFathomInfo(): ?array
+    {
+        $enableFathom = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.enable_fathom');
+
+        if (!$enableFathom || getenv('APPLICATION_ENV') === 'development') {
+            return null;
+        }
+
+        return array(
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_url'),
+            'site_id' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_site_id'),
+        );
+    }
 }

@@ -1,0 +1,22 @@
+{% extends 'logistics/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <a class="btn btn-default" href="{{ url('logistics_order', {'action' : 'index'}) }}">{{ translate('Back') }}</a>
+
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Add order') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+
+        </div>
+    </div>
+    <div class="alert alert-info">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate("Fill in the location as complete as possible.") }}
+    </div>
+    <br>
+    {{ forms.renderForm(form) }}
+{% endblock %}
+

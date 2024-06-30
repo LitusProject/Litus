@@ -1,0 +1,305 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Inventory') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if hasAccess('logistics_inventory_article', 'search')%}
+                <input type="text" id="searchString" class="search" placeholder={{ translate('Search') }} />
+            {% endif %}
+            {% if hasAccess('logistics_inventory_article', 'add')%}
+                <a href="{{ url('logistics_inventory_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 10px">{{ translate('New') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while updating your preferences.') }}
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to view articles.') }}
+    {% else %}
+        {% if hasAccess('logistics_inventory_article', 'search')%}
+            <div id="article_search" style="display: none; margin-top: 20px;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%">{{ translate('Name') }}</th>
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                            {% if hasAccess('logistics_inventory_article', 'add') %}
+                                <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                            {% endif %}
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Comment') }}</th>
+                            <th style="width: 10%">{{ translate('Amount') }}</th>
+                            {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                <th style="width: 10%">{{ translate('Actions') }}</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="spacer">
+                            <td colspan="7"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if articles %}
+        <div id="default_page">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%">{{ translate('Name') }}</th>
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Status') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                            <th class="hidden-xs" style="width: 20%">{{ translate('Internal comment') }}</th>
+                        {% endif %}
+                        <th class="hidden-xs" style="width: 20%">{{ translate('Comment') }}</th>
+                        <th style="width: 10%">{{ translate('Amount') }}</th>
+                        {% if hasAccess('logistics_inventory_article', 'edit') %}
+                            <th style="width: 10%">{{ translate('Actions') }}</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for unit in units %}
+                    <tr class="spacer">
+                        <td colspan="7"></td>
+                    </tr>
+                    <tr id="{{ unit }}" class="unit-collapse collapsed" data-content="{{ unit }}">
+                        <td colspan="7" style="padding: 0">
+                            <div>
+                                <button type="button" class="collapse-btn unit">
+                                    <b>{{ unit }}</b>
+                                    <i class="ui-icon ui-icon-triangle-1-s unit" style="float: right"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% if unit == 'Logistiek' %}
+                        {% for category in categories %}
+                            <tr id="{{ category }}" class="category-collapse collapsed {{ unit }} hide" data-content="{{ category }}">
+                                <td colspan="7" style="padding: 0">
+                                    <div>
+                                        <button type="button" class="collapse-btn category">
+                                            <b>{{ category }}</b>
+                                            <i class="ui-icon ui-icon-triangle-1-s category" style="float: right"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% for article in articles %}
+                                {% if article.getCategory() == category %}
+                                    <tr class="item {{ category }} hide">
+                                        <td>{{ article.getName() }}</td>
+                                        <td class="hidden-xs">{{ article.getStatus() }}</td>
+                                        {% if hasAccess('logistics_inventory_article', 'add') %}
+                                            <td class="hidden-xs">
+                                                {% if article.getInternalComment()|length > 1 %}
+                                                    <a rel="popover" data-original-title="{{ translate('Internal comment') }}"
+                                                       data-content="{{ article.getInternalComment() }}"
+                                                       class="label label-info">{{ translate('Comment') }}</a>
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                        <td class="hidden-xs">
+                                            {% if article.getExternalComment()|length > 1 %}
+                                                <a rel="popover" data-original-title="{{ translate('Comment') }}"
+                                                   data-content="{{ article.getExternalComment() }}"
+                                                   class="label label-info">{{ translate('Comment') }}</a>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ article.getAmount() }}</td>
+                                        {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                            <td class="actions">
+                                                {#           TODO: add detail pop-up              #}
+                                                <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
+                                                    {{ translate('Edit') }}
+                                                </a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        {% for article in articles %}
+                            {% if article.getUnit().getName() == unit %}
+                                <tr class="item {{ unit }} hide">
+                                    <td>{{ article.getName() }}</td>
+                                    <td class="hidden-xs">{{ article.getStatus() }}</td>
+                                    {% if hasAccess('logistics_inventory_article', 'add') %}
+                                        <td class="hidden-xs">
+                                            {% if article.getInternalComment()|length > 1 %}
+                                                <a rel="popover" data-original-title="{{ translate('Internal comment') }}"
+                                                   data-content="{{ article.getInternalComment() }}"
+                                                   class="label label-info">{{ translate('Comment') }}</a>
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                    <td class="hidden-xs">
+                                        {% if article.getExternalComment()|length > 1 %}
+                                            <a rel="popover" data-original-title="{{ translate('Comment') }}"
+                                               data-content="{{ article.getExternalComment() }}"
+                                               class="label label-info">{{ translate('Comment') }}</a>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ article.getAmount() }}</td>
+                                    {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                        <td class="actions">
+                                            {#           TODO: add detail pop-up              #}
+                                            <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
+                                                {{ translate('Edit') }}
+                                            </a>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        <div class="modal fade" id="searchRequest">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{ translate('Logistics') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('This function is coming soon!') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.unit-collapse').click(collapse);
+            $('.category-collapse').click(collapse);
+
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            {% if hasAccess('logistics_inventory_article', 'search') %}
+                $.searchDatabase({
+                    defaultPage:    $('#default_page'),
+                    searchDiv:      $('#article_search'),
+                    searchString:   $('#searchString'),
+                    searchField:    $('<select id="searchField"><option value="name"></option></select>'),
+                    basePage:       '{{ url('logistics_inventory_article', {'action': 'index'}) }}',
+                    allResultsText: 'Back to inventory',
+                    url:            '{{ url('logistics_inventory_article', {'action': 'search'}) }}',
+                    display: function (data) {
+                        const table = $('#article_search table');
+                        table.find('tr.item').remove();
+                        $(data).each(function () {
+                            table.append(row = $('<tr>', {class: 'item item-' + this.id}));
+                            row.append('<td>' + this.name + '</td>')
+                                .append('<td>' + this.status + '</td>')
+                                {% if hasAccess('logistics_inventory_article', 'add') %}
+                                    .append(
+                                        internalComment = $('<td>')
+                                    )
+                                {% endif %}
+                                .append(
+                                    externalComment = $('<td>')
+                                )
+                                .append('<td>' + this.amount + '</td>')
+                                // TODO: add actions
+                                .append(
+                                    actions = $('<td>', {'class': 'actions'})
+                                );
+                            {% if hasAccess('logistics_inventory_article', 'add') %}
+                                if (this.internalComment.length) {
+                                    internalComment.append('<a rel="popover" data-original-title="{{ translate('Internal comment') }}" data-content="' + this.internalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                                }
+                            {% endif %}
+                            if (this.externalComment.length) {
+                                externalComment.append('<a rel="popover" data-original-title="{{ translate('Comment') }}" data-content="' + this.externalComment + '" class="label label-info">{{ translate('Comment') }}</a>')
+                            }
+                            {% if hasAccess('logistics_inventory_article', 'edit') %}
+                                actions.append('<a href="{{ url('logistics_inventory_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">{{ translate('Edit') }}</a>');
+                            {% endif %}
+
+                            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+                        });
+                        table.change();
+
+                        $('#default_page').remove();
+                    },
+                    clear: function () {
+                        $('#article_search table').find('tr.item').remove();
+                    }
+                });
+            {% endif %}
+        });
+
+        function openSearchRequest(e) {
+            e.preventDefault();
+            const revertRequest = $('#searchRequest');
+            revertRequest.modal();
+        }
+
+        function collapse(e) {
+            e.preventDefault();
+            const $this = $(this);
+            const name = $this.data('content');
+            const collapsable = document.getElementById(name);
+            const items = Array.from(document.getElementsByClassName(name));
+            const icon = $this.find('.ui-icon');
+
+            // Expands the collapsable (shows items in the collapsable)
+            if (collapsable.classList.contains("collapsed")) {
+
+                collapsable.classList.remove("collapsed");
+                icon.removeClass("ui-icon-triangle-1-s");
+                icon.addClass("ui-icon-triangle-1-n");
+
+                items.forEach((item) => {
+                    item.classList.remove('hide');
+                });
+            // Collapses the collapsable (hides items in the collapsable (and lower levels))
+            } else {
+                collapsable.classList.add("collapsed");
+                icon.removeClass("ui-icon-triangle-1-n");
+                icon.addClass("ui-icon-triangle-1-s");
+
+                items.forEach((item) => {
+                    item.classList.add('hide');
+                    item.classList.add('collapsed');
+
+                    const itemIcon = item.querySelector('.ui-icon');
+                    if (itemIcon) {
+                        itemIcon.classList.remove("ui-icon-triangle-1-n");
+                        itemIcon.classList.add("ui-icon-triangle-1-s");
+                    }
+
+                    const subItemName = `${item.dataset.content}`;
+                    const subItems = Array.from(document.getElementsByClassName(subItemName));
+                    console.log(subItemName)
+
+                    subItems.forEach((subItem) => {
+                        subItem.classList.add('hide');
+                    });
+                });
+            }
+        }
+    </script>
+{% endblock %}

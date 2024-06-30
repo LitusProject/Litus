@@ -3,34 +3,41 @@
 namespace LogisticsBundle\Form\Catalog\Order;
 
 use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person\Academic;
+use LogisticsBundle\Entity\Order;
 
 /**
- * The form used to add a new Order.
+ * The form used to add a new order.
  *
  * @author Robin Wroblowski
+ * @author Pedro Devogelaere <pedro.devogelaere@vtk.be>
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = 'LogisticsBundle\Hydrator\Order';
+    protected $hydrator = \LogisticsBundle\Hydrator\Order::class;
 
     /**
      * @var Academic
      */
-    protected $academic;
+    protected Academic $academic;
 
     /**
      * @var AcademicYear
      */
-    protected $academicYear;
+    protected AcademicYear $academicYear;
 
     public function init()
     {
         $this->add(
             array(
-                'type'    => 'text',
-                'name'    => 'name',
-                'label'   => 'Order Name',
+                'type'          => 'text',
+                'name'          => 'name',
+                'label'         => 'Name',
+                'required'      => true,
+                'attributes'    => array(
+                    'placeholder'   => 'Galabal IT',
+                ),
                 'options' => array(
                     'input' => array(
                         'filters' => array(
@@ -40,78 +47,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 ),
             )
         );
-        if ($this->academic->isPraesidium($this->academicYear)) {
-            $this->add(
-                array(
-                    'type'       => 'select',
-                    'label'      => 'Unit that has access',
-                    'name'       => 'unit',
-                    'attributes' => array(
-                        'multiple' => true,
-                        'options'  => $this->createUnitsArray(),
-                        'value'    => $this->academic->getUnit($this->academicYear),
-                        'style'    => 'height: 150px',
-                    ),
-                )
-            );
-        }
 
         $this->add(
             array(
-                'type'       => 'text',
-                'name'       => 'contact',
-                'label'      => 'Contact Name',
-                'required'   => true,
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
+                'type'        => 'textarea',
+                'name'        => 'location',
+                'label'       => 'Location',
+                'placeholder' => 'CW-lab',
+                'attributes'  => array(
+                    'rows'    => 2,
                 ),
-                'attributes' => array(
-                    'id'          => 'contact_name',
-                    'placeholder' => 'Contact name',
-                    'value'       => $this->academic->getFullName(),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'email',
-                'label'      => 'Email',
-                'required'   => true,
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'EmailAddress'),
-                        ),
-                    ),
-                ),
-                'attributes' => array(
-                    'id'          => 'contact_mail',
-                    'placeholder' => 'E-mail',
-                    'value'       => $this->academic->getEmail(),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'location',
-                'label'      => 'Location',
-                'required'   => true,
-                'attributes' => array(
-                    'options' => $this->createLocationsArray(),
-                ),
-                'options'    => array(
-                    'input' => array(
+                'required'    => true,
+                'options'     => array(
+                    'input'   => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
@@ -124,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'     => 'datetime',
                 'name'     => 'start_date',
-                'label'    => 'Start Date',
+                'label'    => 'Start date',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -152,7 +100,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             array(
                 'type'     => 'datetime',
                 'name'     => 'end_date',
-                'label'    => 'End Date',
+                'label'    => 'End date',
                 'required' => true,
                 'options'  => array(
                     'input' => array(
@@ -176,6 +124,36 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+        $units = $this->createUnitsArray($this->academic);
+        if ($this->academic->getUnit($this->academicYear)) {
+            $this->add(
+                array(
+                    'type'       => 'select',
+                    'name'       => 'units',
+                    'label'      => 'Units which have access',
+                    'attributes' => array(
+                        'multiple' => true,
+                        'options'  => $units,
+                        'value'    => $this->academic->getUnit($this->academicYear)->getId(),
+                        'style'    => 'height: 150px',
+                    ),
+                )
+            );
+        }
+
+        $this->add(
+            array(
+                'type'  => 'select',
+                'name'  => 'transport',
+                'label' => 'Transport',
+                'required'   => true,
+                'attributes' => array(
+                    'multiple' => true,
+                    'options'  => Order::$TRANSPORTS,
+                    'value'    => 'Self',
+                ),
+            )
+        );
 
         $this->add(
             array(
@@ -195,68 +173,28 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-//        Commented out because this option doesn't work yet
-//
-//        $this->add(
-//            array(
-//                'type'  => 'checkbox',
-//                'name'  => 'needs_ride',
-//                'label' => 'Needs a Van-ride (Kar-rit)',
-//            )
-//        );
-
         $this->addSubmit('Next', 'btn btn-primary', 'submit');
     }
 
     /**
-     * @return array
-     */
-    private function createUnitsArray()
-    {
-        $units = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Organization\Unit')
-            ->findAllActiveAndDisplayedQuery()->getResult();
-
-        $unitsArray = array();
-        foreach ($units as $unit) {
-            $unitsArray[$unit->getId()] = $unit->getName();
-        }
-
-        return $unitsArray;
-    }
-
-    /**
-     * @return array
-     */
-    private function createLocationsArray()
-    {
-        $locations = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Location')
-            ->findAllActive();
-
-        $locationsArray = array(
-            '' => '',
-        );
-        foreach ($locations as $location) {
-            $locationsArray[$location->getId()] = $location->getName();
-        }
-
-        return $locationsArray;
-    }
-
-    /**
      * @param Academic $academic
+     * @return self
      */
-    public function setAcademic(Academic $academic)
+    public function setAcademic(Academic $academic): self
     {
         $this->academic = $academic;
+
+        return $this;
     }
 
     /**
      * @param AcademicYear $academicYear
+     * @return self
      */
-    public function setAcademicYear(AcademicYear $academicYear)
+    public function setAcademicYear(AcademicYear $academicYear): self
     {
         $this->academicYear = $academicYear;
+
+        return $this;
     }
 }

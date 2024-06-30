@@ -21,6 +21,15 @@ return array(
             'logistics_inventory' => array(
                 'index',
             ),
+            'logistics_order' => array(
+                'index',
+            ),
+            'logistics_inventory_article' => array(
+                'index', 'search',
+            ),
+            'logistics_flesserke_article' => array(
+                'index', 'search',
+            ),
         ),
     ),
 );

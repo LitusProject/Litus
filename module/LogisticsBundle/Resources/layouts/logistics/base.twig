@@ -22,14 +22,19 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        {% if hasAccess('logistics_catalog', 'overview') %}
-                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Requests') }}</a>
+                        {% if hasAccess('logistics_order', 'index') %}
+                            <li {% if 'logistics_order' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_order', {"language": language.getAbbrev()}) }}">{{ translate('Orders') }}</a>
                             </li>
                         {% endif %}
-                        {% if hasAccess('logistics_inventory', 'index') %}
-                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Flesserke') }}</a>
+                        {% if hasAccess('logistics_inventory_article', 'index') %}
+                            <li {% if 'logistics_inventory_article' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_inventory_article', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('logistics_flesserke_article', 'index') %}
+                            <li {% if 'logistics_flesserke_article' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_flesserke_article', {"language": language.getAbbrev()}) }}">{{ translate('Flesserke') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_transport', 'index') %}
