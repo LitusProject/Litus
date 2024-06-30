@@ -345,6 +345,21 @@ return array(
                 ),
             ),
         ),
+        'logistics_order' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
+                'constraints' => array(
+                    'language' => '(en|nl)',
+                    'order'    => '[0-9]*',
+                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'logistics_order',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
     ),
 
     'controllers' => array(
@@ -361,6 +376,7 @@ return array(
         'logistics_order'                   => OrderController::class,
         'logistics_inventory_article'       => InventoryArticleController::class,
         'logistics_flesserke_article'       => FlesserkeArticleController::class,
+
 //        'logistics_catalog'                 => 'LogisticsBundle\Controller\OrderController',
         'logistics_transport'               => 'LogisticsBundle\Controller\TransportController',
         'logistics_auth'                    => 'LogisticsBundle\Controller\AuthController',

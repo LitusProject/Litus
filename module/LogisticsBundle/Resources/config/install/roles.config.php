@@ -27,6 +27,9 @@ return array(
             'logistics_inventory_article' => array(
                 'index', 'search',
             ),
+            'logistics_flesserke_article' => array(
+                'index', 'search',
+            ),
         ),
     ),
 );

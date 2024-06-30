@@ -3,6 +3,7 @@
 namespace LogisticsBundle\Form\Catalog\Order;
 
 use CommonBundle\Entity\General\AcademicYear;
+use CommonBundle\Entity\General\Organization\Unit;
 use CommonBundle\Entity\User\Person\Academic;
 use LogisticsBundle\Entity\Order;
 
