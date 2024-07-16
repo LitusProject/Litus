@@ -156,7 +156,7 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         $this->getEntityManager()->persist($authorizationCode);
                         $this->getEntityManager()->flush();
 
-                        $redirectUri = $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode();
+                        $redirectUri = $code->getRedirect() . '?code=' . $authorizationCode->getCode();
 
                         $state = $this->getSessionContainer()->state;
                         if ($state) {
