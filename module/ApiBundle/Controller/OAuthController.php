@@ -51,6 +51,10 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
 
         $this->getSessionContainer()->key = $this->getRequest()->getQuery('client_id');
 
+        // Store state in session
+        $state = $this->getRequest()->getQuery('state');
+        $this->getSessionContainer()->state = $state;
+
         $form = $this->getForm('common_auth_login');
 
         if ($this->getRequest()->isPost()) {
@@ -152,9 +156,14 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         $this->getEntityManager()->persist($authorizationCode);
                         $this->getEntityManager()->flush();
 
-                        $this->redirect()->toUrl(
-                            $code->getRedirect() . '?code=' . $authorizationCode->getCode()
-                        );
+                        $redirectUri = $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode();
+
+                        $state = $this->getSessionContainer()->state;
+                        if ($state) {
+                            $redirectUri .= '&state=' . $state;
+                        }
+
+                        $this->redirect()->toUrl($redirectUri);
 
                         return new ViewModel();
                     }
