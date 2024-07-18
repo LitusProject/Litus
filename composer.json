@@ -39,7 +39,7 @@
         "dragonmantank/cron-expression": "^3.1",
         "erusev/parsedown": "^1.7",
         "google/apiclient": "^2.12",
-        "guzzlehttp/guzzle": "v7.8.1",
+        "guzzlehttp/guzzle": "v7.9.0",
         "league/uri-parser": "^1.4",
         "misterion/ko-process": "^0.5",
         "ocramius/package-versions": "^1.3",
