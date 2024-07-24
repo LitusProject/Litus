@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'parent',
                 'label'      => 'Parent',
                 'attributes' => array(
-                    'options' => $this->createUnitsArray(),
+                    'options' => $this->createUnitsArray($academic = null),
                 ),
             )
         );
@@ -176,9 +176,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * Returns an array that has all the units, so that one can be selected.
      *
+     * @param $academic
      * @return array
      */
-    protected function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')
