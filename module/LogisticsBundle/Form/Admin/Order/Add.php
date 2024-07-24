@@ -72,7 +72,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'required'   => true,
                 'attributes' => array(
                     'multiple' => true,
-                    'options' => $this->createUnitsArray(),
+                    'options' => $this->createUnitsArray($academic = null),
                     'id'      => 'order_review_unit',
                 ),
             )
@@ -254,9 +254,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
+     * @param $academic
      * @return array
      */
-    private function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')

@@ -18,12 +18,13 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
     {
         parent::init();
 
+
         $this->add(
             array(
                 'type'       => 'select',
                 'name'       => 'unit',
                 'attributes' => array(
-                    'options' => $this->createUnitsArray(),
+                    'options' => $this->createUnitsArray($academic = null),
                 ),
                 'options'    => array(
                     'input' => array(
@@ -36,7 +37,7 @@ class Unit extends \CommonBundle\Component\Form\Bootstrap\Form
         $this->remove('csrf');
     }
 
-    private function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')

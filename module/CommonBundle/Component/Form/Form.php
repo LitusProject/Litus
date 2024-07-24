@@ -239,7 +239,7 @@ abstract class Form extends \Laminas\Form\Form implements InputFilterAwareInterf
                     ->findAllActiveAndDisplayed()->getResult(),
                 $this->getEntityManager()
                     ->getRepository(Unit::class)
-                    ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult(),
+                    ->findAllActiveAndDisplayedAndWorkgroupQuery()->getResult()
             );
         }
 
