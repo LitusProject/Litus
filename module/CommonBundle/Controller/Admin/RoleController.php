@@ -305,7 +305,7 @@ class RoleController extends \CommonBundle\Component\Controller\ActionController
     private function getAcademicYearEntity()
     {
         if ($this->getParam('academicyear') === null) {
-            return $this->getCurrentAcademicYear();
+            return $this->getCurrentAcademicYear(true);
         }
 
         $start = AcademicYear::getDateTime($this->getParam('academicyear'));
