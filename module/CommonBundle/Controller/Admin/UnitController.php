@@ -640,6 +640,7 @@ class UnitController extends \CommonBundle\Component\Controller\ActionController
      */
     private function getAcademicYearEntity()
     {
+        error_log($this->getParam('academicyear'));
         if ($this->getParam('academicyear') === null) {
             return $this->getCurrentAcademicYear(true);
         }
