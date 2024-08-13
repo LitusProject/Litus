@@ -218,10 +218,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 $expStarts,
                 $expEnds,
                 $entry->getThesisSummary(),
-                $entry->getFutureInterest(),
                 $translator->translate($entry->getMobilityEurope()),
                 $translator->translate($entry->getMobilityWorld()),
-                $entry->getCareerExpectations(),
                 $entry->getHobbies(),
             );
             if ($entry->getAddress()->getMailbox() !== null && $entry->getAddress()->getMailbox() !== '') {
