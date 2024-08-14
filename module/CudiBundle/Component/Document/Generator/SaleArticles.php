@@ -61,7 +61,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             $articleData = array();
             if ($codes) {
                 foreach ($codes as $code) {
-                    $articleData = array(
+                    $articleData[] = array(
                         $article->getMainArticle()->getTitle(),
                         $article->getBarcode(),
                         $article->getSupplier()->getName(),
@@ -80,7 +80,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     );
                 }
             } elseif ($common) {
-                $articleData = array(
+                $articleData[] = array(
                     $article->getMainArticle()->getTitle(),
                     $article->getBarcode(),
                     $article->getSupplier()->getName(),
@@ -99,8 +99,10 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                 );
             }
 
-            if (!in_array($articleData, $data)) {
-                $data[] = $articleData;
+            foreach ($articleData as $articleDataSingleCourseCode) {
+                if (!in_array($articleDataSingleCourseCode, $data)) {
+                    $data[] = $articleDataSingleCourseCode;
+                }
             }
         }
         return $data;
