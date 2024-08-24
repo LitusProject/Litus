@@ -305,28 +305,29 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 return $this->error(401, 'Unknown client_id');
             }
 
-            $accessToken = new AccessToken(
+            $newAccessToken = new AccessToken(
                 $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode()
             );
-            $this->getEntityManager()->persist($accessToken);
+            $this->getEntityManager()->persist($newAccessToken);
 
-            $refreshToken = new RefreshToken(
+            $newRefreshToken = new RefreshToken(
                 $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode(),
                 $key
             );
-            $this->getEntityManager()->persist($refreshToken);
 
             $refreshToken->exchange();
 
+            $this->getEntityManager()->persist($refreshToken);
+            $this->getEntityManager()->persist($newRefreshToken);
             $this->getEntityManager()->flush();
 
             $result = array(
-                'access_token'  => $accessToken->getCode(),
+                'access_token'  => $newAccessToken->getCode(),
                 'expires_in'    => AccessToken::DEFAULT_EXPIRATION_TIME,
                 'token_type'    => 'Bearer',
-                'refresh_token' => $refreshToken->getCode(),
+                'refresh_token' => $newRefreshToken->getCode(),
             );
 
             return new ViewModel(
