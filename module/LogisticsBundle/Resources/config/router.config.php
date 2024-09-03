@@ -134,7 +134,7 @@ return array(
         'logistics_admin_inventory' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/logistics/inventory[/:action[/:id]][/page/:page][/]',
+                'route'       => '/admin/logistics/inventory[/:action[/:id][/page/:page][/:field/:string]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'id'     => '[0-9]*',
@@ -341,21 +341,6 @@ return array(
                 ),
                 'defaults'    => array(
                     'controller' => 'logistics_flesserke_article',
-                    'action'     => 'index',
-                ),
-            ),
-        ),
-        'logistics_order' => array(
-            'type'    => 'Laminas\Router\Http\Segment',
-            'options' => array(
-                'route'       => '[/:language]/logistics[/order[/:action[/:order]]][/]',
-                'constraints' => array(
-                    'language' => '(en|nl)',
-                    'order'    => '[0-9]*',
-                    'action'   => '[a-zA-Z][a-zA-Z0-9_-]*',
-                ),
-                'defaults'    => array(
-                    'controller' => 'logistics_order',
                     'action'     => 'index',
                 ),
             ),
