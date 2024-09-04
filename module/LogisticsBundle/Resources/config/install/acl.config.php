@@ -24,7 +24,7 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'logistics_admin_inventory' => array(
-            'add', 'manage',
+            'add', 'delete', 'edit', 'manage',
         ),
         'logistics_admin_category' => array(
             'manage_inventory', 'add_inventory', 'edit_inventory', 'delete_inventory', 'manage_flesserke', 'add_flesserke', 'edit_flesserke', 'delete_flesserke',
