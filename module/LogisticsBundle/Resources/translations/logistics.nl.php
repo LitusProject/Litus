@@ -118,7 +118,7 @@ return array(
     'Article Name'                                       => 'Artikel Naam',
     'Order Name'                                         => 'Bestelling Naam',
     'Material'                                           => 'Materiaal',
-    'Inventory'                                          => 'Flesserke',
+    'Inventory'                                          => 'Inventaris',
     'Flesserke Form'                                     => 'Flesserke Form',
     'Reserve'                                            => 'Reserveer',
     'Order'                                              => 'Order',
