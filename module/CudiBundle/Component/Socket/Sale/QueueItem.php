@@ -221,29 +221,7 @@ class QueueItem
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->entityManager);
             }
-
-            if ($booking->getArticle()->getId() == $isicArticle) {
-                $isicCard = $this->entityManager
-                    ->getRepository('CudiBundle\Entity\IsicCard')
-                    ->findOneBy(array('booking' => $booking->getId()));
-
-                if (!$isicCard->hasPaid()) {
-                    $config = $this->entityManager
-                        ->getRepository('CommonBundle\Entity\General\Config');
-
-                    $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
-                    $client = new SoapClient($serviceUrl);
-
-                    $arguments = array();
-                    $arguments['username'] = $config->getConfigValue('cudi.isic_username');
-                    $arguments['password'] = $config->getConfigValue('cudi.isic_password');
-                    $arguments['userID'] = $isicCard->getCardNumber();
-
-                    $client->hasPaid($arguments);
-                    $isicCard->setPaid(true);
-                }
-            }
-
+            
             if (isset($soldArticles[$booking->getArticle()->getId()])) {
                 $soldArticles[$booking->getArticle()->getId()]['number'] += $booking->getNumber();
             } else {
