@@ -11,7 +11,6 @@ use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\SaleItem;
 use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
 use Doctrine\ORM\EntityManager;
-use Laminas\Soap\Client as SoapClient;
 use SecretaryBundle\Entity\Registration;
 
 /**
@@ -194,10 +193,6 @@ class QueueItem
                 ->getConfigValue('secretary.membership_article')
         );
 
-        $isicArticle = $this->entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.isic_sale_article');
-
         $soldArticles = array();
 
         foreach ($bookings as $booking) {
@@ -221,7 +216,7 @@ class QueueItem
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->entityManager);
             }
-            
+
             if (isset($soldArticles[$booking->getArticle()->getId()])) {
                 $soldArticles[$booking->getArticle()->getId()]['number'] += $booking->getNumber();
             } else {
