@@ -3,7 +3,7 @@
 return array(
     'ticketbundle' => array(
         'ticket_admin_event' => array(
-            'add', 'delete', 'edit', 'manage', 'old', 'clean'
+            'add', 'delete', 'edit', 'manage', 'old', 'clean', 'salesgraph', 'exportSalesgraph', 'clearVisitors','showVisitors','searchVisitors',
         ),
         'ticket_admin_ticket' => array(
             'export', 'manage', 'print', 'search', 'csv',
@@ -26,7 +26,7 @@ return array(
             'consume',
         ),
         'ticket' => array(
-            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr'
+            'delete', 'event', 'pay', 'payed', 'pay-response', 'scanQr', 'qr',
         ),
     ),
 );

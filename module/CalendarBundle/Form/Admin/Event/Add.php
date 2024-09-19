@@ -79,6 +79,30 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
             )
         );
 
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'is_career',
+                'label' => 'Is Career',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'is_eerstejaars',
+                'label' => 'Is Eerstejaars',
+            )
+        );
+
+        $this->add(
+            array(
+                'type'  => 'checkbox',
+                'name'  => 'is_international',
+                'label' => 'Is International',
+            )
+        );
+
         $this->addSubmit('Add', 'calendar_add');
 
         if ($this->getEvent() !== null) {

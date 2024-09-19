@@ -1,0 +1,165 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/frame/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <div class="flashmessage success_message frame_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The Frame was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message frame_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the Frame.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <div id="default_page">
+            <table class="manage">
+                <thead>
+                <tr>
+                    <th style="width:100px">Category</th>
+                    <th>Link To (type)</th>
+                    <th style="width:150px">Frame type</th>
+                    <th>Description (if available)</th>
+                    <th style="width:80px">Has poster</th>
+                    <th style="width:50px">Active</th>
+                    <th style="width:70px">Order nr.</th>
+                    <th style="width:70px">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for frame in paginator %}
+                    <tr class="item item-{{ frame.getId() }}">
+                        <td>{{ frame.getCategoryPage().getCategory().getName(language) }}</td>
+                        <td>{{ frame.getTitle(language) }}
+                            {% if frame.linkToPage() %}
+                                (Page)
+                            {% elseif frame.linkToLink() %}
+                                (Link)
+                            {% endif %}
+                        </td>
+                        <td>{% if frame.isBig() %}
+                                Big Frame
+                            {% elseif frame.hasDescription() %}
+                                Small Frame with Description
+                            {% elseif frame.hasPoster() %}
+                                Small Frame with Poster
+                            {% endif %}
+                        </td>
+                        <td>{% if frame.hasDescription() %}
+                                {{ frame.getDescription(language) }}
+                            {% endif %}
+                        </td>
+                        <td>{% if frame.hasPoster() %}
+                                {% if frame.getPoster() %}&times;{% endif %}
+                            {% endif %}
+                        </td>
+                        <td>{% if frame.isActive() %}&times;{% endif %}</td>
+                        <td>{{ frame.getOrderNumber() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('page_admin_categorypage_frame', 'edit') %}
+                                <a href="{{ url('page_admin_categorypage_frame', {"action": "edit", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
+                                   class="edit">Edit</a>
+                            {% endif %}
+                            {% if hasAccess('page_admin_categorypage_frame', 'editPoster') and (frame.hasPoster()) %}
+                                <a href="{{ url('page_admin_categorypage_frame', {"action": "editPoster", "category_page_id": category_page_id, "frame_id": frame.getId()}) }}"
+                                   class="poster_edit">Edit Poster</a>
+                            {% endif %}
+                            {% if hasAccess('page_admin_categorypage_frame', 'delete') %}
+                                <a href="#" data-id="{{ frame.getId() }}" data-name="{{ frame.getTitle(language) }}"
+                                   class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <aside>
+        {% if hasAccess('page_admin_categorypage', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categorie Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create Categorie Pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_categorypage', {"action": "manage"}) }}">&rarr; Categorie Pages</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div class="modal fade" id="removeFrame" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Frame
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following Frame: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removeFrame = $('#removeFrame');
+            removeFrame.find('.name').html($(this).data('name'));
+            removeFrame.find('.cancel').one('click', function () {
+                removeFrame.modal('hide');
+            });
+            var id = $this.data('id');
+            removeFrame.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('page_admin_categorypage_frame', {"action": "delete", "category_page_id": category_page_id}) }}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.frame_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeFrame.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeFrame.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.frame_removed_error').removeClass('hide');
+            $('#removeFrame').modal('hide');
+        }
+    </script>
+{% endblock %}

@@ -156,6 +156,11 @@ VTK
         'description' => '',
     ),
     array(
+        'key'         => 'logistics.request_margin_hours',
+        'value'       => '1',
+        'description' => 'Hour margin before and after a request for overlaps',
+    ),
+    array(
         'key'         => 'logistics.catalog_search_max_results',
         'value'       => 50,
         'description' => '',
@@ -182,7 +187,7 @@ Een nieuwe order request is aangemaakt:
 {{ name }} ({{ type }}) van {{ person }}.
 Datum: {{ start }} tot {{ end }}.
 
-Student IT
+VTK IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
             )
@@ -201,7 +206,7 @@ Your recent order request has been approved:
 {{ name }}
 Date: {{ start }} tot {{ end }}.
 
-Student IT
+VTK IT
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -213,7 +218,7 @@ Je order request is geaccepteerd:
 {{ name }}
 Datum: {{ start }} tot {{ end }}.
 
-Student IT
+VTK IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -235,7 +240,7 @@ Date: {{ start }} tot {{ end }}.
 
 reason: {{ reason }}
 
-Student IT
+VTK IT
 
 -- This is an automatically generated email, please do not reply --',
                 ),
@@ -249,7 +254,7 @@ Datum: {{ start }} tot {{ end }}.
 
 reden: {{ reason }}
 
-Student IT
+VTK IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
                 ),
@@ -270,7 +275,7 @@ aantal: {{ amount }}.
 {{ name }} van {{ person }}.
 Datum: {{ start }} tot {{ end }}.
 
-Student IT
+VTK IT
 
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
             )

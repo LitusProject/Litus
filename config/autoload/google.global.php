@@ -20,7 +20,7 @@ if (file_exists(__DIR__ . '/../google.config.php')) {
             'client_email'         => $_ENV['LITUS_GOOGLE_CLIENT_EMAIL'],
             'client_id'            => $_ENV['LITUS_GOOGLE_CLIENT_ID'],
             'client_x509_cert_url' => $_ENV['LITUS_GOOGLE_CLIENT_X509_CERT_URL'],
-        )
+        ),
     );
 }
 

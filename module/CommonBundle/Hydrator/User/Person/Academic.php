@@ -33,6 +33,9 @@ class Academic extends \CommonBundle\Hydrator\User\Person
                 'primary_address'   => $hydratorPrimaryAddress->extract($object->getPrimaryAddress()),
             )
         );
+        $data['preference_mappings'] = $object->getPreferenceMappings();
+        $data['email_address_preference'] = $object->getEmailAddressPreference();
+        $data['unsubscribed'] = $object->getUnsubscribed();
 
         $data = array_merge(
             $data,
@@ -46,12 +49,12 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             'identification' => $data['university_identification'],
             'status'         => $object->getUniversityStatus($academicYear) !== null ? $object->getUniversityStatus($academicYear)->getStatus() : null,
         );
-
+        error_log($object->isInWorkingGroup($academicYear));
         if (isset($data['organization'])) {
-            $data['organization']['is_in_workinggroup'] = $object->isInWorkingGroup();
+            $data['organization']['is_in_workinggroup'] = $object->isInWorkingGroup($academicYear);
         } else {
             $data['organization'] = array(
-                'is_in_workinggroup' => $object->isInWorkingGroup(),
+                'is_in_workinggroup' => $object->isInWorkingGroup($academicYear),
             );
         }
 
@@ -106,6 +109,20 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             }
         }
 
+        if (isset($data['preference_mappings'])) {
+            foreach ($data['preference_mappings'] as $preferenceMapping) {
+                $object->addPreferenceMapping($preferenceMapping);
+            }
+        }
+
+        if (isset($data['email_address_preference'])) {
+            $object->setEmailAddressPreference($data['email_address_preference']);
+        }
+
+        if (isset($data['unsubscribed'])) {
+            $object->setUnsubscribed($data['unsubscribed']);
+        }
+
         $studentDomain = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
             ->getConfigValue('student_email_domain');
@@ -115,10 +132,6 @@ class Academic extends \CommonBundle\Hydrator\User\Person
             $data['email'] = $data['personal_email'] ?? $object->getPersonalEmail();
         } else {
             $data['email'] = $universityEmail;
-        }
-
-        if (isset($data['organization']) && isset($data['organization']['is_in_workinggroup']) && $data['organization']['is_in_workinggroup']) {
-            $object->setIsInWorkingGroup($data['organization']['is_in_workinggroup']);
         }
 
         if (isset($data['birthday']) && $data['birthday'] != '') {

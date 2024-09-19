@@ -1,0 +1,11 @@
+{% extends 'corporate/partials/cv.twig' %}
+
+{% block cv_content %}
+    <p>{{ translate("Please note that to comply with GDPR regulations, you are not permitted to download the CV Books from our website.") }}</p>
+    <div class="contentBlock panel-group" id="accordion">
+        <iframe id="pdf" src="{{filePath}}#toolbar=0" width="100%" height="650" ></iframe>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+{% endblock %}

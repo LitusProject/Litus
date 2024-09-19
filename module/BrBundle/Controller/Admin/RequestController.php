@@ -15,16 +15,16 @@ class RequestController extends \CommonBundle\Component\Controller\ActionControl
     public function manageAction()
     {
         $vacancyRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Vacancy')
-            ->findNewRequests();
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findNewRequests('vacancy');
 
         $internshipRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\Internship')
-            ->findNewRequests();
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findNewRequests('internship');
 
         $studentJobRequests = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Company\Request\StudentJob')
-            ->findNewRequests();
+            ->getRepository('BrBundle\Entity\Company\Request')
+            ->findNewRequests('student job');
 
         return new ViewModel(
             array(

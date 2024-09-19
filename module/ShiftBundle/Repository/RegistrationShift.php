@@ -324,4 +324,42 @@ class RegistrationShift extends \CommonBundle\Component\Doctrine\ORM\EntityRepos
 
         return array_values($shifts);
     }
+
+    /**
+     * @param  Person  $person
+     * @param integer $marginInMinutes
+     * @return array
+     */
+    public function findAllCurrentAndCudiTimeslotByPersonWithMargin(Person $person, int $marginInMinutes)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $responsibleResultSet = $query->select('s')
+            ->from('ShiftBundle\Entity\RegistrationShift', 's')
+            ->innerJoin('s.registered', 'r')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->andX(
+                        $query->expr()->lt('s.startDate', ':now_plus_margin'),
+                        $query->expr()->gt('s.endDate', ':now_minus_margin'),
+                        $query->expr()->eq('s.cudiTimeslot', 'true')
+                    ),
+                    $query->expr()->eq('r.person', ':person')
+                )
+            )
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter('now_plus_margin', (new DateTime())->modify('+' . $marginInMinutes . 'minutes'))
+            ->setParameter('now_minus_margin', (new DateTime())->modify('-' . $marginInMinutes . 'minutes'))
+            ->setParameter('person', $person->getId())
+            ->getQuery()
+            ->getResult();
+
+        $shifts = array();
+        foreach ($responsibleResultSet as $result) {
+            $shifts[$result->getStartDate()->format('YmdHi') . $result->getId()] = $result;
+        }
+
+        ksort($shifts);
+
+        return array_values($shifts);
+    }
 }

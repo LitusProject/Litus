@@ -68,6 +68,7 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
                 'isAuthenticated' => $isAuthenticated,
                 'form'            => $this->getForm('common_auth_login'),
                 'shibbolethUrl'   => $this->getShibbolethUrl(),
+                'redirect'        => urldecode($this->getParam('redirect')),
             )
         );
     }
@@ -164,6 +165,10 @@ class AuthController extends \CommonBundle\Component\Controller\ActionController
         }
 
         $shibbolethUrl .= '?source=admin';
+
+        if ($this->getParam('redirect') !== null) {
+            $shibbolethUrl .= '%26redirect=' . urlencode($this->getParam('redirect'));
+        }
 
         $server = $this->getRequest()->getServer();
         if (isset($server['X-Forwarded-Host']) && isset($server['REQUEST_URI'])) {

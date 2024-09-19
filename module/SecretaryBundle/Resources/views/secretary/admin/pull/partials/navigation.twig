@@ -1,0 +1,11 @@
+<header id="controller_header">
+    <div class="title"><span class="scanner">Departmental Pull</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('secretary_admin_pull', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("secretary_admin_pull", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

@@ -1,0 +1,173 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width tiebreaker_remove_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The tiebreaker was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width tiebreaker_remove_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete the tiebreaker.</p>
+        </div>
+    </div>
+
+    <div id="controller_action">
+        <h1>{{ quiz.getName() }}: Tiebreaker</h1>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Correct Answer</th>
+                <th style="width:100px">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% if tiebreaker is not null %}
+                <tr class="item" data-id="{{ tiebreaker.getId() }}">
+                    <td>{{ tiebreaker.getName() }}</td>
+                    <td>{{ tiebreaker.getCorrectAnswer() }}</td>
+                    <td class="actions">
+                        {% if hasAccess('quiz_admin_tiebreaker', 'edit') %}
+                            <a href="{{ url('quiz_admin_tiebreaker', {"action": "edit", "id": tiebreaker.getId(), "quizid": quiz.getId()}) }}"
+                               class="edit">Edit</a>
+                        {% endif %}
+                        {% if hasAccess('quiz_admin_tiebreaker', 'delete') %}
+                            <a href="#" data-id="{{ tiebreaker.getId() }}" data-name="{{ tiebreaker.getName() }}"
+                               class="delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+    <div class="modal fade" id="removeTiebreaker" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Tiebreaker
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following tiebreaker: <b class="name"></b>?
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <aside>
+        {% if hasAccess('quiz_admin_quiz', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Quiz</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}">&rarr; Edit
+                            Quiz</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_tiebreaker', 'add') %}
+            <div class="sidebox">
+                <div class="title">Add/Edit Tiebreaker</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add/edit a tiebreaker to this quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_tiebreaker', {"action": "add", "quizid": quiz.getId()}) }}">&rarr;
+                            Add/Edit Tiebreaker</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_team', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Teams</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the teams!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()}) }}">&rarr; Manage Teams</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_round', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Rounds</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the rounds!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage Rounds</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .delete').click(openRemoveModal);
+        });
+
+        function openRemoveModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeTiebreaker = $('#removeTiebreaker');
+            removeTiebreaker.find('.name').html($(this).data('name'));
+            var id = $(this).data('id');
+            removeTiebreaker.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('quiz_admin_tiebreaker', {"action": "delete", "quizid": quiz.getId()}) }}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.tiebreaker_remove_success').removeClass('hide');
+                        $('.item[data-id=' + id + ']').remove();
+                        removeTiebreaker.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeTiebreaker.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.tiebreaker_remove_error').removeClass('hide');
+            $('#removeTiebreaker').modal('hide');
+        }
+    </script>
+{% endblock %}

@@ -80,4 +80,34 @@ return array(
         'value'       => '0',
         'description' => 'Set this to 1 if ISIC cards are needed for membership. People who want to become member will be redirected to the ISIC form.',
     ),
+    array(
+        'key'         => 'secretary.pull_event_id',
+        'value'       => 'here comes the id',
+        'description' => 'This is the Ticket Event ID for the pulls',
+    ),
+    array(
+        'key'        => 'secretary.pull_price',
+        'value'      => 'here comes the price',
+        'description' => 'The price for the departmental pulls',
+    ),
+    array(
+        'key'         => 'secretary.pull_confirmation_mail',
+        'value'       => serialize(
+            array(
+                'subject' => 'Confirmation Departmental Pull',
+                'content' => 'Dear,
+    
+    You have successfully bought a departmental pull.
+    
+    You can come pick this pull up at Blok 6 at the following hours: 10:00 - 18:00.
+    
+    If you have any questions, you can contact us: <a href="mailto:secretaris@vtk.be">secretaris@vtk.be</a>  
+  
+    We are looking forward to seeing you there.
+    
+    VTK',
+            ),
+        ),
+        'description' => 'Email sent for confirmation of pull order',
+    ),
 );

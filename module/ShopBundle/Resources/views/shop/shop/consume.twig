@@ -7,8 +7,10 @@
                 <input type="button" name="Reward" class="btn btn-primary button" style="border-color: darkred" value="Rewards">
             </a>
         </div>
+
         {% import 'site/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}
+
         {% if noEntity != null %}
             <div class="flashmessage alert alert-danger " id="shop_consume_error" >
                 <a class="close" data-dismiss="alert">&times;</a>
@@ -17,6 +19,7 @@
                 </div>
             </div>
         {%  endif %}
+
         {% if reservations != null %}
             <div class="content">
                 Broodje(s) voor {{ reservations[0].getPerson().getFirstName }}
@@ -87,4 +90,3 @@
         });
     </script>
 {% endblock %}
-

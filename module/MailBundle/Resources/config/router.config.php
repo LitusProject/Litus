@@ -32,17 +32,18 @@ return array(
                 ),
             ),
         ),
-        'mail_admin_group' => array(
+        'mail_admin_preference' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/admin/mail/groups[/:action[/:type/:group]][/]',
+                'route'       => '/admin/mail/preference[/:action[/:id][/page/:page]][/]',
                 'constraints' => array(
                     'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    'group'  => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
                 ),
                 'defaults'    => array(
-                    'controller' => 'mail_admin_group',
-                    'action'     => 'groups',
+                    'controller' => 'mail_admin_preference',
+                    'action'     => 'manage',
                 ),
             ),
         ),
@@ -133,14 +134,15 @@ return array(
     ),
 
     'controllers' => array(
-        'mail_admin_alias'     => 'MailBundle\Controller\Admin\AliasController',
-        'mail_admin_bakske'    => 'MailBundle\Controller\Admin\BakskeController',
-        'mail_admin_group'     => 'MailBundle\Controller\Admin\GroupController',
-        'mail_admin_list'      => 'MailBundle\Controller\Admin\MailingListController',
-        'mail_admin_message'   => 'MailBundle\Controller\Admin\MessageController',
-        'mail_admin_prof'      => 'MailBundle\Controller\Admin\ProfController',
-        'mail_admin_promotion' => 'MailBundle\Controller\Admin\PromotionController',
-        'mail_admin_study'     => 'MailBundle\Controller\Admin\StudyController',
-        'mail_admin_volunteer' => 'MailBundle\Controller\Admin\VolunteerController',
+        'mail_admin_alias'      => 'MailBundle\Controller\Admin\AliasController',
+        'mail_admin_bakske'     => 'MailBundle\Controller\Admin\BakskeController',
+        'mail_admin_preference' => 'MailBundle\Controller\Admin\PreferenceController',
+        'mail_admin_group'      => 'MailBundle\Controller\Admin\GroupController',
+        'mail_admin_list'       => 'MailBundle\Controller\Admin\MailingListController',
+        'mail_admin_message'    => 'MailBundle\Controller\Admin\MessageController',
+        'mail_admin_prof'       => 'MailBundle\Controller\Admin\ProfController',
+        'mail_admin_promotion'  => 'MailBundle\Controller\Admin\PromotionController',
+        'mail_admin_study'      => 'MailBundle\Controller\Admin\StudyController',
+        'mail_admin_volunteer'  => 'MailBundle\Controller\Admin\VolunteerController',
     ),
 );

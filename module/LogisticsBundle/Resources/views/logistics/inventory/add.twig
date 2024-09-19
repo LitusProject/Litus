@@ -2,13 +2,19 @@
 
 {% block content %}
 {#    {%  include 'logistics/inventory/partials/navigation.twig' %}#}
+    {% if authenticatedPerson is null %}
+        <div class="page-header">
+            <h1>{{ translate('Flesserke form') }}</h1>
+        </div>
 
-    {% include 'admin/partials/flashMessenger.twig' %}
+        <div>{{ translate('Please login to view Flesserke form.') }}</div>
+    {% else %}
 
-    <div class="container modal-body">
-        {% import 'site/partials/form.twig' as forms %}
-        {{ forms.renderForm(form) }}
-    </div>
+        <div class="container modal-body">
+            {% import 'site/partials/form.twig' as forms %}
+            {{ forms.renderForm(form) }}
+        </div>
+    {%  endif %}
 {% endblock %}
 
 {% block content_script %}

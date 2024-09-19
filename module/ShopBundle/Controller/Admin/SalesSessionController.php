@@ -218,6 +218,7 @@ class SalesSessionController extends \CommonBundle\Component\Controller\ActionCo
             $item->final_reservation_date = $session->getReservationDate()->format('d/m/Y H:i');
             $item->remarks = $session->getRemarks();
             $item->reservations_possible = $session->getReservationsPossible();
+            $item->amountRewards = $session->getAmountRewards();
 
             $result[] = $item;
         }

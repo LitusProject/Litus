@@ -6,6 +6,9 @@
             {% if hasAccess('common_admin_unit', 'csv') %}
                 <li><a {% if 'csv' == getParam('csv') %} class="active" {% endif %} href="{{ url("common_admin_unit", {"action": "csv", "academicyear": activeAcademicYear.getCode()}) }}">CSV</a></li>
             {% endif %}
+            {% if hasAccess('common_admin_unit', 'csvUpload') %}
+                <li><a {% if 'csv' == getParam('csvUpload') %} class="active" {% endif %} href="{{ url("common_admin_unit", {"action": "csvUpload", "academicyear": activeAcademicYear.getCode()}) }}">Upload Members</a></li>
+            {% endif %}
             {% if hasAccess('common_admin_unit', 'add') %}
                 <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("common_admin_unit", {"action": "add"}) }}">Add</a></li>
             {% endif %}

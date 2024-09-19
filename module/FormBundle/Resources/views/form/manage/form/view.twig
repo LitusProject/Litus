@@ -20,7 +20,7 @@
 
     {% if authenticatedPerson is not null %}
         <div class="pull-right">
-            {% if hasAccess('form_manage', 'add') and viewer.isEdit() %}
+            {% if (hasAccess('form_manage', 'add') and viewer.isEdit()) or isFormEditor%}
                 <a href="{{ url("form_manage", {"action" : "add", "id" : form.getId()}) }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                     {{ translate("Add") }}
@@ -53,7 +53,7 @@
                     {% endif %}
                 </div>
             {% endif %}
-            {% if hasAccess('form_manage_mail', 'send') and viewer.isMail() %}
+            {% if (hasAccess('form_manage_mail', 'send') and viewer.isMail()) or isFormEditor %}
                 <a class="btn btn-default" id="sendMail">
                     <span class="glyphicon glyphicon-envelope"></span>
                     {{ translate('Mail Participants') }}
@@ -108,7 +108,7 @@
                                     {% endif %}
                                     <dt>{{ translate('Submitted') }}</dt>
                                     <dd>{{ dateLocalized(entry.getCreationTime(), 'dd/MM/y HH:mm') }}</dd>
-                                    {% if viewer.isMail() %}
+                                    {% if viewer.isMail() or isFormEditor%}
                                         <dt>{{ translate('Email') }}</dt>
                                         <dd>{{ entry.getPersonInfo().getEmail() }}</dd>
                                     {% endif %}
@@ -152,7 +152,7 @@
                             {% endif %}
 
                             <td class="actions">
-                                {% if viewer.isEdit() %}
+                                {% if viewer.isEdit() or isFormEditor%}
                                     <a href="{{ url("form_manage", {"action": "edit", "id" : entry.getId()}) }}" class="btn btn-primary btn-xs">{{ translate("Edit") }}</a>
                                     <a href="#" class="btn btn-xs btn-danger delete" data-id={{ entry.getId() }} data-name={{ entry.getPersonInfo().getFullName()}} >{{ translate("Delete") }}</a>
                                 {% endif %}

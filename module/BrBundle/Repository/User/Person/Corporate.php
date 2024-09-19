@@ -10,4 +10,21 @@ namespace BrBundle\Repository\User\Person;
  */
 class Corporate extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param string $email
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByEmailQuery(string $email)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('p')
+            ->from('BrBundle\Entity\User\Person\Corporate', 'p')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->like($query->expr()->lower('p.email'), ':email')
+                )
+            )
+            ->setParameter('email', '%' . strtolower($email) . '%')
+            ->getQuery();
+    }
 }

@@ -20,11 +20,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'name',
-                'label'    => 'Order Name',
-                'required' => true,
-                'options'  => array(
+                'type'       => 'text',
+                'name'       => 'name',
+                'label'      => 'Order Name',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'order_review_name',
+                ),
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -44,89 +47,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
-                'type'     => 'datetime',
-                'name'     => 'start_date',
-                'label'    => 'Start Date',
-                'required' => true,
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'datetime',
-                'name'     => 'end_date',
-                'label'    => 'End Date',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'validators' => array(
-                            array(
-                                'name'    => 'DateCompare',
-                                'options' => array(
-                                    'first_date' => 'start_date',
-                                    'format'     => 'd/m/Y H:i',
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'textarea',
-                'name'     => 'description',
-                'label'    => 'Description',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'    => 'textarea',
-                'name'    => 'internal_comment',
-                'label'   => 'Internal Comment',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'    => 'textarea',
-                'name'    => 'external_comment',
-                'label'   => 'External Comment',
-                'options' => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
-                ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'       => 'select',
-                'name'       => 'location',
-                'label'      => 'Location',
-                'required'   => true,
+                'type'       => 'text',
+                'name'       => 'contact',
+                'label'      => 'Contact Name',
                 'attributes' => array(
-                    'options' => $this->createLocationsArray(),
+                    'id' => 'order_review_contact',
+                ),
+                'required'   => true,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
                 ),
             )
         );
@@ -138,34 +71,23 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Unit',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => $this->createUnitsArray(),
+                    'multiple' => true,
+                    'options' => $this->createUnitsArray($academic = null),
+                    'id'      => 'order_review_unit',
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'     => 'text',
-                'name'     => 'contact',
-                'label'    => 'Contact Name',
-                'required' => true,
-                'options'  => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                    ),
+                'type'       => 'text',
+                'name'       => 'email',
+                'label'      => 'Email',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'order_review_email',
                 ),
-            )
-        );
-
-        $this->add(
-            array(
-                'type'     => 'text',
-                'name'     => 'email',
-                'label'    => 'Email',
-                'required' => false,
-                'options'  => array(
+                'options'    => array(
                     'input' => array(
                         'filters' => array(
                             array('name' => 'StringTrim'),
@@ -183,22 +105,133 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
         $this->add(
             array(
                 'type'       => 'select',
-                'name'       => 'status',
-                'label'      => 'Status',
+                'name'       => 'location',
+                'label'      => 'Location',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
+                    'options'     => $this->createLocationsArray(),
+                    'id'          => 'order_review_location',
+                    '<data-help>' => 'If you don\'t see your location as a possible option, put it in the description (be as complete as possible).',
                 ),
             )
         );
 
         $this->add(
             array(
-                'type'  => 'checkbox',
-                'name'  => 'needs_ride',
-                'label' => 'Needs a Van-ride (Kar-rit)',
+                'type'       => 'datetime',
+                'name'       => 'start_date',
+                'label'      => 'Start Date',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'order_review_start_date',
+                ),
             )
         );
+
+        $this->add(
+            array(
+                'type'       => 'datetime',
+                'name'       => 'end_date',
+                'label'      => 'End Date',
+                'required'   => true,
+                'attributes' => array(
+                    'id' => 'order_review_end_date',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name'    => 'DateCompare',
+                                'options' => array(
+                                    'first_date' => 'start_date',
+                                    'format'     => 'd/m/Y H:i',
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'description',
+                'label'      => 'Description',
+                'attributes' => array(
+                    'style' => 'height: 20px;',
+                    'id'    => 'order_review_description',
+                ),
+                'required'   => false,
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'internal_comment',
+                'label'      => 'Internal Comment',
+                'attributes' => array(
+                    'style' => 'height: 30px;',
+                    'id'    => 'order_review_internal_comment',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'textarea',
+                'name'       => 'external_comment',
+                'label'      => 'External Comment',
+                'attributes' => array(
+                    'style' => 'height: 30px;',
+                    'id'    => 'order_review_external_comment',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+//        $this->add(
+//            array(
+//                'type'       => 'select',
+//                'name'       => 'status',
+//                'label'      => 'Status',
+//                'required'   => true,
+//                'attributes' => array(
+//                    'options' => array('removed' => 'Removed', 'rejected' => 'Rejected', 'approved' => 'Approved', 'pending' => 'Pending'),
+//                ),
+//            )
+//        );
+
+
+// ADD BACK LATER
+//        $this->add(
+//            array(
+//                'type'  => 'checkbox',
+//                'name'  => 'needs_ride',
+//                'label' => 'Needs a Van-ride (Kar-rit)',
+//            )
+//        );
 
         $this->addSubmit('Add', 'order_add');
     }
@@ -221,9 +254,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
+     * @param $academic
      * @return array
      */
-    private function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')

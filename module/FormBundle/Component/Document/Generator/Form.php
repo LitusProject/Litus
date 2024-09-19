@@ -42,7 +42,7 @@ class Form extends \CommonBundle\Component\Document\Generator\Csv
             $result = array(
                 $entry->getId(),
                 $entry->getPersonInfo()->getFirstName() . ' ' . $entry->getPersonInfo()->getLastName(),
-                $entry->getCreationTime()->format('d/m/Y H:i')
+                $entry->getCreationTime()->format('d/m/Y H:i'),
             );
 
             $result[] = $entry->getPersonInfo()->getUsername();

@@ -1,0 +1,171 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'br/admin/student-company-match/partials/navigation.twig' %}
+
+    {% include 'br/admin/student-company-match/partials/years.twig' %}
+
+    <div id="controller_action">
+        {% include 'admin/partials/flashMessenger.twig' %}
+        <div class="flashmessage success_message full_width match_removed_success hide">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The match was successfully removed!</p>
+            </div>
+        </div>
+        <div class="flashmessage error_message full_width match_removed_error hide">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to delete a match.</p>
+            </div>
+        </div>
+
+        <div id="match_search" style="display:none;">
+            <div style="padding:4px;text-align:right">
+                <label for="searchField">Search:</label>
+                <select id="searchField">
+                    <option value="student">Student</option>
+                    <option value="company">Company</option>
+                </select>>
+                <label for="searchString">is</label><input type="text" id="searchString" size="30" />
+            </div>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Student</th>
+                    <th>Company</th>
+                    <th>Categories</th>
+                    <th style="width: 120px">Action</th>
+                </tr>
+            </table>
+        </div>
+
+        <div id="default_page">
+            <table class="full_width manage">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Company</th>
+                        <th>Categories</th>
+                        <th style="width: 120px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for match in paginator %}
+                    <tr class="item item-{{ match.getId() }}">
+                        <td>{{ match.getAcademic().getFullName() }}</td>
+                        <td>{{ match.getCompany().getName() }}</td>
+                        <td>{{ match.getCategoriesAsString() }}</td>
+                        <td class="actions">
+                            {% if hasAccess('br_admin_studentcompanymatch', 'edit') %}
+                                <a href="{{ url('br_admin_studentcompanymatch', {"action": "edit", "id": match.getId()}) }}"
+                                   class="edit">Edit</a>                                {% endif %}
+                            {% if hasAccess('br_admin_studentcompanymatch', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ match.getId() }}"
+                                   data-name="{{ match.getAcademic().getFullName() }} &#8660; {{ match.getCompany().getName() }}">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removeMatch" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Match
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following match: <b class="academicName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if hasAccess('br_admin_studentcompanymatch', 'search') %}
+            $.searchDatabase({
+                defaultPage: $('#default_page'),
+                searchDiv: $('#match_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('br_admin_studentcompanymatch', {'action': 'manage'}) }}manage/',
+                url: '{{ url('br_admin_studentcompanymatch', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#match_search table').find('tr.item').remove();
+                    $(data).each(function () {
+                        $('#match_search table').append(row = $('<tr>', {class: 'item'}));
+                        row.append('<td>' + this.student + '</td>')
+                            .append('<td>' + this.company + '</td>')
+                            .append('<td>' + this.categories + '</td>')
+                            .append(
+                                actions = $('<td>', {'class': 'actions'})
+                            );
+                        {% if hasAccess('br_admin_studentcompanymatch', 'edit') %}
+                        actions.append('<a href="{{ url('br_admin_studentcompanymatch') }}edit/' + this.id + '" class="edit">Edit</a>')
+                        {% endif %}
+                        {% if hasAccess('br_admin_studentcompanymatch', 'delete') %}
+                        actions.append('<a href="#" class="delete" data-id="' + this.id + '" data-name="' + this.student + ' &#8660; ' + this.company + '">Delete</a>')
+                        {% endif %}
+                    });
+                    $('#match_search table').change();
+                    $('.item .delete').unbind('click').click(openModal);
+                },
+                clear: function () {
+                    $('#match_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+
+            $('.item .delete').click(openModal);
+        });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var removeMatch = $('#removeMatch');
+            removeMatch.find('.academicName').html($(this).data('name'));
+            var id = $this.data('id');
+            removeMatch.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('br_admin_studentcompanymatch', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.match_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removeMatch.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removeMatch.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.match_removed_error').removeClass('hide');
+            $('#removeMatch').modal('hide');
+        }
+    </script>
+{% endblock %}

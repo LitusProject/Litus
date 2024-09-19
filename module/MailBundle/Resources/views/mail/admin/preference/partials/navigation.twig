@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="mail">Preferences</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('mail_admin_preference', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_preference", {"action": "add"}) }}">Add Section</a></li>
+            {% endif %}
+            {% if hasAccess('mail_admin_preference', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("mail_admin_preference", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

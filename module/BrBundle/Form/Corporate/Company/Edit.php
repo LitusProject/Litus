@@ -207,7 +207,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
                             'id' => 'description',
                         ),
                         'options'    => array(
-                            'input' => array(
+                            'input'    => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
                                 ),
@@ -215,7 +215,7 @@ class Edit extends \CommonBundle\Component\Form\Bootstrap\Form
 
                             'multiple' => true,
                             'options'  => $this->getYears(),
-                            'disabled'  => true,
+                            'disabled' => true,
                         ),
                     ),
                     array(

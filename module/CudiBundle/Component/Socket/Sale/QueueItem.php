@@ -11,7 +11,6 @@ use CudiBundle\Entity\Sale\Booking;
 use CudiBundle\Entity\Sale\SaleItem;
 use CudiBundle\Entity\User\Person\Sale\Acco as AccoCard;
 use Doctrine\ORM\EntityManager;
-use Laminas\Soap\Client as SoapClient;
 use SecretaryBundle\Entity\Registration;
 
 /**
@@ -194,10 +193,6 @@ class QueueItem
                 ->getConfigValue('secretary.membership_article')
         );
 
-        $isicArticle = $this->entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.isic_sale_article');
-
         $soldArticles = array();
 
         foreach ($bookings as $booking) {
@@ -220,28 +215,6 @@ class QueueItem
             } else {
                 $articles->{$booking->getArticle()->getId()} -= $booking->getNumber();
                 $booking->setStatus('sold', $this->entityManager);
-            }
-
-            if ($booking->getArticle()->getId() == $isicArticle) {
-                $isicCard = $this->entityManager
-                    ->getRepository('CudiBundle\Entity\IsicCard')
-                    ->findOneBy(array('booking' => $booking->getId()));
-
-                if (!$isicCard->hasPaid()) {
-                    $config = $this->entityManager
-                        ->getRepository('CommonBundle\Entity\General\Config');
-
-                    $serviceUrl = $config->getConfigValue('cudi.isic_service_url');
-                    $client = new SoapClient($serviceUrl);
-
-                    $arguments = array();
-                    $arguments['username'] = $config->getConfigValue('cudi.isic_username');
-                    $arguments['password'] = $config->getConfigValue('cudi.isic_password');
-                    $arguments['userID'] = $isicCard->getCardNumber();
-
-                    $client->hasPaid($arguments);
-                    $isicCard->setPaid(true);
-                }
             }
 
             if (isset($soldArticles[$booking->getArticle()->getId()])) {
@@ -454,18 +427,19 @@ class QueueItem
                 $results[$booking->getStatus() . '_' . $booking->getArticle()->getId()]['number'] += $booking->getNumber();
             } else {
                 $result = array(
-                    'id'        => $booking->getId(),
-                    'articleId' => $booking->getArticle()->getId(),
-                    'price'     => (int) $booking->getArticle()->getSellPrice(),
-                    'title'     => $booking->getArticle()->getMainArticle()->getTitle(),
-                    'barcode'   => $booking->getArticle()->getBarcode(),
-                    'barcodes'  => $barcodes,
-                    'author'    => $booking->getArticle()->getMainArticle()->getAuthors(),
-                    'number'    => $booking->getNumber(),
-                    'status'    => $booking->getStatus(),
-                    'sellable'  => $booking->getArticle()->isSellable(),
-                    'collected' => $this->articles->{$booking->getArticle()->getId()} ?? 0,
-                    'discounts' => array(),
+                    'id'         => $booking->getId(),
+                    'articleId'  => $booking->getArticle()->getId(),
+                    'price'      => (int) $booking->getArticle()->getSellPrice(),
+                    'title'      => $booking->getArticle()->getMainArticle()->getTitle(),
+                    'barcode'    => $booking->getArticle()->getBarcode(),
+                    'barcodes'   => $barcodes,
+                    'author'     => $booking->getArticle()->getMainArticle()->getAuthors(),
+                    'number'     => $booking->getNumber(),
+                    'status'     => $booking->getStatus(),
+                    'sellable'   => $booking->getArticle()->isSellable(),
+                    'unbookable' => $booking->getArticle()->isUnbookable(),
+                    'collected'  => $this->articles->{$booking->getArticle()->getId()} ?? 0,
+                    'discounts'  => array(),
                 );
 
                 foreach ($booking->getArticle()->getDiscounts() as $discount) {

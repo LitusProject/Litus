@@ -95,11 +95,18 @@ class Shift
     private $responsibles;
 
     /**
-     * @var integer The required number of volunteers for this shift
+     * @var integer The maximum required number of volunteers for this shift
      *
      * @ORM\Column(name="nb_volunteers", type="integer")
      */
     private $nbVolunteers;
+
+    /**
+     * @var integer The minimum required number of volunteers for this shift
+     *
+     * @ORM\Column(name="nb_volunteers_min", type="integer", nullable=true)
+     */
+    private $nbVolunteersMin;
 
     /**
      * @var ArrayCollection The people that volunteered for this shift
@@ -179,14 +186,14 @@ class Shift
     private $points;
 
     /**
-     * @var boolean Wheter or not the reward is payed at the event itself
+     * @var boolean Whether the reward is payed at the event itself
      *
      * @ORM\Column(name="handled_on_event", type="boolean")
      */
     private $handledOnEvent;
 
     /**
-     * @var boolean wheter or not a ticket is needed to do the shift
+     * @var boolean whether a ticket is needed to do the shift
      *
      * @ORM\Column(name="ticket_needed", type="boolean",options={"default" = false})
      */
@@ -402,6 +409,25 @@ class Shift
         while ($this->countVolunteers() > $nbVolunteers) {
             $this->volunteers->remove($this->countVolunteers() - 1);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getNbVolunteersMin()
+    {
+        return $this->nbVolunteersMin ?: $this->nbVolunteers; // return nbVolunteersMin or nbVolunteers if null
+    }
+
+    /**
+     * @param  integer $nbVolunteersMin
+     * @return self
+     */
+    public function setNbVolunteersMin($nbVolunteersMin)
+    {
+        $this->nbVolunteersMin = min($nbVolunteersMin, $this->nbVolunteers);
 
         return $this;
     }

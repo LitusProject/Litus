@@ -1,62 +1,99 @@
 {% extends 'logistics/base.twig' %}
 
 {% block content %}
-{#    {%  include 'logistics/inventory/partials/navigation.twig' %}#}
-
     {% include 'admin/partials/flashMessenger.twig' %}
 
-    <div id="controller_action">
-
-        <div id="article_search" style="display:none;">
-            <div style="padding:4px;text-align:right">
-                Search:
-                <select id="searchField">
-                    <option value="name">Name</option>
-                    <option value="location">Barcode</option>
-                    <option value="status">Amount</option>
-                </select>
-                is
-                <input type="text" id="searchString" size="30" />
-            </div>
-
-            <table class="table table-striped inventory">
-                <tr>
-                    <th width="130px">Name</th>
-                    <th width="90px">Barcode</th>
-                    <th width="150px">Amount</th>
-                    <th>Expiry Date</th>
-{#                    <th width="70px">Actions</th>#}
-                </tr>
-            </table>
+    {# Page header + button to add page #}
+    <div class="page-header"  style="overflow: hidden;">
+        <div style="float:left; width: 80%;">
+            <h1>{{ translate('Flesserke') }}</h1>
         </div>
+        {% if hasAccess('logistics_inventory', 'add') %}
+            <div style="overflow: hidden; width: 20%; margin-top: 20px; padding-left: 50px;">
+                <a href="{{ url('logistics_inventory', {"action": "add"})}}">
+                    <input type="button" name="AddFormButton" class="btn btn-primary button" style="width: 80px" value="Add">
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if authenticatedPerson is null %}
+        <div>{{ translate('Please login to view Flesserke.') }}</div>
+    {% elseif not hasAccess('logistics_inventory', 'index') %}
+        <div>{{ translate('You have no access to Flesserke.') }}<br>{{ translate('To ask for access send a mail to it@vtk.be') }}</div>
+    {% else %}
+        <div id="controller_action">
+
+{#        <div id="article_search" style="display:none;">#}
+{#            <div style="padding:4px;text-align:right">#}
+{#                Search:#}
+{#                <select id="searchField">#}
+{#                    <option value="name">Name</option>#}
+{#                    <option value="location">Barcode</option>#}
+{#                    <option value="status">Amount</option>#}
+{#                </select>#}
+{#                is#}
+{#                <input type="text" id="searchString" size="30" />#}
+{#            </div>#}
+
+{#            <table class="table table-striped inventory">#}
+{#                <tr>#}
+{#                    <th style="width: 30%">Name</th>#}
+{#                    <th style="width: 20%">Barcode</th>#}
+{#                    <th style="width: 15%">Amount</th>#}
+{#                    <th style="width: 15%">Expiry Date</th>#}
+{#                    {% if hasAccess('logistics_inventory', 'reserve') %}#}
+{#                        <th style="width: 15%">Actions</th>#}
+{#                    {% endif %}#}
+{#                </tr>#}
+{#            </table>#}
+{#        </div>#}
 
         <div id="default_page">
-            <table class="table table-striped inventory">
+            <table class="table table-striped inventory" id="sortTable">
                 <thead>
                 <tr>
-                    <th width="90px">Name</th>
-                    <th width="130px">Barcode</th>
-                    <th width="50px">Amount</th>
-                    <th>Expiry Date</th>
-{#                    <th width="70px">Actions</th>#}
+                    <th style="width: 20%">Name</th>
+                    <th style="width: 12.5%">Category</th>
+                    <th style="width: 12.5%">Brand</th>
+                    <th style="width: 9%">Unit</th>
+                    <th style="width: 11%">Barcode</th>
+                    <th style="width: 10%">Res. / Avail.</th>
+                    <th style="width: 10%">Expiry Date</th>
+                    {% if hasAccess('logistics_inventory', 'reserve') %}
+                        <th style="width: 15%">Actions</th>
+                    {% endif %}
                 </tr>
                 </thead>
-                {% for article in paginator %}
-
-                    <tr class="item item-{{ article.getId() }}">
-                        <td>{{ article.getName() }}</td>
-                        <td>{{ article.getBarcode() }}</td>
-                        <td>{{ article.getAmount() }}</td>
-                        <td>{{ article.getExpiryDate() }}</td>
-{#                        <td class="actions">#}
-{#                            {% if hasAccess('logistics_admin_inventory', 'edit') %}#}
-{#                                <a href="{{ url('logistics_admin_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit">Edit</a>#}
-{#                            {% endif %}#}
-{#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
-{#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
-{#                            {% endif %}#}
-{#                        </td>#}
-                    </tr>
+                {% set today = "now"|date('d/m/Y') %}
+                {% for article in articles %}
+{#                     {% if article.getExpiryDate() %}{% set exp = "19/02/2025"|date('Y-m-d') %}{% endif %}#}
+                        <tr class="item item-{{ article.getId() }}"
+{#                            style="{% if article.getExpiryDate() %}#}
+{#                                    {% if exp <= today %}background-color: #fae7e6{% endif %}#}
+{#                                    {% endif %}"#}
+                        >
+                            <td>{{ article.getName() }}</td>
+                            <td>{{ article.getCategory() }}</td>
+                            <td>{{ article.getBrand() }}</td>
+                            <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
+                            <td>{{ article.getBarcode() }}</td>
+                            <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
+                            <td>{{ article.getExpiryDate() }}</td>
+                            {% if hasAccess('logistics_inventory', 'reserve') %}
+                                <td class="actions">
+                                    {% if hasAccess('logistics_inventory', 'edit') %}
+                                        <a href="{{ url('logistics_inventory', {"action": "edit", "id": article.getId()}) }}" class="edit" style="margin-right: 10px">Edit</a>
+                                    {% endif %}
+                                    {% if hasAccess('logistics_inventory', 'reserve') %}
+                                        <a href="{{ url('logistics_inventory', {"action": "reserve", "id": article.getId()}) }}" class="edit">Reserve</a>
+                                    {% endif %}
+                                    {#                            {% if hasAccess('logistics_admin_inventory', 'delete') %}#}
+                                    {#                                <a href="#" class="delete" data-id="{{ article.getId() }}" data-name="{{ article.getName() }}">Delete</a>#}
+                                    {#                            {% endif %}#}
+                                </td>
+                            {% endif %}
+                        </tr>
 
                 {% endfor %}
 
@@ -64,30 +101,34 @@
 
         </div>
 
-        {% include 'admin/partials/paginationControl.twig' %}
-    </div>
-
-    <div class="modal fade" id="removeArticle" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Litus Admin</span>
-                    /Delete Article
-                </div>
-                <div class="modal-body">
-                    <p>
-                        You are about to delete the following article: <b class="articleName"></b>!
-                        Please note that this operation cannot be undone!
-                    </p>
-                    <p>
-                        Are you sure you want to continue?
-                    </p>
-                    <div class="footer">
-                        <button class="delete">Yes</button>
-                        <button class="cancel" data-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+
+{#        <div class="modal fade" id="removeArticle" tabindex="-1">#}
+{#            <div class="modal-dialog">#}
+{#                <div class="modal-content">#}
+{#                    <div class="modal-header">#}
+{#                        <span>Litus Admin</span>#}
+{#                        /Delete Article#}
+{#                    </div>#}
+{#                    <div class="modal-body">#}
+{#                        <p>#}
+{#                            You are about to delete the following article: <b class="articleName"></b>!#}
+{#                            Please note that this operation cannot be undone!#}
+{#                        </p>#}
+{#                        <p>#}
+{#                            Are you sure you want to continue?#}
+{#                        </p>#}
+{#                        <div class="footer">#}
+{#                            <button class="delete">Yes</button>#}
+{#                            <button class="cancel" data-dismiss="modal">No</button>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+    {%  endif %}
 {% endblock %}
+
+{% block content_script %}
+{% endblock %}
+

@@ -4,10 +4,15 @@ namespace ShopBundle\Controller\Admin;
 
 use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use CommonBundle\Entity\User\Person;
+use DateInterval;
+use DateTime;
 use Laminas\Http\Headers;
+use Laminas\Mail\Message;
 use Laminas\View\Model\ViewModel;
+use ShopBundle\Component\NoShow\NoShowConfig;
 use ShopBundle\Entity\Reservation;
-use ShopBundle\Entity\Reservation\Permission as ReservationPermission;
+use ShopBundle\Entity\Reservation\Ban;
 use ShopBundle\Entity\Session as SalesSession;
 
 /**
@@ -37,8 +42,13 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             ->getResult();
 
         $totalReservations = 0;
-        foreach($result as $reservation){
-            $totalReservations += $reservation[1];
+        $length = count($result);
+        for ($i = 0; $i < $length; $i++) {
+            $totalReservations += $result[$i][1];
+            $totalAmount = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Session\Stock')
+                ->getProductAvailability($result[$i][0], $salesSession);
+            $result[$i][2] = $totalAmount;
         }
 
         return new ViewModel(
@@ -48,6 +58,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 'totals'            => $result,
                 'salesSession'      => $salesSession,
                 'totalReservations' => $totalReservations,
+                'entityManager'     => $this->getEntityManager(),
             )
         );
     }
@@ -71,6 +82,11 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
         );
     }
 
+    /**
+     * Toggles a no-show:
+     * - if no ban is present yet for the person in the current sales session, a ban is created
+     * - if a ban is already present for the person in the current sales session, it is reverted
+     */
     public function noshowAction()
     {
         $this->initAjax();
@@ -80,43 +96,59 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             return new ViewModel();
         }
 
-        $reservation->setNoShow(!$reservation->getNoShow());
-        $blacklisted = false;
-        $blacklistAvoided = false;
-
-        $this->getEntityManager()->persist($reservation);
-        $this->getEntityManager()->flush();
-
-        if ($reservation->getNoShow()) {
-            $maxNoShows = $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('shop.maximal_no_shows');
-            $currentNoShows = $this->getEntityManager()
-                ->getRepository('ShopBundle\Entity\Reservation')
-                ->getNoShowSessionCount($reservation->getPerson());
-            if ($currentNoShows >= $maxNoShows) {
-                $reservationPermission = $this->getEntityManager()
-                    ->getRepository('ShopBundle\Entity\Reservation\Permission')
-                    ->find($reservation->getPerson());
-                if ($reservationPermission) {
-                    $blacklistAvoided = $reservationPermission->getReservationsAllowed();
-                } else {
-                    $blacklisted = true;
-                    $reservationPermission = new ReservationPermission();
-                    $reservationPermission->setPerson($reservation->getPerson());
-                    $reservationPermission->setReservationsAllowed(false);
-                    $this->getEntityManager()->persist($reservationPermission);
-                    $this->getEntityManager()->flush();
-                }
-            }
+        $salesSession = $reservation->getSalesSession();
+        if ($salesSession === null) {
+            return new ViewModel();
         }
+
+        // if ban already present in sales session -> revert it
+        if ($salesSession->containsBanForPerson($reservation->getPerson())) {
+            $salesSession->removeAllBansForPerson($reservation->getPerson());
+            $this->getEntityManager()->persist($salesSession);
+            $this->getEntityManager()->flush();
+        } else { // no ban present yet -> create one
+            $noShowConfig = $this->getNoShowConfig();
+
+            // Get total amount of warnings for person (past, present and future)
+            $warningCount = $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Reservation\Ban')
+                ->findAllByPersonQuery($reservation->getPerson())
+                ->getSingleScalarResult();
+
+            // Create ban
+            $banIntervalStr = $noShowConfig->getBanInterval($warningCount);
+            $banInterval = DateInterval::createFromDateString($banIntervalStr);
+
+            $banStartTimestamp = new DateTime();
+
+            $banEndTimestamp = new DateTime();
+            $banEndTimestamp = $banEndTimestamp->add($banInterval);
+
+            $ban = new Ban();
+            $ban->setPerson($reservation->getPerson());
+            $ban->setStartTimestamp($banStartTimestamp);
+            $ban->setEndTimestamp($banEndTimestamp);
+            $ban->setSalesSession($salesSession);
+
+            $this->getEntityManager()->persist($ban);
+            $this->getEntityManager()->flush();
+
+            // Send warning email
+            $this->sendNoShowEmail($reservation->getPerson(), $warningCount, $banIntervalStr);
+        }
+
+        // front-end needs to update the no-show checkboxes of all the reservations of the person in real-time
+        $reservationsToUpdate = $this->getEntityManager()
+            ->getRepository('ShopBundle\Entity\Reservation')
+            ->getAllReservationsByPersonAndSalesSessionQuery($reservation->getPerson()->getFullName(), $salesSession)
+            ->getResult();
+        $reservationsToUpdateIds = array_map(fn($reservation) => $reservation->getId(), $reservationsToUpdate);
 
         return new ViewModel(
             array(
                 'result' => array(
-                    'status'           => 'success',
-                    'blacklisted'      => $blacklisted,
-                    'blacklistAvoided' => $blacklistAvoided,
+                    'reservationsToUpdate' => $reservationsToUpdateIds,
+                    'status'               => 'success',
                 ),
             )
         );
@@ -148,7 +180,7 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 (string) $item->getAmount(),
                 (string) $item->getAmount() * $item->getProduct()->getSellPrice(),
                 '',
-                ''
+                '',
             );
         }
 
@@ -177,12 +209,16 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
     {
         $this->initAjax();
 
+        $salesSession = $this->getSalesSessionEntity();
+        if ($salesSession === null) {
+            return new ViewModel();
+        }
+
         // $numResults = $this->getEntityManager()
         //     ->getRepository('CommonBundle\Entity\General\Config')
         //     ->getConfigValue('search_max_results');
         $reservations = $this->search()
             ->getResult();
-
 
         $result = array();
         foreach ($reservations as $reservation) {
@@ -192,7 +228,12 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
             $item->product = $reservation->getProduct()->getName();
             $item->amount = $reservation->getAmount();
             $item->total = $reservation->getAmount() * $reservation->getProduct()->getSellPrice();
-            $item->noShow = $reservation->getNoShow();
+
+            // if a no-show has been set for a person, all reservations of the person will indicate it
+            $item->noshow = $salesSession->containsBanForPerson($reservation->getPerson());
+
+            $item->consumed = $reservation->getConsumed();
+            $item->reward = $reservation->getReward();
 
             $result[] = $item;
         }
@@ -264,6 +305,53 @@ class ReservationController extends \CommonBundle\Component\Controller\ActionCon
                 return $this->getEntityManager()
                     ->getRepository('ShopBundle\Entity\Reservation')
                     ->getAllReservationsByPersonAndSalesSessionQuery($this->getParam('string'), $this->getSalesSessionEntity());
+        }
+    }
+
+    private function getNoShowConfig()
+    {
+        $noShowConfigDataSerialized = ($this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no_show_config'));
+
+        $noShowConfigData = unserialize($noShowConfigDataSerialized);
+
+        return new NoShowConfig($noShowConfigData);
+    }
+
+    public function sendNoShowEmail(Person $person, int $warningCount, string $banInterval)
+    {
+        $noShowConfig = $this->getNoShowConfig();
+
+        $mailContent = $noShowConfig->getEmailContent($person, $warningCount, $banInterval);
+        $mailSubject = $noShowConfig->getEmailSubject($warningCount);
+
+        // sender address
+        $noreplyAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no-reply_mail');
+
+        // bcc and reply address
+        $shopAddress = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.mail');
+
+        // name of the shop
+        $mailName = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('shop.no-reply_mail_name');
+
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($mailContent)
+            ->setFrom($noreplyAddress, $mailName)
+            ->setReplyTo($shopAddress, $mailName)
+            ->addTo($person->getEmail(), $person->getFullName())
+            ->setSubject($mailSubject)
+            ->addBcc($shopAddress, $mailName);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $this->getMailTransport()->send($mail);
         }
     }
 }

@@ -27,6 +27,7 @@
                     <th width="150px" class="wider">End Date</th>
                     <th width="70px">Active</th>
                     <th width="160px">Author</th>
+                    <th width="70px"># Entries</th>
                     <th width="70px">Actions</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                         <td class="wider">{{ dateLocalized(form.getEndDate(), 'dd/MM/y HH:mm') }}</td>
                         <td>{% if form.isActive() %}&times;{% endif %}</td>
                         <td>{{ form.getCreationPerson().getFullName() }}</td>
+                        <td>{{ entry_counts[form.getId()] }}</td>
                         <td class="actions">
                             {% if hasAccess('form_view', 'index') %}
                                 <a href="{{ url('form_view', {"action": "index", "id": form.getId()}) }}" class="view">View Form</a>

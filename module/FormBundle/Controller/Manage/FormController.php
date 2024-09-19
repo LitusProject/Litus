@@ -56,10 +56,18 @@ class FormController extends \FormBundle\Component\Controller\FormController
             return new ViewModel();
         }
 
+        $isFormEditor = false;
+        foreach ($person->getFlattenedRoles() as $role) {
+            if ($role->getName() == 'form_editor') {
+                $isFormEditor = true;
+            }
+        }
+
         $viewerMap = $this->getEntityManager()
             ->getRepository('FormBundle\Entity\ViewerMap')
             ->findOneByPersonAndForm($person, $form);
-        if (!$viewerMap) {
+
+        if (!$viewerMap && !$isFormEditor) {
             $this->flashMessenger()->error(
                 'Error',
                 'You don\'t have access to the given form!'
@@ -97,11 +105,12 @@ class FormController extends \FormBundle\Component\Controller\FormController
 
         return new ViewModel(
             array(
-                'form'     => $form,
-                'fields'   => $fields,
-                'entries'  => $entries,
-                'viewer'   => $viewerMap,
-                'mailForm' => $mailForm,
+                'form'         => $form,
+                'fields'       => $fields,
+                'entries'      => $entries,
+                'viewer'       => $viewerMap,
+                'isFormEditor' => $isFormEditor,
+                'mailForm'     => $mailForm,
             )
         );
     }

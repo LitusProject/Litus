@@ -144,7 +144,7 @@ class ContractController extends \CommonBundle\Component\Controller\ActionContro
             array(
                 'contract' => $contract,
                 'lang'     => $lang,
-                'notLang'  => $notLang
+                'notLang'  => $notLang,
             )
         );
     }

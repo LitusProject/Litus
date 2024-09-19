@@ -6,7 +6,7 @@ return array(
         'parents' => array(
         ),
         'actions' => array(
-            'logistics_index' => array(
+            'logistics_transport' => array(
                 'fetch', 'index',
             ),
             'logistics_auth' => array(
@@ -17,6 +17,18 @@ return array(
             ),
             'logistics_catalog' => array(
                 'overview',
+            ),
+            'logistics_inventory' => array(
+                'index',
+            ),
+            'logistics_order' => array(
+                'index',
+            ),
+            'logistics_inventory_article' => array(
+                'index', 'search',
+            ),
+            'logistics_flesserke_article' => array(
+                'index', 'search',
             ),
         ),
     ),

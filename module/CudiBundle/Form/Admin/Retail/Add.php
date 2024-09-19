@@ -82,7 +82,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                         ),
                         'validators' => array(
                             array('name' => 'Price'),
-                            array('name' => 'MaximalRetailPrice')
+                            array('name' => 'MaximalRetailPrice'),
                         ),
                     ),
                 ),

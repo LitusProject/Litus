@@ -1,0 +1,91 @@
+{% extends 'site/base.twig' %}
+{% block content %}
+    {% import _self as self %}
+
+    <div class="page-alert">
+        <div class="flashmessage alert alert-success fade" id="preferences_saved_success">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('Your mailing preferences were successfully saved!') }}
+            </div>
+        </div>
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="preferences_saved_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('An error occurred while saving your mailing preferences!') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header container">
+        <h1>{{ translate('Registration') }}</h1>
+    </div>
+
+    {% include 'secretary/registration/partials/navigation.twig' %}
+
+    <div class="container">
+        <div class="contentBlock">
+            <h2 class="container">
+                {{ translate('Choose your Mailing Preferences') }}
+            </h2>
+            <div style="height: 15px"></div>
+            {% for preferenceMapping in preferenceMappings %}
+                <div class="checkbox">
+                    <label>
+                        <div style="height: 1px"></div>
+                        <b><input type="checkbox"  class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getName() }}</b>
+                        <div style="height: 1px"></div>
+                        <p {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ preferenceMapping.getPreference().getDescription() }}</p>
+                    </label>
+                </div>
+            {% endfor %}
+            <div style="height: 30px"></div>
+
+            <div class="buttonHolder">
+                <a class="myVtkButton preference_subscribe_button" href="{{ url('secretary_registration', {'action': 'savePreferences'}) }}">{{ translate('Save Preferences') }}</a>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.preference_subscribe_button').click(function () {
+                $('.page-alert .flashmessage').removeClass('in');
+                saveChanges();
+            });
+
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+        });
+
+        function saveChanges() {
+            var preference_mappings_true = [];
+            var preference_mappings_false = [];
+            $('.preference_checkbox:checked').each(function () {
+                preference_mappings_true.push($(this).data('id'));
+            });
+            $('.preference_checkbox:not(:checked)').each(function () {
+                preference_mappings_false.push($(this).data('id'));
+            });
+            $.post('{{ url('secretary_registration', {"action": "savePreferences"})}}', {"preference_mappings_true": preference_mappings_true, "preference_mappings_false": preference_mappings_false},
+                function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#preferences_saved_success').addClass('in');
+                    } else {
+                        errorSave();
+                    }
+                }, 'json').error(errorSave);
+        }
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#preferences_saved_error').addClass('in');
+        }
+    </script>
+{% endblock %}

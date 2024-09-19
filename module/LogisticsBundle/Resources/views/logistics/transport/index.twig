@@ -1,0 +1,207 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div class="flashmessage alert alert-danger fade load_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while loading the reservations.') }}
+    </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger fade remove_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while deleting the reservation.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-success fade remove_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully removed.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger fade add_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while adding the reservation.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-success fade add_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully added.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger fade update_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('There was an error while updating the reservation.') }}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-success fade update_success">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('The reservation was successfully updated.') }}
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        <div class="page-header">
+            <h1>{{ translate('Car rides') }}</h1>
+        </div>
+
+        <div>{{ translate('Please login to view car rides.') }}</div>
+    {% else %}
+        {% if hasAccess('logistics_transport', 'export') %}
+            <div class="pull-right" style="line-height: 50px">
+                <div class="btn-group">
+                    <a class="btn btn-default" href="{{ url('logistics_export') }}"><span class="glyphicon glyphicon-arrow-down"></span> {{ translate('Download') }}</a>
+                    {% if authenticatedPerson is not null %}
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('logistics_export') }}">{{ translate('General') }}</a></li>
+                            <li><a href="{{ url('logistics_export', {'token': token.getHash()}) }}">{{ translate('Personal') }}</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div id="calendar"></div>
+
+        {% if hasAccess('logistics_transport', 'add') %}
+            <div id="reservationForm" class="hide">
+                {% import 'site/partials/form.twig' as forms %}
+                {{ forms.renderForm(form) }}
+            </div>
+        {% endif %}
+    {%  endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.flashmessage .close').click(function () {
+                $(this).parent().removeClass('in');
+            });
+
+            $('#calendar').logisticsCalendar({
+                fetchUrl: '{{ url('logistics_reservation_fetch') }}',
+                moveUrl: '{{ url('logistics_transport', {'action': 'move'}) }}',
+                addUrl: '{{ url('logistics_transport', {'action': 'add'}) }}',
+                editUrl: '{{ url('logistics_transport', {'action': 'edit'}) }}',
+                deleteUrl: '{{ url('logistics_transport', {'action': 'delete'}) }}',
+                passengerTypeaheadUrl: '{{ url("common_admin_academic_typeahead", {}) }}',
+                editable: {% if hasAccess('logistics_transport', 'add') %}true{% else %}false {% endif %},
+                deletable: {% if hasAccess('logistics_transport', 'delete') %}true{% else %}false {% endif %},
+                form: $('#reservationForm'),
+                monthNames: [
+                    '{{ translate('January') }}',
+                    '{{ translate('February') }}',
+                    '{{ translate('March') }}',
+                    '{{ translate('April') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('June') }}',
+                    '{{ translate('July') }}',
+                    '{{ translate('August') }}',
+                    '{{ translate('September') }}',
+                    '{{ translate('October') }}',
+                    '{{ translate('November') }}',
+                    '{{ translate('December') }}'
+                ],
+                monthNamesShort: [
+                    '{{ translate('Jan') }}',
+                    '{{ translate('Feb') }}',
+                    '{{ translate('Mar') }}',
+                    '{{ translate('Apr') }}',
+                    '{{ translate('May') }}',
+                    '{{ translate('Jun') }}',
+                    '{{ translate('Jul') }}',
+                    '{{ translate('Aug') }}',
+                    '{{ translate('Sep') }}',
+                    '{{ translate('Oct') }}',
+                    '{{ translate('Nov') }}',
+                    '{{ translate('Dec') }}'
+                ],
+                dayNames: [
+                    '{{ translate('Sunday') }}',
+                    '{{ translate('Monday') }}',
+                    '{{ translate('Tuesday') }}',
+                    '{{ translate('Wednesday') }}',
+                    '{{ translate('Thursday') }}',
+                    '{{ translate('Friday') }}',
+                    '{{ translate('Saturday') }}'
+                ],
+                dayNamesShort: [
+                    '{{ translate('Sun') }}',
+                    '{{ translate('Mon') }}',
+                    '{{ translate('Tue') }}',
+                    '{{ translate('Wed') }}',
+                    '{{ translate('Thu') }}',
+                    '{{ translate('Fri') }}',
+                    '{{ translate('Sat') }}'
+                ],
+                buttonText: {
+                    today:    '{{ translate('today') }}',
+                    month:    '{{ translate('month') }}',
+                    week:     '{{ translate('week') }}',
+                    day:      '{{ translate('day') }}'
+                },
+                loadError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.load_error').addClass('in');
+                },
+                removeError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.remove_error').addClass('in');
+                },
+                removeSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.remove_success').addClass('in');
+                },
+                addError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.add_error').addClass('in');
+                },
+                addSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.add_success').addClass('in');
+                },
+                updateError: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.update_error').addClass('in');
+                },
+                updateSuccess: function () {
+                    $('.flashmessage').removeClass('in');
+                    $('.update_success').addClass('in');
+                },
+                hideErrors: function () {
+                    $('.flashmessage').removeClass('in');
+                },
+                tNewReservation: '{{ translate('New Reservation') }}',
+                tEditReservation: '{{ translate('Edit Reservation') }}',
+                tStartDate: '{{ translate('Start Date') }}',
+                tEndDate: '{{ translate('End Date') }}',
+                tLoad: '{{ translate('Load') }}',
+                tAdditionalInformation: '{{ translate('Additional Information') }}',
+                tDriver: '{{ translate('Driver') }}',
+                tCar: '{{ translate('Car') }}',
+                tBike: '{{ translate('Bike') }}',
+                tPassenger: '{{ translate('Passenger') }}',
+                tDelete: '{{ translate('Delete') }}',
+                tEdit: '{{ translate('Edit') }}',
+            });
+            {% if date %}
+                var dateArray = '{{ date }}'.split('-');
+                $('#calendar').logisticsCalendar('gotoDate', dateArray[0], dateArray[1], dateArray[2]);
+            {% endif %}
+        });
+    </script>
+{% endblock %}

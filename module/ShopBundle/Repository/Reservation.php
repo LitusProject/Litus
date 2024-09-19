@@ -84,9 +84,9 @@ class Reservation extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->andX(
                     $query->expr()->eq('r.salesSession', ':salesSession'),
                     $query->expr()->like(
-                            $query->expr()->lower('p.username'),
-                            ':rNumber'
-                        )
+                        $query->expr()->lower('p.username'),
+                        ':rNumber'
+                    )
                 )
             )
             ->setParameter('salesSession', $salesSession)

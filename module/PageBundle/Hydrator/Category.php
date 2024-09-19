@@ -29,10 +29,17 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
             $object->setParent(null);
         }
 
+        if ($data['order_number'] != '') {
+            $object->setOrderNumber($data['order_number']);
+        }
+
         foreach ($this->getLanguages() as $language) {
             $translation = $object->getTranslation($language, false);
 
             $translationData = $data['tab_content']['tab_' . $language->getAbbrev()];
+
+            //No spaces in name to create valide url for categoryPage
+            $translationData['name'] = str_replace(' ', '-', $translationData['name']);
 
             if ($translation !== null) {
                 $translation->setName($translationData['name']);
@@ -68,6 +75,7 @@ class Category extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data['parent'] = $object->getParent() ? $object->getParent()->getId() : '';
+        $data['order_number'] = $object->getOrderNumber() ?? '';
 
         return $data;
     }

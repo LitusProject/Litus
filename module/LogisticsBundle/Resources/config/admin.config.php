@@ -5,6 +5,7 @@ return array(
         'Logistics' => array(
             'subtitle' => array('Drivers', 'Lease', 'Reservations', 'Inventory'),
             'items'    => array(
+                'logistics_admin_category'          => array('title' => 'Categories'),
                 'logistics_admin_driver'            => array('title' => 'Drivers'),
                 'logistics_admin_lease'             => array('title' => 'Lease'),
                 'logistics_admin_piano_reservation' => array('title' => 'Piano Reservations'),

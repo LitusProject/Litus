@@ -4,13 +4,37 @@
 {% block page_content %}
     <div class="container">
         <div class="page-header">
-            <h2>{{ translate('My Matches') }}</h2>
+            <div>
+                <h2>{{ translate('My Matches') }}</h2>
+            </div>
+            <div style="float: top">
+                <a href="{{ url('br_career_event',{ 'action': 'csv', 'id': event.getId() }) }}" class="btn btn-default btn-sm export" data-id="{{ match.getId() }}">
+                    {{ translate('Export matches') }}
+                </a>
+            </div>
         </div>
 
         <div class="flashmessage alert alert-danger match_removed_error fade">
             <div class="title">Error</div>
             <div class="content">
                 <p>An error occurred while trying to remove the match. Please try again later.</p>
+            </div>
+        </div>
+
+        <div id="modalAddNote" class="modal fade" style="z-index: 1500;">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h4>{{ translate('Notes') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <textarea rows="10" style="width: 100%" class="note_text"></textarea>
+                        </div>
+                        <button style="margin-top: 2%" class="button btn-info btn-sm save-note">Save Notes</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -25,7 +49,8 @@
                     <th>{{ translate('Study') }}</th>
                     <th>{{ translate('Specialization') }}</th>
                     <th class="hidden-xs">{{ translate('Email') }}</th>
-                    <th class="hidden-xs">{{ translate('Phone number') }}</th>
+                    <th class="hidden-xs">{{ translate('CV Book') }}</th>
+                    <th class="hidden-xs">{{ translate('Notes') }}</th>
                     <th>{{ translate('Actions') }}</th>
                 </tr>
                 {% for match in matches %}
@@ -35,7 +60,18 @@
                         <td>{{ match.getSubscription().getStudyString() }}</td>
                         <td>{% if match.getSubscription().getSpecialization() == '' %}/{% endif %}{{ match.getSubscription().getSpecialization() }}</td>
                         <td class="hidden-xs">{{ match.getSubscription().getEmail() }}</td>
-                        <td class="hidden-xs">{% if match.getSubscription().getPhoneNumber() == '' %}/{% endif %}{{ match.getSubscription().getPhoneNumber() }}</td>
+                        <td class="actions">
+                            {% if match.getStudentCV(entityManager, academicYearObject) and entries %}
+                                <a class="button blue pull-left cv_search" data-toggle="modal" data-target="#searchCV-{{ match.getId() }}">{{ translate('View CV') }}</a>
+                            {% else %}
+                                /
+                            {% endif %}
+                        </td>
+                        <td class="actions">
+                            <button class="btn btn-info btn-sm add-note" id="note-id" data-toggle="note-modal" data-target="#addNote--{{ match.getId() }}" data-id="{{ match.getId() }}" data-content="{{ match.getNotes() }}">
+                                {{ translate('Take Note') }}
+                            </button>
+                        </td>
                         <td class="actions">
                             <a href="#" class="btn btn-default btn-sm remove" data-id="{{ match.getId() }}" data-name="{{ match.getSubscription().getFirstName() }} {{match.getSubscription().getLastName()}}">
                                 {{ translate('Remove match') }}
@@ -69,6 +105,24 @@
             </div>
         </div>
     </div>
+
+    {% for entry in entries %}
+        <div class="modal fade" id="searchCV-{{ entry['id'] }}" tabindex="-1">
+            <div class="modal-dialog" style="width: 50%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="close" data-dismiss="modal">&times;</a>
+                        <h3>CV</h3>
+                    </div>
+                    <div class="modal-body">
+                        {% import 'corporate/partials/showcv.twig' as cv %}
+                        {{ cv.displayEntry(entry['cv'], profilePath, gradesMapEnabled, gradesMap) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
 {% endblock %}
 
 
@@ -76,6 +130,38 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.item .remove').click(openModal);
+        });
+        $(document).ready(function() {
+            $('.cv_search').bind("click", function(){
+
+            });
+        });
+
+        $(document).ready(function() {
+            var match_id;
+            $('.add-note').click(function (e){
+                e.preventDefault();
+
+                $('#modalAddNote').modal();
+
+                match_id = $(this).data('id');
+
+                // console.log($(this).data('content'));
+                let old_note = $(this).data('content');
+                $('.note_text').val(old_note);
+            });
+
+            $(document).on('click', '.save-note', function (e) {
+                e.preventDefault();
+                // let textField = $('.note_text');
+
+                let new_notes = $('.note_text').val();
+                // let match_id = $('#note-id').data('id');
+                console.log(match_id);
+                $.post('{{ url('br_career_event', {"action": "updateNotes", "id": event.getId()}) }}match/' + match_id, JSON.stringify({'note': new_notes, }));
+
+                $('#modalAddNote').modal('hide');
+            });
         });
 
         function openModal(e) {

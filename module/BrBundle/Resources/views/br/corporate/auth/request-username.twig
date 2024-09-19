@@ -1,0 +1,47 @@
+{% extends 'corporate/base.twig' %}
+
+{% block content %}
+
+    <div style="height: 100px"></div>
+    <div class="container">
+        <h3>{{ translate('Request username') }}</h3>
+        <div style="height: 40px"></div>
+        {% if form is defined %}
+            {% do form.prepare() %}
+            {% autoescape false %}
+                {{ form().openTag(form) }}
+                {% for element in form.getElements() %}
+                    {% if element.getAttribute('type') == 'submit' or element.getAttribute('type') == 'reset'or element.getAttribute('type') == 'hidden' %}
+                        {{ formElement(element) }}
+                    {% else %}
+                        <div class="form-group {% if element.getMessages()|length > 0 %}has-error{% endif %}">
+                            <label class="control-label">{% if element.getLabel() != '' %}{{ translate(element.getLabel()) }}{% endif %}</label>
+                            <div>{{ formElement(element) }}</div>
+                            {% if element.getMessages()|length > 0 %}
+                                <div class="help-block">
+                                    {{ formElementErrors(element) }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {{ form().closeTag() }}
+            {% endautoescape %}
+        {% endif %}
+    </div>
+
+
+    {{ inlineScript () }}
+
+    <script>
+        // Open the Modal
+        function openModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        // Close the Modal
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+{% endblock %}

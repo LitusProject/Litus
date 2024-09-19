@@ -1,0 +1,396 @@
+{% extends 'logistics/base.twig' %}
+
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'view', 'order' : order.getId()}) }}">{{ translate('Back') }}</a>
+
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Inventory') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if hasAccess('logistics_catalog', 'search')%}
+                <a href="#" id="searchArticles" class="btn btn-info">{{ translate('Search') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while updating your preferences.') }}
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to book Flesserke articles.') }}
+    {% else %}
+        {% if hasAccess('logistics_catalog', 'search')%}
+            <div id="searchArticlesPage" style="display: none;margin-top: 10px;">
+                {{ forms.renderForm(searchForm) }}
+
+{#                TODO: change ths          #}
+                <table class="table mappings">
+                    <thead>
+                    <tr>
+                        <th>{{ translate('Name') }}</th>
+                        <th class="hidden-xs">{{ translate('Status') }}</th>
+                        <th class="hidden-xs">{{ translate('Amount') }}</th>
+                        <th style="min-width: 100px"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="spacer">
+                        <td colspan="7"></td>
+                    </tr>
+                    <tr class="category-title">
+                        <td colspan="7"><i>{{ translate('No Articles Found') }}</i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        <div id="viewArticlesPage">
+            {% if form is defined %}
+                {% do form.prepare() %}
+                {% autoescape false %}
+                    {{ form().openTag(form) }}
+                    {{ formElement(form.get('csrf')) }}
+
+                    {# Flesserke #}
+
+                    <table class="table mappings">
+                    <thead>
+                    <tr>
+                        <th style="width: 20%">Name</th>
+                        <th style="width: 15%">Brand</th>
+                        <th style="width: 8%">Unit</th>
+                        <th style="width: 15%">Res. / Avail.</th>
+                        <th style="width: 15%">Expiry Date</th>
+                        <th style="width: 12%; min-width: 140px"></th>
+                    </tr>
+                    </thead>
+
+                    {# Dropdown #}
+                    <tbody>
+                    <tr class="spacer">
+                        <td colspan="7"></td>
+                    </tr>
+                    <tr id="flesserke" class="category-name collapsed" data-content="flesserke">
+                        <td colspan="7" style="padding: 0">
+                            <div>
+                                <button type="button" class="collapse-btn" style="background-color: #D2D0F5; border: none; padding: 8px; width: 100%; text-align: left">
+                                    <b>Flesserke</b>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {# Articles #}
+                    {% for category in categories %}
+                        {% if category %}
+                        <tr id="{{ category }}" class="category-name collapsed flesserke" data-content="{{ category }}">
+                            <td colspan="7" style="padding: 0">
+                                <div>
+                                    <button type="button" class="collapse-btn" style="background-color: #e9e8fc; border: none; padding: 6px 20px; width: 100%; text-align: left">
+                                        <b>{{ category }}</b>
+                                        <i class="ui-icon ui-icon-triangle-1-s" style="float: right"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% for article in articles %}
+                            {% if article.getCategory() == category and article.getCategory() != '' %}
+                            <tr class="{# {% if map['accepted'] %}success{% endif %} #} flesserke {{ category }} hide">
+                                <td>{{ article.getName() }}</td>
+                                <td>{{ article.getBrand() }}</td>
+                                <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
+                                <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
+                                <td>{{ article.getExpiryDate() }}</td>
+                                <td style="text-align: center;">
+                                    {% set name = 'article-' ~ article.getId() %}
+                                    {% set element = form.get(name) %}
+                                    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a> {# TODO: change to article #}
+                                    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
+                                    <a>{{ formElement(element) }}</a>
+                                    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                </td>
+                            </tr>
+                            {% elseif article.getCategory() == '' and category == 'Andere' %}
+                            <tr class="{# {% if map['accepted'] %}success{% endif %} #} flesserke Andere hide">
+                                <td>{{ article.getName() }}</td>
+                                <td>{{ article.getCategory() }}</td>
+                                <td>{{ article.getBrand() }}</td>
+                                <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
+                                <td>{{ article.getReserved()!=null? article.getReserved(): 0}} / {{ article.getAmount() - article.getReserved() }}</td>
+                                <td>{{ article.getExpiryDate() }}</td>
+                                <td style="text-align: center;">
+                                    {% set name = 'article-' ~ article.getId() %}
+                                    {% set element = form.get(name) %}
+                                    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a> {# TODO: change to article #}
+                                    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>
+                                    <a>{{ formElement(element) }}</a>
+                                    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% if element.getMessages()|length > 0  and map['bookable'] %}
+                                <tr>
+                                    <td colspan="7" style="border-top-width:0px;">
+                                        <div class="help-block pull-right">
+                                            {{ formElementErrors(element) }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                    </table>
+
+                    <div>
+                        {% if form.get('submit') %}
+                            {{ formElement(form.get('submit')) }}
+                        {% endif %}
+                    </div>
+
+                    {{ form().closeTag() }}
+                {% endautoescape %}
+            {% endif %}
+
+            <table class="table" style="width:16.6666%;margin: 0 auto;">
+                <thead>
+                <tr>
+                    <th>{{ translate("Color") }}</th>
+                    <th>{{ translate("Status") }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="success" style="width:40px">&nbsp;</td>
+                    <td>{{ translate("Booked") }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="searchRequest">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{ translate('Logistics') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('This function is coming soon!') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.category-name').click(collapseCategory);
+            $('.unit-name').click(collapseCategory);
+            $('#searchArticles').click(openSearchRequest);
+
+            $(window).keydown(function(event){
+                if(event.keyCode === 13) {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+            // Set all the values correctly... TODO: why were they wrong before??
+            let articles = $(":input[name^='article-']").get();
+            articles.forEach((article)=>{
+                document.getElementById(article.id).value = $(article).closest('td').find('b').html();
+            })
+            $('.flashmessage .close').click(function (e) {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            $('[rel=tooltip]').tooltip();
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            $('.increase-value').click(function (e) {
+                e.preventDefault();
+                var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) + 1;
+                $(e.target).closest('td').find('b').html(newAmount);
+                $(e.target).closest('td').find('input').val(newAmount);
+            });
+
+            $('.decrease-value').click(function (e) {
+                e.preventDefault();
+                var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) - 1;
+                if (newAmount >= 0) {
+                    $(e.target).closest('td').find('b').html(newAmount);
+                    $(e.target).closest('td').find('input').val(newAmount);
+                }
+            });
+
+            $('input[id*=article-]').each(function(i) {
+                $('[id="' + this.id + '"]').each(function(i) {
+                    if (i > 0)
+                        $(this).remove();
+                });
+            });
+
+//             SEARCH
+
+{#            {% if hasAccess('logistics_catalog', 'search') %}#}
+{#            $('#searchArticles').click(function (e) {#}
+{#                e.preventDefault();#}
+{#                var view = $(this).data('view') == undefined ? 'view' : $(this).data('view');#}
+
+{#                if (view == 'view') {#}
+{#                    $('#viewArticlesPage').hide();#}
+{#                    $('#searchArticlesPage').show();#}
+{#                    $('#search_string').focus();#}
+{#                    $(this).html('{{ translate('Stop Search') }}').data('view', 'search');#}
+{#                } else {#}
+{#                    $('#viewArticlesPage').show();#}
+{#                    $('#searchArticlesPage').hide();#}
+{#                    $(this).html('{{ translate('Search') }}').data('view', 'view');#}
+{#                }#}
+{#            });#}
+
+{#            $('#search_string').bind('keyup', function () {#}
+{#                var $this = $(this);#}
+{#                clearTimeout($(this).data('timeout'));#}
+{#                $(this).data('timeout', setTimeout(function () {#}
+{#                    if ('' == $this.val() || $this.val().length < 3) {#}
+{#                        $('#searchArticlesPage tbody').html('').append(#}
+{#                            $('<tr>', {'class': 'spacer'}).append(#}
+{#                                $('<td>', {'colspan': 6})#}
+{#                            ),#}
+{#                            $('<tr>', {'class': 'category-title'}).append(#}
+{#                                $('<td>', {'colspan': 6}).append(#}
+{#                                    $('<i>').append('{{ translate('No Articles Found') }}')#}
+{#                                )#}
+{#                            )#}
+{#                        );#}
+{#                        return;#}
+{#                    }#}
+{#                    $.ajax({#}
+{#                        url: '{{ url('logistics_catalog_typeahead', {'order': order.getId()}) }}' + $this.val(),#}
+{#                        method: 'get',#}
+{#                        dataType: 'json',#}
+{#                        success: function (e) {#}
+{#                            var tbody = $('#searchArticlesPage tbody').html('').append(#}
+{#                                $('<tr>', {'class': 'spacer'}).append(#}
+{#                                    $('<td>', {'colspan': 6})#}
+{#                                )#}
+{#                            );#}
+{#                            $(e).each(function () {#}
+{#                                tbody.append(#}
+{#                                    $('<tr>', {'class': (this.mapped > 0 ? 'success ': '')}).append(#}
+{#                                        $('<td>').html(this.title),#}
+{#                                        $('<td>', {'class': 'hidden-xs'}).html(this.status),#}
+{#                                        $('<td>', {'class': 'hidden-xs'}).html(this.amt),#}
+{#                                        comments = $('<td>', {'class': 'hidden-xs'}),#}
+{#                                        book = $('<td>', {'style': 'text-align: center; width: 12%; min-width: 140px'})#}
+{#                                    )#}
+{#                                );#}
+
+{#                                if (this.additionalInfo) {#}
+{#                                    var popoverContent = '';#}
+{#                                    popoverContent += '<span class="badge badge-info"></span> ' + this.additionalInfo + '<br/>';#}
+{#                                    comments.append(#}
+{#                                        $('<a>', {#}
+{#                                            'data-original-title': '{{ translate('Comments') }}',#}
+{#                                            'data-content': popoverContent,#}
+{#                                            'data-placement': 'left',#}
+{#                                            'style': 'cursor:pointer',#}
+{#                                            'class': 'label label-warning',#}
+{#                                        }).html('{{ translate('Remark') }}').popover({'trigger': 'hover', 'html': true})#}
+{#                                    );#}
+{#                                }#}
+{#                                book.append(#}
+{#                                        #}{#<td style="text-align: center;">#}
+{#                                        #}{#    {% set name = 'article-' ~ map['article'].getId() %}#}
+{#                                        #}{#    {% set element = form.get(name) %}#}
+{#                                        #}{#    <a style="visibility: hidden"><b>{{ map['mapped']?? 0 }}</b></a>#}
+{#                                        #}{#    <a href="#" class="decrease-value"><span class="glyphicon glyphicon-minus-sign pull-left" style="margin-top: 3px;"></span></a>#}
+{#                                        #}{#    <a>{{ formElement(element) }}</a>#}
+{#                                        #}{#    <a href="#" class="increase-value"><span class="glyphicon glyphicon-plus-sign pull-right" style="margin-top: 3px;"></span></a>#}
+{#                                        #}{#</td>#}
+{#                                    $('<b>', {'style': 'visibility: hidden'}).html(this.mapped?? 0),#}
+{#                                    $('<a>', {'href': '#', 'class': 'decrease-value'}).append($('<span>', {'class': 'glyphicon glyphicon-minus-sign pull-left', 'style': 'margin-top: 3px;'})),#}
+{#                                    $('<a>', {'style': 'float: left; width: 35%; height: 22px; max-width: 50px; min-width: 35px; margin-left:20%',}).append($('<input type="text">', {'id': 'search-article-' + this.id, 'placeholder': this.mapped, 'style': 'max-width: 20px;',}).data('id', this.id)),#}
+{#                                    $('<a>', {'href': '#', 'class': 'increase-value'}).append($('<span>', {'class': 'glyphicon glyphicon-plus-sign pull-right', 'style': 'margin-top: 3px;'}))#}
+{#                                );#}
+
+{#                                $('.increase-value').unbind('click').click(function (e) {#}
+{#                                    e.preventDefault();#}
+{#                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) + 1;#}
+
+{#                                    $(e.target).closest('td').find('b').html(newAmount);#}
+{#                                    $(e.target).closest('td').find('input').val(newAmount);#}
+{#                                    let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;#}
+{#                                    $(document.getElementById("article-"+id)).val(newAmount);#}
+{#                                    $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);#}
+{#                                });#}
+
+{#                                $('.decrease-value').unbind('click').click(function (e) {#}
+{#                                    e.preventDefault();#}
+{#                                    var newAmount = parseInt($(e.target).closest('td').find('b').html(), 10) - 1;#}
+
+{#                                    if (newAmount >= 0) {#}
+{#                                        $(e.target).closest('td').find('b').html(newAmount);#}
+{#                                        $(e.target).closest('td').find('input').val(newAmount);#}
+{#                                        let id = $(e.target).closest('td').find('input').attr('id').split('-')[2]??0;#}
+{#                                        $(document.getElementById("article-"+id)).val(newAmount);#}
+{#                                        $(document.getElementById("article-"+id)).closest('td').find('b').html(newAmount);#}
+{#                                    }#}
+{#                                });#}
+{#                            });#}
+{#                        }#}
+{#                    });#}
+{#                }, 200));#}
+{#            });#}
+{#            {% endif %}#}
+        });
+
+        function openSearchRequest(e) {
+            e.preventDefault();
+            var revertRequest = $('#searchRequest');
+            revertRequest.modal();
+        }
+
+        function collapseCategory(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var name = $this.data('content');
+            var category = document.getElementById(name);
+            var items = Array.from(document.getElementsByClassName(name));
+            var icon = $this.find('.ui-icon');
+
+            if (category.classList.contains("collapsed")) {
+                items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-s");
+                    icon.addClass("ui-icon-triangle-1-n");
+                    item.classList.remove('hide');
+                    if (item.classList.contains("collapsed")) {
+                        item.classList.remove("collapsed");
+                    }
+                    category.classList.remove("collapsed");
+                });
+            } else {
+                items.forEach((item) => {
+                    icon.removeClass("ui-icon-triangle-1-n");
+                    icon.addClass("ui-icon-triangle-1-s");
+                    item.classList.add('hide');
+                    category.classList.add("collapsed");
+                });
+            }
+        }
+    </script>
+{% endblock %}
+

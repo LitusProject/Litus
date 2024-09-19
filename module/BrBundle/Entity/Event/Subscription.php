@@ -114,7 +114,7 @@ class Subscription
         'faculty of bio engineering'        => 'Faculty of Bio Engineering',
         'faculty of business and economics' => 'Faculty of Business and Economics',
         'faculty of engineering technology' => 'Faculty of Engineering Technology',
-        'Other'                             => 'Other'
+        'other'                             => 'Other',
     );
 
     /**
@@ -164,7 +164,7 @@ class Subscription
     /**
      * @var boolean Subscriber will be at the network reception
      *
-     * @ORM\Column(name="network_reception", type="boolean")
+     * @ORM\Column(name="network_reception", type="boolean", nullable=true)
      *
      */
     private $atNetworkReception;
@@ -266,7 +266,7 @@ class Subscription
      */
     public function getPhoneNumber()
     {
-        return $this->phoneNumber;
+        return $this->phoneNumber ?? '';
     }
 
     /**
@@ -277,7 +277,7 @@ class Subscription
         $this->phoneNumber = $phoneNumber;
     }
 
-        /**
+    /**
      * @return string
      */
     public function getUniversity(): string
@@ -288,10 +288,18 @@ class Subscription
     /**
      * @return string
      */
+    public function getOtherUniversity(): string
+    {
+        return $this->otherUniversity ?? '';
+    }
+
+    /**
+     * @return string
+     */
     public function getUniversityString(): string
     {
         if ($this->university == 'other') {
-            return ($this->otherUniversity ? $this->otherUniversity : ' ');
+            return ($this->otherUniversity ?? ' ');
         }
         return $this::POSSIBLE_UNIVERSITIES[$this->university];
     }
@@ -305,6 +313,14 @@ class Subscription
     }
 
     /**
+     * @param string $university
+     */
+    public function setOtherUniversity($university): void
+    {
+        $this->otherUniversity = $university;
+    }
+
+    /**
      * @return string
      */
     public function getStudy(): string
@@ -315,10 +331,18 @@ class Subscription
     /**
      * @return string
      */
+    public function getOtherStudy(): string
+    {
+        return $this->otherStudy ?? '';
+    }
+
+    /**
+     * @return string
+     */
     public function getStudyString(): string
     {
         if ($this->study == 'other') {
-            return ($this->otherStudy ? $this->otherStudy : ' ');
+            return ($this->otherStudy ?? ' ');
         }
         return $this::POSSIBLE_STUDIES[$this->study];
     }
@@ -329,6 +353,14 @@ class Subscription
     public function setStudy(string $study): void
     {
         $this->study = $study;
+    }
+
+    /**
+     * @param string $study
+     */
+    public function setOtherStudy($study): void
+    {
+        $this->otherStudy = $study;
     }
 
     /**
@@ -356,6 +388,14 @@ class Subscription
     }
 
     /**
+     * @return string
+     */
+    public function getStudyYearString(): string
+    {
+        return self::POSSIBLE_STUDY_YEARS[$this->getStudyYear()];
+    }
+
+    /**
      * @param string $studyYear
      */
     public function setStudyYear(string $studyYear): void
@@ -368,7 +408,7 @@ class Subscription
      */
     public function getFood(): string
     {
-        return ($this->food ? $this->food : '');
+        return ($this->food ?? '');
     }
 
     /**
@@ -408,7 +448,7 @@ class Subscription
      */
     public function isAtNetworkReception(): bool
     {
-        return $this->atNetworkReception;
+        return $this->atNetworkReception ?? false;
     }
 
     /**

@@ -1,0 +1,14 @@
+<header id="controller_header">
+    <div class="title"><span class="page">Category Pages</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('page_admin_categorypage', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("page_admin_categorypage", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('page_admin_categorypage', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') or 'edit' == getParam('action') %} class="active" {% endif %} href="{{ url("page_admin_categorypage", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

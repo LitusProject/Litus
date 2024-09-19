@@ -60,8 +60,11 @@ class CompanyName extends \CommonBundle\Component\Validator\AbstractValidator
             return true;
         }
 
-        $this->error(self::NOT_VALID);
+        if (!$company->isActive()) {
+            return true;
+        }
 
+        $this->error(self::NOT_VALID);
         return false;
     }
 }

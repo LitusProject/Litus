@@ -33,4 +33,25 @@ class UnitMap extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->setParameter('academicYear', $academicYear)
             ->getQuery();
     }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllWorkgroupMembersByAcademicYearQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('m')
+            ->from('CommonBundle\Entity\User\Person\Organization\UnitMap', 'm')
+            ->innerJoin('m.unit', 'u')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('m.academicYear', ':academicYear'),
+                    $query->expr()->eq('u.workgroup', 'true'),
+                )
+            )
+            ->setParameter('academicYear', $academicYear)
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+    }
 }

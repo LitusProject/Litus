@@ -72,7 +72,7 @@ abstract class Socket extends \CommonBundle\Component\Console\Command
         return str_replace(
             array(
                 'bundle',
-                'module'
+                'module',
             ),
             '',
             strtolower(

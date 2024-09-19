@@ -3,7 +3,6 @@
 namespace FakBundle\Component\Controller;
 
 use Laminas\Mvc\MvcEvent;
-use phpseclib3\File\ASN1\Maps\Characteristic_two;
 
 class FakController extends \CommonBundle\Component\Controller\ActionController
 {

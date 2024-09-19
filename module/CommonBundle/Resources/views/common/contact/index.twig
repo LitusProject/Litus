@@ -1,0 +1,55 @@
+{% extends 'site/base.twig' %}
+
+{# This is the contact page. It is hardcoded instead of being built with the Litus page builder so that extra functionality with the ConctactController can be added if necessary. #}
+{# Also, it is more user friendly to be able to link to this page with "www.vtk.be/contact", instead of the longer links that the page builder creates. #}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ translate('Contact') }}</h1>
+        </div>
+
+        <h3>{{ translate('E-mail') }}</h3>
+        <p>{{ translate('You can contact VTK with all kinds of questions, problems, complaints... on vtk@vtk.be.') }}</p>
+{#        The table below can be used in combination with the ContactController in case a table with multiple email adresses needs to be displayed#}
+{#        <table class="table bookings">#}
+{#            <thead>#}
+{#            <tr>#}
+{#                <th>{{ translate('Email') }}</th>#}
+{#                <th style="min-width: 100px">{{ translate('Omschrijving') }}</th>#}
+{#            </tr>#}
+{#            </thead>#}
+{#            <tbody>#}
+{#            {% for key, value in email %}#}
+{#                <tr>#}
+{#                    <td >{{ translate(key) }}</td>#}
+{#                    <td >{{ translate(value) }}</td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#            </tbody>#}
+{#        </table>#}
+
+        <h3 style="margin-top: 1.5em">{{ translate('Telephone') }}</h3>
+        <p>{{ translate('You can contact VTK via telephone on +32 (0)16 20 00 97.') }}</p>
+
+        <h3 style="margin-top: 1.5em">{{ translate('Physical') }}</h3>
+        <h4 style="margin-top: 1em">{{ translate('Blok 6') }}</h4>
+        <p>{{ translate('Blok 6 is part of Student quarter Arenberg (Cité). Next to our secretariat and meeting room, twenty praesidium members are housed there.') }}</p>
+        <p>{{ translate('Address')}}:<br>
+            Studentenwijk Arenberg 6<br>
+            3001 Heverlee</p>
+
+        <h4 style="margin-top: 1em">{{ translate('Theokot and Bookstore') }}</h4>
+        <p>{{ translate('The Theokot is our multipurpose bar. At noon, you can get a sandwich and a drink there, at night there are quizzes, movie screenings, receptions,... Our bookstore is also located here. You can find the opening hours on the home page.') }}</p>
+        <p>{{ translate('Address')}}:<br>
+            Kasteelpark Arenberg 41<br>
+            3001 Heverlee</p>
+
+        <h4 style="margin-top: 1em">'t ElixIr</h4>
+        <p>{{ translate("'t ElixIr is our own student bar, here you can have a drink and we organise parties on a regular basis. You can find the opening hours on the home page.") }}</p>
+        <p>{{ translate('Address')}}:<br>
+            Tervuursevest 60<br>
+            3000 Leuven</p>
+
+    </div>
+{% endblock %}

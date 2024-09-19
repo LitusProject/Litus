@@ -210,41 +210,42 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
                 ->findNbBySession($cudi['currentSession']);
         }
 
-        $cudi['openingHours'] = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
-            ->findPeriodFromNow('P14D');
+        $cudi['dateToOpeningHoursMap'] = $this->createOpeningHourMap(
+            $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session\OpeningHour')
+                ->findPeriodFromNow('P14D')
+        );
 
-        $messages = $this->getEntityManager()
+        $cudi['messages'] = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session\Message')
             ->findAllActive();
-
-        $cudi['messages'] = $messages;
 
         return $cudi;
     }
 
-    /**
-     * @return array|null
-     */
-    private function getFathomInfo()
-    {
-        $enableFathom = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('common.enable_fathom');
-
-        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
-            return null;
-        }
-
-        return array(
-            'url' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_url'),
-            'site_id' => $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('common.fathom_site_id'),
-        );
-    }
+//    MOVED TO SITECONTROLLER - to be able to use the function in all pages
+//    /**
+//     * @return array|null
+//     */
+//    private function getFathomInfo()
+//    {
+//        $enableFathom = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('common.enable_fathom');
+//
+//        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+//            return null;
+//        }
+//
+//        return array(
+//            'url' => $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('common.fathom_url'),
+//            'site_id' => $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('common.fathom_site_id'),
+//        );
+//    }
 
     /**
      * @return array|null
@@ -275,11 +276,14 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
             'url' => $this->getEntityManager()
                 ->getRepository('CommonBundle\Entity\General\Config')
                 ->getConfigValue('shop.url_reservations'),
-            'openingHours' => unserialize(
+            'messages' => $this->getEntityManager()
+                ->getRepository('ShopBundle\Entity\Session\Message')
+                ->findAllActive(),
+            'dateToOpeningHoursMap' => $this->createOpeningHourMap(
                 $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\General\Config')
-                    ->getConfigValue('shop.main_page_text')
-            )[$this->getLanguage()->getAbbrev()],
+                    ->getRepository('ShopBundle\Entity\Session\OpeningHour')
+                    ->findPeriodFromNow('P14D')
+            ),
         );
     }
 
@@ -400,5 +404,20 @@ class IndexController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $videos;
+    }
+
+    /**
+     * Converts an array of OpeningHour objects into a new array which maps a string representing the date
+     * to an array of all the DateTime objects that fall on that day.
+     */
+    private function createOpeningHourMap(array $openingHours)
+    {
+        $dateToOpeningHoursMap = array();
+        foreach ($openingHours as $openingHour) {
+            $date = $openingHour->getStart()->format('d/m/Y');
+            $dateToOpeningHoursMap[$date][] = $openingHour;
+        }
+
+        return $dateToOpeningHoursMap;
     }
 }

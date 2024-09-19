@@ -30,7 +30,7 @@ return array(
     'City'                                                                                                    => 'City',
     'Country'                                                                                                 => 'Country',
     'Internet'                                                                                                => 'Internet',
-    'University EOther-mail'                                                                                       => 'University E-mail',
+    'University EOther-mail'                                                                                  => 'University E-mail',
     'Personal E-mail'                                                                                         => 'Personal E-mail',
     'I want to receive e-mail at my personal e-mail address'                                                  => 'I want to receive e-mail at my personal e-mail address',
     'Student Organization'                                                                                    => 'Student Organization',
@@ -88,11 +88,11 @@ return array(
     'University'                                                                                              => 'University',
     'Other university (if applicable)'                                                                        => 'Other university (if applicable)',
     'Study'                                                                                                   => 'Study',
+    'Study (for bachelors, choose the study you would like to do)'                                            => 'Study (for bachelors, choose the study you would like to do)',
     'Other study (if applicable)'                                                                             => 'Other study (if applicable)',
-    'Specialization'                                                                                          => 'Specialization',
+    'Specialization (optional)'                                                                               => 'Specialization (optional)',
     'Year of study'                                                                                           => 'Year of study',
     'Food during event'                                                                                       => 'Food during event',
     'I will participate in the network reception.'                                                            => 'I will participate in the network reception',
     'I consent that my personal information can be used within this event for necessary purposes.'            => 'I consent that my personal information can be used within this event for necessary purposes',
-    'Register'                                                                                                => 'Register'
 );

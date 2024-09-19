@@ -19,7 +19,7 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->from('TicketBundle\Entity\Event', 'e')
             ->innerJoin('e.activity', 'a')
             ->where(
-                $query->expr()->gt('a.startDate', ':now')
+                $query->expr()->gt('a.endDate', ':now')
             )
             ->setParameter('now', new DateTime())
             ->getQuery();
@@ -48,6 +48,7 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->lt('a.startDate', ':now')
             )
             ->setParameter('now', new DateTime())
+            ->orderBy('e.bookingsCloseDate', 'DESC')
             ->getQuery();
     }
 }

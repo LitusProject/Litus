@@ -198,9 +198,12 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             $item = (object) array();
             $item->id = $subscription->getId();
             $item->name = $subscription->getFirstName().' '.$subscription->getLastName();
+            $item->email = $subscription->getEmail();
             $item->university = $subscription->getUniversityString();
             $item->study = $subscription->getStudyString();
-            $item->reception = $subscription->isAtNetworkReception();
+            $item->specialization = $subscription->getSpecialization();
+            $item->year = $subscription->getStudyYearString();
+            $item->food = $subscription->getFoodString();
             $item->qr = $subscription->getQrCode();
             $result[] = $item;
         }
@@ -262,7 +265,18 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
     public function csvAction()
     {
         $file = new CsvFile();
-        $heading = array('first_name','last_name', 'study', 'food', 'network_reception');
+        $heading = array(
+            'first_name',
+            'last_name',
+            'email',
+            'university',
+            'study',
+            'other_study',
+            'specialization',
+            'year_of_study',
+            'food',
+//            'network_reception',
+        );
         $results = array();
 
         $event = $this->getEventEntity();
@@ -275,13 +289,19 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
             ->findAllByEvent($event);
 
         foreach ($subscriptions as $subscription) {
-            $results[] = array(
-                $subscription->getFirstName(),
-                $subscription->getLastName(),
-                $subscription->getStudyString(),
-                ($event->getFood() ? $subscription->getFoodString() : '/'),
-                $subscription->isAtNetworkReception() ? 'true' : '',
-            );
+            if ($subscription instanceof SubscriptionEntity) {
+                $results[] = array(
+                    $subscription->getFirstName(),
+                    $subscription->getLastName(),
+                    $subscription->getEmail(),
+                    $subscription->getUniversityString(),
+                    $subscription->getStudyString(),
+                    $subscription->getSpecialization(),
+                    SubscriptionEntity::POSSIBLE_STUDY_YEARS[$subscription->getStudyYear()],
+                    ($event->getFood() ? $subscription->getFoodString() : '/'),
+//                $subscription->isAtNetworkReception() ? 'true' : '',
+                );
+            }
         }
 
         $document = new CsvGenerator($heading, $results);
@@ -290,7 +310,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
         $headers = new Headers();
         $headers->addHeaders(
             array(
-                'Content-Disposition' => 'attachment; filename="subscriptions_'. $event->getTitle() . '.csv"',
+                'Content-Disposition' => 'attachment; filename="subscriptions_' . $event->getTitle() . '.csv"',
                 'Content-Type'        => 'text/csv',
             )
         );
@@ -356,7 +376,7 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );
@@ -427,12 +447,13 @@ class SubscriptionController extends \CommonBundle\Component\Controller\ActionCo
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );
 
         $url = str_replace('leia.', '', $url);
+        $url = str_replace('/en/', '/nl/', $url);
 
         $qrSource = str_replace(
             '{{encodedUrl}}',

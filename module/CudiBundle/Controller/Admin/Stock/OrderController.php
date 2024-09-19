@@ -8,6 +8,7 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CudiBundle\Component\Document\Generator\Order\Pdf as OrderPdfGenerator;
 use CudiBundle\Component\Document\Generator\Order\Xml as OrderXmlGenerator;
+use CudiBundle\Entity\Stock\Delivery;
 use CudiBundle\Entity\Stock\Order;
 use CudiBundle\Entity\Stock\Order\Item as OrderItem;
 use CudiBundle\Entity\Stock\Period;
@@ -100,7 +101,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         $result = array();
         foreach ($orders as $order) {
-            $item = (object) array();
+            $item = (object)array();
             $item->id = $order->getId();
             $item->articleId = $order->getArticle()->getId();
             $item->title = $order->getArticle()->getMainArticle()->getTitle();
@@ -373,7 +374,7 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
 
         return new ViewModel(
             array(
-                'result' => (object) array('status' => 'success'),
+                'result' => (object)array('status' => 'success'),
             )
         );
     }
@@ -466,13 +467,13 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         foreach ($items as $item) {
             if ($item->getArticle()->getMainArticle()->isInternal()) {
                 $results[] = array(
-                    (string) $item->getArticle()->getBarcode(),
+                    (string)$item->getArticle()->getBarcode(),
                     $item->getArticle()->getMainArticle()->getTitle(),
                     $item->getArticle()->getMainArticle()->isRectoVerso() ? '1' : '0',
                     $item->getArticle()->getMainArticle()->getBinding()->getName(),
                     $item->getArticle()->getMainArticle()->isColored() ? '1' : '0',
-                    (string) ($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored()),
-                    (string) $item->getNumber(),
+                    (string)($item->getArticle()->getMainArticle()->getNbBlackAndWhite() + $item->getArticle()->getMainArticle()->getNbColored()),
+                    (string)$item->getNumber(),
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
@@ -485,8 +486,8 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
                     OrderController::NOT_APPLICABLE,
-                    (string) $item->getNumber(),
-                    (string) $item->getArticle()->getMainArticle()->getIsbn(),
+                    (string)$item->getNumber(),
+                    (string)$item->getArticle()->getMainArticle()->getIsbn(),
                     $item->getArticle()->getMainArticle()->getAuthors(),
                     $item->getArticle()->getMainArticle()->getPublishers(),
                 );
@@ -594,8 +595,78 @@ class OrderController extends \CudiBundle\Component\Controller\ActionController
         return new ViewModel();
     }
 
+    public function deliveredAction()
+    {
+        $order = $this->getOrderEntity();
+        $sortby = $this->getParam('order', 'barcode');
+
+        $form = $this->getForm('cudi_stock_order_set-delivered', array('order' => $order, 'sortby' => $sortby));
+
+        $suppliers = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Supplier')
+            ->findAll();
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $form->setData($formData);
+            if ($form->isValid()) {
+                foreach ($formData['articles'] as $id => $amount) {
+                    $article = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($id);
+
+                    $item = new Delivery($article, $amount, $this->getAuthentication()->getPersonObject());
+                    $this->getEntityManager()->persist($item);
+                    $this->getEntityManager()->flush();
+
+                    $enableAssignment = $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_automatic_assignment') &&
+                        $this->getEntityManager()
+                        ->getRepository('CommonBundle\Entity\General\Config')
+                        ->getConfigValue('cudi.enable_assign_after_stock_update');
+
+                    if ($enableAssignment) {
+                        $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Booking')
+                            ->assignAllByArticle($article, $this->getMailTransport());
+                        $this->getEntityManager()->flush();
+                    }
+                }
+
+                $order->setDelivered(true);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'SUCCESS',
+                    'The delivery was successfully added!'
+                );
+
+                $this->redirect()->toRoute(
+                    'cudi_admin_stock_order',
+                    array(
+                        'action' => 'edit',
+                        'id'     => $order->getId(),
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'supplier'  => $order->getSupplier(),
+                'suppliers' => $suppliers,
+                'form'      => $form,
+                'order'     => $order,
+                'sortby'    => $sortby,
+            )
+        );
+    }
+
     /**
-     * @param  Period $period
+     * @param Period $period
      * @return \Doctrine\ORM\Query|null
      */
     private function search(Period $period)

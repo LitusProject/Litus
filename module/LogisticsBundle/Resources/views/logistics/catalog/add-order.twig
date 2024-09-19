@@ -2,10 +2,21 @@
 {% import 'site/partials/form.twig' as forms %}
 
 {% block content %}
-    <h1>{{ translate('Add Order') }}</h1>
+    <a class="btn btn-default" href="{{ url('logistics_catalog', {'action' : 'overview'}) }}">{{ translate('Back') }}</a>
 
-    {{ translate("If you don't see your location as a possible option, put in in the description (be as complete as possible). ") }}
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Add Order') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
 
-
+        </div>
+    </div>
+    <div class="alert alert-info">
+        <a class="close" data-dismiss="alert">&times;</a>
+        {{ translate("If you don't see your location as a possible option, put it in the description (be as complete as possible). ") }}
+    </div>
+    <br>
     {{ forms.renderForm(form) }}
 {% endblock %}
+

@@ -1,0 +1,255 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div class="page-header" style="overflow: hidden;">
+        <div style="float:left;">
+            <h1>{{ translate('MyOrders') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if authenticatedPerson is not null %}
+                <a href="{{ url('logistics_order', {"action" : 'add'}) }}" class="btn btn-success pull-right">{{ translate('New') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger order_canceled_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to cancel the order. Please try again later.</p>
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger order_removed_error fade">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to remove the order. Please try again later.</p>
+        </div>
+    </div>
+    
+    {% if authenticatedPerson is null %}
+        <div>{{ translate('Please login to view your orders.') }}</div>
+    {% else %}
+        {% if not orders is empty or not oldOrders is empty %}
+            <div class="row">
+                {% set onceRejected = false %}
+                {% set oncePending = false %}
+
+                {#        Table with all latest orders        #}
+                <div class="col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%">{{ translate('Order') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('Creator') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('Start date') }}</th>
+                            <th class="hidden-xs" style="width: 17.5%">{{ translate('End date') }}</th>
+                            <th style="width: 15%; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">{{ translate('Status') }}</th>
+                            <th style="width: 17.5%">{{ translate('Actions') }}</th>
+                        </tr>
+                        </thead>
+                        {#        New orders        #}
+                        {% for order in orders %}
+                            <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %}">
+                                <td style="vertical-align: middle;">{{ order.getName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="item-{{ order.getId() }}-status" style="vertical-align: middle;">
+                                    {{ translate(order.getStatus()) }}
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm">
+                                        {{ translate('View') }}
+                                    </a>
+                                    {%if not order.getStatus() is same as('Canceled') %}
+                                        <a href="#" class="btn btn-danger btn-sm cancel" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Cancel') }}
+                                        </a>
+                                    {% else %}
+                                        <a href="#" class="btn btn-danger btn-sm delete" data-id="{{ order.getId() }}" data-name="{{ order.getName() }}">
+                                            {{ translate('Delete') }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {#        Old orders        #}
+                        {% for order in oldOrders %}
+                            <tr class="item item-{{ order.getId() }} {% if 'approved' == order.getStatus() %}success{% endif %} collapsed hide" style="background: #D9DAd8">
+                                <td style="vertical-align: middle;">{{ order.getName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getCreator().getFullName() }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getStartDate().format('d/m/Y H:i') }}</td>
+                                <td class="hidden-xs" style="vertical-align: middle;">{{ order.getEndDate().format('d/m/Y H:i') }}</td>
+                                <td class="item-{{ order.getId() }}-status"
+                                    style="vertical-align: middle; {% if order.getStatus() is same as('Canceled') or order.getStatus() is same as('Removed') %}color: #882a25; font-weight: bold;{% endif %}">
+                                    {{ translate(order.getStatus()) }}
+                                </td>
+                                <td class="actions">
+                                    <a href="{{ url('logistics_order', {"action" : 'view', "order" : order.getId()}) }}" class="btn btn-primary btn-sm">
+                                        {{ translate('View') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <a href="#" class="expand" style="display: inline-flex; align-items: center;">
+                            {{ translate('Old orders') }}<i class="ui-icon ui-icon-triangle-1-e"></i>
+                        </a>
+                    </div>
+                </div>
+                {% if onceRejected == true %}
+                    <div class="flashmessage alert alert-warning fade in">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('You have one or more rejected orders. Edit the orders if you want to ask for approval again, or delete them if you don\'t need them anymore.') }}
+                    </div>
+                {% endif %}
+                {% if oncePending == true %}
+                    <div class="flashmessage alert alert-warning fade in">
+                        <a class="close" data-dismiss="alert">&times;</a>
+                        {{ translate('You have one or more pending orders. We will handle these as fast as possible. Edit the orders if you want to make more changes, or delete them if you don\'t need them anymore.') }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    {% endif %}
+
+    <div class="modal fade" id="cancelOrder">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {{ translate('Are you sure you want to cancel the following order:') }} <b class="orderName"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default cancel" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteOrder">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal">&times;</a>
+                    <h4>{{ translate('Logistics') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    {{ translate('Are you sure you want to remove the following order:') }} <b class="orderName"></b>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger confirm">{{ translate('Yes') }}</button>
+                    <button class="btn btn-default" data-dismiss="modal">{{ translate('No') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.item .cancel').click(openCancelOrder);
+            $('.item .delete').click(openRemoveOrder);
+            $('.expand').click(collapse);
+        });
+
+        function openCancelOrder(e) {
+            e.preventDefault();
+            // Gets the object bound to the modal: an order
+            const $this = $(this);
+            const cancelOrder = $('#cancelOrder');
+            const id = $this.data('id');
+            cancelOrder.find('.orderName').html($(this).data('name'));
+            cancelOrder.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_order', {"action": "cancel"})}}' + id, function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.item-' + id + '-status').html("Canceled");
+                        $('#cancelOrder').modal('hide');
+                        location.reload();
+                    } else {
+                        errorCancel();
+                    }
+                }, 'json').error(errorCancel);
+            });
+            cancelOrder.modal();
+        }
+
+        function openRemoveOrder(e) {
+            e.preventDefault();
+            const $this = $(this);
+            const deleteOrder = $('#deleteOrder');
+            const id = $this.data('id');
+            deleteOrder.find('.orderName').html($(this).data('name'));
+            deleteOrder.find('.confirm').unbind('click').click(function () {
+                $.post('{{ url('logistics_order', {"action": "remove"})}}' + id, function (data) {
+                    if (data && 'success' === data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#order_removed_success').addClass('in');
+                        $('.item-' + id).remove();
+                        deleteOrder.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            deleteOrder.modal();
+        }
+
+        function errorCancel() {
+            const flashmessage = $('.flashmessage');
+            flashmessage.addClass('in');
+            flashmessage.addClass('hidden');
+            $('.order_canceled_error').removeClass('hidden');
+            $('#cancelOrder').modal('hide');
+        }
+
+        function errorRemove() {
+            const flashmessage = $('.flashmessage');
+            flashmessage.addClass('in');
+            flashmessage.addClass('hidden');
+            $('.order_removed_error').removeClass('hidden');
+            $('#deleteOrder').modal('hide');
+        }
+
+        function collapse(e) {
+            e.preventDefault();
+            const icon = document.getElementsByClassName("ui-icon")[0];
+            const collapsedItems = Array.from(document.getElementsByClassName("collapsed"));
+            const expandedItems = Array.from(document.getElementsByClassName("expanded"));
+
+            console.log(icon);
+            console.log(collapsedItems);
+
+            if (collapsedItems.length > 0) {
+                icon.classList.remove("ui-icon-triangle-1-e");
+                icon.classList.add("ui-icon-triangle-1-s");
+                console.log(icon);
+                collapsedItems.forEach((item) => {
+                    console.log(item);
+                    item.classList.remove("hide");
+                    item.classList.remove("collapsed");
+                    item.classList.add("expanded");
+                    console.log(item);
+                });
+            } else {
+                icon.classList.remove("ui-icon-triangle-1-s");
+                icon.classList.add("ui-icon-triangle-1-e");
+                expandedItems.forEach((item) => {
+                    item.classList.add("hide");
+                    item.classList.add("collapsed");
+                    item.classList.remove("expanded");
+                });
+            }
+        }
+    </script>
+{% endblock %}

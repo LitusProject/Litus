@@ -32,7 +32,7 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
         $this->add(
             array(
                 'type' => 'hidden',
-                'name' => 'primary_email'
+                'name' => 'primary_email',
             )
         );
 
@@ -137,9 +137,12 @@ class Edit extends \CommonBundle\Form\Admin\Person\Edit
                         ),
                     ),
                     array(
-                        'type'  => 'checkbox',
-                        'name'  => 'is_in_workinggroup',
-                        'label' => 'Working Group',
+                        'type'       => 'checkbox',
+                        'name'       => 'is_in_workinggroup',
+                        'label'      => 'Working Group',
+                        'attributes' => array(
+                            'disabled' => true,
+                        ),
                     ),
                 ),
             )

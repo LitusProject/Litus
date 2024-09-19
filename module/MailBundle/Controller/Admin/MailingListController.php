@@ -147,7 +147,6 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 try {
                     $directory->groups->insert($group);
                 } catch (\Exception $e) {
-
                 }
 
                 $setting_service->groups->update($list_mail, $default_settings);
@@ -228,9 +227,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
                 $member->setEmail($mail);
 
                 try {
-                    $insert = $directory->members->insert($list_mail, $member);
+                    $directory->members->insert($list_mail, $member);
                 } catch (\Exception $e) {
-
                 }
 
                 $this->getEntityManager()->persist($entry);
@@ -374,9 +372,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $directory = new \Google_Service_Directory($client);
         try {
-            $delete = $directory->groups->delete($list_email);
+            $directory->groups->delete($list_email);
         } catch (\Exception $e) {
-
         }
 
         $this->getEntityManager()->remove($list);
@@ -410,9 +407,8 @@ class MailingListController extends \MailBundle\Component\Controller\AdminContro
 
         $directory = new \Google_Service_Directory($client);
         try {
-            $delete = $directory->members->delete($list_email, $email);
+            $directory->members->delete($list_email, $email);
         } catch (\Exception $e) {
-
         }
 
         $this->getEntityManager()->remove($entry);

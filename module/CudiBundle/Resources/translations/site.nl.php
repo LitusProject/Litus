@@ -18,6 +18,7 @@ return array(
     'Actions'                                                                                                                                                                     => 'Acties',
     'Mandatory'                                                                                                                                                                   => 'Verplicht',
     'Booked'                                                                                                                                                                      => 'Gereserveerd',
+    'Bought'                                                                                                                                                                      => 'Gekocht',
     'Assigned'                                                                                                                                                                    => 'Toegewezen',
     'Remarks'                                                                                                                                                                     => 'Opmerkingen',
     'Remark'                                                                                                                                                                      => 'Opmerking',
@@ -58,7 +59,6 @@ return array(
     'Disable catalog update mails'                                                                                                                                                => 'Disable catalog update mails',
 
     'Color'                                                                                                                                                                       => 'Color',
-    'Bought'                                                                                                                                                                      => 'Bought',
 
     'You sent out a mail for the selected retail!'                                                                                                                                => 'Er is een e-mail verzonden naar de verkoper!',
     'You canceled your interest in the selected retail!'                                                                                                                          => 'Je hebt je aanvraag voor de geselecteerde aanbieding verwijderd!',
@@ -95,4 +95,6 @@ return array(
     'You currently have no personal retails!'                                                                                                                                     => 'Je hebt momenteel geen persoonlijke aanbiedingen!',
     'You successfully deleted the retail!'                                                                                                                                        => 'De aanbieding is succesvol verwijderd!',
 
+    'To edit subjects visible here, go to'                                                                                                                                        => 'Om je vakken aan te passen, ga naar',
+    'profile'                                                                                                                                                                     => 'profiel',
 );

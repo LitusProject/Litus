@@ -123,4 +123,91 @@ class Event extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function findAllCareerAndActiveAndNotHidden($nbResults = 15)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->gt('e.endDate', ':now'),
+                        $query->expr()->gt('e.startDate', ':now'),
+                    ),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->eq('e.isCareer', 'true'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('now', new DateTime());
+
+        if ($nbResults > 0) {
+            $query->setMaxResults($nbResults);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findAllEerstejaarsAndActiveAndNotHidden($nbResults = 15)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->gt('e.endDate', ':now'),
+                        $query->expr()->gt('e.startDate', ':now'),
+                    ),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->eq('e.isEerstejaars', 'true'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('now', new DateTime());
+
+        if ($nbResults > 0) {
+            $query->setMaxResults($nbResults);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findAllInternationalAndActiveAndNotHidden($nbResults = 15)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $query->select('e')
+            ->from('CalendarBundle\Entity\Node\Event', 'e')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->orX(
+                        $query->expr()->gt('e.endDate', ':now'),
+                        $query->expr()->gt('e.startDate', ':now'),
+                    ),
+                    $query->expr()->eq('e.isHistory', 'false'),
+                    $query->expr()->eq('e.isInternational', 'true'),
+                    $query->expr()->orX(
+                        $query->expr()->eq('e.isHidden', 'false'),
+                        $query->expr()->isNull('e.isHidden')
+                    )
+                )
+            )
+            ->orderBy('e.startDate', 'ASC')
+            ->setParameter('now', new DateTime());
+
+        if ($nbResults > 0) {
+            $query->setMaxResults($nbResults);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

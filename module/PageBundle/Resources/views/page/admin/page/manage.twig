@@ -32,8 +32,9 @@
                 <tr>
                     <th>Title</th>
                     <th width="120px">Category</th>
-                    <th width="100px">Parent</th>
                     <th width="120px">Author</th>
+                    <th style="width:80px">Has poster</th>
+                    <th style="width:50px">Active</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -45,8 +46,9 @@
                     <tr>
                         <th>Title</th>
                         <th width="120px">Category</th>
-                        <th width="100px">Parent</th>
                         <th width="120px">Author</th>
+                        <th style="width:80px">Has poster</th>
+                        <th style="width:50px">Active</th>
                         <th width="70px">Actions</th>
                     </tr>
                 </thead>
@@ -56,14 +58,18 @@
                         <tr class="item item-{{ page.getId() }}">
                             <td>{{ page.getTitle(language) }}</td>
                             <td>{{ page.getCategory().getName(language) }}</td>
-                            <td>{{ page.getParent().getTitle(language) }}</td>
                             <td>{{ page.getCreationPerson().getFullName() }}</td>
+                            <td>{% if page.getPoster() %}
+                                    &times;
+                                {% endif %}
+                            </td>
+                            <td>{% if page.isActive() %}&times;{% endif %}</td>
                             <td class="actions">
                                 {% if page.canBeEditedBy(authenticatedPerson) %}
                                     {% if hasAccess('page_admin_page', 'edit') %}
                                         <a href="{{ url('page_admin_page', {"action": "edit", "id": page.getId()}) }}" class="edit">Edit</a>
                                     {% endif %}
-                                    {% if hasAccess('page_admin_page', 'poster') %}
+                                    {% if hasAccess('page_admin_page', 'editPoster') %}
                                         <a href="{{ url('page_admin_page', {"action": "editPoster", "id": page.getId()}) }}" class="image_edit">Poster</a>
                                     {% endif %}
                                     {% if hasAccess('page_admin_page', 'delete') %}
@@ -90,6 +96,20 @@
                     </p>
                     <p>
                         <a href="{{ url('page_admin_category', {"action": "manage"}) }}">&rarr; Categories</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('page_admin_categorypage', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categorie Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create Categorie Pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_categorypage', {"action": "manage"}) }}">&rarr; Categorie Pages</a>
                     </p>
                 </div>
             </div>
@@ -154,8 +174,9 @@
                         $('#page_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.title + '</td>')
                             .append('<td>' + this.category + '</td>')
-                            .append('<td>' + this.parent + '</td>')
                             .append('<td>' + this.author + '</td>')
+                            .append('<td>' + this.poster + '</td>')
+                            .append('<td>' + this.active + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})
                             );

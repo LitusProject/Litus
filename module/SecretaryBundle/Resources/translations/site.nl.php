@@ -39,7 +39,6 @@ return array(
     'I want to receive my Ir.Reëel at CuDi'                                                                   => 'Ik wil mijn Ir.Reëel krijgen bij CuDi',
     'I want to receive \'t Bakske by e-mail'                                                                  => 'Ik wil \'t Bakske ontvangen via e-mail',
     'T-shirt Size'                                                                                            => 'T-shirt Maat',
-    'Register'                                                                                                => 'Schrijf In',
     'Become a Member'                                                                                         => 'Lid Worden',
     'You haven\'t checked the option to become a member. Being a member has many advantages.'                 => 'Je hebt de optie om lid te worden niet aangeduid. Als lid geniet je echter veel voordelen.',
     'Are you sure you want to continue?'                                                                      => 'Ben je zeker dat je wil verdergaan?',
@@ -88,11 +87,12 @@ return array(
     'University'                                                                                              => 'Universiteit',
     'Other university (if applicable)'                                                                        => 'Andere universiteit (indien van toepassing)',
     'Study'                                                                                                   => 'Studie',
+    'Study (for bachelors, choose the study you would like to do)'                                            => 'Studie (voor bachelors, kies de studie die je zou willen doen)',
     'Other study (if applicable)'                                                                             => 'Andere studie (indien van toepassing)',
-    'Specialization'                                                                                          => 'Specialisatie',
+    'Specialization (optional)'                                                                               => 'Specialisatie (optioneel)',
     'Year of study'                                                                                           => 'Studiejaar',
     'Food during event'                                                                                       => 'Eten tijdens het event',
     'I will participate in the network reception.'                                                            => 'Ik neem deel aan de netwerk receptie',
     'I consent that my personal information can be used within this event for necessary purposes.'            => 'Ik sta toe dat mijn persoonlijke informatie gebruikt kan worden tijdens het event voor noodzakelijke doeleinden',
-    'Register'                                                                                                => 'Registreer'
+    'Register'                                                                                                => 'Registreer',
 );

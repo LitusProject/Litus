@@ -77,7 +77,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
                 $this->redirect()->toRoute(
                     'prom_admin_code',
                     array(
-                        'action' => 'add'
+                        'action' => 'add',
                     )
                 );
 
@@ -88,7 +88,7 @@ class CodeController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'academicForm' => $academicForm,
-                'externalForm' => $externalForm
+                'externalForm' => $externalForm,
             )
         );
     }

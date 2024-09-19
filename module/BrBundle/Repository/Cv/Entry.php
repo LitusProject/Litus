@@ -35,6 +35,42 @@ class Entry extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
 
     /**
      * @param  AcademicYear $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByAcademicYearByFirstNameQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('BrBundle\Entity\Cv\Entry', 'e')
+            ->where(
+                $query->expr()->eq('e.year', ':year')
+            )
+            ->setParameter('year', $academicYear)
+            ->orderBy('e.firstName', 'ASC')
+            ->addOrderBy('e.lastName', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllByAcademicYearByLastnameQuery(AcademicYear $academicYear)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('e')
+            ->from('BrBundle\Entity\Cv\Entry', 'e')
+            ->where(
+                $query->expr()->eq('e.year', ':year')
+            )
+            ->setParameter('year', $academicYear)
+            ->orderBy('e.lastName', 'ASC')
+            ->addOrderBy('e.firstName', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  AcademicYear $academicYear
      * @param  Academic     $academic
      * @return \Doctrine\ORM\Query
      */

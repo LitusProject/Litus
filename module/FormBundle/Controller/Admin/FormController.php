@@ -26,14 +26,22 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
             $this->getParam('page')
         );
 
+        $entry_counts = array();
         foreach ($paginator as $form) {
             $form->setEntityManager($this->getEntityManager());
+            $amount = count(
+                $this->getEntityManager()
+                    ->getRepository('FormBundle\Entity\Node\Entry')
+                    ->findAllByForm($form)
+            );
+            $entry_counts[$form->getId()] = $amount;
         }
 
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
+                'entry_counts'      => $entry_counts,
             )
         );
     }

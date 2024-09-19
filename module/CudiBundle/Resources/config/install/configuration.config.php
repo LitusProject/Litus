@@ -404,6 +404,11 @@ VTK Cudi
         'description' => 'Flag whether to send the catalog update mails.',
     ),
     array(
+        'key'         => 'cudi.catalog_update_mail_to_sysadmin',
+        'value'       => '1',
+        'description' => 'Flag whether to send the catalog update mails tot sysadmin.',
+    ),
+    array(
         'key'         => 'cudi.sale_light_version',
         'value'       => '0',
         'description' => 'Flag whether to show the light version of the sale app (no queue)',
@@ -417,6 +422,11 @@ VTK Cudi
         'key'         => 'cudi.booking_mails_to_cudi',
         'value'       => '1',
         'description' => 'Send the cudi booking mails (assigned, expired, warning) to the cudi address',
+    ),
+    array(
+        'key'         => 'cudi.booking_mails_to_sysadmin',
+        'value'       => '1',
+        'description' => 'Send the cudi booking mails (assigned, expired, warning) to the sytem administrator address',
     ),
     array(
         'key'         => 'cudi.location',
@@ -622,7 +632,7 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
             array(
                 'slides',
                 'textbook',
-                'exercises'
+                'exercises',
             )
         ),
         'description' => 'An array of all allowed article types for retails.',
@@ -666,6 +676,11 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'description' => 'boolean for forcing registration shifts',
     ),
     array(
+        'key'         => 'cudi.queue_margin_sign_in',
+        'value'       => '0',
+        'description' => 'number of minutes someone can sign in to the queue before and after the registration shift',
+    ),
+    array(
         'key'         => 'cudi.printer_event_id',
         'value'       => 'here comes the id',
         'description' => 'This is the Ticket Event ID for the printer',
@@ -679,5 +694,10 @@ Gelieve contact op te nemen met {{ name }} via {{ email }}.
         'key'         => 'cudi.printer_uniflow_client_secret',
         'value'       => 'Here comes the uniflow Client Secret',
         'description' => 'This is the Client secret for the uniflow application',
+    ),
+    array(
+        'key'         => 'cudi.maximum_booking_number',
+        'value'       => '10',
+        'description' => 'This is the maximum size of things someone can order in Cudi',
     ),
 );

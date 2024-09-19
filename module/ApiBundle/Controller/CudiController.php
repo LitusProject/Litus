@@ -426,7 +426,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CudiBundle\Entity\Article')
             ->findBy(
                 array(
-                    'id' => $articleId
+                    'id' => $articleId,
                 )
             )[0];
 
@@ -442,7 +442,7 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
                 ->getRepository('CudiBundle\Entity\Article\Internal')
                 ->findBy(
                     array(
-                        'id' => $articleId
+                        'id' => $articleId,
                     )
                 )[0];
             $internal->setNbBlackAndWhite($this->getRequest()->getPost('black_white'));
@@ -468,47 +468,86 @@ class CudiController extends \ApiBundle\Component\Controller\ActionController\Ap
             array(
                 'result' => (object) array(
                     'front_page' => '/admin/cudi/article/file/front/' . $saleArticle->getId(),
-                )
+                ),
             )
         );
     }
 
     private function copyArticleSubject(General $article)
     {
-        $currentYear = $this->getCurrentAcademicYear();
-        $date = $currentYear->getEndDate();
-        $date2 = $currentYear->getEndDate();
-        date_add($date2, date_interval_create_from_date_string('30 days'));
+        $month = date('m');
+        if ($month < 6 or $month > 11) {
+             $currentYear = $this->getCurrentAcademicYear();
+             $date = $currentYear->getEndDate();
 
-        date_sub($date, date_interval_create_from_date_string('9 months'));
+             date_sub($date, date_interval_create_from_date_string('18 months'));
 
-        $previousYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByDate($date);
+             $previousYear = $this->getEntityManager()
+                 ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                 ->findOneByDate($date);
 
-        $nextYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByDate($date2);
+             $currentSubjects = $this->getEntityManager()
+                 ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                 ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
+                 ->getResult();
+            foreach ($currentSubjects as $subjectMap) {
+                $mapping = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subjectMap->getSubject(), $currentYear);
 
-        $currentSubjects = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\SubjectMap')
-            ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
-            ->getResult();
-        foreach ($currentSubjects as $subjectMap) {
-            $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
-            $this->getEntityManager()->persist($newMap);
+                if ($mapping === null) {
+                    $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $currentYear, false);
+                    $this->getEntityManager()->persist($newMap);
+                }
+            }
+        } else {
+            $currentYear = $this->getCurrentAcademicYear();
+            $date = $currentYear->getEndDate();
+            $date2 = $currentYear->getEndDate();
+            date_add($date2, date_interval_create_from_date_string('30 days'));
+
+            date_sub($date, date_interval_create_from_date_string('9 months'));
+
+            $previousYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByDate($date);
+
+            $nextYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByDate($date2);
+
+            $currentSubjects = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                ->findAllByArticleAndAcademicYearQuery($article, $previousYear)
+                ->getResult();
+            foreach ($currentSubjects as $subjectMap) {
+                $mapping = $this->getEntityManager()
+                    ->getRepository('CudiBundle\Entity\Article\SubjectMap')
+                    ->findOneByArticleAndSubjectAndAcademicYear($article, $subjectMap->getSubject(), $nextYear);
+
+                if ($mapping === null) {
+                    $newMap = new General\SubjectMap($article, $subjectMap->getSubject(), $nextYear, false);
+                    $this->getEntityManager()->persist($newMap);
+                }
+            }
         }
     }
 
     private function changeBarcode(string $barcode)
     {
+        $month = date('m');
         $currentYear = $this->getCurrentAcademicYear();
-        $date = $currentYear->getEndDate();
-        date_add($date, date_interval_create_from_date_string('30 days'));
-        $nextYear = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\AcademicYear')
-            ->findOneByDate($date);
-        $nextYearCode = $nextYear->getCode(true);
+
+        if ($month < 6 or $month > 11) {
+            $nextYearCode = $currentYear->getCode(true);
+        } else {
+            $date = $currentYear->getEndDate();
+            date_add($date, date_interval_create_from_date_string('30 days'));
+            $nextYear = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\AcademicYear')
+                ->findOneByDate($date);
+            $nextYearCode = $nextYear->getCode(true);
+        }
 
         return substr($barcode, 0, 3) . $nextYearCode . substr($barcode, 7);
     }

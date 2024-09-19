@@ -52,7 +52,7 @@ class Scanner
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -78,7 +78,7 @@ class Scanner
     }
 
     /**
-     * @return int|null returns the amount of check ins one person has
+     * @return integer|null returns the amount of check ins one person has
      */
     public function getAmount()
     {

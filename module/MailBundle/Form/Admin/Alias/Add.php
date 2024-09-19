@@ -3,7 +3,7 @@
 namespace MailBundle\Form\Admin\Alias;
 
 /**
- * Send Mail
+ * Add Alias.
  *
  * @author Niels Avonds <niels.avonds@litus.cc>
  */

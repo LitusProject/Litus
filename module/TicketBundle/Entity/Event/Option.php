@@ -38,14 +38,14 @@ class Option
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint")
+     * @ORM\Column(name="price_members", type="integer")
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
+     * @ORM\Column(name="price_non_members", type="integer", nullable=true)
      */
     private $priceNonMembers;
 
@@ -57,17 +57,34 @@ class Option
     private $maximum;
 
     /**
+     * @var boolean Whether this option is visible or not
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=true)
+     */
+    private $visible;
+
+    /**
+     * @var integer The maximum amount of tickets for an option per person
+     *
+     * @ORM\Column(name="limit_per_person_option", type="integer", nullable=true)
+     */
+    private $limitPerPerson;
+
+    /**
      * @param Event               $event
      * @param string              $name
      * @param integer             $priceMembers
      * @param integer|null        $priceNonMembers
      * @param integer|string|null $maximum
+     * @param integer|null        $limit
      */
-    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum)
+    public function __construct(Event $event, $name, $priceMembers, $priceNonMembers, $maximum, $visible, $limit)
     {
         $this->event = $event;
         $this->name = $name;
         $this->maximum = $maximum;
+        $this->visible = $visible;
+        $this->limitPerPerson = $limit;
 
         $this->setPriceMembers($priceMembers)
             ->setPriceNonMembers($priceNonMembers);
@@ -163,5 +180,41 @@ class Option
     public function getMaximum()
     {
         return $this->maximum;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param boolean $visible
+     * @return self
+     */
+    public function setIsVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
+    }
+
+    /**
+     * @return integer|null
+     */
+    public function getLimitPerPerson()
+    {
+        return $this->limitPerPerson;
+    }
+
+    /**
+     * @param $limit
+     * @return self
+     */
+    public function setLimitPerPerson($limit)
+    {
+        $this->limitPerPerson = $limit;
+        return $this;
     }
 }

@@ -55,7 +55,6 @@ class Company extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->where(
                 $query->expr()->eq('c.attendsJobfair', 'true'),
             )
-            ->setParameter('name', '%' . strtolower($name) . '%')
             ->orderBy('c.name', 'ASC')
             ->getQuery();
     }

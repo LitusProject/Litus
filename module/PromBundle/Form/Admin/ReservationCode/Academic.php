@@ -28,7 +28,7 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                     'input' => array(
                         'validators' => array(
                             array(
-                                'name' => 'EntryAcademic'
+                                'name' => 'EntryAcademic',
                             ),
                             array('name' => 'TypeaheadPerson'),
                         ),
@@ -49,8 +49,8 @@ class Academic extends \CommonBundle\Component\Form\Admin\Form
                 'options'    => array(
                     'input' => array(
                         'validators' => array(
-                            array('name' => 'Int')
-                        )
+                            array('name' => 'Int'),
+                        ),
                     ),
                 ),
             )

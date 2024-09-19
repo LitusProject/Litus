@@ -28,6 +28,7 @@
                     <option value="location">Location</option>
                     <option value="status">Status</option>
                     <option value="visibility">Visibility</option>
+                    <option value="unitName">Unit</option>
                 </select>
                 is
                 <input type="text" id="searchString" size="30" />
@@ -35,14 +36,16 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="130px">Name</th>
-                    <th width="90px">Available/Owned</th>
-                    <th width="150px">Category</th>
-                    <th width="120px">Location</th>
-                    <th width="100px">Spot</th>
-                    <th width="80px">Status</th>
-                    <th width="80px">Visibility</th>
-                    <th width="70px">Actions</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 8%">Avail./Owned</th>
+                    <th style="width: 8%">Unit</th>
+                    <th style="width: 8%">Category</th>
+                    <th style="width: 6%">Location</th>
+                    <th style="width: 10%">Spot</th>
+                    <th style="width: 17%">Description</th>  {# Additional info #}
+                    <th style="width: 6%">Status</th>
+                    <th style="width: 6%">Visibility</th>
+                    <th style="width: 15%">Actions</th>
                 </tr>
             </table>
         </div>
@@ -51,14 +54,16 @@
 
             <table class="full_width manage">
                 <tr>
-                    <th width="130px">Name</th>
-                    <th width="90px">Available/Owned</th>
-                    <th width="150px">Category</th>
-                    <th width="120px">Location</th>
-                    <th width="100px">Spot</th>
-                    <th width="80px">Status</th>
-                    <th width="80px">Visibility</th>
-                    <th width="70px">Actions</th>
+                    <th style="width: 15%">Name</th>
+                    <th style="width: 8%">Avail./Owned</th>
+                    <th style="width: 10%">Unit</th>
+                    <th style="width: 10%">Category</th>
+                    <th style="width: 6%">Location</th>
+                    <th style="width: 10%">Spot</th>
+                    <th style="width: 20%">Description</th>  {# Additional info #}
+                    <th style="width: 6%">Status</th>
+                    <th style="width: 6%">Visibility</th>
+                    <th style="width: 8%">Actions</th>
                 </tr>
 
                 {% for article in paginator %}
@@ -66,9 +71,11 @@
                     <tr class="item item-{{ article.getId() }}">
                         <td>{{ article.getName() }}</td>
                         <td>{{ article.getAmountAvailable() }}/{{ article.getAmountOwned() }}</td>
+                        <td>{{ article.getUnit().getName() }}</td>
                         <td>{{ article.getCategory() }}</td>
                         <td>{{ article.getLocation() }}</td>
                         <td>{{ article.getSpot() }}</td>
+                        <td>{{ article.getAdditionalInfo() }}</td>  {# Additional info #}
                         <td>{{ article.getStatus() }}</td>
                         <td>{{ article.getVisibility() }}</td>
                         <td class="actions">
@@ -135,9 +142,11 @@
                         $('#article_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
                         row.append('<td>' + this.name + '</td>')
                             .append('<td>' + this.amountAvailable + "/" + this.amountOwned + '</td>')
+                            .append('<td>' + this.unitName + '</td>')
                             .append('<td>' + this.category + '</td>')
                             .append('<td>' + this.location + '</td>')
                             .append('<td>' + this.spot + '</td>')
+                            .append('<td>' + this.additionalInfo + '</td>')
                             .append('<td>' + this.status + '</td>')
                             .append('<td>' + this.visibility + '</td>')
                             .append(
@@ -145,17 +154,17 @@
                             );
 
                         {% if hasAccess('logistics_admin_article', 'edit') %}
-                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
+                            actions.append('<a href="{{ url('logistics_admin_article', {"action": "edit"}) }}' + this.id + '" class="edit">Edit</a>')
                         {% endif %}
 
                         {% if hasAccess('logistics_admin_article', 'delete') %}
-                        actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
-                        deleteButton.data({
-                            id: this.id,
-                        });
+                            actions.append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                            deleteButton.data({
+                                id: this.id,
+                            });
                         {% endif %}
                         {% if hasAccess('logistics_admin_article', 'orders') %}
-                        actions.append('<a href="{{ url('logistics_admin_article', {"action": "orders"}) }}' + this.id + '" class="order">Orders</a>')
+                            actions.append('<a href="{{ url('logistics_admin_article', {"action": "orders"}) }}' + this.id + '" class="order">Orders</a>')
                         {% endif %}
                     });
                     $('#article_search .delete').click(openModal);

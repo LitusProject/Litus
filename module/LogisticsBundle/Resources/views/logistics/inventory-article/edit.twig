@@ -1,0 +1,15 @@
+{% extends 'logistics/base.twig' %}
+{% import 'site/partials/form.twig' as forms %}
+
+{% block content %}
+    <a class="btn btn-default" href="{{ url('logistics_inventory_article', {'action' : 'index'}) }}">{{ translate('Back') }}</a>
+
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Edit article') }}: {{ article.getName() }}</h1>
+        </div>
+    </div>
+    <br>
+    {{ forms.renderForm(form) }}
+{% endblock %}
+

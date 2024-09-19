@@ -6,14 +6,10 @@ use CommonBundle\Component\Util\File\TmpFile;
 use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use DateTime;
 use Laminas\Http\Headers;
-use Laminas\Mail\Message;
-use Laminas\Mime\Mime;
-use Laminas\Mime\Part;
 use Laminas\View\Model\ViewModel;
 use TicketBundle\Component\Document\Generator\Event\Csv as CsvGenerator;
 use TicketBundle\Component\Document\Generator\Event\Pdf as PdfGenerator;
 use TicketBundle\Entity\Event;
-use TicketBundle\Entity\Ticket;
 
 /**
  * TicketController
@@ -65,7 +61,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         $document->generateDocument($file);
 
         $now = new DateTime();
-        $filename = 'tickets_' . $now->format('Y_m_d') . '.csv';
+        $filename = 'tickets_' . str_replace(' ', '_', $event->getActivity()->getTitle()) . '_'. $now->format('Y_m_d') . '.csv';
 
         $headers = new Headers();
         $headers->addHeaders(
@@ -139,7 +135,8 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
             $item->email = $ticket->getEmail();
             $item->organization = $ticket->getOrganization();
             $item->option = ($ticket->getOption() ? $ticket->getOption()->getName() : '') . ' ' . ($ticket->isMember() ? 'Member' : 'Non Member');
-            $item->number = $ticket->getNumber();
+            $item->payId = $ticket->getPayId();
+            $item->orderId = $ticket->getOrderId();
             $item->bookDate = $ticket->getBookDate() ? $ticket->getBookDate()->format('d/m/Y H:i') : '';
             $item->soldDate = $ticket->getSoldDate() ? $ticket->getSoldDate()->format('d/m/Y H:i') : '';
             $item->isMember = $ticket->isMember();
@@ -190,16 +187,18 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                         ->getRepository('TicketBundle\Entity\Ticket')
                         ->findOneBy(
                             array(
-                                'orderId' => $data[1]
+                                'orderId'   => $data[1],  //orderId
+                                'invoiceId' => $data[22], //invoiceId
                             )
                         );
 
                     if ($ticket !== null && $ticket->getEvent()->getId() === $this->getEventEntity()->getId() && ($data[3] === '9' || $data[3] === '5')) {
                         if ($ticket->getStatus() !== 'Sold') {
                             $ticket->setStatus('sold');
+                            $ticket->setPayId(substr($data[0], 0, 10)); // payId
                             if ($ticket->getEvent()->getQrEnabled()) {
                                 $ticket->setQrCode();
-                                $this->sendQrMail($ticket);
+                                $ticket->sendQrMail($this, $this->getLanguage());
                                 $qrSend += 1;
                             }
                             $this->getEntityManager()->flush();
@@ -217,7 +216,7 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                     'ticket_admin_ticket',
                     array(
                         'action' => 'manage',
-                        'id' => $this->getEventEntity()->getId(),
+                        'id'     => $this->getEventEntity()->getId(),
                     )
                 );
 
@@ -247,10 +246,14 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Ticket')
                     ->findAllByEventAndOption($event, $this->getParam('string'));
-            case 'organization':
+            case 'orderid':
                 return $this->getEntityManager()
                     ->getRepository('TicketBundle\Entity\Ticket')
-                    ->findAllByEventAndOrganization($event, $this->getParam('string'), $this->getCurrentAcademicYear());
+                    ->findAllByEventAndOrderId($event, $this->getParam('string'));
+            case 'payid':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPayId($event, $this->getParam('string'));
         }
     }
 
@@ -278,77 +281,5 @@ class TicketController extends \CommonBundle\Component\Controller\ActionControll
         }
 
         return $event;
-    }
-
-    private function sendQrMail(Ticket $ticket)
-    {
-        $event = $ticket->getEvent();
-        $language = $this->getLanguage();
-
-        $entityManager = $this->getEntityManager();
-        if ($language === null) {
-            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
-                ->findOneByAbbrev('en');
-        }
-
-        $mailData = unserialize(
-            $entityManager
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('ticket.subscription_mail_data')
-        );
-
-        $message = $mailData[$language->getAbbrev()]['content'];
-        $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
-
-        $mailAddress = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('ticket.subscription_mail');
-
-        $mailName = $entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('ticket.subscription_mail_name');
-
-        $url = $this->url()
-            ->fromRoute(
-                'ticket',
-                array('action' => 'qr',
-                    'id'       => $event->getId(),
-                    'qr'     => $ticket->getQrCode()
-                ),
-                array('force_canonical' => true)
-            );
-
-        $url = str_replace('leia.', '', $url);
-
-        $qrSource = str_replace(
-            '{{encodedUrl}}',
-            urlencode($url),
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('br.google_qr_api')
-        );
-
-        $message = str_replace('{{event}}', $event->getActivity()->getTitle($language), $message);
-        $message = str_replace('{{eventDate}}', $event->getActivity()->getStartDate()->format('d/m/Y'), $message);
-        $message = str_replace('{{qrSource}}', $qrSource, $message);
-        $message = str_replace('{{qrLink}}', $url, $message);
-        $message = str_replace('{{actiMail}}', $mailAddress, $message);
-        $message = str_replace('{{ticketOption}}', $ticket->getOption()->getName(), $message);
-
-        $part = new Part($message);
-
-        $part->type = Mime::TYPE_HTML;
-        $part->charset = 'utf-8';
-        $newMessage = new \Laminas\Mime\Message();
-        $newMessage->addPart($part);
-        $mail = new Message();
-        $mail->setEncoding('UTF-8')
-            ->setBody($newMessage)
-            ->setFrom($mailAddress, $mailName)
-            ->addTo($ticket->getEmail(), $ticket->getFullName())
-            ->setSubject($subject);
-        if (getenv('APPLICATION_ENV') != 'development') {
-            $this->getMailTransport()->send($mail);
-        }
     }
 }

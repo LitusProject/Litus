@@ -1,29 +1,6 @@
 {% extends 'career/partials/layout.twig' %}
 
 {% block page_content %}
-    <div id="sendDataModal" class="modal fade container">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a class="close" data-dismiss="modal">&times;</a>
-                    <h4>{{ translate('Send Data') }}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        {{ translate('You will send your data to the company: ') }}<b class="companyName"></b>!<br>
-                        {{ translate('This means that they will be able to contact you via email and can view your CV.') }}<br>
-                        {{ translate('Are you sure you want to do this?') }}
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button id="send" class="button">{{ translate('Send') }}</button>
-                    <button class="button blue unfilled" data-dismiss="modal">{{ translate('Close') }}</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <h2>{{ translate("Your Matching Profile") }}</h2>
     <div class="pageTitleDeco"></div>
 
@@ -33,52 +10,52 @@
         <h3 style="color:white;">{{ translate('Find your match with our associated companies that are attending the jobfair!') }}</h3>
         <p style="color: white;">{{ bannerText }}</p>
         <div style="height: 20px;"></div>
-        {% if needs_sp and needs_cp %}
-            <div><h4>{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please create your Profile so you can start matching!') }}</div>
-        {% elseif needs_sp or needs_cp %}
-            <div><h4>{{ translate('You are not ready to match yet!') }}</h4>{{ translate('Please finish creating your Profile so you can start matching!') }}</div>
-        {% endif %}
-        <div style="height: 20px"></div>
-
-
-        {% if needs_sp %}
-            <a class="button yellow unfilled" href="{{ url('br_career_match', {'action': 'addProfile', 'type': 'student'}) }}">{{ translate('Create Profile') }}</a>
-        {% elseif needs_cp %}
-            <a class="button yellow unfilled" href="{{ url('br_career_match', {'action': 'addProfile', 'type': 'company'}) }}">{{ translate('Create Profile') }}</a>
-        {% else %}
-            <a class="button yellow unfilled" href="{{ url('br_career_match', {'action': 'viewProfile' }) }}">{{ translate('View Profile') }}</a>
-        {% endif %}
+        <a class="button yellow unfilled"
+           href="{{ linkToMatchingSoftware }}">{{ translate('Create Profile') }}</a>
     </div>
 
     <div style="height: 20px;"></div>
     <h2>Matches</h2>
     <div class="pageTitleDeco"></div>
     <div style="height: 20px"></div>
-    {% include 'br/career/match/partials/navigation.twig' %}
-    <div style="height: 20px"></div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 contentBlock">
             <table class="table table-hover full-width">
                 {% for match in matches %}
-                    <tr>
-                        <td>
-                            <strong>{{ match.getCompany().getName() }}</strong>
-                            <br/>
-                            {{ match.getMatchPercentage() }} %
-                        </td>
-                        <td width="330" style="vertical-align: middle;">
-                            {% if match.doesCompanyHavePage(em,ay) %}
-                                <a class="button" href="{{ url('br_career_company', {'action': 'view', 'company': match.getCompany().getSlug() }) }}">{{ translate('View Company') }}</a>
+                    <div class="groupHolder">
+                        <div class="groupHeader study-toggle" data-target="body-study-{{ match.getId() }}">
+                            <div style="display: flex; width: 100%; align-items: center;">
+                                <h4 style="margin: 0">{{ match.getCompany().getName() }}</h4>
+                                <a class="button blue" style="margin-left: auto; order: 2;" href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>
+                            </div>
+                        </div>
+                        <div id="body-study-{{ match.getId() }}" style="display: none;">
+                            {% if match.getCategories()|length > 0 %}
+                                {% for category in match.getCategories() %}
+                                    <div class="cvHolder">
+                                        <div class="groupFlexCenter entry-toggle">
+                                            <h4 style="margin-bottom: 0">{{ category }}</h4>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             {% endif %}
-                            {% if not match.isInterested() %}
-                                <a style="margin-right: 20px;" class="sendData button blue unfilled pull-right" href="#" data-id="{{ match.getId() }}" data-name="{{ match.getCompany().getName() }}">{{ translate('Send Data') }}</a>
-                            {% else %}
-                                <a style="margin-right: 20px;pointer-events: none" class="button blue unfilled pull-right" data-id="{{ match.getId() }}" data-name="{{ match.getCompany().getName() }}">{{ translate('Already Sent') }}</a>
-                            {% endif %}
-                        </td>
+                        </div>
+                    </div>
 
-                    </tr>
+
+
+
+{#                    <tr>#}
+{#                        <td style="vertical-align: middle">#}
+{#                            <strong style="font-size: 16px">{{ match.getCompany().getName() }}</strong>#}
+{#                        </td>#}
+{#                        <td style="vertical-align: middle;">#}
+{#                            <a class="button blue pull-right"#}
+{#                               href="{{ match.getCompany().getFullWebsite() }}" target="_blank">{{ translate('View Company') }}</a>#}
+{#                        </td>#}
+
+{#                    </tr>#}
                 {% else %}
                     {% block matches_error_message %}
                     {% endblock %}
@@ -88,30 +65,16 @@
             {% include 'site/partials/paginationControl.twig' %}
         </div>
     </div>
-
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.sendData').click(openModal);
-        });
-
-        function openModal(e) {
-            var $this = $(this);
-            e.preventDefault();
-            var sendData = $('#sendDataModal');
-            sendData.find('.companyName').html($(this).data('name'));
-            var id = $this.data('id');
-            sendData.find('#send').unbind('click').click(function () {
-                $.post('{{ url('br_career_match', {"action": "sendData"})}}' + 'match/' + id, function (data) {
-                    if (data && 'success' == data.status) {
-                        document.location.reload()
-                    }
-                }, 'json');
+        $(document).ready(function() {
+            $('.study-toggle').click(function() {
+                var target = $(this).data('target');
+                var display = document.getElementById(target).style.display;
+                document.getElementById(target).style.display = display === 'none' ? 'block' : 'none';
             });
-            sendData.modal();
-        }
-
+        });
     </script>
 {% endblock %}

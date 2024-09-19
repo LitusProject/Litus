@@ -48,5 +48,6 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
     protected function initAfterTabs()
     {
-        $this->addSubmit('Add', 'message_add');    }
+        $this->addSubmit('Add', 'message_add');
+    }
 }

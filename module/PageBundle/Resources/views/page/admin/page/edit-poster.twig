@@ -18,7 +18,7 @@
         <br />
         <h1>Current Poster</h1>
         {% if page.getPoster() %}
-            <img src="{{ url('page_admin_page', {'action': 'poster', 'id': page.getPoster()}) }}" alt="{{ page.getTitle(language) }}" style="width: 500px">
+            <img src="{{ url('page', {'action': 'poster', 'id': page.getPoster()}) }}" alt="{{ page.getTitle(language) }}" style="width: 500px">
         {% else %}
             <i>This page currently has no poster.</i>
         {% endif %}

@@ -1,0 +1,282 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+    <div class="page-header" style="overflow: hidden; margin-top: 10px">
+        <div style="float:left;">
+            <h1>{{ translate('Flesserke') }}</h1>
+        </div>
+        <div class="pull-right" style="margin-top: 30px;">
+            {% if hasAccess('logistics_flesserke_article', 'search')%}
+                <input type="text" id="searchString" class="search" placeholder={{ translate('Search') }} />
+            {% endif %}
+            {% if hasAccess('logistics_flesserke_article', 'add')%}
+                <a href="{{ url('logistics_flesserke_article', {"action" : 'add'}) }}" class="btn btn-success" style="margin-left: 10px">{{ translate('New') }}</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="flashmessage alert alert-danger alert-fixed-top fade" id="keep_updated_error">
+        <a class="close">&times;</a>
+        <div class="content">
+            {{ translate('An error occurred while updating your preferences.') }}
+        </div>
+    </div>
+
+    {% if authenticatedPerson is null %}
+        {{ translate('Please login to view articles.') }}
+    {% else %}
+        {% if hasAccess('logistics_flesserke_article', 'search')%}
+            <div id="article_search" style="display: none; margin-top: 20px;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%">{{ translate('Name') }}</th>
+                            <th class="hidden-xs" style="width: 15%">{{ translate('Brand') }}</th>
+                            {% if hasAccess('logistics_flesserke_article', 'add') %}
+                                <th class="hidden-xs" style="width: 15%">{{ translate('Comment') }}</th>
+                            {% endif %}
+                            <th style="width: 10%">{{ translate('Amount') }}</th>
+                            <th style="width: 10%">{{ translate('Unit') }}</th>
+                            <th class="hidden-xs" style="width: 15%">Expiration Date</th>
+                            {% if hasAccess('logistics_flesserke_article', 'edit') %}
+                                <th style="width: 15%">{{ translate('Actions') }}</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="spacer">
+                            <td colspan="7"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if articles %}
+        <div id="default_page">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="width: 20%">{{ translate('Name') }}</th>
+                    <th class="hidden-xs" style="width: 15%">{{ translate('Brand') }}</th>
+                    {% if hasAccess('logistics_flesserke_article', 'add') %}
+                        <th class="hidden-xs" style="width: 15%">{{ translate('Comment') }}</th>
+                    {% endif %}
+                    <th style="width: 10%">{{ translate('Amount') }}</th>
+                    <th style="width: 10%">{{ translate('Unit') }}</th>
+                    <th class="hidden-xs" style="width: 15%">Expiration Date</th>
+                    {% if hasAccess('logistics_flesserke_article', 'edit') %}
+                        <th style="width: 15%">{{ translate('Actions') }}</th>
+                    {% endif %}
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for category in categories %}
+                    <tr class="spacer">
+                        <td colspan="8"></td>
+                    </tr>
+
+                    <tr id="{{ category }}" class="category-collapse collapsed {{ unit }}" data-content="{{ category }}">
+                        <td colspan="8" style="padding: 0">
+                            <div>
+                                <button type="button" class="collapse-btn unit">
+                                    <b>{{ category }}</b>
+                                    <i class="ui-icon ui-icon-triangle-1-s category" style="float: right"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% for article in articles %}
+                        {% if article.getCategory() == category %}
+                            <tr class="item {{ category }} hide"
+                                style="background:
+                                        {% if "now"|date('U') > article.getExpirationDate()|date('U') %}#feccc9
+                                        {% elseif ("now"|date('U') + 7*24*60*60) > article.getExpirationDate()|date('U') %}#feede2
+                                        {% endif %}">
+                                <td>{{ article.getName() }}</td>
+                                <td class="hidden-xs">{{ article.getBrand() }}</td>
+                                {% if hasAccess('logistics_flesserke_article', 'add') %}
+                                    <td class="hidden-xs">
+                                        {% if article.getInternalComment()|length > 1 %}
+                                            <a rel="popover" data-original-title="{{ translate('Internal comment') }}"
+                                               data-content="{{ article.getInternalComment() }}"
+                                               class="label label-info">{{ translate('Comment') }}</a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td>{{ article.getAmount() }}</td>
+                                <td>{{ article.getPerUnit() }} {{ article.getUnit() }}</td>
+                                <td style="{% if "now"|date('U') > article.getExpirationDate()|date('U') %}font-weight: bold; color: darkred;
+                                    {% elseif ("now"|date('U') + 7*24*60*60) > article.getExpirationDate()|date('U') %}font-weight: bold; color: darkorange;
+                                        {% endif %}" >
+                                    {{ article.getExpirationDate().format('d/m/Y H:i') }}</td>
+                                {% if hasAccess('logistics_flesserke_article', 'edit') %}
+                                    <td class="actions">
+                                        {#           TODO: add detail pop-up              #}
+                                        <a href="{{ url('logistics_flesserke_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
+                                            {{ translate('Edit') }}
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="modal fade" id="searchRequest">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4>{{ translate('Logistics') }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            {{ translate('This function is coming soon!') }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.category-collapse').click(collapse);
+
+            $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            {% if hasAccess('logistics_flesserke_article', 'search') %}
+            $.searchDatabase({
+                defaultPage:    $('#default_page'),
+                searchDiv:      $('#article_search'),
+                searchString:   $('#searchString'),
+                searchField:    $('<select id="searchField"><option value="name"></option></select>'),
+                basePage:       '{{ url('logistics_flesserke_article', {'action': 'index'}) }}',
+                allResultsText: 'Back to flesserke',
+                url:            '{{ url('logistics_flesserke_article', {'action': 'search'}) }}',
+                display: function (data) {
+                    const table = $('#article_search table');
+                    table.find('tr.item').remove();
+                    $(data).each(function () {
+                        let bgColor = ''; // Default to empty if no data-bg-color attribute is found
+                        let expirationStyle = ''; // Default to empty if no specific style is needed
+
+                        // Calculate the background color and style based on the expiration date
+                        let parts = this.expirationDate.split(/[\s/:]/); // Split by space, slash, or colon (needs to be done because of the way the expiration date is passed from the controller)
+                        let expirationDate = new Date(parts[2], parts[1] - 1, parts[0], parts[3], parts[4]).getTime();
+                        let now = new Date().getTime();
+                        let oneWeekFromNow = now + (7 * 24 * 60 * 60 * 1000);
+                        if (now > expirationDate) {
+                            bgColor = '#feccc9';
+                            expirationStyle = 'font-weight: bold; color: darkred;';
+                        } else if (oneWeekFromNow > expirationDate) {
+                            bgColor = '#feede2';
+                            expirationStyle = 'font-weight: bold; color: darkorange;';
+                        }
+
+                        // Create the row element with the background color
+                        let row = $('<tr>', {
+                            class: 'item item-' + this.id,
+                            css: {'background-color': bgColor}
+                        });
+
+                        // Append cells to the row
+                        row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.brand + '</td>')
+                            {% if hasAccess('logistics_flesserke_article', 'add') %}
+                                .append(internalComment = $('<td>'))
+                            {% endif %}
+                            .append('<td>' + this.amount + '</td>')
+                            .append('<td>' + this.perUnit + ' ' + this.unit + '</td>')
+                            .append('<td style="' + expirationStyle + '">' + this.expirationDate + '</td>') // Add the expiration date with dynamic styling
+                            // TODO: add actions
+                            .append(actions = $('<td>', {'class': 'actions'}));
+
+                        {% if hasAccess('logistics_flesserke_article', 'add') %}
+                        if (this.internalComment.length) {
+                            internalComment.append('<a rel="popover" data-original-title="{{ translate('Internal comment') }}" data-content="' + this.internalComment + '" class="label label-info">{{ translate('Comment') }}</a>');
+                        }
+                        {% endif %}
+
+                        {% if hasAccess('logistics_flesserke_article', 'edit') %}
+                        actions.append('<a href="{{ url('logistics_flesserke_article') }}edit/' + this.id + '" class="btn btn-warning btn-xs">{{ translate('Edit') }}</a>');
+                        {% endif %}
+
+                        // Append the row to the table
+                        table.append(row);
+
+                        // Initialize popovers
+                        $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+                    });
+                    table.change();
+
+                    $('#default_page').remove();
+                },
+                clear: function () {
+                    $('#article_search table').find('tr.item').remove();
+                }
+            });
+            {% endif %}
+        });
+
+        function openSearchRequest(e) {
+            e.preventDefault();
+            const revertRequest = $('#searchRequest');
+            revertRequest.modal();
+        }
+
+        function collapse(e) {
+            e.preventDefault();
+            const $this = $(this);
+            const name = $this.data('content');
+            const collapsable = document.getElementById(name);
+            const items = Array.from(document.getElementsByClassName(name));
+            const icon = $this.find('.ui-icon');
+
+            // Expands the collapsable (shows items in the collapsable)
+            if (collapsable.classList.contains("collapsed")) {
+
+                collapsable.classList.remove("collapsed");
+                icon.removeClass("ui-icon-triangle-1-s");
+                icon.addClass("ui-icon-triangle-1-n");
+
+                items.forEach((item) => {
+                    item.classList.remove('hide');
+                });
+            // Collapses the collapsable (hides items in the collapsable (and lower levels))
+            } else {
+                collapsable.classList.add("collapsed");
+                icon.removeClass("ui-icon-triangle-1-n");
+                icon.addClass("ui-icon-triangle-1-s");
+
+                items.forEach((item) => {
+                    item.classList.add('hide');
+                    item.classList.add('collapsed');
+
+                    const itemIcon = item.querySelector('.ui-icon');
+                    if (itemIcon) {
+                        itemIcon.classList.remove("ui-icon-triangle-1-n");
+                        itemIcon.classList.add("ui-icon-triangle-1-s");
+                    }
+
+                    const subItemName = `${item.dataset.content}`;
+                    const subItems = Array.from(document.getElementsByClassName(subItemName));
+                    console.log(subItemName)
+
+                    subItems.forEach((subItem) => {
+                        subItem.classList.add('hide');
+                    });
+                });
+            }
+        }
+    </script>
+{% endblock %}

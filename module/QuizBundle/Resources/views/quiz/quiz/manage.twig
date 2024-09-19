@@ -11,21 +11,45 @@
                 <a href="#round-{{ round.getId() }}" data-toggle="tab">{{ round.getName() }}</a>
             </li>
         {% endfor %}
+        {% if tiebreaker is not null %}
+            <li>
+                <a href="#tiebreaker-{{ tiebreaker.getId() }}" data-toggle="tab">{{ tiebreaker.getName() }}</a>
+            </li>
+        {% endif %}
     </ul>
     <div class="tab-content" id="rounds_tab-content">
         {% for round in rounds %}
             <div id="round-{{ round.getId() }}" class="tab-pane fade in form-horizontal">
                 {% for team in teams %}
                     <div class="form-group">
-                        <label class="col-sm-2 control-label" for="input-{{ team.getId() }}-{{ round.getId() }}">{{ team.getName() }}</label>
+                        <label class="col-sm-2 control-label"
+                               for="input-{{ team.getId() }}-{{ round.getId() }}">{{ team.getName() }}</label>
                         <div class="col-md-10">
-                            <input type="number" min="0" max="{{ round.getMaxPoints() }}" step="1" id="input-{{ team.getId() }}-{{ round.getId() }}" data-team="{{ team.getId() }}" data-round="{{ round.getId() }}" class="form-control roundScore" value="{{ points[team.getId()][round.getId()] ?? 0 }}">
+                            <input type="number" min="0" max="{{ round.getMaxPoints() }}" step="1"
+                                   id="input-{{ team.getId() }}-{{ round.getId() }}" data-team="{{ team.getId() }}"
+                                   data-round="{{ round.getId() }}" class="form-control roundScore"
+                                   value="{{ points[team.getId()][round.getId()] ?? 0 }}">
                             <span class="help-block hide">The score couldn't be saved.</span>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         {% endfor %}
+        <div id="tiebreaker-{{ tiebreaker.getId() }}" class="tab-pane fade in form-horizontal">
+            {% for team in teams %}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"
+                           for="input-{{ team.getId() }}-{{ tiebreaker.getId() }}">{{ team.getName() }}</label>
+                    <div class="col-md-10">
+                        <input type="number" step="1"
+                               id="input-{{ team.getId() }}-{{ tiebreaker.getId() }}" data-team="{{ team.getId() }}"
+                               data-tiebreaker="{{ tiebreaker.getId() }}" class="form-control tiebreakerAnswer"
+                               value="{{ tiebreaker_answers[team.getId()] ?? 0 }}">
+                        <span class="help-block hide">The answer couldn't be saved.</span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
 
@@ -46,12 +70,12 @@
             }).blur(function () {
                 var field = $(this);
                 field.parent().parent().removeClass('has-success').removeClass('has-error').find('.help-block').addClass('hide');
-                if (parseInt(field.val(), 10) > parseInt(field.attr('max'),10)) {
+                if (parseInt(field.val(), 10) > parseInt(field.attr('max'), 10)) {
                     field.parent().parent().addClass('has-error');
                     return;
                 }
                 ajax_requests_pending++;
-                var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()})}}'+$(this).data('round') + '/' + $(this).data('team');
+                var url = '{{ url('quiz_quiz', {'action': 'update', 'quizid': quiz.getId()}) }}' + $(this).data('round') + '/' + $(this).data('team');
                 $.ajax({
                     url: url,
                     type: 'post',
@@ -71,10 +95,42 @@
                     }
                 });
             });
+
+            $('.tiebreakerAnswer').keyup(function (e) {
+                if (e.keyCode == 13) {
+                    var next = $(this).parent().parent().next().find('.tiebreakerAnswer');
+                    next.focus().select();
+                    if (next.find('.tiebreakerAnswer').length == 0)
+                        $(this).blur();
+                }
+            }).blur(function () {
+                var field = $(this);
+                field.parent().parent().removeClass('has-success').removeClass('has-error').find('.help-block').addClass('hide');
+                ajax_requests_pending++;
+                var url = '{{ url('quiz_quiz', {'action': 'updateTiebreaker', 'quizid': quiz.getId()}) }}' + $(this).data('tiebreaker') + '/' + $(this).data('team');
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    data: {answer: $(this).val()},
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 'success') {
+                            field.parent().parent().addClass('has-success');
+                        } else {
+                            field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
+                        }
+                        ajax_requests_pending--;
+                    },
+                    error: function () {
+                        field.parent().parent().addClass('has-error').find('.help-block').removeClass('hide');
+                        ajax_requests_pending--;
+                    }
+                });
+            });
         });
 
-        $(window).on('beforeunload', function() {
-            if(ajax_requests_pending > 0)
+        $(window).on('beforeunload', function () {
+            if (ajax_requests_pending > 0)
                 return 'Not all scores have been saved. Are you sure you want to leave this page?';
         });
     </script>

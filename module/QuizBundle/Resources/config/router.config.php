@@ -49,6 +49,22 @@ return array(
                 ),
             ),
         ),
+        'quiz_admin_tiebreaker' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/admin/quiz/:quizid/tiebreaker[/:action[/:id][/page/:page]][/]',
+                'constraints' => array(
+                    'quizid' => '[0-9]+',
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                    'page'   => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'quiz_admin_tiebreaker',
+                    'action'     => 'manage',
+                ),
+            ),
+        ),
         'quiz_quiz' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -68,9 +84,10 @@ return array(
     ),
 
     'controllers' => array(
-        'quiz_admin_quiz'  => 'QuizBundle\Controller\Admin\QuizController',
-        'quiz_admin_round' => 'QuizBundle\Controller\Admin\RoundController',
-        'quiz_admin_team'  => 'QuizBundle\Controller\Admin\TeamController',
-        'quiz_quiz'        => 'QuizBundle\Controller\QuizController',
+        'quiz_admin_quiz'       => 'QuizBundle\Controller\Admin\QuizController',
+        'quiz_admin_round'      => 'QuizBundle\Controller\Admin\RoundController',
+        'quiz_admin_team'       => 'QuizBundle\Controller\Admin\TeamController',
+        'quiz_admin_tiebreaker' => 'QuizBundle\Controller\Admin\TiebreakerController',
+        'quiz_quiz'             => 'QuizBundle\Controller\QuizController',
     ),
 );

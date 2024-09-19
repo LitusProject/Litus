@@ -302,7 +302,10 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
                         && $authenticationHandler['action'] != $this->getParam('action')
                     ) {
                         return $this->redirect()->toRoute(
-                            $authenticationHandler['auth_route']
+                            $authenticationHandler['auth_route'],
+                            array(
+                                'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                            )
                         );
                     }
                 } else {
@@ -565,7 +568,7 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
 
         $headers = array(
             'Authorization: Basic ' . $base64,
-            'Content-Type: application/x-www-form-urlencoded'
+            'Content-Type: application/x-www-form-urlencoded',
         );
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -575,5 +578,28 @@ class ActionController extends \Laminas\Mvc\Controller\AbstractActionController 
         $response = curl_exec($curl);
         curl_close($curl);
         return json_decode($response)->access_token;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getFathomInfo(): ?array
+    {
+        $enableFathom = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.enable_fathom');
+
+        if (!$enableFathom || getenv('APPLICATION_ENV') === 'development') {
+            return null;
+        }
+
+        return array(
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_url'),
+            'site_id' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_site_id'),
+        );
     }
 }

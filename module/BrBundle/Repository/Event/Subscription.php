@@ -21,6 +21,24 @@ class Subscription extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->eq('s.event', ':event')
             )
             ->setParameter('event', $event->getId())
+            ->orderBy('s.id')
+            ->getQuery();
+    }
+
+    public function findAllByEventAndStartingIDQuery(Event $event, int $id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('s')
+            ->from('BrBundle\Entity\Event\Subscription', 's')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('s.event', ':event'),
+                    $query->expr()->gt('s.id', ':id'),
+                )
+            )
+            ->setParameter('event', $event->getId())
+            ->setParameter('id', $id)
+            ->orderBy('s.id')
             ->getQuery();
     }
 

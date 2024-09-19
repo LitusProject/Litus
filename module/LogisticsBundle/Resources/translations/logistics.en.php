@@ -2,7 +2,7 @@
 
 return array(
     'Logistics'                                                                                                                                                                                                                                 => 'Logistics',
-    'Van'                                                                                                                                                                                                                                       => 'Van',
+    'Transport'                                                                                                                                                                                                                                 => 'Transport',
 
     'January'                                                                                                                                                                                                                                   => 'January',
     'February'                                                                                                                                                                                                                                  => 'February',
@@ -120,6 +120,10 @@ return array(
     'Comment'                                                                                                                                                                                                                                   => 'Comment',
     'Returned'                                                                                                                                                                                                                                  => 'Returned',
     'Not Yet Returned'                                                                                                                                                                                                                          => 'Not Yet Returned',
+    'Request'                                                                                                                                                                                                                                   => 'Request',
+    'Pending'                                                                                                                                                                                                                                   => 'Pending',
+    'Creator'                                                                                                                                                                                                                                   => 'Creator',
+    'History'                                                                                                                                                                                                                                   => 'History',
 
     'The lease was successfully added!'                                                                                                                                                                                                         => 'The lease was successfully added!',
     'The return was successfully added!'                                                                                                                                                                                                        => 'The return was successfully added!',
@@ -136,4 +140,6 @@ return array(
     'Material'                                                                                                                                                                                                                                  => 'Material',
     'Inventory'                                                                                                                                                                                                                                 => 'Inventory',
     'Flesserke Form'                                                                                                                                                                                                                            => 'Inventory Form',
+    'Reserve'                                                                                                                                                                                                                                   => 'Reserve',
+    'Order'                                                                                                                                                                                                                                     => 'Order',
 );

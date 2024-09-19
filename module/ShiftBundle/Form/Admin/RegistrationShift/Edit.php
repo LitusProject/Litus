@@ -36,29 +36,29 @@ class Edit extends \ShiftBundle\Form\Admin\RegistrationShift\Add
                         'name' => 'end_date',
                     )
                 );
-            $this->remove('visible_date')
-                ->add(
-                    array(
-                        'type' => 'hidden',
-                        'name' => 'visible_date',
-                    )
-                );
-
-            $this->remove('final_signin_date')
-                ->add(
-                    array(
-                        'type' => 'hidden',
-                        'name' => 'final_signin_date',
-                    )
-                );
-
-            $this->remove('signout_date')
-                ->add(
-                    array(
-                        'type' => 'hidden',
-                        'name' => 'signout_date',
-                    )
-                );
+//            $this->remove('visible_date')
+//                ->add(
+//                    array(
+//                        'type' => 'hidden',
+//                        'name' => 'visible_date',
+//                    )
+//                );
+//
+//            $this->remove('final_signin_date')
+//                ->add(
+//                    array(
+//                        'type' => 'hidden',
+//                        'name' => 'final_signin_date',
+//                    )
+//                );
+//
+//            $this->remove('signout_date')
+//                ->add(
+//                    array(
+//                        'type' => 'hidden',
+//                        'name' => 'signout_date',
+//                    )
+//                );
         }
 
         $this->remove('submit')

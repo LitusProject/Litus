@@ -48,13 +48,6 @@ class Reservation
     private $salesSession;
 
     /**
-     * @var boolean Whether the person reserving has not come to get his reservation
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $noShow;
-
-    /**
      * @var Person The person who made the reservation
      *
      * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\User\Person")
@@ -165,25 +158,6 @@ class Reservation
     public function getPerson()
     {
         return $this->person;
-    }
-
-    /**
-     * @param  boolean $noShow
-     * @return self
-     */
-    public function setNoShow($noShow)
-    {
-        $this->noShow = $noShow;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getNoShow()
-    {
-        return $this->noShow;
     }
 
     /**

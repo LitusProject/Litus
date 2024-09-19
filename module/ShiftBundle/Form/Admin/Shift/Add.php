@@ -176,12 +176,31 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'     => 'text',
+                'name'     => 'nb_volunteers_min',
+                'label'    => 'Minimum number of Volunteers',
+                'required' => true,
+                'options'  => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'select',
                 'name'       => 'unit',
                 'label'      => 'Unit',
                 'required'   => true,
                 'attributes' => array(
-                    'options' => $this->createUnitsArray(),
+                    'options' => $this->createUnitsArray($academic = null),
                 ),
             )
         );
@@ -312,7 +331,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'type'       => 'textarea',
                 'name'       => 'description',
                 'label'      => 'Description',
-                'required'   => true,
+                'required'   => false,
                 'attributes' => array(
                     'rows' => 5,
                 ),
@@ -343,9 +362,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
+     * @param $academic
      * @return array
      */
-    private function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')

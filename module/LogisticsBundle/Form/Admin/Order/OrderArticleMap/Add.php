@@ -58,7 +58,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     }
 
     /**
-     * @param  array All possible studies
+     * @param  array All possible articles
      * @return self
      */
     public function setArticles(array $articles)

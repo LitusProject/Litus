@@ -17,6 +17,7 @@ return array(
                 ),
             ),
         ),
+        /*
         'gallery' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -32,11 +33,12 @@ return array(
                 ),
             ),
         ),
+        */
     ),
 
     'controllers' => array(
         'gallery_admin_gallery' => 'GalleryBundle\Controller\Admin\GalleryController',
 
-        'gallery'               => 'GalleryBundle\Controller\GalleryController',
+        //'gallery'               => 'GalleryBundle\Controller\GalleryController',
     ),
 );

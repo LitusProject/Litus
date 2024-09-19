@@ -6,7 +6,7 @@ use CommonBundle\Entity\General\Organization\Unit as UnitEntity;
 
 class Unit extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('name', 'mail', 'displayed');
+    private static $stdKeys = array('name', 'mail', 'displayed', 'workgroup');
 
     protected function doExtract($object = null)
     {

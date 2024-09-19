@@ -62,6 +62,8 @@
         tAdd: 'Add',
         tRemove: 'Remove',
         tAddArticle: 'Add Article',
+        tcancelArticle: 'Cancel Article',
+        tcancelArticleQuestion: 'Do you want to cancel this article?',
         tBarcode: 'Barcode',
         tPrintNext: 'Print Next',
         tErrorTitle: 'Error',
@@ -73,6 +75,7 @@
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
         addArticle: function (id, articleId) {},
+        cancelArticle: function (id, bookingId) {},
         printNextInQueue: function () {},
     };
 
@@ -328,15 +331,43 @@
 
         if ("booked" == data.status || data.sellable == false) {
             row.addClass('inactive');
+            
+            if(data.unbookable){
+                actions.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
+                        _cancelArticle($this, $(this).closest('tr').data('info'));
+                    })
+                );
+            } else {
+                actions.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle disabled'}).html(settings.tCancel)
+                );
+            }
         } else {
             actions.append(
                 $('<button>', {'class': 'btn btn-success addArticle'}).html(settings.tAdd).click(function () {
                     _addArticle($this, $(this).closest('tr').data('info').articleId);
-                }).hide(),
+                }).hide()
+            );
+
+            var pushRight = $('<div>', {'class': 'pushRight'}).append(
                 $('<button>', {'class': 'btn btn-danger removeArticle'}).html(settings.tRemove).click(function () {
                     _removeArticle($this, $(this).closest('tr').data('info').articleId);
                 }).hide()
             );
+
+            if(data.unbookable){
+                pushRight.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle'}).html(settings.tCancel).click(function () {
+                        _cancelArticle($this, $(this).closest('tr').data('info'));
+                    })
+                );
+            } else {
+                pushRight.append(
+                    $('<button>', {'class': 'btn btn-danger cancelArticle disabled'}).html(settings.tCancel)
+                );
+            }
+            actions.append(pushRight);
             _updateRow($this, row);
         }
 
@@ -412,6 +443,48 @@
 
         if (settings.isSell)
             _updatePrice($this);
+    }
+
+    function _cancelArticle($this, data) {
+        var settings = $this.data('saleInterfaceSettings');
+
+        $('body').append(
+            modal = $('<div>', {'class': 'modal fade'}).append(
+                $('<div>', {'class': 'modal-dialog'}).append(
+                    $('<div>', {'class': 'modal-content'}).append(
+                        $('<div>', {'class': 'modal-header'}).append(
+                            $('<a>', {'class': 'close'}).html('&times;').click(function () {
+                                $(this).closest('.modal').modal('hide').closest('.modal').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<h4>').html(settings.tcancelArticle)
+                        ),
+                        $('<div>', {'class': 'modal-body'}).append(
+                            $('<div>').append(
+                                $('<h4>').html(settings.tcancelArticleQuestion),
+                                $('<div>').html(data.barcode + " " + data.title)
+                            )
+                        ),
+                        $('<div>', {'class': 'modal-footer'}).append(
+                            $('<button>', {'class': 'btn btn-primary', 'data-key': 13}).html(settings.tcancelArticle).data('id', data.id).click(function () {
+                                settings.cancelArticle($this.data('data').id, $(this).data('id')); // first is QueueItem id, second is booking id
+                                $this.find('#article-' + data.articleId).remove();
+                                $(this).closest('.modal').modal('hide').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            }),
+                            $('<button>', {'class': 'btn btn-default'}).html(settings.tClose).click(function () {
+                                $(this).closest('.modal').modal('hide').on('hidden', function () {
+                                    $(this).remove();
+                                });
+                            })
+                        )
+                    )
+                )
+            )
+        );
+        modal.modal();
     }
 
     function _updateRow($this, row) {

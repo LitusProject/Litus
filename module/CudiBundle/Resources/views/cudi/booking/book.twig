@@ -22,7 +22,7 @@
     {% if isic.enable %}
         <div class="alert alert-info">
             <p>
-                <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/name/isic/">{{ translate('click here') }}</a> </b>
+                <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/isic/">{{ translate('click here') }}</a> </b>
             </p>
         </div>
     {% endif %}
@@ -32,7 +32,13 @@
     {% else %}
 
     {# Content #}
-    <div class="container"> 
+    <div class="container">
+
+        <div class="alert alert-info notification">
+            <a class="close" data-dismiss="alert">&times;</a>
+            {{ translate('To edit subjects visible here, go to') }}
+            <a href="{{ url('common_account', {'action' : 'profile'}) }}" style="color: #FFD400FF">{{ translate('profile') }}</a>
+        </div>
 
         <div class="spacer40"></div>
         <div class="flexHorizontal">
@@ -46,7 +52,7 @@
                         <div class="button blue unfilled" {% if not isSubscribed %}style="display: none"{% endif %}><a id="dontKeepUpdated" rel="tooltip" data-toggle="tooltip" title="{{ translate('You won\'t receive an e-mail when the catalog is updated.') }}">{{ translate('Disable catalog update mails') }}</a></div>
                     {% endif %}
                     {% if hasAccess('cudi_booking', 'search') %}
-                        <div class="button blue unfilled"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
+                        <div class="button blue unfilled" style="margin-top: 5px"><a href="#" id="searchArticles">{{ translate('Search') }}</a></div>
                     {% endif %}
                 </div>
 
@@ -94,7 +100,7 @@
         {% if isic.enable %}
             <div class="alert alert-info">
                 <p>
-                    <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/name/isic/">{{ translate('click here') }}</a> </b>
+                    <b>{{ translate('VTK provides you with ISIC cards.') }} <a href="https://vtk.be/page/isic/">{{ translate('click here') }}</a> </b>
                 </p>
             </div>
         {% endif %}
@@ -530,3 +536,5 @@
         });
     </script>
 {% endblock %}
+
+

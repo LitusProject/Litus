@@ -1,5 +1,7 @@
 <?php
 
+use LogisticsBundle\Command\Install;
+
 return array(
-    'install_logistics' => 'LogisticsBundle\Command\Install',
+    'install_logistics' => Install::class,
 );

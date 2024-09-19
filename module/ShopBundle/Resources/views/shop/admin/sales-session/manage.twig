@@ -35,6 +35,7 @@
                     <th>End Time</th>
                     <th>Remarks</th>
                     <th>Reservations possible</th>
+                    <th>Rewards</th>
                     <th width="70px">Actions</th>
                 </tr>
             </table>
@@ -48,6 +49,7 @@
                     <th>End Time</th>
                     <th>Remarks</th>
                     <th>Reservations possible</th>
+                    <th>Rewards</th>
                     <th width="70px">Actions</th>
                 </tr>
 
@@ -59,6 +61,7 @@
                         <td>{{ session.getRemarks() }}</td>
                         <td><input type="checkbox" {% if session.getReservationsPossible() %}checked{% endif %} }}
                                    disabled/></td>
+                        <td>{{ session.getAmountRewards() ?? 0 }}</td>
                         <td class="actions">
                             {% if hasAccess('shop_admin_shop_reservation', 'salessession') %}
                                 <a href="{{ url('shop_admin_shop_reservation', {"action": "salessession", "id": session.getId()}) }}"
@@ -141,6 +144,7 @@
                                 .append($('<td>')
                                         .append($('<input>', {type: "checkbox", disabled: "disabled"})
                                                 .attr('checked', this.reservations_possible)))
+                                .append('<td>' + this.amountRewards + '</td>')
                                 .append(actionTD);
                     });
                     $('#session_search .delete').click(openModal);

@@ -1,0 +1,67 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/request/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <aside>
+{#        {% if hasAccess('logistics_admin_order', 'export') %}#}
+            <div class="sidebox" style="margin-top: 35px">
+                <div class="title">Material lists</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to download the material lists for next week!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('logistics_admin_request', {"action": "export"}) }}">&rarr; Export</a>
+                    </p>
+                </div>
+            </div>
+{#        {% endif %}#}
+    </aside>
+
+    <div id="controller_action">
+        <h1><b>Requests</b></h1><br>
+        <table class="{#{% if not hasAccess('logistics_admin_order', 'export') %}fullwidth{% endif %}#} manage">
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Unit</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Status</th>
+                <th style="width: 70px">Action</th>
+            </tr>
+
+            {% for request in requests %}
+                <tr class="item item-{{ request.getId() }}">
+                    <td>{{ request.getName() }}</td>
+                    <td>{{ request.getContact() }}</td>
+                    <td>{{ request.getUnit().getName() }}</td>
+                    <td>{{ request.getStartDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ request.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td >{{ request.getStatus() }}</td> {# class="{% if request.getStatus() == 'Approved' %}accept_request{% elseif request.getStatus() == 'Rejected' %}reject_request{% endif %}" #}
+                    <td class="actions">
+                        {% if hasAccess('logistics_admin_request', 'csv') %}
+                            <a href="{{ url('logistics_admin_request', {"action": "csv", "id": request.getRequest().getId()}) }}" class="file_edit">Csv</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'view') %}
+                            <a href="{{ url('logistics_admin_order', {"action": "view", "id": request.getId()}) }}" class="view">View</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'approve') and not request.isApproved() %}
+                            <a href="{{ url('logistics_admin_order', {"action": "approve", "id": request.getId()}) }}" class="accept_request">Approve</a>
+                        {% endif %}
+                        {% if hasAccess('logistics_admin_order', 'reject') and not request.isApproved() %}
+                            <a href="{{ url('logistics_admin_order', {"action": "reject", "id": request.getId()}) }}" class="reject_request">Reject</a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br>
+
+        {% include 'admin/partials/paginationControl.twig' %}
+    </div>
+
+{% endblock %}

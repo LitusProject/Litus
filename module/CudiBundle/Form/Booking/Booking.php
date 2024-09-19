@@ -9,10 +9,10 @@ namespace CudiBundle\Form\Booking;
  */
 class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    /**
-     * The maximum number allowed to enter in the textbook booking form.
-     */
-    const MAX_BOOKING_NUMBER = 5;
+//    /**
+//     * The maximum number allowed to enter in the textbook booking form.
+//     */
+//    const MAX_BOOKING_NUMBER = 20;
 
     /**
      * @var array[]
@@ -48,7 +48,9 @@ class Booking extends \CommonBundle\Component\Form\Bootstrap\Form
                                     'name'    => 'Between',
                                     'options' => array(
                                         'min' => 0,
-                                        'max' => self::MAX_BOOKING_NUMBER,
+                                        'max' => $this->getEntityManager()
+                                            ->getRepository('CommonBundle\Entity\General\Config')
+                                            ->getConfigValue('cudi.maximum_booking_number'),
                                     ),
                                 ),
                             ),

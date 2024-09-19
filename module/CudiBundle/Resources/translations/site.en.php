@@ -18,6 +18,7 @@ return array(
     'Actions'                                                                                                                                                                     => 'Actions',
     'Mandatory'                                                                                                                                                                   => 'Mandatory',
     'Booked'                                                                                                                                                                      => 'Booked',
+    'Bought'                                                                                                                                                                      => 'Bought',
     'Assigned'                                                                                                                                                                    => 'Assigned',
     'Remarks'                                                                                                                                                                     => 'Remarks',
     'Remark'                                                                                                                                                                      => 'Remark',
@@ -58,7 +59,6 @@ return array(
     'Disable catalog update mails'                                                                                                                                                => 'Disable catalog update mails',
 
     'Color'                                                                                                                                                                       => 'Color',
-    'Bought'                                                                                                                                                                      => 'Bought',
 
     'You sent out a mail for the selected retail!'                                                                                                                                => 'You sent out a mail for the selected retail!',
     'You canceled your interest in the selected retail!'                                                                                                                          => 'You canceled your interest in the selected retail!',
@@ -95,5 +95,6 @@ return array(
     'You currently have no personal retails!'                                                                                                                                     => 'You currently have no personal retails!',
     'You successfully deleted the retail!'                                                                                                                                        => 'You successfully deleted the retail!',
 
-
+    'To edit subjects visible here, go to'                                                                                                                                        => 'To edit subject visible here, go to',
+    'profile'                                                                                                                                                                     => 'profile',
 );

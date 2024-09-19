@@ -31,13 +31,13 @@ class Edit extends \ShopBundle\Form\Admin\SalesSession\Add
                 array(
                     'type'       => 'number',
                     'name'       => $product->getId() . '-quantity',
+                    'value'      => $currentAvailability,
                     'options'    => array(
                         'label' => $product->getName(),
                     ),
                     'attributes' => array(
-                        'min'   => '0',
-                        'max'   => '100',
-                        'value' => $currentAvailability,
+                        'min' => '0',
+                        'max' => '100',
                     ),
                 )
             );

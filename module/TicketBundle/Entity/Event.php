@@ -27,6 +27,13 @@ class Event
     private $id;
 
     /**
+     * @var string The random ID of the event
+     *
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $rand_id;
+
+    /**
      * @var CalendarEvent The activity of the event
      *
      * @ORM\OneToOne(targetEntity="CalendarBundle\Entity\Node\Event")
@@ -63,9 +70,16 @@ class Event
     private $active;
 
     /**
+     * @var boolean Flag whether the event booking system is visible in the calendar
+     *
+     * @ORM\Column(type="boolean", options={"default" : false})
+     */
+    private $visible;
+
+    /**
      * @var boolean Flag whether the tickets are generated
      *
-     * @ORM\Column(name="tickets_generated", type="boolean")
+     * @ORM\Column(name="tickets_generated", type="boolean", nullable=true)
      */
     private $ticketsGenerated;
 
@@ -100,14 +114,14 @@ class Event
     /**
      * @var integer The price for members
      *
-     * @ORM\Column(name="price_members", type="smallint", nullable=true)
+     * @ORM\Column(name="price_members", type="integer", nullable=true)
      */
     private $priceMembers;
 
     /**
      * @var integer The price for non members
      *
-     * @ORM\Column(name="price_non_members", type="smallint", nullable=true)
+     * @ORM\Column(name="price_non_members", type="integer", nullable=true)
      */
     private $priceNonMembers;
 
@@ -183,6 +197,20 @@ class Event
     private $mailFrom;
 
     /**
+     * @var string The subject for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_subject", type="string", nullable=true)
+     */
+    private $confirmationMailSubject;
+
+    /**
+     * @var string The body for the confirmation mail
+     *
+     * @ORM\Column(name="mail_confirmation_body", type="text", nullable=true)
+     */
+    private $confirmationMailBody;
+
+    /**
      * @var boolean whether or not the pay page should be accessible after 24 hours
      *
      * @ORM\Column(name="deadline_enabled", type="boolean", nullable=true)
@@ -196,8 +224,16 @@ class Event
      */
     private $deadlineTime;
 
-    public function __construct()
+    /**
+     * @var string The link to the terms and conditions
+     *
+     * @ORM\Column(name="terms_url", type="string", nullable=true)
+     */
+    private $termsUrl;
+
+    public function __construct(string $rand_id)
     {
+        $this->rand_id = $rand_id;
         $this->options = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->nextInvoiceNb = '0000';
@@ -209,6 +245,17 @@ class Event
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRandId()
+    {
+        if (is_null($this->rand_id)) {
+            return $this->id;
+        }
+        return $this->rand_id;
     }
 
     /**
@@ -308,7 +355,7 @@ class Event
      */
     public function isActive()
     {
-        if ($this->activity->getStartDate() < new DateTime()) {
+        if ($this->activity->getEndDate() < new DateTime()) {
             return false;
         }
 
@@ -322,6 +369,29 @@ class Event
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        if ($this->activity->getEndDate() < new DateTime()) {
+            return false;
+        }
+
+        return $this->visible;
+    }
+
+    /**
+     * @param  boolean $visible
+     * @return self
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
 
         return $this;
     }
@@ -776,7 +846,43 @@ class Event
     }
 
     /**
-     * @return bool
+     * @return string
+     */
+    public function getConfirmationMailSubject()
+    {
+        return $this->confirmationMailSubject;
+    }
+
+    /**
+     * @param string $subject
+     * @return self
+     */
+    public function setConfirmationMailSubject(string $subject)
+    {
+        $this->confirmationMailSubject = $subject;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationMailBody()
+    {
+        return $this->confirmationMailBody;
+    }
+
+    /**
+     * @param string $body
+     * @return self
+     */
+    public function setConfirmationMailBody(string $body)
+    {
+        $this->confirmationMailBody = $body;
+        return $this;
+    }
+
+    /**
+     * @return boolean
      */
     public function getPayDeadline()
     {
@@ -794,7 +900,7 @@ class Event
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getDeadlineTime()
     {
@@ -808,6 +914,24 @@ class Event
     public function setDeadlineTime($time)
     {
         $this->deadlineTime = $time;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTermsUrl()
+    {
+        return $this->termsUrl;
+    }
+
+    /**
+     * @param string|null $url
+     * @return self
+     */
+    public function setTermsUrl($url)
+    {
+        $this->termsUrl = $url;
         return $this;
     }
 }

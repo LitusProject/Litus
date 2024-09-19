@@ -30,7 +30,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            $this->redirect()->toRoute('common_auth');
+            $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
         $bookSearchForm = $this->getForm('cudi_retail_search_book', array('language' => $this->getLanguage()));
 
@@ -101,7 +106,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            $this->redirect()->toRoute('common_auth');
+            $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
 
         $bookSearchForm = $this->getForm('cudi_retail_search_book', array('language' => $this->getLanguage()));
@@ -212,7 +222,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            $this->redirect()->toRoute('common_auth');
+            $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
 
         $myDeals = $this->getEntityManager()
@@ -228,7 +243,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         return new ViewModel(
             array(
                 'myDeals'           => $myDeals,
-                'retailMyDealsText' => $retailMyDealsText
+                'retailMyDealsText' => $retailMyDealsText,
 
             )
         );
@@ -248,7 +263,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            $this->redirect()->toRoute('common_auth');
+            $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
 
         $addForm = $this->getForm('cudi_retail_add');
@@ -328,7 +348,7 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
                 'retails'             => $retails,
                 'addForm'             => $addForm,
                 'editForm'            => $editForm,
-                'retailMyRetailsText' => $retailMyRetailsText
+                'retailMyRetailsText' => $retailMyRetailsText,
             )
         );
     }
@@ -351,7 +371,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         if ($this->getRequest()->isPost()) {
             $academic = $this->getAcademicEntity();
             if ($academic === null) {
-                $this->redirect()->toRoute('common_auth');
+                $this->redirect()->toRoute(
+                    'common_auth',
+                    array(
+                        'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                    )
+                );
             }
 
             $retail = $this->getEntityManager()
@@ -401,7 +426,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
         if ($this->getRequest()->isPost()) {
             $academic = $this->getAcademicEntity();
             if ($academic === null) {
-                $this->redirect()->toRoute('common_auth');
+                $this->redirect()->toRoute(
+                    'common_auth',
+                    array(
+                        'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                    )
+                );
             }
 
             $deal = $this->getEntityManager()
@@ -441,7 +471,12 @@ class RetailController extends \CommonBundle\Component\Controller\ActionControll
 
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            $this->redirect()->toRoute('common_auth');
+            $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
 
         $academicYear = $this->getCurrentAcademicYear();

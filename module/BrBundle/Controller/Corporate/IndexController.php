@@ -62,11 +62,11 @@ class IndexController extends \BrBundle\Component\Controller\CorporateController
     {
         $events = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event')
-            ->findAllActiveQuery()->getResult();
+            ->findAllVisibleQuery()->getResult();
 
         $person = $this->getCorporateEntity();
 
-        if ($person === null) {
+        if (is_null($person)) {
             foreach ($events as $event) {
                 $event->atEvent = false;
             }

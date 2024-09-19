@@ -18,7 +18,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      * @param AcademicYear  $academicYear  The academic year
      * @param integer       $semester      The semester
      */
-    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, $semester)
+    public function __construct(EntityManager $entityManager, AcademicYear $academicYear, int $semester, bool $common)
     {
         $headers = array(
             'Title',
@@ -35,12 +35,12 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
             'Purchase Price',
             'Sell Price',
             'Name Contact Person',
-            'E-mail Contact Person'
+            'E-mail Contact Person',
         );
 
         parent::__construct(
             $headers,
-            $this->getData($entityManager, $academicYear, $semester)
+            $this->getData($entityManager, $academicYear, $semester, $common)
         );
     }
 
@@ -49,7 +49,7 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
      * @param AcademicYear  $academicYear
      * @param integer       $semester
      */
-    private function getData(EntityManager $entityManager, AcademicYear $academicYear, $semester)
+    private function getData(EntityManager $entityManager, AcademicYear $academicYear, int $semester, bool $common)
     {
         $articles = $entityManager
             ->getRepository('CudiBundle\Entity\Sale\Article')
@@ -58,14 +58,35 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
         $data = array();
         foreach ($articles as $article) {
             $codes = $this->getSubjectCode($entityManager, $academicYear, $article);
-            foreach ($codes as $code) {
-                $articleData = array(
+            $articleData = array();
+            if ($codes) {
+                foreach ($codes as $code) {
+                    $articleData[] = array(
+                        $article->getMainArticle()->getTitle(),
+                        $article->getBarcode(),
+                        $article->getSupplier()->getName(),
+                        $article->getMainArticle()->getAuthors(),
+                        $code->getSubject()->getCode(),
+                        $code->getSubject()->getName(),
+                        $this->getNbSold($entityManager, $article, $academicYear),
+                        $article->getStockValue(),
+                        $this->getPagesBW($entityManager, $article),
+                        $this->getPagesColored($entityManager, $article),
+                        $this->getRectoVerso($entityManager, $article),
+                        number_format($article->getPurchasePrice() / 100, 2),
+                        number_format($article->getSellPrice() / 100, 2),
+                        $article->getMainArticle()->getNameContact(),
+                        $article->getMainArticle()->getEmailContact(),
+                    );
+                }
+            } elseif ($common) {
+                $articleData[] = array(
                     $article->getMainArticle()->getTitle(),
                     $article->getBarcode(),
                     $article->getSupplier()->getName(),
                     $article->getMainArticle()->getAuthors(),
-                    $code->getSubject()->getCode(),
-                    $code->getSubject()->getName(),
+                    '',
+                    '',
                     $this->getNbSold($entityManager, $article, $academicYear),
                     $article->getStockValue(),
                     $this->getPagesBW($entityManager, $article),
@@ -74,11 +95,14 @@ class SaleArticles extends \CommonBundle\Component\Document\Generator\Csv
                     number_format($article->getPurchasePrice() / 100, 2),
                     number_format($article->getSellPrice() / 100, 2),
                     $article->getMainArticle()->getNameContact(),
-                    $article->getMainArticle()->getEmailContact()
+                    $article->getMainArticle()->getEmailContact(),
                 );
             }
-            if (!in_array($articleData, $data)) {
-                $data[] = $articleData;
+
+            foreach ($articleData as $articleDataSingleCourseCode) {
+                if (!in_array($articleDataSingleCourseCode, $data)) {
+                    $data[] = $articleDataSingleCourseCode;
+                }
             }
         }
         return $data;

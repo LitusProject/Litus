@@ -19,7 +19,7 @@ class Company extends \CommonBundle\Component\Hydrator\Hydrator
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new EventEntity();
+            $object = new EventEntity($this->getPersonEntity());
         }
 
         $object = $this->stdHydrate($data, $object, self::$stdKeys);

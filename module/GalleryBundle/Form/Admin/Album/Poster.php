@@ -2,7 +2,6 @@
 
 namespace GalleryBundle\Form\Admin\Album;
 
-
 class Poster extends \CommonBundle\Component\Form\Admin\Form
 {
     const FILE_SIZE = '20MB';

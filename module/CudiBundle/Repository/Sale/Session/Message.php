@@ -2,9 +2,6 @@
 
 namespace CudiBundle\Repository\Sale\Session;
 
-use DateInterval;
-use DateTime;
-
 /**
  * Message
  *

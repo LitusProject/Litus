@@ -3,13 +3,13 @@
 return array(
     'shiftbundle' => array(
         'shift_admin_shift' => array(
-            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search', 'template', 'csv', 'event'
+            'add', 'delete', 'edit', 'export', 'manage', 'old', 'pdf', 'search', 'template', 'csv', 'event',
         ),
         'shift_admin_registration_shift' => array(
             'add', 'delete', 'edit', 'manage', 'old', 'search', 'csv',
         ),
         'shift_admin_shift_counter' => array(
-            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view', 'praesidium', 'totalPayed'
+            'delete', 'export', 'index', 'payed', 'payout', 'search', 'units', 'view', 'praesidium', 'totalPayed',
         ),
         'shift_admin_shift_ranking' => array(
             'index',

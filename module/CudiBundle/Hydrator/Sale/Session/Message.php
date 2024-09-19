@@ -6,7 +6,6 @@ use CudiBundle\Entity\Sale\Session\Message as MessageEntity;
 
 class Message extends \CommonBundle\Component\Hydrator\Hydrator
 {
-
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {

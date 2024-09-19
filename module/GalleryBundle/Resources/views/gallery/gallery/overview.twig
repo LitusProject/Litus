@@ -30,12 +30,5 @@
             {% endif %}
         {% endfor %}
         <br style="clear: both" />
-        {% if archiveUrl %}
-            <p>
-                {% autoescape false %}
-                    {{ translate('The complete archive can be viewed <a href="%url%">here</a>.')|replace({'%url%': archiveUrl}) }}
-                {% endautoescape %}
-            </p>
-        {% endif %}
     </div>
 {% endblock %}

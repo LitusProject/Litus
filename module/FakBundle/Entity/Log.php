@@ -37,7 +37,7 @@ class Log
     private $time;
 
     /**
-     * @var bool
+     * @var boolean
      *
      * @ORM\Column(name="is_double", type="boolean")
      */
@@ -45,9 +45,9 @@ class Log
 
     /**
      * Log constructor
-     * @param string $username
+     * @param string    $username
      * @param \DateTime $time
-     * @param bool $isDouble
+     * @param boolean   $isDouble
      */
     public function __construct(string $username, \DateTime $time, bool $isDouble = false)
     {
@@ -58,7 +58,7 @@ class Log
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -102,7 +102,7 @@ class Log
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isDouble()
     {
@@ -110,7 +110,7 @@ class Log
     }
 
     /**
-     * @param bool $isDouble
+     * @param boolean $isDouble
      * @return self
      */
     public function setIsDouble($isDouble)

@@ -25,7 +25,6 @@ class Reservation extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $object->setTimestamp(new DateTime());
-        $object->setNoShow(false);
 
         return $object;
     }

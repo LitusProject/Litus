@@ -127,7 +127,7 @@ class SlugController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'form' => $form,
-                'slug' => $slug
+                'slug' => $slug,
             )
         );
     }

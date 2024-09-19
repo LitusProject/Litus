@@ -128,7 +128,7 @@ class GroupController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'group'        => $group,
                 'academicYear' => $academicYear,
-                'isPocGroup'   => $group->getIsPocGroup($academicYear)
+                'isPocGroup'   => $group->getIsPocGroup($academicYear),
             )
         );
 

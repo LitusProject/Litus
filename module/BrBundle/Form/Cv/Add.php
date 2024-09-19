@@ -200,7 +200,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                     array(
                         'type'       => 'textarea',
                         'name'       => 'additional_diplomas',
-                        'label'      => 'Additional Diplomas (e.g. driver\'s license)',
+                        'label'      => 'Additional Studies/Diplomas',
                         'attributes' => array(
                             'rows'       => 2,
                             'class'      => 'count',
@@ -440,32 +440,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                 'label'    => 'Future',
                 'elements' => array(
                     array(
-                        'type'       => 'text',
-                        'name'       => 'field_of_interest',
-                        'label'      => 'Field Of Interest',
-                        'required'   => true,
-                        'attributes' => array(
-                            'class'      => 'count',
-                            'data-count' => 50,
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FieldLength',
-                                        'options' => array(
-                                            'max_length'      => 50,
-                                            'new_line_length' => 75,
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                    array(
                         'type'       => 'select',
                         'name'       => 'mobility_europe',
                         'label'      => 'Mobility Europe (Would you be able to travel within Europe? How often?)',
@@ -483,34 +457,6 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'value'      => 'No',
                         'attributes' => array(
                             'options' => self::$mobilityAnswers,
-                        ),
-                    ),
-                    array(
-                        'type'       => 'textarea',
-                        'name'       => 'career_expectations',
-                        'label'      => 'Career Expectations',
-                        'required'   => true,
-                        'attributes' => array(
-                            'rows'       => 2,
-                            'class'      => 'count',
-                            'data-count' => 200,
-                            'style'      => 'resize: none;',
-                        ),
-                        'options'    => array(
-                            'input' => array(
-                                'filters' => array(
-                                    array('name' => 'StringTrim'),
-                                ),
-                                'validators' => array(
-                                    array(
-                                        'name'    => 'FieldLength',
-                                        'options' => array(
-                                            'max_length'      => 200,
-                                            'new_line_length' => 75,
-                                        ),
-                                    ),
-                                ),
-                            ),
                         ),
                     ),
                 ),
@@ -559,7 +505,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'attributes' => array(
                             'rows'       => 2,
                             'class'      => 'count',
-                            'data-count' => 200,
+                            'data-count' => 300,
                             'style'      => 'resize: none;',
                         ),
                         'options'    => array(
@@ -571,7 +517,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                                     array(
                                         'name'    => 'FieldLength',
                                         'options' => array(
-                                            'max_length'      => 200,
+                                            'max_length'      => 300,
                                             'new_line_length' => 75,
                                         ),
                                     ),

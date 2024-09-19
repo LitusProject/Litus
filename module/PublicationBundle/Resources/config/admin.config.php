@@ -6,7 +6,7 @@ return array(
             'subtitle'    => array('Editions', 'Publications', 'Videos'),
             'items'       => array(
                 'publication_admin_publication' => array('title' => 'Publications'),
-                'publication_admin_video' => array('title' => 'Videos'),
+                'publication_admin_video'       => array('title' => 'Videos'),
             ),
             'controllers' => array(
                 'publication_admin_edition_html',

@@ -1,0 +1,20 @@
+<header id="controller_header">
+    <div class="title"><span class="shift">Reservation bans</span></div>
+
+    <nav id="controller_nav">
+        <ul>
+            {% if hasAccess('shop_admin_shop_ban', 'add') %}
+                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_ban", {"action": "add"}) }}">Add</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_ban', 'manage') %}
+                <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_ban", {"action": "manage"}) }}">Manage</a></li>
+            {% endif %}
+            {% if hasAccess('shop_admin_shop_ban', 'old') %}
+                <li><a {% if 'old' == getParam('action') %} class="active" {% endif %}
+                            href="{{ url("shop_admin_shop_ban", {"action": "old"}) }}">Old</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>

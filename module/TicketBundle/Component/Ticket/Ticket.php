@@ -38,17 +38,18 @@ class Ticket
      * @param  Event          $event
      * @param  array          $numbers
      * @param  boolean        $payed
+     * @param  string|null    $payid
      * @param  EntityManager  $entityManager
      * @param  Person|null    $person
      * @param  GuestInfo|null $guestInfo
      * @return array
      */
-    public static function book(Event $event, $numbers, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
+    public static function book(Event $event, $numbers, $payed, $payid, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
     {
         if ($event->areTicketsGenerated()) {
-            return self::assignTickets($event, $numbers, $payed, $entityManager, $person, $guestInfo);
+            return self::assignTickets($event, $numbers, $payed, $payid, $entityManager, $person, $guestInfo);
         } else {
-            return self::createTickets($event, $numbers, $payed, $entityManager, $person, $guestInfo);
+            return self::createTickets($event, $numbers, $payed, $payid, $entityManager, $person, $guestInfo);
         }
     }
 
@@ -56,12 +57,13 @@ class Ticket
      * @param  Event          $event
      * @param  array          $numbers
      * @param  boolean        $payed
+     * @param  string|null    $payid
      * @param  EntityManager  $entityManager
      * @param  Person|null    $person
      * @param  GuestInfo|null $guestInfo
      * @return array
      */
-    private static function assignTickets(Event $event, $numbers, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
+    private static function assignTickets(Event $event, $numbers, $payed, $payid, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
     {
         $createdTickets = array();
         $tickets = $entityManager->getRepository('TicketBundle\Entity\Ticket')
@@ -79,7 +81,8 @@ class Ticket
                 $tickets[$i]->setPerson($person)
                     ->setGuestInfo($guestInfo)
                     ->setMember(true)
-                    ->setStatus($payed ? 'sold' : 'booked');
+                    ->setStatus($payed ? 'sold' : 'booked')
+                    ->setPayId($payid);
                 $createdTickets[] = $tickets[$i];
             }
 
@@ -95,7 +98,8 @@ class Ticket
                     $tickets[$i]->setPerson($person)
                         ->setGuestInfo($guestInfo)
                         ->setMember(false)
-                        ->setStatus($payed ? 'sold' : 'booked');
+                        ->setStatus($payed ? 'sold' : 'booked')
+                        ->setPayId($payid);
                     $createdTickets[] = $tickets[$i];
                 }
             }
@@ -113,7 +117,8 @@ class Ticket
                         ->setGuestInfo($guestInfo)
                         ->setMember(true)
                         ->setOption($option)
-                        ->setStatus($payed ? 'sold' : 'booked');
+                        ->setStatus($payed ? 'sold' : 'booked')
+                        ->setPayId($payid);
                     $createdTickets[] = $tickets[$i];
                 }
 
@@ -130,7 +135,8 @@ class Ticket
                             ->setGuestInfo($guestInfo)
                             ->setMember(false)
                             ->setOption($option)
-                            ->setStatus($payed ? 'sold' : 'booked');
+                            ->setStatus($payed ? 'sold' : 'booked')
+                            ->setPayId($payid);
                         $createdTickets[] = $tickets[$i];
                     }
                 }
@@ -144,17 +150,18 @@ class Ticket
      * @param  Event          $event
      * @param  array          $numbers
      * @param  boolean        $payed
+     * @param  string|null    $payid
      * @param  EntityManager  $entityManager
      * @param  Person|null    $person
      * @param  GuestInfo|null $guestInfo
      * @return array
      */
-    private static function createTickets(Event $event, $numbers, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
+    private static function createTickets(Event $event, $numbers, $payed, $payid, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null)
     {
         $createdTickets = array();
         if (count($event->getOptions()) == 0) {
             for ($i = 0; $i < $numbers['member']; $i++) {
-                $ticket = self::createTicket($event, true, $payed, $entityManager, $person, $guestInfo, null);
+                $ticket = self::createTicket($event, true, $payed, $payid, $entityManager, $person, $guestInfo, null);
                 $entityManager->persist($ticket);
                 $entityManager->flush();
                 $createdTickets[] = $ticket;
@@ -162,7 +169,7 @@ class Ticket
 
             if (!$event->isOnlyMembers()) {
                 for ($i = 0; $i < $numbers['non_member']; $i++) {
-                    $ticket = self::createTicket($event, false, $payed, $entityManager, $person, $guestInfo, null);
+                    $ticket = self::createTicket($event, false, $payed, $payid, $entityManager, $person, $guestInfo, null);
                     $entityManager->persist($ticket);
                     $entityManager->flush();
                     $createdTickets[] = $ticket;
@@ -172,7 +179,7 @@ class Ticket
             foreach ($event->getOptions() as $option) {
                 $count = $numbers['option_' . $option->getId() . '_number_member'];
                 for ($i = 0; $i < $count; $i++) {
-                    $ticket = self::createTicket($event, true, $payed, $entityManager, $person, $guestInfo, $option);
+                    $ticket = self::createTicket($event, true, $payed, $payid, $entityManager, $person, $guestInfo, $option);
                     $entityManager->persist($ticket);
                     $entityManager->flush();
                     $createdTickets[] = $ticket;
@@ -181,7 +188,7 @@ class Ticket
                 if (!$event->isOnlyMembers()) {
                     $count = $numbers['option_' . $option->getId() . '_number_non_member'];
                     for ($i = 0; $i < $count; $i++) {
-                        $ticket = self::createTicket($event, false, $payed, $entityManager, $person, $guestInfo, $option);
+                        $ticket = self::createTicket($event, false, $payed, $payid, $entityManager, $person, $guestInfo, $option);
                         $entityManager->persist($ticket);
                         $entityManager->flush();
                         $createdTickets[] = $ticket;
@@ -197,13 +204,14 @@ class Ticket
      * @param  Event          $event
      * @param  boolean        $member
      * @param  boolean        $payed
+     * @param  string|null    $payid
      * @param  EntityManager  $entityManager
      * @param  Person|null    $person
      * @param  GuestInfo|null $guestInfo
      * @param  Option|null    $option
      * @return TicketEntity
      */
-    private static function createTicket(Event $event, $member, $payed, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null, Option $option = null)
+    private static function createTicket(Event $event, $member, $payed, $payid, EntityManager $entityManager, Person $person = null, GuestInfo $guestInfo = null, Option $option = null)
     {
         $ticket = new TicketEntity(
             $entityManager,
@@ -217,7 +225,8 @@ class Ticket
         );
         $ticket->setMember($member)
             ->setStatus($payed ? 'sold' : 'booked')
-            ->setOption($option);
+            ->setOption($option)
+            ->setPayId($payid);
 
         return $ticket;
     }

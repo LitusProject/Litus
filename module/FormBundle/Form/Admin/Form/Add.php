@@ -118,11 +118,11 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
 
         $this->add(
             array(
-                'type'       => 'checkbox',
-                'name'       => 'student_info',
-                'label'      => 'Ask Student Info',
-                'required'   => false,
-                'value'      => true,
+                'type'     => 'checkbox',
+                'name'     => 'student_info',
+                'label'    => 'Ask Student Info',
+                'required' => false,
+                'value'    => true,
             ),
         );
 

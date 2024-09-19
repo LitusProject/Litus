@@ -1,0 +1,154 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'mail/admin/preference/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="flashmessage success_message full_width entity_removed_success hide">
+        <div class="title">Success</div>
+        <div class="content">
+            <p>The preference was successfully removed!</p>
+        </div>
+    </div>
+    <div class="flashmessage error_message full_width entity_removed_error hide">
+        <div class="title">Error</div>
+        <div class="content">
+            <p>An error occurred while trying to delete a preference.</p>
+        </div>
+    </div>
+
+    {# Preferences table #}
+    <div id="controller_action">
+
+        <div id="normal_page">
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Display Name</th>
+                    <th>Description</th>
+                    <th>SIB Attribute</th>
+                    <th>Default Preference</th>
+                    <th width="70px">Action</th>
+                </tr>
+
+                {% for preference in preferences %}
+                    <tr class="item item-{{ preference.getId() }}">
+                        <td>{{ preference.getName() }}</td>
+                        <td>{{ preference.getDescription() }}</td>
+                        <td>{{ preference.getAttribute() }}</td>
+                        <td>{{ preference.getDefaultValue() ? "Yes" : "No" }}</td>
+                        <td class="actions">
+                            {% if hasAccess('mail_admin_preference', 'delete') %}
+                                <a href="#" class="delete" data-id="{{ preference.getId() }}" data-name="{{ preference.getName() }}">Delete</a>
+                            {% endif %}
+                            {% if hasAccess('mail_admin_preference', 'edit') %}
+                                <a href="{{ url('mail_admin_preference', {"action": "edit", "id": preference.getId()}) }}" class="edit">Edit</a></li>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+
+            {% include 'admin/partials/paginationControl.twig' %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="removePreference" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Preference
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete the following preference: <b class="preferenceName"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.searchDatabase({
+                defaultPage: $('#normal_page'),
+                searchDiv: $('#preference_search'),
+                searchString: $('#searchString'),
+                searchField: $('#searchField'),
+                searchPage: '{{ url('mail_admin_preference', {'action': 'manage'}) }}manage/',
+                url: '{{ url('mail_admin_preference', {'action': 'search'}) }}',
+                display: function (data) {
+                    $('#preference_search table').find('tr.item, tr.group').remove();
+                    $(data).each(function () {
+                        if (this.type === 'item') {
+                            $('#preference_search table').append(row = $('<tr>', {class: 'item item-' + this.id}));
+                            row.append('<td>' + this.preference + '</td>')
+                                .append('<td>' + this.description + '</td>')
+                                .append('<td>' + this.attribute + '</td>')
+                                .append('<td>' + this.default_value + '</td>')
+                                .append(
+                                    $('<td>', {'class': 'actions'})
+                                        .append(deleteButton = $('<a href="#" class="delete">Delete</a>'))
+                                );
+                            deleteButton.data({
+                                id: this.id,
+                                preferenceName: this.name
+                            });
+                        }
+                    });
+
+                    $('.delete').click(openModalPreference);
+
+                    $('#preference_search table').change();
+                },
+                clear: function () {
+                    $('#preference_search table').find('tr.item').remove();
+                }
+            });
+
+            $('.item .delete').click(openModalPreference);
+        });
+
+        function openModalPreference(e) {
+            var $this = $(this);
+            e.preventDefault();
+            var removePreference = $('#removePreference');
+            removePreference.find('.preferenceName').html($(this).data('name'));
+            var id = $this.data('id');
+            removePreference.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('mail_admin_preference', {"action": "delete"})}}' + id, function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.entity_removed_success').removeClass('hide');
+                        $('.item-' + id).remove();
+                        removePreference.modal('hide');
+                    } else {
+                        errorRemove();
+                    }
+                }, 'json').error(errorRemove);
+            });
+            removePreference.modal();
+        }
+
+        function errorRemove() {
+            $('.flashmessage').addClass('hide');
+            $('.entity_removed_error').removeClass('hide');
+            $('#removePreference').modal('hide');
+        }
+
+    </script>
+{% endblock %}

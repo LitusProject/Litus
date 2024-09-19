@@ -3,9 +3,6 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('secretary_admin_working_group', 'add') %}
-                <li><a {% if 'add' == getParam('action') %} class="active" {% endif %} href="{{ url("secretary_admin_working_group", {"action": "add"}) }}">Add</a></li>
-            {% endif %}
             {% if hasAccess('secretary_admin_working_group', 'manage') %}
                 <li><a {% if 'manage' == getParam('action') %} class="active" {% endif %} href="{{ url("secretary_admin_working_group", {"action": "manage"}) }}">Manage</a></li>
             {% endif %}

@@ -18,7 +18,7 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
                 $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Article')
                     ->findOneById($data['article']['id']),
-                $data['amount']
+                $data['amount'],
             );
         }
 
@@ -34,7 +34,7 @@ class OrderArticleMap extends \CommonBundle\Component\Hydrator\Hydrator
         }
 
         $data = $this->stdExtract($object, self::$stdKeys);
-        $data['status'] = $object->getStatusCode();
+        $data['status'] = $object->getStatusKey();
 
         return $data;
     }

@@ -81,6 +81,19 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
 
         $this->add(
             array(
+                'type'       => 'number',
+                'name'       => 'rewards_amount',
+                'label'      => 'Rewards Amount',
+                'attributes' => array(
+                    'min'   => '0',
+                    'max'   => '10',
+                    'value' => '3',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
                 'type'       => 'checkbox',
                 'name'       => 'reservations_possible',
                 'label'      => 'Reservations Possible',
@@ -102,7 +115,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                     'attributes' => array(
                         'min'   => '0',
                         'max'   => '100',
-                        'value' => $product->getDefaultAmount() ? $product->getDefaultAmount(): 0,
+                        'value' => $product->getDefaultAmount() ? $product->getDefaultAmount() : 0,
                     ),
                 )
             );

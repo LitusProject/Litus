@@ -102,12 +102,18 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
         $i = 0;
         foreach ($categories as $category) {
             $menu[$i] = array(
-                'type'   => 'category',
-                'name'   => $category->getName($this->getLanguage()),
-                'items'  => array(),
-                'active' => false,
+                'type'              => 'category',
+                'name'              => $category->getName($this->getLanguage()),
+                'items'             => array(),
+                'frames'            => array(),
+                'active'            => false,
+                'has_category_page' => !is_null(
+                    $this->getEntityManager()->getRepository('PageBundle\Entity\CategoryPage')
+                        ->findOneByCategory($category)
+                ),
             );
 
+            // todo remove all items when frames have replaced all tabs (echa tab is $menu[$i])
             $pages = $this->getEntityManager()
                 ->getRepository('PageBundle\Entity\Node\Page')
                 ->findBy(
@@ -166,19 +172,68 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
             array_multisort($sort, $menu[$i]['items']);
 
+            // get all frames for mobile menu
+            $categoryPage = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\CategoryPage')
+                ->findOneByCategory($category);
+            if (is_null($categoryPage)) {
+                $menu[$i]['frames'] = $menu[$i]['items'];
+                $i++;
+                continue;
+            }
+            $big_frames = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Frame')
+                ->findAllActiveBigFrames($categoryPage)
+                ->getResult();
+
+            $small_frames = $this->getEntityManager()
+                ->getRepository('PageBundle\Entity\Frame')
+                ->findAllActiveSmallFrames($categoryPage)
+                ->getResult();
+
+            // todo refactor this code after all tabs have been replaced
+            foreach ($big_frames as $frame) {
+                $item = array(
+                    'id'    => $frame->getId(),
+                    'title' => $frame->getTitle($this->getLanguage()),
+                );
+                if ($frame->doesLinkToPage()) {
+                    $item['type'] = 'page';
+                    $item['name'] = $frame->getLinkTo()->getName();
+                }
+                if ($frame->doesLinkToLink()) {
+                    $item['type'] = 'link';
+                    $item['url'] = $frame->getLinkTo()->getUrl();
+                    $item['name'] = $frame->getTitle();
+                }
+
+                $menu[$i]['frames'][] = $item;
+            }
+
+            foreach ($small_frames as $frame) {
+                $item = array(
+                    'id'    => $frame->getId(),
+                    'title' => $frame->getTitle($this->getLanguage()),
+                );
+                if ($frame->doesLinkToPage()) {
+                    $item['type'] = 'page';
+                    $item['name'] = $frame->getLinkTo()->getName();
+                }
+                if ($frame->doesLinkToLink()) {
+                    $item['type'] = 'link';
+                    $item['url'] = $frame->getLinkTo()->getUrl();
+                    $item['name'] = $frame->getTitle();
+                }
+
+                $menu[$i]['frames'][] = $item;
+            }
+
             $i++;
         }
 
         if ($activeItem >= 0) {
             $menu[$activeItem]['active'] = true;
         }
-
-        $sort = array();
-        foreach ($menu as $key => $value) {
-            $sort[$key] = $value['title'] ?? $value['name'];
-        }
-
-        array_multisort($sort, $menu);
 
         return $menu;
     }
@@ -302,11 +357,38 @@ class SiteController extends \CommonBundle\Component\Controller\ActionController
 
         $shibbolethUrl .= '%3Fsource=site';
 
+        if ($this->getParam('redirect') !== null) {
+            $shibbolethUrl .= '%26redirect=' . urlencode($this->getParam('redirect'));
+        }
+
         $server = $this->getRequest()->getServer();
         if (isset($server['X-Forwarded-Host']) && isset($server['REQUEST_URI'])) {
             $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['X-Forwarded-Host'] . $server['REQUEST_URI']);
         }
 
         return $shibbolethUrl;
+    }
+
+    /**
+     * @return array|null
+     */
+    protected function getFathomInfo(): ?array
+    {
+        $enableFathom = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('common.enable_fathom');
+
+        if (getenv('APPLICATION_ENV') == 'development' || !$enableFathom) {
+            return null;
+        }
+
+        return array(
+            'url' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_url'),
+            'site_id' => $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('common.fathom_site_id'),
+        );
     }
 }

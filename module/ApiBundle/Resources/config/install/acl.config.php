@@ -6,13 +6,19 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'api_auth' => array(
-            'getCorporate', 'getPerson',
+            'getCorporate', 'getPerson', 'me',
         ),
         'api_br' => array(
-            'add-company','edit-company-name', 'add-cv-book',  'add-page-visible', 'is-page-visible', 'get-cv-years', 'get-company-id', 'send-activation', 'add-user', 'get-user-id',
+            'add-company','edit-company-name', 'add-cv-book',  'add-page-visible', 'is-page-visible', 'get-cv-years', 'get-company-id', 'send-activation', 'add-user', 'get-user-id', 'getSubscriptions',
+        ),
+        'api_burgieclan' => array(
+            'get-courses',
         ),
         'api_calendar' => array(
             'activeEvents', 'poster',
+        ),
+        'api_commu' => array(
+            'get-cudi-openinghours', 'get-events',
         ),
         'api_config' => array(
             'entries',
@@ -21,10 +27,13 @@ return array(
             'articles', 'book', 'bookings', 'cancelBooking', 'currentSession', 'openingHours', 'signIn', 'signInStatus', 'is-same',
         ),
         'api_door' => array(
-            'getRules', 'log', 'get-username',
+            'getRules', 'log', 'get-username', 'is-allowed',
         ),
         'api_fak' => array(
-            'add-checkin',
+            'add-checkin', 'add-checkin-username',
+        ),
+        'api_healthcheck' => array(
+            'ping',
         ),
         'api_mail' => array(
             'getAliases', 'getLists', 'getListsArchive',

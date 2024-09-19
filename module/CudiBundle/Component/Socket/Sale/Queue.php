@@ -160,19 +160,21 @@ class Queue
     /**
      * @param  Session $session                  The sale session
      * @param  string  $universityIdentification
+     * @param boolean $forced
      * @return string
      */
     public function addPerson(Session $session, $universityIdentification, $forced = false)
     {
-        $seperatedString = explode(';', $universityIdentification);
-
-        $actionController = new ActionController();
-
-//        $rNumber = $actionController->getRNumberAPI($seperatedString[0], $seperatedString[1]);
+        if (str_contains($universityIdentification, ';') && (strlen($universityIdentification) == 25)) {
+            $seperatedString = explode(';', $universityIdentification);
+            $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->entityManager);
+        } else {
+            $rNumber = $universityIdentification;
+        }
 
         $person = $this->entityManager
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneByUsername($universityIdentification);
+            ->findOneByUsername($rNumber);
 
         if ($person === null) {
             return json_encode(
@@ -204,20 +206,26 @@ class Queue
             );
         }
 
-        $forceRegistrationShift = $this->entityManager
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('cudi.queue_force_registration_shift');
+        if (!$forced) {
+            $forceRegistrationShift = $this->entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_force_registration_shift');
 
-        $timeslots = $this->entityManager
-            ->getRepository('ShiftBundle\Entity\RegistrationShift')
-            ->findAllCurrentAndCudiTimeslotByPerson($person);
+            $marginInMinutes = $this->entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('cudi.queue_margin_sign_in');
 
-        if ($forceRegistrationShift == true && count($timeslots) !== 1) {
-            return json_encode(
-                (object) array(
-                    'error' => 'no_timeslot',
-                )
-            );
+            $timeslots = $this->entityManager
+                ->getRepository('ShiftBundle\Entity\RegistrationShift')
+                ->findAllCurrentAndCudiTimeslotByPersonWithMargin($person, $marginInMinutes);
+
+            if ($forceRegistrationShift == true && count($timeslots) !== 1) {
+                return json_encode(
+                    (object)array(
+                        'error' => 'no_timeslot',
+                    )
+                );
+            }
         }
 
         $queueItem = $this->entityManager
@@ -519,18 +527,20 @@ class Queue
         }
 
         $result = array(
-            'id'        => 0,
-            'articleId' => $article->getId(),
-            'price'     => $article->getSellPrice(),
-            'title'     => $article->getMainArticle()->getTitle(),
-            'barcode'   => $article->getBarcode(),
-            'barcodes'  => $barcodes,
-            'author'    => $article->getMainArticle()->getAuthors(),
-            'number'    => 1,
-            'status'    => 'assigned',
-            'sellable'  => $article->isSellable(),
-            'collected' => 0,
-            'discounts' => array(),
+            'id'         => 0,
+            'articleId'  => $article->getId(),
+            'price'      => $article->getSellPrice(),
+            'title'      => $article->getMainArticle()->getTitle(),
+            'barcode'    => $article->getBarcode(),
+            'barcodes'   => $barcodes,
+            'author'     => $article->getMainArticle()->getAuthors(),
+            'number'     => 1,
+            'status'     => 'assigned',
+            'sellable'   => $article->isSellable(),
+            'unbookable' => $article->isUnbookable(),
+            'collected'  => 0,
+            'discounts'  => array(),
+
         );
 
         foreach ($article->getDiscounts() as $discount) {

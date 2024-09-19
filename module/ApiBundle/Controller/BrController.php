@@ -33,10 +33,13 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
         $this->getEntityManager()->persist($company);
         $this->getEntityManager()->flush();
 
+        $id = $company->getId();
+
         return new ViewModel(
             array(
                 'result' => (object) array(
                     'status' => 'success',
+                    'id'     => $id,
                 ),
             )
         );
@@ -131,8 +134,11 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $page = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Company\Page')
-            ->findOneBy(array(
-                'company' => $company->getId()));
+            ->findOneBy(
+                array(
+                    'company' => $company->getId(),
+                )
+            );
 
         $page->addYear($this->getCurrentAcademicYear());
 
@@ -169,7 +175,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             ->getRepository('BrBundle\Entity\Company\Page')
             ->findOneBy(
                 array(
-                    'company' => $company->getId()
+                    'company' => $company->getId(),
                 )
             );
 
@@ -245,7 +251,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             array(
                 'result' => (object) array(
                     'status' => 'success',
-                    'id'  => $company_id,
+                    'id'     => $company_id,
                 ),
             )
         );
@@ -295,7 +301,7 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
      *      "first_name": "first name"
      *      "last_name": "last name"
      *      "email": "email"
-     *      "sex": "m/f/null"
+     *      "sex": "m/f/x/null"
      *      "company": "company id"
      * }
      */
@@ -305,8 +311,13 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
             return $this->error(405, 'This endpoint can only be accessed through POST');
         }
 
+
         $person = new CorporateEntity();
-        $person->setUsername($this->getRequest()->getPost('user_name'));
+        try {
+            $person->setUsername($this->getRequest()->getPost('user_name'));
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
         $person->setFirstName($this->getRequest()->getPost('first_name'));
         $person->setLastName($this->getRequest()->getPost('last_name'));
         $person->setEmail($this->getRequest()->getPost('email'));
@@ -320,16 +331,31 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
 
         $person->setCompany($company);
 
-        $this->getEntityManager()->persist($person);
-        $this->getEntityManager()->flush();
+        try {
+            $this->getEntityManager()->persist($person);
+            $this->getEntityManager()->flush();
+        } catch (\Exception $e) {
+            $error_mes = $e->getMessage();
+            if (str_contains($error_mes, 'already exists') and str_contains($error_mes, 'Key (username)')) {
+                return new ViewModel(
+                    array(
+                        'result' => (object)array(
+                            'status' => 'error',
+                            'reason' => 'duplicate key',
+                        ),
+                    )
+                );
+            }
+        }
 
-        $person->activate(
-            $this->getEntityManager(),
-            $this->getMailTransport(),
-            false,
-            'br.account_activated_mail',
-            86400 * 30
-        );
+// To activate the person automatically on creation, use this:
+//        $person->activate(
+//            $this->getEntityManager(),
+//            $this->getMailTransport(),
+//            false,
+//            'br.account_activated_mail',
+//            86400 * 90
+//        );
 
         return new ViewModel(
             array(
@@ -365,6 +391,123 @@ class BrController extends \ApiBundle\Component\Controller\ActionController\ApiC
                     'status' => 'success',
                     'id'     => $person->getId(),
                 ),
+            )
+        );
+    }
+
+    /**
+     * This API endpoint serves as an endpoint for the MIXX printers at the entrance of the jobfair.
+     * At this endpoint, one gets a list of all subscriptions since a given date, if properly authenticated.
+     *
+     * URL: vtk.be/api/br/getSubscriptions?key=apiKey&event=eventId&page=pageNumber&length=pageLength
+     * headers:
+     *      Event: eventId (same as event param) (optional)
+     *      Last-ID: lastId (optional)
+     * query:
+     *      key=apiKey
+     *      event=eventId (same as Event header) (optional)
+     *      page=pageNumber (optional)
+     *      length=pageLength (optional)
+     */
+    public function getSubscriptionsAction()
+    {
+        $this->initJson();
+
+        // Get Event ID from request, either through a query param or a header
+        // Probably way to complicated to do this
+
+        $eventIdParam = $this->getRequest()->getQuery('event');
+        $eventIdHeader = $this->getRequest()->getHeaders()->get('Event') ? $this->getRequest()->getHeaders()->get('Event')->getFieldValue() : null;
+
+        if ($eventIdParam == null && $eventIdHeader == null) {
+            return $this->error(400, 'No event ID was supplied');
+        } elseif ($eventIdParam !== null && $eventIdHeader !== null) {
+            if ($eventIdParam != $eventIdHeader) {
+                return $this->error(400, 'The Get Event param and Header event param are different');
+            } else {
+                $event = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event')
+                    ->findOneById($eventIdHeader);
+            }
+        } elseif ($eventIdParam == null) {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdHeader);
+        } else {
+            $event = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event')
+                ->findOneById($eventIdParam);
+        }
+
+        if (is_null($event)) {
+            return $this->error(404, 'The event was not found');
+        }
+
+        // Get subscriptions for this event
+        // Check first if a previous ID is given.
+        // If this is the case, get subscriptions with higher ID
+
+        $lastId = $this->getRequest()->getHeaders()->get('Last-ID') ? $this->getRequest()->getHeaders()->get('Last-ID')->getFieldValue() : null;
+
+        if ($lastId == null) {
+            $allSubscriptions = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findAllByEventQuery($event)
+                ->getResult();
+        } else {
+            $allSubscriptions = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Subscription')
+                ->findAllByEventAndStartingIDQuery($event, $lastId)
+                ->getResult();
+        }
+
+
+        if (is_null($allSubscriptions)) {
+            return $this->error(404, 'No subscriptions were found');
+        }
+
+        // Get page number from query
+        $pageNumber = $this->getRequest()->getQuery('page');
+        if (is_null($pageNumber)) {
+            $pageNumber = 1;
+        }
+
+        // Get page length from query
+        $pageLength = $this->getRequest()->getQuery('length');
+        if (is_null($pageLength)) {
+            $pageLength = 100;
+        }
+
+        // Create Response
+        $startingIndex = ($pageNumber - 1) * $pageLength;
+
+        $result = array();
+        $slice = array_slice($allSubscriptions, $startingIndex, $pageLength);
+
+        foreach ($slice as $subscription) {
+            $url = $this->url()
+                ->fromRoute(
+                    'br_career_event',
+                    array('action' => 'qr',
+                        'id'       => $event->getId(),
+                        'code'     => $subscription->getQrCode(),
+                    ),
+                    array('force_canonical' => true)
+                );
+            $url = str_replace('leia.', '', $url);
+            $url = str_replace('liv.', '', $url);
+
+            $result[] = array(
+                'id'    => $subscription->getId(),
+                'name'  => $subscription->getFirstName() . ' ' . $subscription->getLastName(),
+                'study' => $subscription->getStudy(),
+                'url'   => $url,
+            );
+        }
+
+        return new ViewModel(
+            array(
+                'result' => (object) $result,
             )
         );
     }

@@ -30,22 +30,25 @@ return array(
             'expire',
         ),
         'common_admin_unit' => array(
-            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune', 'csv'
+            'add', 'delete', 'deleteMember', 'edit', 'manage', 'members', 'prune', 'csv', 'csvUpload', 'template',
         ),
         'common_admin_visit' => array(
             'manage', 'search',
         ),
         'common_admin_faq' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead'
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead',
         ),
         'common_account' => array(
-            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage',
+            'activate', 'edit', 'index', 'profile', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'uploadProfileImage', 'preferences', 'savePreferences',
         ),
         'common_session' => array(
             'manage', 'expire',
         ),
         'common_auth' => array(
             'login', 'logout', 'shibboleth',
+        ),
+        'common_contact' => array(
+            'index',
         ),
         'common_index' => array(
             'index',

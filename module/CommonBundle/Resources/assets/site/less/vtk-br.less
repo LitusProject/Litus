@@ -41,6 +41,48 @@
   cursor: pointer;
 }
 
+.vacancyHeader {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+}
+
+.vacancyFlexCenter {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+}
+
 .companyLogoHolder {
   width: 120px;
   height: 60px;
@@ -91,7 +133,7 @@
 
 .br-filterholder > form {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
@@ -264,8 +306,8 @@
     url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
   background-size: cover;
   background-position: center;
-  padding: 150px 0px;
-  height: 500px;
+  padding: 50px 0px;
+  height: 300px;
 }
 
 .servicesGrid {
@@ -317,7 +359,7 @@
 }
 
 .br-eventImageHolder {
-  background-image: url(https://images.pexels.com/photos/2020156/pexels-photo-2020156.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-image: url(https://vtk.be/_br/img/jf-33.jpg);
   background-size: cover;
   background-position: center;
   flex: 0 0 300px;
@@ -369,6 +411,16 @@
   background-color: whitesmoke;
   text-decoration: none;
   color: @color-blue;
+}
+
+.vtk-br-logo {
+  position: absolute;
+  background-image: url(/_site/img/logo_vtk_br.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 70px;
+  width: 80px;
 }
 
 .vtk-menuitem-holder.br {
@@ -445,8 +497,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-column-gap: 2px;
+  grid-row-gap: 2px;
   overflow: hidden;
   height: 500px;
 }
@@ -455,10 +507,35 @@
   background-position: center;
   background-size: cover;
   cursor: pointer;
+  position: relative;
+  overflow: hidden; /* prevent transition overflow */
+}
+
+.lightboxImage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+}
+
+.lightboxImage:hover::before {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .lightbox1 {
   grid-area: 1 / 1 / span 2 / span 2;
+}
+
+.lightbox2 {
+  grid-area: 1 / 1 / span 2 / span 1;
+}
+
+.lightbox3 {
+  grid-area: 2 / 1 / span 2 / span 1;
 }
 
 .lightboxParentmodal-content {

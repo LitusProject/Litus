@@ -32,7 +32,7 @@ class Page extends \CommonBundle\Component\Form\Admin\Form
                                 'options' => array(
                                     'faq' => $this->getFAQ(),
                                 ),
-                            )
+                            ),
                         ),
                     ),
                 ),

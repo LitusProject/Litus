@@ -7,107 +7,119 @@
  */
 
 body {
-    padding-top: 50px;
+  padding-top: 50px;
 }
 
 .navbar {
-    .brand {
-        padding: 3px 20px 5px;
+  .brand {
+    padding: 3px 20px 5px;
 
-        img {
-            margin-top: 7px;
-        }
+    img {
+      margin-top: 7px;
     }
+  }
 }
 
 header {
-    padding: 10px 15px 20px;
-    #gradient > .vertical(@cQuizDark, @cQuizLight);
-    margin-bottom: 20px;
+  padding: 10px 15px 20px;
+  #gradient > .vertical(@cQuizDark, @cQuizLight);
+  margin-bottom: 20px;
 
-    h1 {
-        color: #fff;
-    }
+  h1 {
+    color: #fff;
+  }
 }
 
 footer {
-    padding-top: 40px;
-    padding-bottom: 30px;
-    margin-top: 50px;
-    color: #777;
-    text-align: center;
-    border-top: 1px solid #e5e5e5;
+  padding-top: 40px;
+  padding-bottom: 30px;
+  margin-top: 50px;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e5e5e5;
 }
 
 .alert {
-    margin-bottom: 3px;
+  margin-bottom: 3px;
 
-    .title {
-        font-weight: bold;
+  .title {
+    font-weight: bold;
+  }
+
+  &.fade {
+    height: 0;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+    border-width: 0px;
+
+    &.in {
+      height: auto;
+      margin-bottom: @line-height-computed;
+      padding: @alert-padding;
+      border-width: 1px;
     }
-
-    &.fade {
-        height: 0;
-        margin-bottom: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        overflow: hidden;
-        border-width: 0px;
-
-        &.in {
-            height: auto;
-            margin-bottom: @line-height-computed;
-            padding: @alert-padding;
-            border-width: 1px;
-        }
-    }
+  }
 }
 
 .nav-tabs {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 hr {
-    margin: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 #results {
-    font-size: 30px;
-    width: 700px;
-    margin: 0 auto;
+  font-size: 30px;
+  width: 700px;
+  margin: 0 auto;
 
-    th, td {
-        line-height: 35px;
-    }
+  th, td {
+    line-height: 35px;
+  }
 
-    .rank, .total {
-        width: 150px;
-    }
+  .rank, .total {
+    width: 150px;
+  }
 
-    .warning {
-        font-weight: bold;
-    }
+  .warning {
+    font-weight: bold;
+  }
 }
 
 #view_rounds {
-    .rank {
-        width: 50px;
-    }
+  .rank {
+    width: 50px;
+  }
 
-    .round {
-        text-align: center;
-    }
+  .round {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .tiebreaker {
+    width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
 }
 
 #rounds_tab-content label {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 table .team {
-    max-width: 140px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

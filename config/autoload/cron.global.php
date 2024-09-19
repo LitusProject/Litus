@@ -18,7 +18,7 @@ return array(
             array(
                 'command'  => 'php bin/console.php form:reminders -m',
                 'schedule' => '0 2 * * *',
-            )
+            ),
         ),
     ),
 );

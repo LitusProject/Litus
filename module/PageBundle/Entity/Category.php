@@ -47,6 +47,13 @@ class Category
      */
     private $active;
 
+    /**
+     * @var integer|null The ordering number for the category
+     *
+     * @ORM\Column(name="order_number", type="integer", nullable=true)
+     */
+    private $orderNumber;
+
     public function __construct()
     {
         $this->active = true;
@@ -135,5 +142,28 @@ class Category
     public function deactivate()
     {
         $this->active = false;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param $orderNumber
+     * @return self
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $orderNumber = intval($orderNumber);
+        if ($orderNumber === null || $orderNumber === 0) {
+            $this->orderNumber = null;
+        } else {
+            $this->orderNumber = $orderNumber;
+        }
+        return $this;
     }
 }

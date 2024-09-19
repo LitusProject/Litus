@@ -20,7 +20,10 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
         $query = $this->getEntityManager()->createQueryBuilder();
         return $query->select('a')
             ->from('LogisticsBundle\Entity\Article', 'a')
-            ->orderBy('a.name', 'ASC')
+            ->innerJoin('a.unit', 'u')
+            ->orderBy('u.name', 'ASC')
+            ->addOrderBy('a.category', 'ASC')
+            ->addOrderBy('a.name', 'ASC')
             ->getQuery();
     }
 
@@ -54,6 +57,24 @@ class Article extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
                 $query->expr()->like($query->expr()->lower('a.visibility'), ':visibility')
             )
             ->setParameter('visibility', '%' . strtolower($visibility) . '%')
+            ->orderBy('a.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @param  string $visibility
+     * @return Query
+     */
+    public function findAllByUnitNameQuery($unitName)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('a')
+            ->from('LogisticsBundle\Entity\Article', 'a')
+            ->innerJoin('a.unit', 'u')
+            ->where(
+                $query->expr()->like($query->expr()->lower('u.name'), ':unitName')
+            )
+            ->setParameter('unitName', '%' . strtolower($unitName) . '%')
             ->orderBy('a.name', 'ASC')
             ->getQuery();
     }

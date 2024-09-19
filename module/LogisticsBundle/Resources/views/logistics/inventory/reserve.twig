@@ -1,0 +1,33 @@
+{% extends 'logistics/base.twig' %}
+
+{% block content %}
+{#    {% include 'admin/partials/flashMessenger.twig' %}#}
+
+    <div style="margin-left: 15px; margin-bottom: 10px; font-size: 20px">
+        <b>{{ inventory.getName()}}</b>
+    </div>
+
+    <div style="margin-left: 15px"> Now reserved: <b>{{ inventory.getReserved()? inventory.getReserved(): 0}} </b> </div>
+
+    <div style="margin-left: 15px; margin-bottom: 20px"> Max amount to reserve: <b>{{ inventory.getAmount() - inventory.getReserved}} </b> </div>
+
+    <div class="container modal-body">
+        {% import 'site/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function (){
+            const reserve = document.getElementById('reserve');
+            reserve.focus();
+            $('#reserve_button').keydown( function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault()
+                    reserve.click();
+                }
+            });
+        });
+    </script>
+{% endblock %}

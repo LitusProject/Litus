@@ -74,6 +74,30 @@
         </div>
     </div>
 
+    <div class="modal hide fade" id="removeMembers" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Delete Members
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to delete all the members from roles linked to units!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {% if hasAccess('common_admin_role', 'prune') %}
         <aside>
             <div class="sidebox">

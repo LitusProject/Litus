@@ -3,12 +3,15 @@
 namespace BrBundle\Controller\Career;
 
 use BrBundle\Entity\Event;
-use BrBundle\Entity\Event\Match;
+use BrBundle\Entity\Event\Connection;
 use BrBundle\Entity\Event\Subscription;
 use BrBundle\Entity\Event\Visitor;
 use BrBundle\Entity\User\Person\Corporate;
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use CommonBundle\Entity\User\Person\Academic;
 use DateTime;
+use Laminas\Http\Headers;
 use Laminas\Mail\Message;
 use Laminas\Mime\Mime;
 use Laminas\Mime\Part;
@@ -80,8 +83,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'hasGuide' => $hasGuide,
+                'event'        => $event,
+                'hasGuide'     => $hasGuide,
                 'hasBusschema' => $hasBusschema,
             )
         );
@@ -132,8 +135,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
         $form = $this->getForm('br_career_event_subscription_add', array('event' => $event));
 
         if ($person instanceof Academic) {
-            //TODO: Check for double subscriptions??
-
             $data = array();
             $data['first_name'] = $person->getFirstName();
             $data['last_name'] = $person->getLastName();
@@ -145,6 +146,39 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             $form->setData($this->getRequest()->getPost());
 
             if ($form->isValid()) {
+                $form_data = $form->getData();
+                $existing_subscription = $this->getEntityManager()
+                    ->getRepository('BrBundle\Entity\Event\Subscription')
+                    ->findOneBy(
+                        array(
+                            'event'     => $event->getId(),
+                            'firstName' => $form_data['first_name'],
+                            'lastName'  => $form_data['last_name'],
+                            'email'     => $form_data['email'],
+                        )
+                    );
+
+                if ($existing_subscription) {
+                    $this->flashMessenger()->success(
+                        'Error',
+                        'You have already subscribed for this event!'
+                    );
+
+                    $this->redirect()->toRoute(
+                        'br_career_event',
+                        array(
+                            'action' => 'view',
+                            'id'     => $event->getId(),
+                        )
+                    );
+
+                    return new ViewModel(
+                        array(
+                            'event' => $event,
+                        )
+                    );
+                }
+
                 $subscription = $form->hydrateObject();
                 $subscription->setEvent($event);
                 $this->getEntityManager()->persist($subscription);
@@ -211,7 +245,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'event'             => $event,
                 'locations'         => $locations,
                 'interestedMasters' => $interestedMasters,
-                'masters'           => Subscription::POSSIBLE_STUDIES
+                'masters'           => Subscription::POSSIBLE_STUDIES,
             )
         );
     }
@@ -231,8 +265,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'guide' => $guide,
+                'event'        => $event,
+                'guide'        => $guide,
                 'publicPdfDir' => $publicPdfDir,
             )
         );
@@ -253,8 +287,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
 
         return new ViewModel(
             array(
-                'event' => $event,
-                'busschema' => $busschema,
+                'event'        => $event,
+                'busschema'    => $busschema,
                 'publicPdfDir' => $imageDir,
             )
         );
@@ -272,7 +306,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
-       
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
@@ -292,26 +326,26 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 // If company is at event
                 if ($companyMap != null) {
                     // Check whether match already exists
-                    $match = $this->getEntityManager()
-                        ->getRepository('BrBundle\Entity\Event\Match')
+                    $m = $this->getEntityManager()
+                        ->getRepository('BrBundle\Entity\Event\Connection')
                         ->findByMapAndSubscription($companyMap, $subscription);
 
-                    if ($match == null) {
-                        $match = new Match($companyMap, $subscription);
+                    if ($m == null) {
+                        $m = new Connection($companyMap, $subscription);
                         $this->getEntityManager()->persist(
-                            $match
+                            $m
                         );
                         $this->getEntityManager()->flush();
                         $duplicate = false;
                     } else {
-                        $match = $match[0];
+                        $m = $m[0];
                         $duplicate = true;
                     }
                     
                     return new ViewModel(
                         array(
                             'event'     => $event,
-                            'match'     => $match,
+                            'match'     => $m,
                             'duplicate' => $duplicate,
                         )
                     );
@@ -328,6 +362,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('BrBundle\Entity\Event\Visitor')
                     ->findByEventAndQr($event, $qr);
 
+                $color = null;
+                $textColor = null;
                 if ($visitor == null) {
                     // If there is no such result, then the person must be entering
                     $entry = true;
@@ -366,7 +402,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                         'entry'        => $entry,
                         'firstTime'    => ($previousVisits == null),
                         'color'        => $color,
-                        'textColor'    => $textColor
+                        'textColor'    => $textColor,
                     )
                 );
             }
@@ -379,8 +415,8 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 ->fromRoute(
                     'br_career_event',
                     array('action' => 'qr',
-                        'id'    => $event->getId(),
-                        'code'     => $qr
+                        'id'       => $event->getId(),
+                        'code'     => $qr,
                     ),
                     array('force_canonical' => true)
                 )
@@ -411,11 +447,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return new ViewModel();
         }
 
+        $person = null;
         if ($this->getAuthentication()->isAuthenticated()) {
             $person = $this->getAuthentication()->getPersonObject();
         }
 
-        if ($person === null || !($person instanceof Corporate)) {
+        if (!($person instanceof Corporate)) {
             $this->flashMessenger()->error(
                 'Error',
                 "You are not logged in and can't view any matches!"
@@ -436,15 +473,134 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             ->findByEventAndCompany($event, $person->getCompany());
 
         $matches = $this->getEntityManager()
-            ->getRepository('BrBundle\Entity\Event\Match')
+            ->getRepository('BrBundle\Entity\Event\Connection')
             ->findAllByCompanyMapQuery($companyMap)
             ->getResult();
 
-        
+        $entries = array();
+        $gradesMapEnabled = null;
+        $gradesMap = null;
+        if (!is_null($matches) && in_array($this->getCurrentAcademicYear(), $person->getCompany()->getCvBookYears())) {
+            $gradesMapEnabled = $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.cv_grades_map_enabled');
+
+            $gradesMap = unserialize(
+                $this->getEntityManager()->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('br.cv_grades_map')
+            );
+            foreach ($matches as $match) {
+                $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
+
+                if ($entry) {
+                    $entries[] = array('id' => $match->getId(), 'cv' => $entry);
+                }
+            }
+        }
+
         return new ViewModel(
             array(
-                'event'   => $event,
-                'matches' => $matches,
+                'event'              => $event,
+                'matches'            => $matches,
+                'entityManager'      => $this->getEntityManager(),
+                'academicYearObject' => $this->getCurrentAcademicYear(),
+                'gradesMapEnabled'   => $gradesMapEnabled,
+                'gradesMap'          => $gradesMap,
+                'profilePath'        => $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('common.profile_path'),
+                'entries'            => $entries,
+            )
+        );
+    }
+
+    public function csvAction()
+    {
+        $file = new CsvFile();
+        $heading = array('first_name', 'last_name', 'study', 'specialization', 'email', 'phone', 'notes');
+        $results = array();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $person = null;
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $person = $this->getAuthentication()->getPersonObject();
+        }
+
+        if ($person instanceof Corporate) {
+            $companyMap = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\CompanyMap')
+                ->findByEventAndCompany($event, $person->getCompany());
+
+            $matches = $this->getEntityManager()
+                ->getRepository('BrBundle\Entity\Event\Connection')
+                ->findAllByCompanyMapQuery($companyMap)
+                ->getResult();
+
+            foreach ($matches as $match) {
+                $subscription = $match->getSubscription();
+                $results[] = array(
+                    $subscription->getFirstName(),
+                    $subscription->getLastName(),
+                    $subscription->getStudyString(),
+                    $subscription->getSpecialization(),
+                    $subscription->getEmail(),
+                    $subscription->getPhoneNumber(),
+                    $match->getNotes(),
+                );
+            }
+        }
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="subscriptions_'. $event->getTitle() . '.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    public function updateNotesAction()
+    {
+        $this->initAjax();
+
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
+
+        $data = json_decode($this->getRequest()->getContent());
+        $new_note = $data->{'note'};
+
+        $m->setNotes($new_note);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
+    public function getNotesAction()
+    {
+        $this->initAjax();
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
+
+        $old_note = $m->getNotes();
+
+        return new ViewModel(
+            array(
+                'result' => $old_note,
             )
         );
     }
@@ -452,12 +608,12 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     public function removeMatchAction()
     {
         $this->initAjax();
-        $match = $this->getMatchEntity();
-        if ($match === null) {
+        $m = $this->getMatchEntity();
+        if ($m === null) {
             return new ViewModel();
         }
 
-        $this->getEntityManager()->remove($match);
+        $this->getEntityManager()->remove($m);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -499,7 +655,7 @@ class EventController extends \BrBundle\Component\Controller\CareerController
                 'br_career_event',
                 array('action' => 'qr',
                     'id'       => $event->getId(),
-                    'code'     => $subscription->getQrCode()
+                    'code'     => $subscription->getQrCode(),
                 ),
                 array('force_canonical' => true)
             );
@@ -592,14 +748,14 @@ class EventController extends \BrBundle\Component\Controller\CareerController
     }
 
     /**
-     * @return Match|null
+     * @return Connection|null
      */
     private function getMatchEntity()
     {
         $event = $this->getEventEntity();
-        $match = $this->getEntityById('BrBundle\Entity\Event\Match', 'match');
+        $m = $this->getEntityById('BrBundle\Entity\Event\Connection', 'match');
 
-        if (!($match instanceof Match)) {
+        if (!($m instanceof Connection)) {
             $this->flashMessenger()->error(
                 'Error',
                 'No match was found!'
@@ -616,6 +772,6 @@ class EventController extends \BrBundle\Component\Controller\CareerController
             return;
         }
 
-        return $match;
+        return $m;
     }
 }

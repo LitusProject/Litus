@@ -70,6 +70,27 @@ class Event extends \CommonBundle\Entity\Node
     private $isHidden;
 
     /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_career", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isCareer;
+
+    /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_eerstejaars", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isEerstejaars;
+
+    /**
+     * @var boolean The flag whether the article is a career event
+     *
+     * @ORM\Column(name="is_international", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isInternational;
+
+    /**
      * @param Person $person
      */
     public function __construct(Person $person)
@@ -303,6 +324,66 @@ class Event extends \CommonBundle\Entity\Node
     }
 
     /**
+     * @return boolean
+     */
+    public function isCareer()
+    {
+        return $this->isCareer;
+    }
+
+    /**
+     * @param boolean $isCareer
+     *
+     * @return self
+     */
+    public function setIsCareer($isCareer)
+    {
+        $this->isCareer = $isCareer;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEerstejaars()
+    {
+        return $this->isEerstejaars;
+    }
+
+    /**
+     * @param boolean $isEerstejaars
+     *
+     * @return self
+     */
+    public function setIsEerstejaars($isEerstejaars)
+    {
+        $this->isEerstejaars = $isEerstejaars;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInternational()
+    {
+        return $this->isInternational;
+    }
+
+    /**
+     * @param boolean $isInternational
+     *
+     * @return self
+     */
+    public function setIsInternational($isInternational)
+    {
+        $this->isInternational = $isInternational;
+
+        return $this;
+    }
+
+    /**
      * @param EntityManager $em
      * @return \TicketBundle\Entity\Event
      */
@@ -316,15 +397,14 @@ class Event extends \CommonBundle\Entity\Node
      * @param EntityManager $em
      * @return boolean
      */
-    public function hasTicket(EntityManager $em)
+    public function hasTicket(EntityManager $em): bool
     {
-        $tickets = $em->getRepository('TicketBundle\Entity\Event')
+        $ticket = $em->getRepository('TicketBundle\Entity\Event')
             ->findOneByEvent($this);
-        if (is_null($tickets)) {
+        if (is_null($ticket)) {
             return false;
         }
-//        error_log(json_encode($tickets));
-        return (count($tickets) > 0) && $tickets->isStillBookable();
+        return $ticket->isStillBookable();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace CommonBundle\Entity\User\Person;
 
 use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Address;
+use CommonBundle\Entity\User\PreferenceMapping;
 use CommonBundle\Entity\User\Status\University as UniversityStatus;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -67,13 +68,6 @@ class Academic extends \CommonBundle\Entity\User\Person
     private $noMail;
 
     /**
-     * @var boolean Is user in a working group
-     *
-     * @ORM\Column(name="is_in_workinggroup", type="boolean", options={"default" = false}, nullable=true)
-     */
-    private $isInWorkingGroup;
-
-    /**
      * @var Address The primary address of the academic
      *
      * @ORM\OneToOne(targetEntity="CommonBundle\Entity\General\Address", cascade={"persist", "remove"})
@@ -110,6 +104,29 @@ class Academic extends \CommonBundle\Entity\User\Person
      */
     private $unitMap;
 
+    /**
+     * @var ArrayCollection The user's preference mapping
+     *
+     * @ORM\OneToMany(targetEntity="CommonBundle\Entity\User\PreferenceMapping", mappedBy="person", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preferenceMappings;
+
+    /**
+     * @var String The email address on which the user wants to receive email
+     *
+     * Possible values: 'personal', 'university'
+     *
+     * @ORM\Column(type="string", options={"default" = "personal"})
+     */
+    private $emailAddressPreference;
+
+    /**
+     * @var Boolean If the user has unsubscribed from all email
+     *
+     * @ORM\Column(type="boolean", options={"default" = false})
+     */
+    private $unsubscribed;
+
     public function __construct()
     {
         parent::__construct();
@@ -117,6 +134,9 @@ class Academic extends \CommonBundle\Entity\User\Person
         $this->universityStatuses = new ArrayCollection();
         $this->organizationMap = new ArrayCollection();
         $this->unitMap = new ArrayCollection();
+        $this->preferenceMappings = new ArrayCollection();
+        $this->emailAddressPreference = 'personal';
+        $this->unsubscribed = false;
     }
 
     /**
@@ -234,22 +254,20 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
-     * @param  boolean $isInWorkingGroup
-     * @return self
-     */
-    public function setIsInWorkingGroup($isInWorkingGroup)
-    {
-        $this->isInWorkingGroup = $isInWorkingGroup;
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
-    public function isInWorkingGroup()
+    public function isInWorkingGroup(AcademicYearEntity $academicYear)
     {
-        return $this->isInWorkingGroup;
+        $workgroup = false;
+        if ($this->getAllUnits($academicYear)) {
+            foreach ($this->getAllUnits($academicYear) as $unit) {
+                if ($unit->isWorkgroup()) {
+                    $workgroup = true;
+                }
+            }
+        }
+
+        return $workgroup;
     }
 
     /**
@@ -400,6 +418,22 @@ class Academic extends \CommonBundle\Entity\User\Person
     }
 
     /**
+     * @param  AcademicYearEntity $academicYear
+     * @return array
+     */
+    public function getAllUnits(AcademicYearEntity $academicYear)
+    {
+        $units = array();
+        foreach ($this->unitMap as $map) {
+            if ($map->getAcademicYear() == $academicYear) {
+                $units[] = $map->getUnit();
+            }
+        }
+
+        return $units;
+    }
+
+    /**
      * @param  boolean $mergeUnitRoles
      * @return array
      */
@@ -440,5 +474,99 @@ class Academic extends \CommonBundle\Entity\User\Person
         }
 
         return $roles;
+    }
+
+    /**
+     * @param  PreferenceMapping $preferenceMapping
+     * @return self
+     */
+    public function addPreferenceMapping(PreferenceMapping $preferenceMapping)
+    {
+        $this->preferenceMappings->add($preferenceMapping);
+
+        return $this;
+    }
+
+    /**
+     * @param  PreferenceMapping $preferenceMapping
+     * @return self
+     */
+    public function removePreferenceMapping(PreferenceMapping $preferenceMapping)
+    {
+        $this->preferenceMappings->removeElement($preferenceMapping);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function removeAllPreferenceMappings()
+    {
+        $this->preferenceMappings = new ArrayCollection();
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPreferenceMappings()
+    {
+        return $this->preferenceMappings->toArray();
+    }
+
+    /**
+     * @return String
+     */
+    public function getEmailAddressPreference()
+    {
+        return $this->emailAddressPreference;
+    }
+
+    /**
+     * @param string $preference Should be either 'personal' or 'university'
+     *
+     * @return $this
+     */
+    public function setEmailAddressPreference(string $preference)
+    {
+        $this->emailAddressPreference = $preference;
+
+        return $this;
+    }
+
+    /**
+     * @return $this Toggles the user's email address preference between 'personal' and 'university'
+     */
+    public function toggleEmailAddressPreference()
+    {
+        if ($this->emailAddressPreference == 'personal') {
+            $this->emailAddressPreference = 'university';
+        } else {
+            $this->emailAddressPreference = 'personal';
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param bool $unsubscribed
+     *
+     * @return $this
+     */
+    public function setUnsubscribed(bool $unsubscribed)
+    {
+        $this->unsubscribed = $unsubscribed;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUnsubscribed()
+    {
+        return $this->unsubscribed;
     }
 }

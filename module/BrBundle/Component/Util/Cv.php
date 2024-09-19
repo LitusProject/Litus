@@ -143,7 +143,7 @@ class Cv
         $result[] = new Node(
             'section',
             array(
-                'title' => $translator->translate('Studies'),
+                'title' => $translator->translate('StudiesCV'),
             ),
             array(
                 new Node(
@@ -348,26 +348,12 @@ class Cv
                 new Node(
                     'sec-special-career',
                     array(
-                        'InterestHeader'  => $translator->translate('Future Interest'),
-                        'EuropeHeader'    => $translator->translate('Mobility in Europe'),
-                        'WorldHeader'     => $translator->translate('Mobility in the World'),
-                        'InterestContent' => $cv->getFutureInterest(),
-                        'EuropeContent'   => $translator->translate($cv->getMobilityEurope()),
-                        'WorldContent'    => $translator->translate($cv->getMobilityWorld()),
+                        'EuropeHeader'  => $translator->translate('Mobility in Europe'),
+                        'WorldHeader'   => $translator->translate('Mobility in the World'),
+                        'EuropeContent' => $translator->translate($cv->getMobilityEurope()),
+                        'WorldContent'  => $translator->translate($cv->getMobilityWorld()),
                     ),
                     null
-                ),
-
-                new Node(
-                    'subsection',
-                    array(
-                        'title' => $translator->translate('Career Expectations'),
-                    ),
-                    new Node(
-                        'content',
-                        null,
-                        $cv->getCareerExpectations()
-                    )
                 ),
             )
         );

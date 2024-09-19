@@ -51,6 +51,7 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                 'enableExtraText' => $enableReservationText,
                 'reservationText' => $reservationText,
                 'retailEnabled'   => $enableRetail,
+                'fathom'          => $this->getFathomInfo(),
             )
         );
     }
@@ -98,8 +99,17 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
     {
         $academic = $this->getAcademicEntity();
         if ($academic === null) {
-            return $this->notFoundAction();
+            return $this->redirect()->toRoute(
+                'common_auth',
+                array(
+                    'redirect' => urlencode($this->getRequest()->getRequestUri()),
+                )
+            );
         }
+
+        $max_booking_number = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.maximum_booking_number');
 
         $enableBookings = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Config')
@@ -262,18 +272,31 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
 
                         foreach ($saleArticle->getRestrictions() as $restriction) {
                             if ($restriction->getType() == 'amount') {
-                                $amount = count(
-                                    $this->getEntityManager()
-                                        ->getRepository('CudiBundle\Entity\Sale\Booking')
-                                        ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
-                                            $saleArticle,
-                                            $academic,
-                                            $this->getCurrentAcademicYear()
-                                        )
-                                );
+                                $bookings = $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Sale\Booking')
+                                    ->findAllSoldOrAssignedOrBookedByArticleAndPersonInAcademicYear(
+                                        $saleArticle,
+                                        $academic,
+                                        $this->getCurrentAcademicYear()
+                                    );
+                                $amount = 0;
+                                foreach ($bookings as $booking) {
+                                    $amount += $booking->getNumber();
+                                }
 
                                 if ($amount + $formValue > $restriction->getValue()) {
                                     $formValue = $restriction->getValue() - $amount;
+                                }
+                            } elseif ($restriction->getType() == 'available') {
+                                $currentPeriod = $this->getEntityManager()
+                                    ->getRepository('CudiBundle\Entity\Stock\Period')
+                                    ->findOneActive();
+                                $currentPeriod->setEntityManager($this->getEntityManager());
+
+                                $available = $saleArticle->getStockValue() - $currentPeriod->getNbAssigned($saleArticle);
+
+                                if ($formValue > $available) {
+                                    $formValue = $available;
                                 }
                             }
                         }
@@ -322,6 +345,11 @@ class BookingController extends \CommonBundle\Component\Controller\ActionControl
                     $this->flashMessenger()->warn(
                         'Warning',
                         'You have not booked any textbooks!'
+                    );
+                } elseif ($total > $max_booking_number) {
+                    $this->flashMessenger()->warn(
+                        'Warning',
+                        'You have booked too many textbooks!'
                     );
                 } else {
                     $this->flashMessenger()->success(

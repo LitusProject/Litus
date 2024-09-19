@@ -1,0 +1,71 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'quiz/admin/quiz/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        <h1>{{ quiz.getName() }}: Edit Tiebreaker</h1>
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+
+    <aside>
+        {% if hasAccess('quiz_admin_quiz', 'edit') %}
+            <div class="sidebox">
+                <div class="title">Edit Quiz</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to edit the quiz!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_quiz', {"action": "edit", "id": quiz.getId()}) }}">&rarr; Edit Quiz</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_team', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Teams</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the teams!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_team', {"quizid": quiz.getId()}) }}">&rarr; Manage Teams</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_round', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Rounds</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the rounds!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_round', {"quizid": quiz.getId()}) }}">&rarr; Manage Rounds</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if hasAccess('quiz_admin_tiebreaker', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Manage Tiebreaker</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage the tiebreaker!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('quiz_admin_tiebreaker', {"quizid": quiz.getId()}) }}">&rarr; Manage Tiebreaker</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+{% endblock %}

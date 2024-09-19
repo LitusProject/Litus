@@ -3,7 +3,7 @@
 return array(
     'secretarybundle' => array(
         'secretary_registration' => array(
-            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects',
+            'add', 'complete', 'edit', 'saveStudies', 'saveSubjects', 'studies', 'subjects', 'preferences', 'savePreferences',
         ),
         'secretary_admin_registration' => array(
             'add', 'barcode', 'cancel', 'edit', 'manage', 'reprint', 'search',
@@ -18,7 +18,13 @@ return array(
             'add', 'delete', 'manage', 'search', 'update',
         ),
         'secretary_admin_working_group' => array(
-            'manage', 'add', 'delete', 'search',
+            'manage', 'delete',
+        ),
+        'secretary_admin_pull' => array(
+            'manage', 'add', 'delete', 'edit',
+        ),
+        'secretary_pull' => array(
+            'pay', 'payed', 'view',
         ),
     ),
 );

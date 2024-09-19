@@ -102,6 +102,20 @@ footer {
     border-top: 1px solid #e5e5e5;
 }
 
+a {
+    color: #1a1f4a;
+}
+
+a:hover {
+    color: #313879;
+    text-decoration: unset;
+}
+
+a:focus {
+    color: #313879;
+    text-decoration: unset;
+}
+
 .alert {
     margin-bottom: 3px;
 
@@ -129,3 +143,46 @@ footer {
  hr {
     margin: 0 0 10px 0;
  }
+
+.info-content {
+    background-color: #ecebff;
+    padding: 12px 5px 5px 15px;
+
+    margin-bottom: 5%;
+    border-radius: 20px;
+}
+
+tr.unit-collapse, tr.category-collapse {
+    border: none;
+}
+
+input[type="text"].search {
+    font-size: 14px;
+    padding: 7px 12px;
+    vertical-align: middle;
+}
+
+.collapse-btn{
+    border: none;
+    width: 100%;
+    text-align: left;
+    border-radius: 5px;
+}
+
+.collapse-btn.unit{
+    background-color: #D2D0F5;
+    padding: 8px;
+}
+
+.collapse-btn.category{
+    background-color: #e9e8fc;
+    padding: 6px 20px;
+}
+
+.grow {
+    transition: all .2s ease-in-out;
+}
+
+.grow:hover {
+    transform: scale(1.05);
+}

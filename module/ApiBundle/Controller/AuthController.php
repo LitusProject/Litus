@@ -34,7 +34,7 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
         if ($academic !== null) {
             $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear()) !== null ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus() : '';
             $result['organization_status'] = $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)) !== null ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() : '';
-            $result['in_workinggroup'] = $academic->isInWorkingGroup() ?? false;
+            $result['in_workinggroup'] = $academic->isInWorkingGroup($this->getCurrentAcademicYear(true)) ?? false;
         }
 
         return new ViewModel(
@@ -47,6 +47,45 @@ class AuthController extends \ApiBundle\Component\Controller\ActionController\Ap
     public function getPersonAction()
     {
         return $this->personAction();
+    }
+
+    public function meAction()
+    {
+        $this->initJson();
+        $accessToken = $this->getAccessToken();
+        if ($accessToken === null) {
+            return $this->error(401, 'The access token is not valid');
+        }
+
+        $person = $accessToken->getPerson();
+
+
+        if ($person === null) {
+            return $this->error(404, 'The person was not found');
+        }
+
+        $result = array(
+            'username'  => $person->getUsername(),
+            'full_name' => $person->getFullName(),
+            'email'     => $person->getEmail(),
+            'university_status' => '',
+            'organization_status' => '',
+            'in_workinggroup' => false,
+        );
+
+        $academic = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\User\Person\Academic')
+            ->findOneById($person->getId());
+        if ($academic !== null) {
+            $result['university_status'] = $academic->getUniversityStatus($this->getCurrentAcademicYear()) !== null ? $academic->getUniversityStatus($this->getCurrentAcademicYear())->getStatus() : '';
+            $result['organization_status'] = $academic->getOrganizationStatus($this->getCurrentAcademicYear(true)) !== null ? $academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() : '';
+            $result['in_workinggroup'] = $academic->isInWorkingGroup($this->getCurrentAcademicYear()) ?? false;
+        }
+        return new ViewModel(
+            array(
+                'result' => (object) $result,
+            )
+        );
     }
 
     /**

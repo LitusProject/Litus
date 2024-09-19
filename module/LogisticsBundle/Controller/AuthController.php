@@ -35,7 +35,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
 
                 if ($this->getAuthentication()->isAuthenticated()) {
                     $this->flashMessenger()->success(
-                        'SUCCESS',
+                        'Success',
                         'You have been successfully logged in!'
                     );
                 } else {
@@ -48,7 +48,7 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
         }
 
         $this->redirect()->toRoute(
-            'logistics_index',
+            'logistics_order',
             array(
                 'language' => $this->getLanguage()->getAbbrev(),
             )
@@ -111,7 +111,10 @@ class AuthController extends \LogisticsBundle\Component\Controller\LogisticsCont
                             );
                         } else {
                             $this->redirect()->toRoute(
-                                'logistics_index'
+                                'logistics_order',
+                                array(
+                                    'language' => $this->getLanguage()->getAbbrev(),
+                                )
                             );
                         }
 

@@ -70,15 +70,17 @@
                 {% else %}
                     <dl class="dl-horizontal" style="width: 50%;">
                         {% for option in event.getOptions() %}
-                            <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
-                                <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
-                            </div>
-                            {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
+                            {% if option.isVisible()%}
                                 <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
-                                    <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
-                                    <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                    <dt style="width: fit-content;">{{ option.getName() }}{% if not option.getPriceNonMembers() == 0 %}&mdash;{{ translate('Member') }}{% endif %}</dt>
+                                    <dd class="pull-right">&euro;{{ (option.getPriceMembers()/100)|number_format(2) }}</dd>
                                 </div>
+                                {% if not event.isOnlyMembers() and not option.getPriceNonMembers() == 0 %}
+                                    <div class="row" style="border-bottom: solid black 1px; margin-bottom: 5px;">
+                                        <dt style="width: fit-content">{{ option.getName() }}&mdash;{{ translate('Non Member') }}</dt>
+                                        <dd class="pull-right">&euro;{{ (option.getPriceNonMembers()/100)|number_format(2) }}</dd>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     </dl>
@@ -145,7 +147,7 @@
                                     {% if hasAccess('ticket', 'delete') and canRemoveReservations and ticket.getStatus() != 'Sold' %}
                                         <a href="#" data-id="{{ ticket.getId() }}" class="btn btn-danger btn-sm deleteTicket">{{ translate('Remove') }}</a>
                                     {% endif %}
-                                    {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' %}
+                                    {% if hasAccess('ticket', 'pay') and ticket.getStatus() != 'Sold' and isOnlinePayment %}
                                         <a href="{{ url("ticket", {"action": "pay", "id": ticket.getId(), "code": ticket.getNumber()}) }}" class="btn btn-success btn-sm payTicket">{{ translate('Pay') }}</a>
                                     {% endif %}
                                 </td>

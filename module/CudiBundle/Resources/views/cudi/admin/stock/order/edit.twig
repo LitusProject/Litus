@@ -153,6 +153,22 @@
                     </div>
                 </div>
             {% endif %}
+            {% if not order.isDelivered() %}
+                {% if hasAccess('cudi_admin_stock_order', 'delivered') %}
+                    <div class="sidebox">
+                        <div class="title">Delivered</div>
+                        <div class="content">
+                            <p>
+                                <i>Please hit the link below to mark these items as delivered!</i>
+                            </p>
+                            <p>
+                                <a href="{{ url('cudi_admin_stock_order', {"action": "delivered", "id": order.getId(), "order": "barcode"}) }}">&rarr;
+                                    Set delivered</a>
+                            </p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endif %}
     </aside>
 
@@ -350,6 +366,6 @@
             });
             removeAllOrder.modal();
         }
-        
+
     </script>
 {% endblock %}

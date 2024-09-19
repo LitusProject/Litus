@@ -18,7 +18,7 @@
             <p>{{ translate('Your order was successful. You will get an email when your card is available at our bookstore.') }} </p>
         {% elseif status == 'form' %}
             <div id="controller_action">
-                <p>{{translate('Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ')|format(price)}}<a href="http://vtk.be/page/name/isic">{{translate('this page')}}</a>.</p>
+                <p>{{translate('Fill in the form below to order your ISIC card for %s€. Once your card is available, you will receive an email and come pick it up at our bookstore. For more information about ISIC cards, check out ')|format(price)}}<a href="http://vtk.be/page/isic">{{translate('this page')}}</a>.</p>
                 <p>{{translate('NOTE: you cannot cancel your order after you hit the order button!')}}</p>
                 {% import 'site/partials/form.twig' as forms %}
                 {{ forms.renderForm(form) }}

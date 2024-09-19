@@ -506,7 +506,10 @@
                                 <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
                                 <p style="font-size: 14px; margin-bottom: 0px">{{ dateLocalized(shift.getStartDate(), 'd/M/y') }}
                                     | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}
-                                    -{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p>
+                                    -{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}
+                                    {% if shift.getNbVolunteersMin() != shift.getNbVolunteers() and authenticatedPerson.isPraesidium(currentAcademicYear)%}
+                                    | {{ translate("Minimum volunteers") }}: {{ shift.getNbVolunteersMin() }}
+                                    {% endif %}</p>
                             </div>
                             <div class="flexStretch">
                             </div>
@@ -578,16 +581,14 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <dl>
-                                        <dt>{{ translate('Description') }}</dt>
-                                        <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                        {% if shift.getDescription() %}
+                                            <dt>{{ translate('Description') }}</dt>
+                                            <dd style="text-align: justify;">{{ shift.getDescription() }}</dd>
+                                        {% endif %}
 
                                         <dt>{{ translate('Location') }}</dt>
                                         <dd>
                                             {{ shift.getLocation().getName() }}
-                                        </dd>
-                                        <dd style="margin-top: 5px;">
-                                            <img class="img-rounded"
-                                                 src="{{ staticMap(shift.getLocation(), '367x125', '7a43b6') }}"/>
                                         </dd>
                                     </dl>
                                 </div>
@@ -612,17 +613,30 @@
     {% macro buttonStyle(shift, type) %}
         {% if 'responsibles' == type %}
             {% set ratio = shift.countResponsibles() / shift.getNbResponsibles() %}
+            {% if ratio < 0.5 %}#}
+                btn-success
+            {% elseif ratio < 0.75 %}
+                btn-warning
+            {% elseif ratio == 1 %}
+                btn-danger
+            {% endif %}
         {% else %}
-            {% set ratio = shift.countVolunteers() / shift.getNbVolunteers() %}
+            {% if shift.countVolunteers() / shift.getNbVolunteers() == 1 %}
+                btn-danger
+            {% elseif shift.countVolunteers() - shift.getNbVolunteersMin() < 0 %}
+                btn-success
+            {% elseif shift.countVolunteers() - shift.getNbVolunteersMin() >= 0 %}
+                btn-warning
+            {% endif %}
         {% endif %}
 
-        {% if ratio < 0.5 %}
-            btn-success
-        {% elseif ratio < 0.75 %}
-            btn-warning
-        {% elseif ratio == 1 %}
-            btn-danger
-        {% endif %}
+{#        {% if ratio < 0.5 %}#}
+{#            btn-success#}
+{#        {% elseif ratio < 0.75 %}#}
+{#            btn-warning#}
+{#        {% elseif ratio == 1 %}#}
+{#            btn-danger#}
+{#        {% endif %}#}
     {% endmacro %}
 
     {% macro buttons(entityManager, authenticatedPerson, shift, accordionName) %}

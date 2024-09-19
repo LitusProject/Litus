@@ -1,7 +1,7 @@
 {% if 0 != paginationControl.pages.pageCount %}
     <table class="pagination {% if paginationControl.fullWidth %}full_width{% endif %}">
         <tr>
-            <td>
+            <td style="padding-right: 40px">
                 {% if paginationControl.pages.previous is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.first}|merge(paginationControl.matchedRouteParams)) }}">&larr; First</a>
                 {% else %}
@@ -15,11 +15,11 @@
                 {% endif %}
             </td>
 
-            <td>
+            <td style="padding-right: 40px">
                 {{ paginationControl.pages.current }}/{{ paginationControl.pages.pageCount }}
             </td>
 
-            <td>
+            <td style="padding-right: 40px">
                 {% if paginationControl.pages.next is not same as(null) %}
                     <a href="{{ url(paginationControl.matchedRouteName, {"page": paginationControl.pages.next}|merge(paginationControl.matchedRouteParams)) }}">Next &raquo;</a>
                 {% endif %}

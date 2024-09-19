@@ -8,6 +8,12 @@ return array(
             'page_admin_page' => array(
                 'add', 'delete', 'edit', 'manage', 'upload',
             ),
+            'page_admin_categorypage' => array(
+                'add', 'delete', 'edit', 'manage',
+            ),
+            'page_admin_categorypage_frame' => array(
+                'add', 'delete', 'edit', 'manage', 'editPoster', 'upload',
+            ),
         ),
     ),
     'guest' => array(
@@ -19,6 +25,9 @@ return array(
             ),
             'page' => array(
                 'file', 'view',
+            ),
+            'page_categorypage' => array(
+                'view', 'poster',
             ),
         ),
     ),

@@ -2,6 +2,7 @@
 
 namespace LogisticsBundle\Entity;
 
+use CommonBundle\Entity\General\Organization\Unit;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -128,40 +129,42 @@ class Article
     private $alertMail;
 
     /**
+     * @var Unit The unit which has to be mailed when the article gets booked
+     *
+    * @ORM\ManyToOne(targetEntity="CommonBundle\Entity\General\Organization\Unit")
+    * @ORM\JoinColumn(name="unit", referencedColumnName="id", nullable=true)
+    */
+    private $unit;
+
+    /**
      * @static
      * @var array All the possible categories allowed
      */
     public static $POSSIBLE_CATEGORIES = array(
-        'geluid'                 => 'Geluid',
-        'kabels'                 => 'Kabels',
-        'elektrisch gereedschap' => 'Elektrisch Gereedschap & toebehoren',
-        'hand'                   => 'Handgereedschap',
-        'kledij'                 => 'Werkkledij',
-        'materiaal'              => 'Material (eindig)',
-        'sanitair'               => 'Sanitair',
-        'electronica'            => 'Electronica',
-        'vastmaken'              => 'Vastmaken & CO',
-        'bouwen'                 => 'Bouwen',
-        'lijm en silicoon'       => 'Lijmen & Siliconen',
-        'verf'                   => 'Verven & CO',
-        'stof'                   => 'Stof',
-        'br'                     => 'BR',
-        'verkleed'               => 'Verkleedkledij',
-        'sport'                  => 'Sport',
-        'fak'                    => 'Fak',
-        'varia'                  => 'Varia',
-        'logistiek'              => 'Logistiek',
-        'cultuur'                => 'Cultuur',
-        'huis'                   => 'Huishoudelijk',
-        'acti'                   => 'Activiteiten',
-        'bier'                   => 'Bierpotten',
-        'glazen'                 => 'Glazen',
-        'elektriciteitskabels'   => 'Elektriciteitskabels',
-        'kook'                   => 'Kookgerief',
-        'corona'                 => 'Coronaproofing',
-        'it'                     => 'IT',
-        'theokot'                => 'Theokot',
-        'secri'                  => 'Secri'
+        ''                        => '',
+        'allerlei'                => 'Allerlei',
+        'archief'                 => 'Archief',
+        'banners&vlaggen'         => 'Banners & vlaggen',
+        'BR&Dev'                  => 'BR & Dev',
+        'cantus'                  => 'Cantus',
+        'decoratie'               => 'Decoratie',
+        'elektriciteit'           => 'Elektriciteit',
+        'licht&geluid'            => 'Licht & geluid',
+        'fak'                     => 'Fak',
+        'keuken'                  => 'Keuken',
+        'kledij'                  => 'Kledij',
+        'kuisproducten'           => 'Kuisproducten',
+        'secrimateriaal'          => 'Secrimateriaal',
+        'the game'                => 'The game',
+        'touw&tape'               => 'Touw & tape',
+        'veiligheid&signalisatie' => 'Veiligheid & signalisatie',
+        'verf'                    => 'Verf',
+        'vuur'                    => 'Vuur',
+        'werkmateriaal'           => 'Werkmateriaal',
+
+        # Flesserke en EHBO: hier moet automatisch materiaal naar toe gebracht worden
+        'flesserke'               => 'Flesserke',
+        'ehbo'                    => 'EHBO',
     );
 
     /**
@@ -169,9 +172,10 @@ class Article
      * @var array All the possible visibilities allowed
      */
     public static $POSSIBLE_VISIBILITIES = array(
-        'internal' => 'Internal',
-        'external' => 'External',
-        'private'  => 'Private',
+        'post'       => 'Post',
+        'praesidium' => 'Praesidium',
+        'greatervtk' => 'Greater VTK',
+        'members'    => 'Members',
     );
 
     /**
@@ -179,7 +183,7 @@ class Article
      * @var array All the possible statuses allowed
      */
     public static $POSSIBLE_STATUSES = array(
-        'ok'       => 'In Orde',
+        'ok'       => 'In orde',
         'vermist'  => 'Vermist',
         'weg'      => 'Weg',
         'kapot'    => 'Kapot',
@@ -215,6 +219,8 @@ class Article
     public function setSpot($spot)
     {
         $this->spot = $spot;
+
+        return $this;
     }
 
     /**
@@ -231,6 +237,26 @@ class Article
     public function setAlertMail($alertMail)
     {
         $this->alertMail = $alertMail;
+
+        return $this;
+    }
+
+    /**
+     * @return Unit
+     */
+    public function getUnit()
+    {
+        return $this->unit;
+    }
+
+    /**
+     * @param Unit $unit
+     */
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
+
+        return $this;
     }
 
     /**
@@ -304,6 +330,8 @@ class Article
     public function setAmountOwned($amountOwned)
     {
         $this->amountOwned = $amountOwned;
+
+        return $this;
     }
 
     /**
@@ -320,6 +348,8 @@ class Article
     public function setAmountAvailable($amountAvailable)
     {
         $this->amountAvailable = $amountAvailable;
+
+        return $this;
     }
 
     /**
@@ -339,11 +369,45 @@ class Article
     }
 
     /**
+     * @return boolean
+     */
+    public function isPostVisibility()
+    {
+        return $this->visibility == 'post';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPraesidiumVisibility()
+    {
+        return $this->visibility == 'praesidium';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isGreaterVtkVisibility()
+    {
+        return $this->visibility == 'greatervtk';
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMemberVisibility()
+    {
+        return $this->visibility == 'members';
+    }
+
+    /**
      * @param string $visibility
      */
     public function setVisibility($visibility)
     {
         $this->visibility = $visibility;
+
+        return $this;
     }
 
     /**
@@ -357,7 +421,7 @@ class Article
     /**
      * @return string
      */
-    public function getStatusCode()
+    public function getStatusKey()
     {
         return $this->status;
     }
@@ -368,6 +432,8 @@ class Article
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
@@ -384,6 +450,8 @@ class Article
     public function setLocation($location)
     {
         $this->location = $location;
+
+        return $this;
     }
 
     /**
@@ -400,6 +468,8 @@ class Article
     public function setWarranty($warranty)
     {
         $this->warranty = $warranty;
+
+        return $this;
     }
 
     /**
@@ -416,6 +486,8 @@ class Article
     public function setRent($rent)
     {
         $this->rent = $rent;
+
+        return $this;
     }
 
     /**
@@ -440,6 +512,8 @@ class Article
     public function setCategory($category)
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -456,6 +530,8 @@ class Article
     public function setDateUpdated($dateUpdated)
     {
         $this->dateUpdated = $dateUpdated;
+
+        return $this;
     }
 
     /**

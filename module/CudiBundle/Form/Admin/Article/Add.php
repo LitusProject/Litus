@@ -138,7 +138,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
-                                )
+                                ),
                                 // TODO validator?
                             ),
                         ),
@@ -151,7 +151,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                             'input' => array(
                                 'filters' => array(
                                     array('name' => 'StringTrim'),
-                                )
+                                ),
                                 // TODO validator?
                             ),
                         ),

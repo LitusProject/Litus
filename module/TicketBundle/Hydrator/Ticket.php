@@ -24,13 +24,6 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
                 $data['guest_form']['guest_email'],
                 null,
                 null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
             );
             $this->getEntityManager()->persist($guestInfo);
         } else {
@@ -54,6 +47,7 @@ class Ticket extends \CommonBundle\Component\Hydrator\Hydrator
             $object,
             $numbers,
             $data['payed'],
+            $data['payed'] ? $data['payId'] : null,
             $this->getEntityManager(),
             $person,
             $guestInfo

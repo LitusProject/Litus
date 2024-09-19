@@ -7,11 +7,25 @@
 
     <div id="controller_action" class="half_width">
         {% import 'admin/partials/form.twig' as forms %}
+
+        <div class="flashmessage success_message full_width shifts_success hide">
+            <div class="title">Success</div>
+            <div class="content">
+                <p>The shifts were successfully added!</p>
+            </div>
+        </div>
+        <div class="flashmessage error_message full_width shifts_error hide">
+            <div class="title">Error</div>
+            <div class="content">
+                <p>An error occurred while trying to add shifts to the event.</p>
+            </div>
+        </div>
+
         {{ forms.renderForm(form) }}
     </div>
 
-    <aside>
-        {% if hasAccess('calendar_admin_calendar', 'editPoster') %}
+    {% if hasAccess('calendar_admin_calendar', 'editPoster') %}
+        <aside>
             <div class="sidebox">
                 <div class="title">Edit Poster</div>
                    <div class="content">
@@ -23,30 +37,71 @@
                     </p>
                 </div>
             </div>
-        {% endif %}
-        {% if hasAccess('shift_admin_shift', 'event') and event.hasActiveShifts(em) %}
-            <aside>
-                <div class="sidebox">
-                    <div class="title">Go to Shifts</div>
-                    <div class="content">
-                        <p>
-                            <i>Please hit the link below to go to this event's shifts!</i>
-                        </p>
-                        <p>
-                            <a href="{{ url('shift_admin_shift', {"action": "event", "id": event.getId()}) }}">&rarr;
-                                Search Shifts by Event</a>
-                        </p>
+        </aside>
+    {% endif %}
+    {% if hasAccess('shift_admin_shift', 'event') and event.hasActiveShifts(em) %}
+        <aside>
+            <div class="sidebox">
+                <div class="title">Go to Shifts</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go to this event's shifts!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('shift_admin_shift', {"action": "event", "id": event.getId()}) }}">&rarr;
+                            Search Shifts by Event</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+    {% if hasAccess('calendar_admin_calendar', 'template') %}
+        <aside>
+            <div class="sidebox" style="margin-top: 35px">
+                <div class="title">Template</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add shifts for a Waaiberg cantus from the template!
+                            This ensures all shifts are made automatically.</i>
+                    </p>
+                    <p>
+                        <a href="#" data-id="{{ event.getId() }}" data-title="{{ event.getTitle(language) }}" class="template">&rarr; Add shifts</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
+    <div class="modal fade" id="addShiftsEvent" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Litus Admin</span>
+                    /Add Shifts
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You are about to add Waaiberg shifts to the following event: <b class="title"></b>!
+                        Please note that this operation cannot be undone!
+                    </p>
+                    <p>
+                        Are you sure you want to continue?
+                    </p>
+                    <div class="footer">
+                        <button class="delete">Yes</button>
+                        <button class="cancel" data-dismiss="modal">No</button>
                     </div>
                 </div>
-            </aside>
-        {% endif %}
-    </aside>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content_script %}
     <script type="text/javascript">
         $(document).ready(function () {
             $('#languages a:first').click();
+            $('.template').click(openModal);
         });
 
         $(document).ready(function () {
@@ -66,5 +121,32 @@
                 },
             });
         });
+
+        function openModal(e) {
+            var $this = $(this);
+
+            e.preventDefault();
+            var addShifts = $('#addShiftsEvent');
+            addShifts.find('.title').html($(this).data('title'));
+            var id = $this.data('id');
+            addShifts.find('.delete').unbind('click').click(function () {
+                $.post('{{ url('calendar_admin_calendar', {"action": "addShifts"})}}' + $this.data('id'), function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').addClass('hide');
+                        $('.shifts_success').removeClass('hide');
+                        addShifts.modal('hide');
+                    } else {
+                        errorShifts();
+                    }
+                }, 'json').error(errorShifts);
+            });
+            addShifts.modal();
+        }
+
+        function errorShifts() {
+            $('.flashmessage').addClass('hide');
+            $('.shifts_error').removeClass('hide');
+            $('#addShiftsEvent').modal('hide');
+        }
     </script>
 {% endblock %}

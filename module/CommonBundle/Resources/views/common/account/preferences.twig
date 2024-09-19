@@ -1,0 +1,183 @@
+{% extends 'site/base.twig' %}
+
+{% block content %}
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div class="page-alert">
+        <div class="flashmessage alert alert-success fade" id="preferences_saved_success">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('Your mailing preferences were successfully saved!') }}
+            </div>
+        </div>
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="preferences_saved_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('An error occurred while saving your mailing preferences!') }}
+            </div>
+        </div>
+        <div class="flashmessage alert alert-danger alert-fixed-top fade" id="no_mail_error">
+            <button type="button" class="close">&times;</button>
+            <div class="content">
+                {{ translate('You need to select at least one email address! If you want to unsubscribe, please use the button under \"Mailing Preferences\".') }}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="spacer40"></div>
+        <h1>{{ translate('Account') }} <small>&mdash; {{ translate('Mailing Preferences') }}</small></h1>
+        <div class="lineDecoration"></div>
+    </div>
+
+    <div class="container">
+        <div style="height: 60px"></div>
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('Email Address')}}</h3>
+            </div>
+
+            <div style="height: 15px"></div>
+            <p>{{ translate("Choose on which email address you want to receive our email") }}: </p>
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox"  class="use_personal_email" {% if usePersonalEmail %}checked="checked"{% endif %}>{{ translate("Personal") }}</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ personalEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">({{ translate("change") }})</a></u></p>
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox"  class="use_university_email" {% if useUniversityEmail %}checked="checked"{% endif %}>{{ translate("University") }}</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ universityEmail }} <u><a href="{{ url('common_account', {"action": "edit"}) }}" class="edit">({{ translate("change") }})</a></u></p>
+                </label>
+            </div>
+
+            <div class="buttonHolder">
+                <a class="myVtkButton preference_subscribe_button" href="#">{{ translate('Save Preferences') }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="height: 15px"></div>
+
+    <div class="container">
+        <div style="height: 60px"></div>
+        <div class="contentBlock">
+            <div class="headingHolder">
+                <h3 style="margin-bottom: 0px">{{ translate('Mailing Preferences')}}</h3>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <div style="height: 1px"></div>
+                    <b><input type="checkbox" class="unsubscribe_checkbox" {% if unsubscribed %}checked="checked"{% endif %}>{{ translate('Unsubscribe') }}</b>
+                    <div style="height: 1px"></div>
+                    <p>{{ translate('Warning: some actions on the site (such as ordering sandwiches, books or tickets) will still trigger emails being sent.') }}</p>
+                </label>
+            </div>
+
+            {% if preferencesEnabled %}
+                <div style="height: 15px"></div>
+                {% for preferenceMapping in preferenceMappings %}
+                    <div class="checkbox">
+                        <label>
+                            <div style="height: 1px"></div>
+                            <b><input type="checkbox" class="preference_checkbox" data-id="{{ preferenceMapping.getId() }}" {% if preferenceMapping.getValue() %}checked="checked"{% endif %}">{{ translate(preferenceMapping.getPreference().getName()) }}</b>
+                            <div style="height: 1px"></div>
+                            <p>{{ translate(preferenceMapping.getPreference().getDescription()) }}</p>
+                        </label>
+                    </div>
+                {% endfor %}
+                <div style="height: 30px"></div>
+            {% endif %}
+
+            <div class="buttonHolder">
+                <a class="myVtkButton preference_subscribe_button" href="#">{{ translate('Save Preferences') }}</a>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.preference_subscribe_button').click(function () {
+                $('.page-alert .flashmessage').removeClass('in');
+                saveChanges();
+            });
+
+            $('.flashmessage .close').click(function () {
+                $(this).closest('.flashmessage').removeClass('in');
+            });
+
+            // Only one of the email address checkboxes can be checked
+            $('.use_personal_email, .use_university_email').change(function () {
+                var $checkboxes = $('.use_personal_email, .use_university_email');
+                $checkboxes.not(this).prop('checked', false);
+            });
+
+            // Disable/enable preference checkboxes if unsubscribe button is checked/unchecked
+            $('.unsubscribe_checkbox').change(function() {
+                if ($(this).prop('checked')) {
+                    $('.preference_checkbox').prop('checked', false).prop('disabled', true);
+                } else {
+                    $('.preference_checkbox').prop('disabled', false);
+                }
+            });
+
+            // Trigger change event for unsubscribe checkbox to handle initial state
+            $('.unsubscribe_checkbox').trigger('change');
+        });
+
+        function saveChanges() {
+            // email address preferences
+            var use_personal_email = $('.use_personal_email').is(':checked');
+            var use_university_email = $('.use_university_email').is(':checked');
+
+            // email preferences
+            var unsubscribed = $('.unsubscribe_checkbox').is(':checked');
+            var preference_mappings_true = [];
+            var preference_mappings_false = [];
+            $('.preference_checkbox:checked').each(function () {
+                preference_mappings_true.push($(this).data('id'));
+            });
+            $('.preference_checkbox:not(:checked)').each(function () {
+                preference_mappings_false.push($(this).data('id'));
+            });
+
+            $.post('{{ url('common_account', {"action": "savePreferences"})}}', {
+                    "unsubscribed": unsubscribed,
+                    "preference_mappings_true": preference_mappings_true,
+                    "preference_mappings_false": preference_mappings_false,
+                    "use_personal_email": use_personal_email,
+                    "use_university_email": use_university_email,
+                },
+                function (data) {
+                    if (data && 'success' == data.status) {
+                        $('.flashmessage').removeClass('in');
+                        $('#preferences_saved_success').addClass('in');
+                    } else  if (data && 'nomail' == data.status) {
+                        errorNoMail();
+                    } else {
+                        errorSave();
+                    }
+                }, 'json').error(errorSave);
+        }
+
+        function errorNoMail() {
+            $('.flashmessage').removeClass('in');
+            $('#no_mail_error').addClass('in');
+        }
+
+        function errorSave() {
+            $('.flashmessage').removeClass('in');
+            $('#preferences_saved_error').addClass('in');
+        }
+    </script>
+{% endblock %}

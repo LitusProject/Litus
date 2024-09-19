@@ -19,7 +19,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add(
             array(
                 'type'     => 'datetime',
-                'name'     => 'start',
+                'name'     => 'start_date',
                 'label'    => 'Start',
                 'required' => true,
             )
@@ -28,7 +28,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
         $this->add(
             array(
                 'type'     => 'datetime',
-                'name'     => 'end',
+                'name'     => 'end_date',
                 'label'    => 'End',
                 'required' => true,
                 'options'  => array(
@@ -37,7 +37,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form\Tabbable
                             array(
                                 'name'    => 'DateCompare',
                                 'options' => array(
-                                    'first_date' => 'start',
+                                    'first_date' => 'start_date',
                                     'format'     => 'd/m/Y H:i',
                                 ),
                             ),

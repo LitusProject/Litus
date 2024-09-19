@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'cudi/admin/stock/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    {% include 'cudi/admin/stock/order/partials/suppliers.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        <div style="padding: 4px; text-align: right">
+            Sort by
+            <select id="sortbySelector" onchange="onSortChanged(this)">
+                <option id="barcode" value="barcode">Barcode</option>
+                <option id="alpha" value="alpha">Alphabetic</option>
+            </select>
+        </div>
+
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById('sortbySelector').value = "{{ sortby }}";
+        });
+
+        function onSortChanged() {
+            let newsortby = document.getElementById('sortbySelector').value;
+            // redirect to this page again, with new sortby
+            location.href = '{{ url('cudi_admin_stock_order', {"action": "delivered", "id": order.getId()}) }}' + newsortby;
+        }
+    </script>
+{% endblock %}

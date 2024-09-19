@@ -7,6 +7,9 @@ use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Laminas\Mail\Message;
+use Laminas\Mime\Mime;
+use Laminas\Mime\Part;
 use TicketBundle\Entity\Event\Option;
 
 /**
@@ -117,6 +120,13 @@ class Ticket
      * @ORM\Column(name="order_id", type="string", nullable=true, length=11)
      */
     private $orderId;
+
+    /**
+     * @var string|null Paypage Betaalreferentie
+     *
+     * @ORM\Column(name="pay_id", type="string", nullable=true)
+     */
+    private $payId;
 
     /**
      * @var string Unique identifier for QR code of the ticket
@@ -471,14 +481,35 @@ class Ticket
     }
 
     /**
+     * @return string|null
+     */
+    public function getPayId()
+    {
+        return $this->payId;
+    }
+
+    /**
+     * @param string|null $payId
+     *
+     * @return self
+     */
+    public function setPayId($payId)
+    {
+        $this->payId = $payId;
+
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getPrice()
     {
+        $option_or_event = $this->getOption() ?? $this->getEvent();
         if ($this->isMember() === true) {
-            $price = $this->getOption()->getPriceMembers();
+            $price = $option_or_event->getPriceMembers();
         } else {
-            $price = $this->getOption()->getPriceNonMembers();
+            $price = $option_or_event->getPriceNonMembers();
         }
 
         return number_format($price / 100, 2);
@@ -505,7 +536,7 @@ class Ticket
             }
         }
 
-//        return $this;
+        return $this;
     }
 
     /**
@@ -542,5 +573,123 @@ class Ticket
     {
         $this->universityMail = $mail;
         return $this;
+    }
+
+    /**
+     * @param $controller
+     * @param $language
+     * @return void
+     */
+    public function sendQrMail($controller, $language)
+    {
+        $event = $this->event;
+
+        $entityManager = $controller->getEntityManager();
+        if ($language === null) {
+            $language = $entityManager->getRepository('CommonBundle\Entity\General\Language')
+                ->findOneByAbbrev('en');
+        }
+
+        $mailData = unserialize(
+            $entityManager
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('ticket.subscription_mail_data')
+        );
+
+        $message = $mailData[$language->getAbbrev()]['content'];
+        $subject = str_replace('{{event}}', $event->getActivity()->getTitle($language), $mailData[$language->getAbbrev()]['subject']);
+
+        $mailAddress = $this->getEvent()->getMailFrom() ? : $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail');
+
+        $mailName = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('ticket.subscription_mail_name');
+
+        $noreplyAddress = $entityManager
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('system_no-reply_mail');
+
+        $url = $controller->url()
+            ->fromRoute(
+                'ticket',
+                array('action' => 'qr',
+                    'id'       => $event->getRandId(),
+                    'qr'       => $this->getQrCode(),
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+        $url = str_replace('liv.', '', $url);
+
+        $qrSource = str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $controller->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
+
+        $message = str_replace('{{event}}', $event->getActivity()->getTitle($language), $message);
+        $message = str_replace('{{eventDate}}', $event->getActivity()->getStartDate()->format('d/m/Y'), $message);
+        $message = str_replace('{{qrSource}}', $qrSource, $message);
+        $message = str_replace('{{qrLink}}', $url, $message);
+        $message = str_replace('{{actiMail}}', $mailAddress, $message);
+        $message = str_replace('{{ticketOption}}', $this->getOption() ? $this->getOption()->getName() : 'base', $message);
+
+        $part = new Part($message);
+
+        $part->type = Mime::TYPE_HTML;
+        $part->charset = 'utf-8';
+        $newMessage = new \Laminas\Mime\Message();
+        $newMessage->addPart($part);
+        $mail = new Message();
+        $mail->setEncoding('UTF-8')
+            ->setBody($newMessage)
+            ->setFrom($noreplyAddress, $mailName)
+            ->setReplyTo($mailAddress, $mailName)
+            ->addTo($this->getEmail(), $this->getFullName())
+            ->setSubject($subject)
+            ->addBcc(
+                $entityManager
+                    ->getRepository('CommonBundle\Entity\General\Config')
+                    ->getConfigValue('system_administrator_mail'),
+                'System Administrator'
+            )
+            ->addBcc($mailAddress);
+
+        if (getenv('APPLICATION_ENV') != 'development') {
+            $controller->getMailTransport()->send($mail);
+        }
+    }
+
+    public function getQrSourceUrl($controller)
+    {
+        if (!($this->getEvent()->getQrEnabled())) {
+            return '';
+        }
+
+        $url = $controller->url()
+            ->fromRoute(
+                'ticket',
+                array('action' => 'qr',
+                    'id'       => $this->getEvent()->getRandId(),
+                    'qr'       => $this->getQrCode(),
+                ),
+                array('force_canonical' => true)
+            );
+
+        $url = str_replace('leia.', '', $url);
+        $url = str_replace('liv.', '', $url);
+
+        return str_replace(
+            '{{encodedUrl}}',
+            urlencode($url),
+            $controller->getEntityManager()
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('br.google_qr_api')
+        );
     }
 }

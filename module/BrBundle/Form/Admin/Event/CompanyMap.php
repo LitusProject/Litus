@@ -46,6 +46,21 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
                 ),
             )
         );
+
+        if ($this->event !== null) {
+            $this->bind($this->event);
+        }
+    }
+
+    /**
+     * @param  Event $event
+     * @return self
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+
+        return $this;
     }
 
     /**
@@ -61,7 +76,12 @@ class CompanyMap extends \CommonBundle\Component\Form\Admin\Form
             '' => '',
         );
         foreach ($companies as $company) {
-            $companyArray[$company->getId()] = $company->getName();
+            $existingCompanyMap = $this->getEntityManager()->getRepository('BrBundle\Entity\Event\CompanyMap')
+                ->findAllByEventAndCompany($this->event, $company);
+
+            if (count($existingCompanyMap) == 0) {
+                $companyArray[$company->getId()] = $company->getName();
+            }
         }
 
         return $companyArray;

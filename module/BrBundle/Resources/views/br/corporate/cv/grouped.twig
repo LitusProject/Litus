@@ -1,36 +1,53 @@
 {% extends 'corporate/partials/cv.twig' %}
 
 {% block cv_content %}
-    <div class="panel-group" id="accordion">
-        {% for study in studies %}
-            <div class="panel panel-default panel-study">
-                <div class="panel-heading">
-                    <a class="panel-title study-toggle" data-target="body-study-{{ study.id }}" href="#" onclick="event.preventDefault();">
-                        {{ study.name }}
-                    </a>
-                </div>
-                <div id="body-study-{{ study.id }}" style="display: none;">
-                    <div class="panel-body">
-                        <div class="panel-group" id="accordion-study-{{ study.id }}">
-                            {% for entry in study.entries %}
-                                <div class="panel panel-default panel-group-entry" id="accordion-group-{{ entry.getId() }}">
-                                    <div class="panel-heading">
-                                        <a class="panel-title entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();">
-                                            {{ entry.getFirstName() }} {{ entry.getLastName() }}
-                                        </a>
-                                    </div>
-                                    <div id="body-entry-{{ entry.getId() }}">
-                                        <div class="panel-body" style="display: none;">
-                                            {% import 'corporate/partials/showcv.twig' as cv %}
-                                            {{ cv.displayEntry(entry, profilePath, gradesMapEnabled, gradesMap) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
+    <div class="contentBlock">
+        <div class="panel-group" id="accordion">
+            {% for study in studies %}
+                {#                <div class="panel panel-default panel-study"> #}
+                {#                <div class="panel-study groupHolder"> #}
+                <div class="groupHolder">
+                    {#                    <div class="panel-heading"> #}
+                    <div class="groupHeader study-toggle" data-target="body-study-{{ study.id }}">
+                        {#                        <a class="panel-title study-toggle" data-target="body-study-{{ study.id }}" href="#" #}
+                        {#                           onclick="event.preventDefault();"> #}
+                        {#                            {{ study.name }} #}
+                        {#                        </a> #}
+                        <div class="groupFlexCenter">
+                            <h4 style="margin-bottom: 0">{{ study.name }}</h4>
                         </div>
                     </div>
+                    <div id="body-study-{{ study.id }}" style="display: none;">
+                        {#                        <div class="panel-body"> #}
+                        {#                            <div class="panel-group" id="accordion-study-{{ study.id }}"> #}
+                        {#                            <div id="accordion-study-{{ study.id }}"> #}
+                        {% for entry in study.entries %}
+                            {#                                    <div class="panel panel-default panel-group-entry" #}
+                            {#                                    <div class="cvHolder panel-group-entry" #}
+                            <div class="cvHolder"
+                                 id="accordion-group-{{ entry.getId() }}">
+                                {#                                        <div class="panel-heading"> #}
+                                <div class="groupFlexCenter entry-toggle" data-target="body-entry-{{ entry.getId() }}">
+                                    {#                                            <a class="panel-title entry-toggle" #}
+                                    {#                                            <a class="entry-toggle" data-target="body-entry-{{ entry.getId() }}" href="#" onclick="event.preventDefault();"> #}
+                                    <h4 style="margin-bottom: 0">{{ entry.getFirstName() }} {{ entry.getLastName() }}</h4>
+                                    {#                                            </a> #}
+                                </div>
+                                <div id="body-entry-{{ entry.getId() }}">
+                                    {#                                            <div class="panel-body" style="display: none;"> #}
+                                    <div style="display: none;">
+                                        <hr style="border-top: 2px solid #1a1f4a;">
+                                        {% import 'corporate/partials/showcv.twig' as cv %}
+                                        {{ cv.displayEntry(entry, profilePath, gradesMapEnabled, gradesMap) }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {#                            </div> #}
+                        {#                        </div> #}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

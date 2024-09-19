@@ -36,7 +36,7 @@ return array(
         'value'       => serialize(
             array(
                 'eu'     => 'Vul in VAT voor EU companies',
-                'non-eu' => 'Vul dit in VAT voor non-EU companies'
+                'non-eu' => 'Vul dit in VAT voor non-EU companies',
             )
         ),
         'description' => 'Explains what the VAT',
@@ -82,6 +82,36 @@ Het VTK Bedrijvenrelaties Team',
             )
         ),
         'description' => 'The email sent when an account is activated',
+    ),
+    array(
+        'key'         => 'br.account_username_mail',
+        'value'       => serialize(
+            array(
+                'en' => array(
+                    'subject' => 'Student IT Corporate Account Username',
+                    'content' => 'Dear {{ name }},
+
+A corporate account with this email was found with username {{ username }}.
+You can use this account to view the CV Book at http://litus/corporate
+
+Kind regards,
+
+The Student IT Corporate Relations Team',
+                ),
+                'nl' => array(
+                    'subject' => 'Student IT Bedrijfsaccount',
+                    'content' => 'Beste {{ name }},
+
+Een bedrijfsaccount met dit emailadres werd gevonden met gebruikersnaam {{ username }}.
+U kan dit account gebruiken om het CV Book te bekijken op http://litus/corporate
+
+Met vriendelijke groeten,
+
+Het Student IT Bedrijvenrelaties Team',
+                ),
+            )
+        ),
+        'description' => 'The email sent when a username is requested',
     ),
     array(
         'key'         => 'br.cv_book_language',
@@ -226,8 +256,8 @@ Example content of this section.
         'key'         => 'br.contract_payment_details',
         'value'       => serialize(
             array(
-                'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van VTK Ondersteuning vzw met vermelding van het factuurnummer.',
-                'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of VTK Ondersteuning VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
+                'nl' => '* Het Bedrijf verklaart de volgende betalingsvoorwaarden na te leven: <total_price/> te betalen uiterlijk <payment_days/> dagen na facturatiedatum. De storting dient te gebeuren op het rekeningnummer BE30 7450 1759 0011 van Vlaamse Technische Kring vzw met vermelding van het factuurnummer.',
+                'en' => '* The company will comply to the following terms of payment: <total_price/> to be paid <payment_days/> days after the invoice date. The payment will need to happen in the account of Vlaamse Technische Kring VZW with IBAN BE30 7450 1759 0011 stating the invoice number.',
             )
         ),
         'description' => 'The standard payment details text that is displayed on the creation of a new contract.',
@@ -237,7 +267,7 @@ Example content of this section.
         'value'       => serialize(
             array(
                 'nl' => '* Vanwege de trouwe samenwerking biedt VTK een partnership aan. Dit houdt in dat het logo van het bedrijf gratis in ons wekelijks boekje \'t Bakske en op de homepage van de website www.vtk.be te zien zal zijn. Zo staat het bedrijf het hele jaar door in de spotlights. Bovendien krijgt het bedrijf een korting van 5% op het totale bedrag van dit contract.',
-                'en' => '* ?'
+                'en' => '* ?',
             )
         ),
         'description' => 'The standard auto discount text that is displayed on the creation of a new contract.',
@@ -263,31 +293,11 @@ Example content of this section.
         'description' => '',
     ),
     array(
-        'key'         => 'br.student_job_mail',
-        'value'       => 'bedrijvenrelaties@vtk.be',
-        'description' => 'The mail address to which notifications should be send when a company makes a new vacancy/StudentJob request.',
-    ),
-    array(
-        'key'         => 'br.student_job_mail_name',
-        'value'       => 'VTK Bedrijvenrelaties',
-        'description' => '',
-    ),
-    array(
-        'key'         => 'br.student_job_link',
-        'value'       => 'https://vtk.be/admin/br/request/',
-        'description' => '',
-    ),
-    array(
         'key'         => 'br.invoice_header_extra_text',
         'value'       => 'RPR Leuven',
         'description' => '',
     ),
     array(
-        'key'         => 'br.wave_nb_top_matches',
-        'value'       => 5,
-        'description' => 'The amount of matches in a companies\' wave',
-    ),
-            array(
         'key'         => 'br.match_career_banner_text',
         'value'       => 'Hier komt nog mooie text van BR',
         'description' => 'banner text on career/match/overview',
@@ -296,26 +306,6 @@ Example content of this section.
         'key'         => 'br.match_corporate_banner_text',
         'value'       => 'Ook hier komt nog mooie text van BR',
         'description' => 'banner text on corporate/match/overview',
-    ),
-    array(
-        'key'         => 'br.match_profile_max_importances',
-        'value'       => serialize(
-            array(
-                100 => 5,
-                200 => 3
-            )
-        ),
-        'description' => 'The maximum allowed features per importance value',
-    ),
-    array(
-        'key'         => 'br.match_career_profile_GDPR_text',
-        'description' => 'I agree that this data can be used to contact companies',
-        'value'       => serialize(
-            array(
-                'en' => 'I agree that this data can be used to contact companies, should you get a match or show them you\'re interested.',
-                'nl' => 'Ik ga akkoord dat deze gegevens gebruikt en bekeken kunnen worden door de bedrijven, als er een match gevormd wordt of als ik "Interesse toon".'
-            )
-        )
     ),
     array(
         'key'         => 'br.career_page_text',
@@ -397,7 +387,7 @@ Example content of this section.
                 ),
             )
         ),
-        'description' => 'The texts for the corporate page'
+        'description' => 'The texts for the corporate page',
     ),
     array(
         'key'         => 'br.communication_options',
@@ -437,7 +427,7 @@ Bestaand Bedrijf: {{ oldCompany }}.
 -- Dit is een automatisch gegenereerde email, gelieve niet te antwoorden --',
             )
         ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication'
+        'description' => 'The mail sent when a duplicate date is chosen for a communication',
     ),
     array(
         'key'         => 'br.cv_grades_map_enabled',
@@ -456,62 +446,6 @@ Bestaand Bedrijf: {{ oldCompany }}.
             )
         ),
         'description' => '',
-    ),
-    array(
-        'key'         => 'br.match_mail',
-        'value'       => 'bedrijvenrelaties@vtk.be',
-        'description' => 'The mail address from where matching software notifications should be sent.',
-    ),
-    array(
-        'key'         => 'br.match_mail_name',
-        'value'       => 'VTK Bedrijvenrelaties',
-        'description' => '',
-    ),
-    array(
-        'key'         => 'br.match_first_interested_mail_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'First interested student',
-                'content' => 'Beste
-Een student heeft zijn data doorgestuurd naar jou op het Matching Software platform!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent when a duplicate date is chosen for a communication'
-    ),
-    array(
-        'key'         => 'br.match_wave_companies_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'Generated new matches',
-                'content' => 'Beste
-Er zijn nieuwe matches!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent to all companies that have matches, when the button in the admin is used'
-    ),
-    array(
-        'key'         => 'br.match_wave_students_body',
-        'value'       => serialize(
-            array(
-                'subject' => 'Generated new matches',
-                'content' => 'Beste
-Er zijn nieuwe matches!
--- Dit is een automatisch gegenereerde email --',
-            )
-        ),
-        'description' => 'The mail sent to all students that have matches, when the button in the admin is used'
-    ),
-    array(
-        'key'         => 'br.match_sector_feature_max_points',
-        'value'       => 6,
-        'description' => 'The amount of points to be distributed between the sectors.',
-    ),
-    array(
-        'key'         => 'br.match_enable_first_interested_mail',
-        'value'       => 1,
-        'description' => 'Enable sending a mail when the first person sends their data to a company.',
     ),
     array(
         'key'         => 'br.google_qr_api',
@@ -537,7 +471,7 @@ Er zijn nieuwe matches!
                 'faculty of bio engineering'        => 'rgb(46, 118, 46)',//'rgb(0, 78, 36)',
                 'faculty of business and economics' => 'rgb(106, 206, 226)',//'rgb(180, 202, 202)',
                 'faculty of engineering technology' => 'rgb(64, 191, 96)',//'rgb(255, 255, 143)',
-                'other'                             => 'rgb(230, 25, 107)'//'rgb(255, 248, 233)'
+                'other'                             => 'rgb(230, 25, 107)',//'rgb(255, 248, 233)'
             )
         ),
         'description' => 'The colors associated with a specific study in RGB values',
@@ -561,7 +495,7 @@ Er zijn nieuwe matches!
                 'faculty of bio engineering'        => 'white',
                 'faculty of business and economics' => 'black',
                 'faculty of engineering technology' => 'white',
-                'other'                             => 'white'
+                'other'                             => 'white',
             )
         ),
         'description' => 'The text colors associated with a specific study to be visible on the background',
@@ -669,5 +603,16 @@ Er zijn nieuwe matches!
         'key'         => 'br.event_busschema_path',
         'value'       => '/_br/jobfair/',
         'description' => 'The path to the busschema files',
+    ),
+    array(
+        'key'         => 'br.cvbook_path',
+        'value'       => '/var/www/vtk.be/liv/public/_br/cvbooks',
+        'description' => 'The path to the cvbooks, if XYZ is the part of the path after public/, CvController 
+        uses www.vtk.be/XYZ to access the cvbooks',
+    ),
+    array(
+        'key'         => 'br.adobe_embed_api_clientid',
+        'value'       => 'key',
+        'description' => 'The client ID for Adobe Embed API for displaying CV books',
     ),
 );

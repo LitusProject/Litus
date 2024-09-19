@@ -23,6 +23,7 @@
                 <tr>
                     <th>Name</th>
                     <th width="200px">Parent</th>
+                    <th width="100px">Order Nr.</th>
                     <th width="70px">Action</th>
                 </tr>
             </thead>
@@ -32,6 +33,7 @@
                     <tr class="item item-{{ page_category.getId() }}">
                         <td>{{ page_category.getName(language) }}</td>
                         <td>{{ page_category.getParent().getTitle(language) }}</td>
+                        <td>{{ page_category.getOrderNumber() }}</td>
                         <td class="actions">
                             {% if hasAccess('page_admin_category', 'edit') %}
                                 <a href="{{ url('page_admin_category', {"action": "edit", "id": page_category.getId()}) }}" class="edit">Edit</a>
@@ -49,6 +51,20 @@
     </div>
 
     <aside>
+        {% if hasAccess('page_admin_categorypage', 'manage') %}
+            <div class="sidebox">
+                <div class="title">Categorie Pages</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to manage and create Categorie Pages!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('page_admin_categorypage', {"action": "manage"}) }}">&rarr; Categorie Pages</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
         {% if hasAccess('page_admin_page', 'manage') %}
             <div class="sidebox">
                 <div class="title">Pages</div>

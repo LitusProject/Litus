@@ -1,0 +1,40 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'page/admin/frame/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+
+            $('#category_page_id').val({{ category_page_id }});
+            console.log($('#category_page_id').val());
+            $('select.link_to').closest('.row').hide();
+            $('select#link_to_' + {{ category_page_id }}).closest('.row').show();
+
+            $('.frame_type').change(function () {
+                let type = $('input[name=frame_type]:checked', '#add').val();
+                switch (type) {
+                    case 'big':
+                        $('.description').closest('.row').show();
+                        break;
+                    case 'smalldescription':
+                        $('.description').closest('.row').show();
+                        break;
+                    case 'smallposter':
+                        $('.description').closest('.row').hide();
+                        break;
+                }
+            })
+        });
+    </script>
+{% endblock %}

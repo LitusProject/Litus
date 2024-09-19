@@ -218,10 +218,8 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 $expStarts,
                 $expEnds,
                 $entry->getThesisSummary(),
-                $entry->getFutureInterest(),
                 $translator->translate($entry->getMobilityEurope()),
                 $translator->translate($entry->getMobilityWorld()),
-                $entry->getCareerExpectations(),
                 $entry->getHobbies(),
             );
             if ($entry->getAddress()->getMailbox() !== null && $entry->getAddress()->getMailbox() !== '') {
@@ -265,6 +263,53 @@ class CvController extends \BrBundle\Component\Controller\CvController
                 'result' => (object) array('status' => 'success'),
             )
         );
+    }
+
+    /**
+     * Recreates the cv-book pdf saved on the server to make it up to date. This pdf can be viewed by companies.
+     *
+     * @return ViewModel
+     */
+    public function synchronizeAction()
+    {
+        $tmpFile = new TmpFile();
+        $year = $this->getAcademicYear();
+
+        $translator = $this->getTranslator();
+        $locale = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cv_book_language');
+        $translator->setLocale($locale);
+
+        $document = new CvBookGenerator($this->getEntityManager(), $year, $tmpFile, $translator);
+        $document->generate();
+
+        $filePath = './public' . $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('br.cvbook_path') . '/';
+        $file = fopen($filePath . 'cvbook-' . $year->getCode(true) . '.pdf', 'w');
+        $result = fwrite($file, $tmpFile->getContent());  // will return false if failed
+
+        if (!$result) {
+            $this->flashMessenger()->error(
+                'Error',
+                'Something went wrong, the cv-book could not be synchronized!'
+            );
+        } else {
+            $this->flashMessenger()->success(
+                'Success',
+                'The cv-book is now synchronized!'
+            );
+        }
+
+        $this->redirect()->toRoute(
+            'br_admin_cv_entry',
+            array(
+                'action' => 'manage',
+            )
+        );
+
+        return new ViewModel();
     }
 
     /**

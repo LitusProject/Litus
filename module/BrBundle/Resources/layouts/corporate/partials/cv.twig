@@ -19,7 +19,19 @@
                             <li {% if onlyArchive %}class="active"{% endif %}><a href="#" id="cvArchiveNav">{{ translate('Archive') }}</a></li>
                         {% endif %}
                         {% for year in authenticatedPerson.getCompany().getCvBookYears() %}
-                            <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a></li>
+                            {% if getParam("action") == "list" %}
+                                <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
+                                            href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode(), "sortby": getParam("sortby")}) }}">{{ year.getCode() }}</a>
+                                </li>
+                            {% elseif getParam("action") == "grouped" %}
+                                <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
+                                            href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a>
+                                </li>
+                            {% elseif getParam("action") == "pdf" %}
+                                <li {% if year.getCode() == academicYear.getCode() %}class="active"{% endif %}><a
+                                            href="{{ url('br_corporate_cv', {"action": getParam("action"), "academicyear": year.getCode()}) }}">{{ year.getCode() }}</a>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -43,9 +55,15 @@
                                 {% if hasAccess('br_corporate_cv', 'grouped') %}
                                     <li {% if getParam("action") == "grouped" %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": "grouped", "academicyear": getParam('academicyear')}) }}">{{ translate('By Study') }}</a></li>
                                 {% endif %}
-                                {% if hasAccess('br_corporate_cv', 'list') %}
-                                    <li {% if getParam("action") == "list" %}class="active"{% endif %}><a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('academicyear')}) }}">{{ translate('Alphabetically') }}</a></li>
-                                {% endif %}
+                                <li {% if getParam("action") == "list" and getParam("sortby") == "firstname" %}class="active"{% endif %}>
+                                    <a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('academicyear'), "sortby": "firstname"}) }}">{{ translate('Alphabetically By First Name') }}</a>
+                                </li>
+                                <li {% if getParam("action") == "list" and getParam("sortby") != "firstname" %}class="active"{% endif %}>
+                                    <a href="{{ url('br_corporate_cv', {"action": "list", "academicyear": getParam('academicyear'), "sortby": "lastname"}) }}">{{ translate('Alphabetically By Last Name') }}</a>
+                                </li>
+                                <li {% if getParam("action") == "pdf"%}class="active"{% endif %}>
+                                    <a href="{{ url('br_corporate_cv', {"action": "pdf", "academicyear": getParam('academicyear')}) }}">{{ translate('PDF') }}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -58,13 +76,15 @@
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px; text-align: right;" class="form-inline">
-                    <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
-                        <option value="text">{{ translate('By Name') }}</option>
-{#                        <option value="grade">{{ translate('By Minimum Grade') }}</option>#}
-                    </select>
-                    <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
-                </div>
+                {% if getParam("action") != "pdf"%}
+                    <div style="margin-bottom: 20px; text-align: right;" class="form-inline" >
+                        <select style="margin-bottom: 0px;" class="form-control" id="searchtype" name="searchtype">
+                            <option value="text">{{ translate('By Name') }}</option>
+    {#                        <option value="grade">{{ translate('By Minimum Grade') }}</option>#}
+                        </select>
+                        <input id="searchbox" type="text" class="search-query form-control" placeholder="{{ translate('Search') }}">
+                    </div>
+                {% endif %}
 
                 {% block cv_content %} {% endblock %}
             </div>
@@ -99,7 +119,7 @@
             });
 
             $('.entry-toggle').click(function() {
-                var element = $(this).parent().parent().find('.profile-picture');
+                var element = $(this).parent().find('.profile-picture');
                 var target = $(this).data('target');
                 var display = document.getElementById(target).children[0].style.display;
                 document.getElementById(target).children[0].style.display = display === 'none' ? 'block' : 'none';

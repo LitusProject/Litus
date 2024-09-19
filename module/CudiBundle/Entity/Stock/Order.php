@@ -77,6 +77,13 @@ class Order
     private $comment;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDelivered;
+
+    /**
      * @param Supplier $supplier The supplier of this order
      */
     public function __construct(Supplier $supplier, Person $person)
@@ -243,6 +250,26 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDelivered()
+    {
+        return $this->isDelivered;
+    }
+
+    /**
+     * @param boolean $isDelivered
+     *
+     * @return $this
+     */
+    public function setDelivered($isDelivered)
+    {
+        $this->isDelivered = $isDelivered;
 
         return $this;
     }

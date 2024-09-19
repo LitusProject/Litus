@@ -1,0 +1,54 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'calendar/admin/calendar/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <aside>
+        {% if hasAccess('calendar_admin_calendar', 'add') %}
+            <div class="sidebox" style="margin-top: 35px">
+                <div class="title">Go back</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to go back to the normal add function!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('calendar_admin_calendar', {"action": "add"}) }}">&rarr; Add</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+    </aside>
+
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#languages a:first').click();
+        });
+
+        $(document).ready(function () {
+            $('textarea').gollum({
+                toolbar: {
+                    "bold": ["bold", "Bold", "bold"],
+                    "italic": ["italic", "Italic", "italic"],
+                    "divider": "-",
+                    "link": ["link", "Link", "link"],
+                    "divider": "-",
+                    "ul": ["ul", "Unordered List", "u-list"],
+                    "ol": ["ol", "Ordered List", "o-list"],
+                    "blockquote": ["blockquote", "Blockquote", "quotemark"],
+                    "hr": ["hr", "Horizontal Rule", "horizontal-rule"],
+                    "divider": "-",
+                    "help": ["help", "Help", "help"],
+                },
+            });
+        });
+    </script>
+{% endblock %}

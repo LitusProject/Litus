@@ -3,9 +3,9 @@
 
     <nav id="controller_nav">
         <ul>
-            {% if hasAccess('logistics_admin_order', 'conflicting') %}
-                <li><a {% if 'conflicting' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_order', {"action": "conflicting"}) }}">Conflicting</a></li>
-            {% endif %}
+{#            {% if hasAccess('logistics_admin_order', 'conflicting') %}#}
+{#                <li><a {% if 'conflicting' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_order', {"action": "conflicting"}) }}">Conflicting</a></li>#}
+{#            {% endif %}#}
             {% if hasAccess('logistics_admin_order', 'removed') %}
                 <li><a {% if 'removed' == getParam('action') %} class="active" {% endif %} href="{{ url('logistics_admin_order', {"action": "removed"}) }}">Rejected/Removed/Old</a></li>
             {% endif %}

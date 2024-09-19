@@ -2,66 +2,39 @@
 
 namespace SecretaryBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\User\Person\Academic;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\Academic as UnitMapAcademic;
+use CommonBundle\Entity\User\Person\Organization\UnitMap\External as UnitMapExternal;
 use Laminas\View\Model\ViewModel;
 
 class WorkingGroupController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
     public function manageAction()
     {
-        $paginator = $this->paginator()->createFromEntity(
-            'CommonBundle\Entity\User\Person\Academic',
-            $this->getParam('page'),
-            array(
-                'isInWorkingGroup' => true,
-            ),
-            array(
-                'firstName' => 'ASC',
-                'lastName'  => 'ASC',
-            )
-        );
-
-        return new ViewModel(
-            array(
-                'paginator'         => $paginator,
-                'paginationControl' => $this->paginator()->createControl(true),
-            )
-        );
-    }
-
-    public function addAction()
-    {
-        $form = $this->getForm('secretary_workingGroup_add');
-
-        if ($this->getRequest()->isPost()) {
-            $formData = $this->getRequest()->getPost();
-            $form->setData($formData);
-
-            if ($form->isValid()) {
-                $academic = $form->hydrateObject();
-
-                $academic->setIsInWorkingGroup(true);
-                $this->getEntityManager()->flush();
-
-                $this->flashMessenger()->success(
-                    'Success',
-                    'The person was succesfully added!'
-                );
-
-                $this->redirect()->toRoute(
-                    'secretary_admin_working_group',
-                    array(
-                        'action' => 'add',
-                    )
-                );
-
-                return new ViewModel();
-            }
+        $academicYear = $this->getAcademicYearEntity();
+        if ($academicYear === null) {
+            return new ViewModel();
         }
 
+        $academicYears = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findAll();
+
+        $paginator = $this->paginator()->createFromQuery(
+            $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Organization\UnitMap')
+                ->findAllWorkgroupMembersByAcademicYearQuery($academicYear),
+            $this->getParam('page'),
+        );
+
         return new ViewModel(
             array(
-                'form' => $form,
+                'paginator'          => $paginator,
+                'paginationControl'  => $this->paginator()->createControl(true),
+                'activeAcademicYear' => $academicYear,
+                'academicYears'      => $academicYears,
             )
         );
     }
@@ -70,12 +43,12 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
     {
         $this->initAjax();
 
-        $academic = $this->getAcademicEntity();
-        if ($academic === null) {
+        $unitMap = $this->getUnitMapEntity();
+        if ($unitMap === null) {
             return new ViewModel();
         }
 
-        $academic->setIsInWorkingGroup(false);
+        $this->getEntityManager()->remove($unitMap);
         $this->getEntityManager()->flush();
 
         return new ViewModel(
@@ -83,46 +56,6 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
                 'result' => (object) array('status' => 'success'),
             )
         );
-    }
-
-    public function searchAction()
-    {
-        $this->initAjax();
-
-        $numResults = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('search_max_results');
-
-        $academics = $this->search()
-            ->setMaxResults($numResults)
-            ->getResult();
-
-        $result = array();
-        foreach ($academics as $academic) {
-            $item = (object) array();
-            $item->id = $academic->getId();
-            $item->name = $academic->getFullName();
-            $result[] = $item;
-        }
-
-        return new ViewModel(
-            array(
-                'result' => $result,
-            )
-        );
-    }
-
-    /**
-     * @return \Doctrine\ORM\Query|null
-     */
-    private function search()
-    {
-        switch ($this->getParam('field')) {
-            case 'name':
-                return $this->getEntityManager()
-                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                    ->findAllWorkingGroupMembersByNameQuery($this->getParam('string'));
-        }
     }
 
     /**
@@ -139,7 +72,7 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
             );
 
             $this->redirect()->toRoute(
-                'common_admin_academic',
+                'secretary_admin_working_group',
                 array(
                     'action' => 'manage',
                 )
@@ -149,5 +82,66 @@ class WorkingGroupController extends \CommonBundle\Component\Controller\ActionCo
         }
 
         return $academic;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\General\AcademicYear|null
+     */
+    private function getAcademicYearEntity()
+    {
+        if ($this->getParam('academicyear') === null) {
+            return $this->getCurrentAcademicYear();
+        }
+
+        $start = AcademicYear::getDateTime($this->getParam('academicyear'));
+        $start->setTime(0, 0);
+
+        $academicYear = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\AcademicYear')
+            ->findOneByUniversityStart($start);
+
+        if (!($academicYear instanceof AcademicYearEntity)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No academic year was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_admin_working_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $academicYear;
+    }
+
+    /**
+     * @return \CommonBundle\Entity\User\Person\Organization\UnitMap|null
+     */
+    private function getUnitMapEntity()
+    {
+        $unitMap = $this->getEntityById('CommonBundle\Entity\User\Person\Organization\UnitMap');
+
+        if (!($unitMap instanceof UnitMapAcademic || $unitMap instanceof UnitMapExternal)) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No unit map was found!'
+            );
+
+            $this->redirect()->toRoute(
+                'secretary_admin_working_group',
+                array(
+                    'action' => 'manage',
+                )
+            );
+
+            return;
+        }
+
+        return $unitMap;
     }
 }

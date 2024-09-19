@@ -3,153 +3,147 @@
 #
 # Door
 #
+# Original
 # @author Pieter Maene <pieter.maene@litus.cc>
 # @author Kristof Marien <kristof.marien@litus.cc>
 #
+# Since 2023
+# @author Jethro Young <Jethrong2@gmail.com>
+# @author Robbe Serry <robbe.serry@vtk.be>
 
 import datetime
-import evdev
-import json
-import os.path as path
-import pickle
 import requests
+from requests.exceptions import ConnectionError
 import time
+import logging
+import sys
 
-import RPi.GPIO as GPIO
+##################
+# CONSTANTS
+##################
 
-# Parameters
-GPIO_PORT       = 15
+# The pin on the pi used for control of the lock.
+GPIO_PORT       = 7 # GPIO port 4, physical pin 7
 
-API_HOST        = 'http://litus'
+# API settings
+API_HOST        = ''
 API_KEY         = ''
 
-CACHE_FILE      = '/tmp/door_rules'
+# Caching (in case the internet connection fails).
+CACHE_FILE      = './door_rules'
 CACHE_TTL       = 900
-LOG_FILE        = '/tmp/door.log'
+
+# Logging of entry
+LOG_FILE        = './door.log'
 LOG_TIME_FORMAT = '%x %H:%M:%S'
 
-# GPIO
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(GPIO_PORT, GPIO.OUT)
+# Set to true when debugging on a non-RPi.
+DEBUG = True
 
-# Globals
+##################
+# INITIALIZATION
+##################
+
+# Setup GPIO for RPi
+if not DEBUG:
+    import RPi.GPIO as GPIO
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(GPIO_PORT, GPIO.OUT)
+
+# Initialize global variables.
 identification = ''
 rules = None
 
-# Functions
-def allowAccess(identification, academic):
-    log('Opening door for ' + identification)
-    openDoor()
+logging.basicConfig(
+    level=logging.INFO,
+    handlers=[
+        logging.FileHandler(LOG_FILE),
+        logging.StreamHandler(sys.stdout)
+    ]
+)
 
+##################
+# FUNCTIONS
+##################
+
+# Set GPIO pins to open the door.
+def open_door():
+    if not DEBUG:
+        GPIO.output(GPIO_PORT, GPIO.HIGH)
+        time.sleep(2)
+        GPIO.output(GPIO_PORT, GPIO.LOW)
+
+# Open the door and log to file+Litus.
+def allow(identification, academic):
+
+    # Write to log file.
+    log('Opening door for ' + identification)
+    # Make RPi open the door.
+    open_door()
+
+    # Log the entry to Litus.
     params = {
         'key'     : API_KEY,
         'academic': academic
     }
-
     try:
         log('Logging access to the server')
-        result = requests.post(API_HOST + '/api/door/log', data = params).json()
+        result = requests.post(API_HOST + '/api/door/log', data=params)
+    except ConnectionError:
+        log("Could not connect to Litus. Log entry not created.")
+        return
+    
+    # Status OK.
+    if result.status_code == 200:
+        # Convert to JSON and check OK from backend.
+        result_json = result.json()
+        if 'success' == result_json['status']:
+            log('Log entry was successfully created.')
+    # Status Bad Request, Server Error, etc.
+    else:
+        log(f"Creating log on Litus returned HTTP{result.status_code}. Log not created.")
 
-        if 'success' == result['status']:
-            log('Log entry was successfully created')
-    except Exception:
-        log('Log entry could not be created')
-
-def getRules():
-    global rules
-
-    data = {
-        'key': API_KEY
-    }
-
+# Authorize card against Litus.
+def authorize(identification):
     try:
-        log('Downloading rules')
-        rules = requests.post(API_HOST + '/api/door/getRules', data = data).json()
+        response = requests.post(
+            API_HOST + '/api/door/is-allowed',
+            data={
+                "key": API_KEY,
+                "userData": identification.lower()
+            }
+        )
+    except ConnectionError:
+        # No internet
+        log("Could not connect to Litus. Failed to identify card.")
+        return
 
-        log('Writing rules to cache file')
-        cacheFile = open(CACHE_FILE, 'w')
-        pickle.dump(rules, cacheFile)
-    except Exception:
-        log('Reading rules from cache file');
-        cacheFile = open(CACHE_FILE, 'r')
-        rules = pickle.load(cacheFile)
-
-    cacheFile.close()
-
-def input(identification_data):
-    identification = requests.post('https://vtk.be/api/door/get-username', data={"key": API_KEY, "userData": identification}, ).json()['person']
-    try:
-        rules[identification]
-    except KeyError:
-        log('No rule for ' + identification)
-
-    if isinstance(rules[identification], list) == False or len(rules[identification]) < 1:
-        log('No rule for ' + identification)
-
-    accessAllowed = False
-    for rule in rules[identification]:
-        if rule['start_date'] == None and rule['end_date'] == None:
-            accessAllowed = True
-            break
+    if response.status_code == 200:
+        person = response.json()['person']
+        academic_id = response.json()['academic']
+        is_allowed = response.json()['is_allowed']
+        if is_allowed:
+            allow(person, academic_id)
         else:
-            startDate = datetime.date.fromtimestamp(int(rule['start_date']))
-            endDate = datetime.date.fromtimestamp(int(rule['end_date']))
+            log(f'{person} not allowed.')
+    # Status Bad Request, Server Error, etc.
+    else:
+        log(f"Identifying person with Litus returned HTTP{response.status_code}. Identification failed.")
+        log(response.text)
 
-            now = datetime.datetime.now()
-            if startDate < now.date() and endDate > now.date():
-                startTime = int(rule['start_time'])
-                endTime = int(rule['end_time'])
 
-                if 0 == startTime and 0 == endTime:
-                    accessAllowed = True
-                    break
-
-                if startTime < now.time().strftime('%H%M') and endTime > now.time().strftime('%H%M'):
-                    accessAllowed = True
-                    break
-
-    if accessAllowed == True:
-        allowAccess(identification, rule['academic'])
-
-    if path.getmtime(CACHE_FILE) < time.time()-CACHE_TTL:
-        getRules()
-
-# TODO Use built-in logger
+# Log to file (and console)
 def log(message):
-    line = '[' +  datetime.datetime.now().strftime(LOG_TIME_FORMAT) + '] ' + message
-    try:
-        file = open(LOG_FILE, 'a')
-        try:
-            file.write(line + '\n')
-        finally:
-            file.close()
-    except IOError:
-        pass
+    line = f"[{datetime.datetime.now().strftime(LOG_TIME_FORMAT)}] {message}"
+    logging.info(line)
 
-    print line
+##################
+# MAIN
+##################
 
-def openDoor():
-    GPIO.output(GPIO_PORT, GPIO.HIGH)
-    time.sleep(2)
-    GPIO.output(GPIO_PORT, GPIO.LOW)
-
-# Main
-# TODO Call this every hour
-getRules()
-
-device = evdev.InputDevice('/dev/input/event0')
-for event in device.read_loop():
-    if event.type == evdev.ecodes.EV_KEY:
-        if event.value == 1:
-            continue
-
-        if event.code == 42:
-            continue
-
-        if event.code == 28:
-            input(identification)
-            identification = ''
-
-            continue
-
-        identification = identification + (format(evdev.ecodes.KEY[event.code]).decode()[-1:]).lower()
+identification = ""
+while identification != "STOP":
+    # Get input from keyboard.
+    identification = input()
+    # Authorize input.
+    authorize(identification)

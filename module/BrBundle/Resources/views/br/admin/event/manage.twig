@@ -24,6 +24,7 @@
                 <th>Title</th>
                 <th width="120px">Start Date</th>
                 <th width="120px">End Date</th>
+                <th width="120px">End Date Visible</th>
                 <th width="150px">Subscriptions open</th>
                 <th width="120px">Map visible</th>
                 <th width="70px">Action</th>
@@ -35,6 +36,7 @@
                     <td>{{ event.getTitle() }}</td>
                     <td>{{ event.getStartDate().format('d/m/Y H:i') }}</td>
                     <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
+                    <td>{{ event.getEndDateVisible().format('d/m/Y H:i') }}</td>
                     <td>{{ event.getSubscriptionDate().format('d/m/Y H:i') }}</td>
                     <td>{{ event.getMapviewDate().format('d/m/Y H:i') }}</td>
                     <td class="actions">

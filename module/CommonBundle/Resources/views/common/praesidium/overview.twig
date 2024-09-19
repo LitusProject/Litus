@@ -30,23 +30,25 @@
             </div>
             <div class="memberHolder">
                 {% for member in unit['members'] %}
-                    <div class="member">
-                        {% if member.getPhotoPath() %}
-                            <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
-                        {% else %}
-                            <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png)"></div>
-                        {% endif %}
-                        <h4 style="margin-bottom: 0px">{{ member.getFullName() }} </h4>
-                        {% if member.isCoordinator() %}
-                            <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
-                        {% endif %}
-                        {% if not member.getDescription() == '' %}
-                            <p style="text-align: center;">{{ member.getDescription() }}</p>
-                        {% endif %}
-                        {% for extraUnit in extraUnits[member.getId()] %}
-                            <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
-                        {% endfor %}
-                    </div>
+                    {% if member.getId() != 1882 %} {# Temporary code to remove Mathijs De Haeck from the site for onthaaldagen #}
+                        <div class="member">
+                            {% if member.getPhotoPath() %}
+                                <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
+                            {% else %}
+                                <div class="memberPhoto" style="background-image: url(/_site/img/generic_profile.png)"></div>
+                            {% endif %}
+                            <h4 style="margin-bottom: 0px">{{ member.getFullName() }} </h4>
+                            {% if member.isCoordinator() %}
+                                <p style="text-align: center;">{{ translate('Groupcoordinator') }}</p>
+                            {% endif %}
+                            {% if not member.getDescription() == '' %}
+                                <p style="text-align: center;">{{ member.getDescription() }}</p>
+                            {% endif %}
+                            {% for extraUnit in extraUnits[member.getId()] %}
+                                <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div> 
         {% endfor %}

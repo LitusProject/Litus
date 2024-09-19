@@ -46,6 +46,25 @@ class Unit extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
     /**
      * @return \Doctrine\ORM\Query
      */
+    public function findAllActiveAndDisplayedAndWorkgroupQuery()
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
+            ->where(
+                $query->expr()->andX(
+                    $query->expr()->eq('u.active', 'true'),
+                    $query->expr()->eq('u.displayed', 'true'),
+                    $query->expr()->eq('u.workgroup', 'true'),
+                )
+            )
+            ->orderBy('u.name', 'ASC')
+            ->getQuery();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function findAllActiveAndNotDisplayedQuery()
     {
         $query = $this->getEntityManager()->createQueryBuilder();
@@ -59,6 +78,23 @@ class Unit extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             )
             ->orderBy('u.name', 'ASC')
             ->getQuery();
+    }
+
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findOneById($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        return $query->select('u')
+            ->from('CommonBundle\Entity\General\Organization\Unit', 'u')
+            ->where(
+                $query->expr()->eq('u.id', ':id')
+            )
+            ->setParameter('id', $id)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     /**

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Translation
 {
     /**
-     * @var integer The ID of this tanslation
+     * @var integer The ID of this translation
      *
      * @ORM\Id
      * @ORM\GeneratedValue

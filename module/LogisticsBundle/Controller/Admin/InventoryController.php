@@ -2,8 +2,6 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
-use DateTime;
-use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 
 class InventoryController extends \CommonBundle\Component\Controller\ActionController\AdminController
@@ -19,7 +17,7 @@ class InventoryController extends \CommonBundle\Component\Controller\ActionContr
 
         return new ViewModel(
             array(
-                'paginator' => $paginator,
+                'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
             )
         );

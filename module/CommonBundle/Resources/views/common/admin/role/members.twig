@@ -22,24 +22,41 @@
         <h1>Role</h1>
         <p>Name: <b>{{ role.getName() }}</b></p>
 
-        <h1>Members</h1>
+        {% if members %}
+            <h1>Direct members</h1>
 
-        <table class="full_width manage">
-            <tr>
-                <th>Name</th>
-                <th width="90px">Actions</th>
-            </tr>
-            {% for member in members %}
-                <tr class="item item-{{ member.getId() }}">
-                    <td>{{ member.getFullName() }}</td>
-                    <td>
-                        {% if hasAccess('common_admin_role', 'deleteMember') %}
-                            <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>
-                        {% endif %}
-                    </td>
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                    <th style="width: 90px">Actions</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for member in members %}
+                    <tr class="item item-{{ member.getId() }}">
+                        <td>{{ member.getFullName() }}</td>
+                        <td>
+                            {% if hasAccess('common_admin_role', 'deleteMember') %}
+                                <a href="#" data-id="{{ member.getId() }}" data-name="{{ member.getFullName() }}" class="delete">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if unitMembers %}
+            <h1>Unit members</h1>
+
+            <table class="full_width manage">
+                <tr>
+                    <th>Name</th>
+                </tr>
+                {% for member in unitMembers %}
+                    <tr class="item item-{{ member.getId() }}">
+                        <td>{{ member.getFullName() }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
     </div>
 
     <div class="modal fade" id="removeMember" tabindex="-1">

@@ -87,6 +87,19 @@
                 </div>
             </div>
         {% endif %}
+        {% if hasAccess('br_admin_cv_entry', 'synchronize') %}
+            <div class="sidebox">
+                <div class="title">Synchronize cv-book</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to synchronize the online version of the cv-book pdf with the cvs!</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('br_admin_cv_entry', {"action": "synchronize", "academicyear": activeAcademicYear.getCode()}) }}">&rarr; Synchronize cv-book</a>
+                    </p>
+                </div>
+            </div>
+        {% endif %}
     </aside>
 
     <div class="modal fade" id="removeCv" tabindex="-1">

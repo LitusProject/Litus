@@ -22,9 +22,9 @@ return array(
         'description' => serialize(
             array(
                 'en' => 'The text on the book tickets page',
-                'nl' => 'The extra tekst op de tickets page'
+                'nl' => 'The extra tekst op de tickets page',
             )
-        )
+        ),
     ),
     array(
         'key'         => 'ticket.confirmation_email_from',
@@ -68,14 +68,14 @@ Payment can be done through the following link should you not have paid yet: {{ 
 
 Kind regards,
 
-VTK'
+VTK',
             ),
         ),
-        'description' => 'Email sent for confirmation of ticket reservation'
+        'description' => 'Email sent for confirmation of ticket reservation',
     ),
     array(
         'key'         => 'ticket.pay_link_domain',
-        'value'       => 'vtk.be',
+        'value'       => 'https://vtk.be',
         'description' => 'The domain for the paylink used in generated emails',
     ),
     array(
@@ -129,5 +129,10 @@ VTK'
         'key'         => 'ticket.subscription_mail_name',
         'value'       => 'VTK',
         'description' => 'The signature name for subscription mails',
+    ),
+    array(
+        'key'         => 'ticket.terms_and_conditions',
+        'value'       => 'https://vtk.be/page/algemene-voorwaarden-ticketverkoop/',
+        'description' => 'The terms and conditions for the ticket sale',
     ),
 );

@@ -203,6 +203,11 @@ VTK',
         'description' => 'The mail address of system administrator',
     ),
     array(
+        'key'         => 'system_no-reply_mail',
+        'value'       => 'no-reply@vtk.be',
+        'description' => 'The no-reply mail address',
+    ),
+    array(
         'key'         => 'fallback_language',
         'value'       => 'nl',
         'description' => 'The abbreviation of the language that will be used of no other translation is present',
@@ -324,7 +329,7 @@ Deze gegevens worden verkregen via volgende wegen:
 
 Deze gegevens worden aan volgende derden doorgegeven:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Vlaamse Technische Kring vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 U kan deze gegevens op iedere moment kosteloos wijzigen of verwijderen.
 
@@ -391,7 +396,7 @@ This information is obtained from the following sources:
 
 These information will be passed to the following third parties:
 
-* VTK Ondersteuning vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
+* Vlaamse Technische Kring vzw (Studentenwijk Arenberg 6/1, 3001 Heverlee).
 
 You can modify or remove this information free of charge at any moment.
 
@@ -469,13 +474,13 @@ You can remove any installed cookies from your computer or mobile device at any 
         'description' => 'The shaIn, shaOut and urlPrefix for KBC',
     ),
     array(
-        'key'       => 'common.studcard_client_id',
-        'value'     => 'vtk-cursusdienst',
+        'key'         => 'common.studcard_client_id',
+        'value'       => 'vtk-cursusdienst',
         'description' => 'Client ID for Student Card API basic authentication',
     ),
     array(
-        'key'       => 'common.studcard_client_secret',
-        'value'     => 'Secret Value',
+        'key'         => 'common.studcard_client_secret',
+        'value'       => 'Secret Value',
         'description' => 'Client Secret for Student Card API basic authentication',
     ),
 );

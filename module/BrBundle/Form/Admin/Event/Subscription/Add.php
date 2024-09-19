@@ -97,26 +97,26 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             )
         );
 
-        $this->add(
-            array(
-                'type'       => 'text',
-                'name'       => 'phone_number',
-                'label'      => 'Phone Number',
-                'attributes' => array(
-                    'placeholder' => '+CCAAANNNNNN',
-                ),
-                'options'    => array(
-                    'input' => array(
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array('name' => 'PhoneNumber'),
-                        ),
-                    ),
-                ),
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'       => 'text',
+//                'name'       => 'phone_number',
+//                'label'      => 'Phone Number',
+//                'attributes' => array(
+//                    'placeholder' => '+CCAAANNNNNN',
+//                ),
+//                'options'    => array(
+//                    'input' => array(
+//                        'filters' => array(
+//                            array('name' => 'StringTrim'),
+//                        ),
+//                        'validators' => array(
+//                            array('name' => 'PhoneNumber'),
+//                        ),
+//                    ),
+//                ),
+//            )
+//        );
 
         $this->add(
             array(
@@ -251,14 +251,14 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
             );
         }
 
-        $this->add(
-            array(
-                'type'     => 'checkbox',
-                'name'     => 'network_reception',
-                'label'    => 'Network reception',
-                'required' => true,
-            )
-        );
+//        $this->add(
+//            array(
+//                'type'     => 'checkbox',
+//                'name'     => 'network_reception',
+//                'label'    => 'Network reception',
+//                'required' => true,
+//            )
+//        );
         $this->add(
             array(
                 'type'       => 'checkbox',

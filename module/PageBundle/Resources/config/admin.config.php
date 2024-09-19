@@ -10,6 +10,8 @@ return array(
             'controllers' => array(
                 'page_admin_category',
                 'page_admin_link',
+                'page_admin_categorypage',
+                'page_admin_categorypage_frame',
             ),
         ),
     ),

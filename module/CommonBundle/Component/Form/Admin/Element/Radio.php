@@ -17,7 +17,7 @@ class Radio extends \Laminas\Form\Element\Radio implements \CommonBundle\Compone
     {
         $this->setLabelAttributes(
             array(
-                'class' => 'radio'
+                'class' => 'radio',
             )
         );
     }

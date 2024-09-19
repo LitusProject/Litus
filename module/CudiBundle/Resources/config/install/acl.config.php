@@ -63,7 +63,7 @@ return array(
             'delete', 'manage',
         ),
         'cudi_admin_sales_session_openinghour' => array(
-            'add', 'edit', 'delete', 'manage', 'old',
+            'add', 'edit', 'schedule', 'delete', 'manage', 'old',
         ),
         'cudi_admin_sales_session_message' => array(
             'add', 'edit', 'delete', 'manage',
@@ -78,10 +78,10 @@ return array(
             'add', 'delete', 'manage', 'supplier', 'typeahead',
         ),
         'cudi_admin_stock_order' => array(
-            'add', 'cancel', 'csv', 'delete', 'deleteAll','edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier',
+            'add', 'cancel', 'csv', 'delete', 'deleteAll','edit', 'editItem', 'export', 'manage', 'overview', 'place', 'pdf', 'search', 'supplier', 'delivered',
         ),
         'cudi_admin_stock_period' => array(
-            'manage', 'new', 'search', 'view', 'revertNew'
+            'manage', 'new', 'search', 'view', 'revertNew',
         ),
         'cudi_admin_stock_retour' => array(
             'add', 'delete', 'manage', 'supplier',
@@ -156,7 +156,7 @@ return array(
             'add', 'delete', 'edit', 'manage', 'search', 'articleTypeahead',
         ),
         'cudi_retail' => array(
-            'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail', 'deleteDeal','articleTypeahead', 'recommendedRetails'
+            'overview', 'deal', 'myDeals', 'myRetails', 'deleteRetail', 'deleteDeal','articleTypeahead', 'recommendedRetails',
         ),
         'cudi_printer' => array(
             'view', 'pay', 'payed',

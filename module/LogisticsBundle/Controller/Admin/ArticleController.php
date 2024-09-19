@@ -2,7 +2,10 @@
 
 namespace LogisticsBundle\Controller\Admin;
 
+use CommonBundle\Component\Document\Generator\Csv as CsvGenerator;
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
 use Imagick;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
 use LogisticsBundle\Entity\Article;
 
@@ -167,6 +170,142 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function csvAction()
+    {
+        $form = $this->getForm('logistics_article_csv');
+
+        if ($this->getRequest()->isPost()) {
+            $formData = $this->getRequest()->getPost();
+            $fileData = $this->getRequest()->getFiles();
+
+            $fileName = $fileData['file']['tmp_name'];
+
+            $articleArray = array();
+
+            $open = fopen($fileName, 'r');
+            if ($open != false) {
+                $data = fgetcsv($open, 10000, ',');
+
+                while ($data !== false) {
+                    $articleArray[] = $data;
+                    $data = fgetcsv($open, 10000, ',');
+                }
+                fclose($open);
+            }
+
+            $form->setData($formData);
+
+            if ($form->isValid()) {
+                $count = 0;
+
+                $unit = $this->getEntityManager()
+                    ->getRepository('CommonBundle\Entity\General\Organization\Unit')
+                    ->findOneById($formData['unit']);
+
+                array_shift($articleArray);                 // Remove header
+                foreach ($articleArray as $data) {
+                    if (in_array(null, array_slice($data, 0, 6))) {
+                        error_log('fail');
+                        continue;
+                    }
+
+                    $name = $data[0];
+                    $amount_owned = intval($data[1]);
+                    $amount_available = intval($data[2]);
+                    $visibility = $data[3];
+                    $status = $data[4];
+                    $location = $data[5];
+                    for ($x = 6; $x <= 9; $x++) {
+                        $data[$x] = $data[$x] ?: '';
+                    }
+                    $spot = $data[6];
+                    $category = $data[7];
+                    $additional_info = $data[8];
+                    $internal_comment = $data[9];
+
+                    $article = new Article();
+                    $article->setName($name)->setAdditionalInfo($additional_info)->setUnit($unit)
+                        ->setCategory($category)->setAmountOwned($amount_owned)->setAmountAvailable($amount_available)
+                        ->setVisibility($visibility)->setStatus($status)->setLocation($location)->setSpot($spot)
+                        ->setInternalComment($internal_comment)->setRent(0)->setWarranty(0);
+                    $this->getEntityManager()->persist($article);
+                    $count += 1;
+                }
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->success(
+                    'Succes',
+                    $count . ' articles imported'
+                );
+
+                $this->redirect()->toRoute(
+                    'logistics_admin_article',
+                    array(
+                        'action' => 'manage',
+                    )
+                );
+
+                return new ViewModel();
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'form' => $form,
+            )
+        );
+    }
+
+    public function templateAction()
+    {
+        $file = new CsvFile();
+        $heading = array(
+            'name',
+            'amount_owned',
+            'amount_available',
+            'visibility',
+            'status',
+            'location',
+            'spot',
+            'category',
+            'additional_info',
+            'internal_comment',
+        );
+
+        $results = array();
+        $results[] = array(
+            'article',
+            0,
+            0,
+            '(post, praesidium, greatervtk, members)',
+            '(ok, vermist, weg, kapot, vuil, aankopen, nakijken)',
+            '(Blok 6, Loods, Fak, Theokot)',
+            '',
+            '',
+            '',
+            '',
+        );
+
+
+        $document = new CsvGenerator($heading, $results);
+        $document->generateDocument($file);
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="article_template.csv"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
     public function searchAction()
     {
         $this->initAjax();
@@ -178,7 +317,6 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
         $articles = $this->search()
             ->setMaxResults($numResults)
             ->getResult();
-
         $result = array();
         foreach ($articles as $article) {
             $item = (object) array();
@@ -186,14 +324,15 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
             $item->name = $article->getName();
             $item->amountOwned = $article->getAmountOwned();
             $item->amountAvailable = $article->getAmountAvailable();
+            $article->getUnit() ? $item->unitName = $article->getUnit()->GetName() : $item->unitName = '';
             $item->category = $article->getCategory();
             $item->location = $article->getLocation();
             $item->spot = $article->getSpot();
+            $item->additionalInfo = $article->getAdditionalInfo();
             $item->status = $article->getStatus();
             $item->visibility = $article->getVisibility();
             $result[] = $item;
         }
-
         return new ViewModel(
             array(
                 'result' => $result,
@@ -249,6 +388,10 @@ class ArticleController extends \CommonBundle\Component\Controller\ActionControl
                 return $this->getEntityManager()
                     ->getRepository('LogisticsBundle\Entity\Article')
                     ->findAllByVisibilityQuery($this->getParam('string'));
+            case 'unitName':
+                return $this->getEntityManager()
+                    ->getRepository('LogisticsBundle\Entity\Article')
+                    ->findAllByUnitNameQuery($this->getParam('string'));
         }
         return;
     }

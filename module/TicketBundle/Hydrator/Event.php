@@ -12,14 +12,25 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
      * @static @var string[]
      */
     private static $stdKeys = array(
-        'active', 'bookable_praesidium', 'bookable', 'number_of_tickets',
-        'limit_per_person', 'only_members', 'description', 'qr_enabled', 'mail_from',
+        'active', 'visible', 'bookable_praesidium', 'bookable', 'number_of_tickets',
+        'limit_per_person', 'only_members', 'description', 'qr_enabled', 'mail_from', 'terms_url',
     );
 
     protected function doHydrate(array $data, $object = null)
     {
         if ($object === null) {
-            $object = new EventEntity();
+            do {
+                $rand_id = uniqid();
+            } while (!is_null(
+                $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Event')
+                    ->findOneBy(
+                        array(
+                            'rand_id' => $rand_id,
+                        )
+                    )
+            ));
+            $object = new EventEntity($rand_id);
         }
 
         $enableOptions = (isset($data['enable_options']) && $data['enable_options']) || count($object->getOptions()) > 0;
@@ -32,6 +43,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             $calendarEvent = null;
         }
 
+        $form = null;
         if ($data['form'] !== '') {
             $form = $this->getEntityManager()
                 ->getRepository('FormBundle\Entity\Node\Form')
@@ -47,7 +59,7 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                 if (strlen($optionData['option']) == 0) {
                     continue;
                 }
-
+                error_log(json_encode($optionData['limit_per_person_option']));
                 if (isset($optionData['option_id']) && is_numeric($optionData['option_id'])) {
                     $option = $this->getEntityManager()
                         ->getRepository('TicketBundle\Entity\Event\Option')
@@ -57,6 +69,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         ->setMaximum(intval($optionData['maximum']));
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option->setPriceNonMembers($price_non_members);
+                    $option->setIsVisible($optionData['visible']);
+                    $option->setLimitPerPerson($optionData['limit_per_person_option']);
                 } else {
                     $price_non_members = $optionData['membershipDiscount'] == 1 ? $optionData['price_non_members'] : null;
                     $option = new OptionEntity(
@@ -64,7 +78,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
                         $optionData['option'],
                         $optionData['price_members'],
                         $price_non_members,
-                        intval($optionData['maximum'])
+                        intval($optionData['maximum']),
+                        $optionData['visible'],
+                        $optionData['limit_per_person_option'],
                     );
                     $this->getEntityManager()->persist($option);
                 }
@@ -152,7 +168,9 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
             ->setOrderIdBase($data['order_base_id'])
             ->setForm($form)
             ->setPayDeadline($data['deadline_enabled'])
-            ->setDeadlineTime($data['deadline_time'] ? : null);
+            ->setDeadlineTime($data['deadline_time'] ? : null)
+            ->setConfirmationMailSubject($data['mail_confirmation_subject'])
+            ->setConfirmationMailBody($data['mail_confirmation_body']);
 
         return $this->stdHydrate($data, $object, self::$stdKeys);
     }
@@ -175,6 +193,8 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
         $data['invoice_base_id'] = $object->getInvoiceIdBase();
         $data['order_base_id'] = $object->getOrderIdBase();
         $data['online_payment'] = $object->isOnlinePayment();
+        $data['mail_confirmation_subject'] = $object->getConfirmationMailSubject();
+        $data['mail_confirmation_body'] = $object->getConfirmationMailBody();
         if (count($object->getOptions()) == 0) {
             $data['prices']['price_members'] = number_format($object->getPriceMembers() / 100, 2);
             $data['prices']['price_non_members'] = $object->isOnlyMembers() ? '' : number_format($object->getPriceNonMembers() / 100, 2);
@@ -184,12 +204,14 @@ class Event extends \CommonBundle\Component\Hydrator\Hydrator
 
             foreach ($object->getOptions() as $option) {
                 $data['options'][] = array(
-                    'option_id'         => $option->getId(),
-                    'option'            => $option->getName(),
-                    'maximum'           => $option->getMaximum(),
-                    'price_members'     => number_format($option->getPriceMembers() / 100, 2),
-                    'price_non_members' => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
-                    'membershipDiscount' => $option->getPriceNonMembers() > 0,
+                    'option_id'               => $option->getId(),
+                    'option'                  => $option->getName(),
+                    'maximum'                 => $option->getMaximum(),
+                    'price_members'           => number_format($option->getPriceMembers() / 100, 2),
+                    'price_non_members'       => $object->isOnlyMembers() ? '' : number_format($option->getPriceNonMembers() / 100, 2),
+                    'membershipDiscount'      => $option->getPriceNonMembers() > 0,
+                    'visible'                 => $option->isVisible() ? $option->isVisible() : '',
+                    'limit_per_person_option' => $option->getLimitPerPerson() ? : 0,
                 );
             }
         }

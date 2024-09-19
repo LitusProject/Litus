@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Refresh extends \ApiBundle\Entity\Token
 {
-    const DEFAULT_EXPIRATION_TIME = 1209600;
+    const DEFAULT_EXPIRATION_TIME = 604800; // 1 week
 
     /**
      * @var Key The API key that can refresh the access token

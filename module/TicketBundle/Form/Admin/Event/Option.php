@@ -46,6 +46,9 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                         'filters' => array(
                             array('name' => 'StringTrim'),
                         ),
+                        'validators' => array(
+                            array('name' => 'UrlValid'),
+                        ),
                     ),
                 ),
             )
@@ -118,6 +121,35 @@ class Option extends \CommonBundle\Component\Form\Fieldset implements InputFilte
                         ),
                     ),
                 ),
+            )
+        );
+        $this->add(
+            array(
+                'type'       => 'text',
+                'name'       => 'limit_per_person_option',
+                'label'      => 'Limit of tickets per person for this option (0: no limit)',
+                'value'      => 0,
+                'attributes' => array(
+                    'class' => 'maximum',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'filters' => array(
+                            array('name' => 'StringTrim'),
+                        ),
+                        'validators' => array(
+                            array('name' => 'Int'),
+                        ),
+                    ),
+                ),
+            )
+        );
+        $this->add(
+            array(
+                'type'     => 'checkbox',
+                'name'     => 'visible',
+                'label'    => 'Option is visible',
+                'required' => false,
             )
         );
     }

@@ -129,6 +129,7 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             'options' => array(
                                 'm' => 'M',
                                 'f' => 'F',
+                                'x' => 'X',
                             ),
                         ),
                     ),
@@ -207,16 +208,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         ),
                     ),
                     array(
-                        'type'  => 'checkbox',
+                        'type'  => 'hidden',
                         'name'  => 'primary_email',
                         'label' => 'I want to receive e-mail at my personal e-mail address',
                         'value' => true,
                     ),
                     array(
-                        'type'  => 'checkbox',
+                        'type'  => 'hidden',
                         'name'  => 'no_mail',
                         'label' => "I don't want to receive any Corporate Relations mails",
-                        'value' => true,
+                        'value' => false,
                     ),
                     array(
                         'type'  => 'checkbox',
@@ -284,7 +285,8 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                         'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
                         'name'       => 'become_member',
                         'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-                        'value'      => count($memberShipArticles) != 0 || $isicMembership != '0',
+            //                        'value'      => count($memberShipArticles) != 0 || $isicMembership != '0',
+                        'value'      => 1,
                         'attributes' => array(
                             'id'       => 'become_member',
                             'disabled' => $registrationEnabled != 1,

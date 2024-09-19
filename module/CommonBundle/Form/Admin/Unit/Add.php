@@ -79,7 +79,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'name'       => 'parent',
                 'label'      => 'Parent',
                 'attributes' => array(
-                    'options' => $this->createUnitsArray(),
+                    'options' => $this->createUnitsArray($academic = null),
                 ),
             )
         );
@@ -117,6 +117,17 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                 'label'      => 'Displayed',
                 'attributes' => array(
                     'data-help' => 'Flag whether this unit will be displayed on the website.',
+                ),
+            )
+        );
+
+        $this->add(
+            array(
+                'type'       => 'checkbox',
+                'name'       => 'workgroup',
+                'label'      => 'Workgroup',
+                'attributes' => array(
+                    'data-help' => 'Flag whether this unit is a workgroup.',
                 ),
             )
         );
@@ -165,9 +176,10 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     /**
      * Returns an array that has all the units, so that one can be selected.
      *
+     * @param $academic
      * @return array
      */
-    protected function createUnitsArray()
+    protected function createUnitsArray($academic): array
     {
         $units = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\General\Organization\Unit')

@@ -5,7 +5,6 @@ namespace BrBundle\Controller\Admin;
 use BrBundle\Entity\Event;
 use BrBundle\Entity\Event\CompanyMap;
 use DateInterval;
-use DateTime;
 use Laminas\View\Model\ViewModel;
 
 /**
@@ -191,8 +190,6 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             return new ViewModel();
         }
 
-        $now = new DateTime();
-
         $repository = $this->getEntityManager()
             ->getRepository('BrBundle\Entity\Event\Visitor');
 
@@ -203,7 +200,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         $logGraphData = array(
-            'expirationTime' => $now->add($interval),
+            'expirationTime' => $event->getEndDate(),
             'labels'         => array(),
             'dataset'        => array(),
         );
@@ -252,7 +249,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         $matchesCount = count(
             $this->getEntityManager()
-                ->getRepository('BrBundle\Entity\Event\Match')
+                ->getRepository('BrBundle\Entity\Event\Connection')
                 ->findAllByEvent($event)
         );
 
@@ -262,7 +259,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             'subscribers'     => $subscribersCount,
             'current'         => $currentVisitors,
             'representatives' => $attendees,
-            'matches'         => $matchesCount
+            'matches'         => $matchesCount,
         );
 
 
@@ -271,7 +268,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             array(
                 'event'    => $event,
                 'logGraph' => $logGraphData,
-                'totals'   => $totals
+                'totals'   => $totals,
             )
         );
     }
@@ -415,7 +412,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event,
-                'form' => $form
+                'form'  => $form,
             ),
         );
     }
@@ -464,7 +461,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         return new ViewModel(
             array(
                 'event' => $event,
-                'form'  => $form
+                'form'  => $form,
             )
         );
     }

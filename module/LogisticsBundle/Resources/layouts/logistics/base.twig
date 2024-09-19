@@ -22,9 +22,24 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        {% if hasAccess('logistics_index', 'index') %}
-                            <li {% if 'logistics_index' == getParam('controller') %} class="active" {% endif %}>
-                                <a href="{{ url("logistics_index", {"language": language.getAbbrev()}) }}">{{ translate('Van') }}</a>
+                        {% if hasAccess('logistics_order', 'index') %}
+                            <li {% if 'logistics_order' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_order', {"language": language.getAbbrev()}) }}">{{ translate('Orders') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('logistics_inventory_article', 'index') %}
+                            <li {% if 'logistics_inventory_article' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_inventory_article', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('logistics_flesserke_article', 'index') %}
+                            <li {% if 'logistics_flesserke_article' == getParam('controller') %}class="active"{% endif %}>
+                                <a href="{{ url('logistics_flesserke_article', {"language": language.getAbbrev()}) }}">{{ translate('Flesserke') }}</a>
+                            </li>
+                        {% endif %}
+                        {% if hasAccess('logistics_transport', 'index') %}
+                            <li {% if 'logistics_transport' == getParam('controller') %} class="active" {% endif %}>
+                                <a href="{{ url("logistics_transport", {"language": language.getAbbrev()}) }}">{{ translate('Transport') }}</a>
                             </li>
                         {% endif %}
                         {% if hasAccess('logistics_piano', 'index') %}
@@ -37,21 +52,6 @@
 {#                                <a href="{{ url('logistics_lease', {"language": language.getAbbrev()}) }}">{{ translate('Lease') }}</a>#}
 {#                            </li>#}
 {#                        {% endif %}#}
-                        {% if hasAccess('logistics_catalog', 'overview') %}
-                            <li {% if 'logistics_catalog' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_catalog', {"language": language.getAbbrev()}) }}">{{ translate('Material') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('logistics_inventory', 'index') %}
-                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev()}) }}">{{ translate('Inventory') }}</a>
-                            </li>
-                        {% endif %}
-                        {% if hasAccess('logistics_inventory', 'add') %}
-                            <li {% if 'logistics_inventory' == getParam('controller') %}class="active"{% endif %}>
-                                <a href="{{ url('logistics_inventory', {"language": language.getAbbrev(), 'action': 'add'}) }}">{{ translate('Flesserke Form') }}</a>
-                            </li>
-                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav pull-right lang-nav hidden-sm hidden-xs">
                         <li class="dropdown">
@@ -94,13 +94,12 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     {{ translate('Login') }} <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-meny-right">
+                                <ul class="dropdown-menu dropdown-menu-right">
                                     <li>
-                                        <a class="btn btn-info" href="{{ shibbolethUrl }}">{% autoescape false %}
-                                            {{ translate('KU Leuven&mdash;Central Login') }}
-                                        {% endautoescape %}</a>
+                                        <a style="cursor: pointer" class="btn btn-info"
+                                           href="{{ shibbolethUrl }}">{% autoescape false %}{{ translate('KU Leuven&mdash;Central Login') }}{% endautoescape %}</a>
                                     </li>
-                                    <hr/>
+                                    <hr>
 
                                     <li>
                                         {% if loginForm is defined %}

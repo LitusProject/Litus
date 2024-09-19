@@ -1,0 +1,51 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'logistics/admin/request/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+
+    <div id="controller_action" style="width:100%;">
+        <h1><b>Conflicts</b></h1>
+        <br>
+        {% for conflict in conflicts %}
+            <h1><b>Article:</b> {{ conflict['article'].getName() }}</h1>
+            <p style="margin-bottom: 5px"><b>Amount available/owned:</b> &emsp;{{ conflict['article'].getAmountAvailable() }}/{{ conflict['article'].getAmountOwned() }}</p>
+            <p><b>Amount requested:</b> &emsp;&emsp;&emsp;&emsp;&ensp;{{ conflict['total'] }}</p><br>
+            <table class="manage" style="width:100%;">
+                <tr>
+                    <th style="width: 30%">Request name</th>
+                    <th style="width: 20%">Date</th>
+                    <th style="width: 20%">Amount</th>
+                    <th style="width: 20%">Status</th>
+                    <th style="width: 10%">Actions</th>
+                </tr>
+                {% for mapping in conflict.mappings %}
+                    <tr class="item item-{{ mapping.getId() }}">
+                        <td>{{ mapping.getOrder().getName() }}</td>
+                        <td>{{ mapping.getOrder().getStartDate().format('d/m/Y H:i') }} - {{ mapping.getOrder().getEndDate().format('d/m/Y H:i') }}</td>
+                        <td>{{ mapping.getAmount() }}</td>
+                        <td>{{ mapping.getStatus() }}</td>
+                        <td>
+{#                            {% if hasAccess('logistics_admin_order', 'articleMapping') %}#}
+{#                                <a href="{{ url('logistics_admin_order', {"action": "articleMapping", "id": order.getId(), "map": mapping.getId()}) }}" class="edit">Edit Mapping</a>#}
+{#                            {% endif %}#}
+                            {% if hasAccess('logistics_admin_order', 'edit') %}
+                                <a href="{{ url('logistics_admin_order', {"action": "view", "id": mapping.getOrder().getId()}) }}" class="edit">Edit order</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br><br>
+{#            <hr style="width:20%;color:lightgrey;">#}
+            <br>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

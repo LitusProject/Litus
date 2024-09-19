@@ -9,13 +9,13 @@ return array(
             'add', 'delete', 'edit', 'manage', 'old',
         ),
         'logistics_admin_article' => array(
-            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders'
+            'add', 'delete', 'edit', 'manage', 'search', 'typeahead', 'uploadImage', 'orders', 'csv', 'template',
         ),
         'logistics_admin_order' => array(
-            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'conflicting'
+            'add', 'delete', 'edit', 'manage', 'removed', 'articles', 'deleteArticle', 'articleMapping', 'approveArticle', 'reviewOrder', 'approve', 'reject', 'view',
         ),
         'logistics_admin_request' => array(
-            'reject', 'approve', 'manage', 'view',
+            'manage', 'approved', 'conflicting', 'old', 'coming', 'csv', 'export',
         ),
         'logistics_admin_van_reservation' => array(
             'add', 'delete', 'edit', 'manage', 'old',
@@ -24,9 +24,12 @@ return array(
             'add', 'delete', 'edit', 'manage',
         ),
         'logistics_admin_inventory' => array(
-            'add', 'manage',
+            'add', 'delete', 'edit', 'manage',
         ),
-        'logistics_index' => array(
+        'logistics_admin_category' => array(
+            'manage_inventory', 'add_inventory', 'edit_inventory', 'delete_inventory', 'manage_flesserke', 'add_flesserke', 'edit_flesserke', 'delete_flesserke',
+        ),
+        'logistics_transport' => array(
             'add', 'delete', 'edit', 'export', 'fetch', 'index', 'move',
         ),
         'logistics_lease' => array(
@@ -39,10 +42,19 @@ return array(
             'index',
         ),
         'logistics_catalog' => array(
-            'addOrder', 'editOrder', 'overview', 'catalog', 'removeOrder', 'editRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search'
+            'addOrder', 'editOrder', 'overview', 'catalog', 'cancelRequest', 'removeRequest', 'editMap', 'deleteMap', 'view', 'search', 'inventory',
         ),
         'logistics_inventory' => array(
-            'index', 'add',
-        )
+            'index', 'add', 'edit', 'reserve',
+        ),
+        'logistics_order' => array(
+            'index', 'view', 'add', 'edit', 'cancel', 'remove',
+        ),
+        'logistics_inventory_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+        ),
+        'logistics_flesserke_article' => array(
+            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+        ),
     ),
 );

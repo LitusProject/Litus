@@ -25,7 +25,7 @@ class Installer extends \CommonBundle\Component\Module\AbstractInstaller
     {
         $resources = array(
             VanReservation::RESOURCE_NAME,
-            PianoReservation::RESOURCE_NAME
+            PianoReservation::RESOURCE_NAME,
         );
 
         foreach ($resources as $name) {

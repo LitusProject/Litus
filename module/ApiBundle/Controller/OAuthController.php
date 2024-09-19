@@ -28,7 +28,32 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
             );
         }
 
+        if ($this->getAuthentication()->isAuthenticated()) {
+            $key = $this->getKey('client_id');
+            if ($key instanceof ViewModel) {
+                return $key;
+            }
+
+            $authorizationCode = new AuthorizationCode(
+                $this->getAuthentication()->getPersonObject(),
+                $key
+            );
+
+            $this->getEntityManager()->persist($authorizationCode);
+            $this->getEntityManager()->flush();
+
+            $this->redirect()->toUrl(
+                $this->getRequest()->getQuery('redirect_uri') . '?code=' . $authorizationCode->getCode() . '&state=' . $this->getRequest()->getQuery('state')
+            );
+
+            return new ViewModel();
+        }
+
         $this->getSessionContainer()->key = $this->getRequest()->getQuery('client_id');
+
+        // Store state in session
+        $state = $this->getRequest()->getQuery('state');
+        $this->getSessionContainer()->state = $state;
 
         $form = $this->getForm('common_auth_login');
 
@@ -131,9 +156,14 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                         $this->getEntityManager()->persist($authorizationCode);
                         $this->getEntityManager()->flush();
 
-                        $this->redirect()->toUrl(
-                            $code->getRedirect() . '?code=' . $authorizationCode->getCode()
-                        );
+                        $redirectUri = $code->getRedirect() . '?code=' . $authorizationCode->getCode();
+
+                        $state = $this->getSessionContainer()->state;
+                        if ($state) {
+                            $redirectUri .= '&state=' . $state;
+                        }
+
+                        $this->redirect()->toUrl($redirectUri);
 
                         return new ViewModel();
                     }
@@ -271,28 +301,33 @@ class OAuthController extends \ApiBundle\Component\Controller\ActionController\A
                 return $key;
             }
 
-            $accessToken = new AccessToken(
+            if (is_null($key)) {
+                return $this->error(401, 'Unknown client_id');
+            }
+
+            $newAccessToken = new AccessToken(
                 $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode()
             );
-            $this->getEntityManager()->persist($accessToken);
+            $this->getEntityManager()->persist($newAccessToken);
 
-            $refreshToken = new RefreshToken(
+            $newRefreshToken = new RefreshToken(
                 $refreshToken->getPerson(),
                 $refreshToken->getAuthorizationCode(),
                 $key
             );
-            $this->getEntityManager()->persist($refreshToken);
 
             $refreshToken->exchange();
 
+            $this->getEntityManager()->persist($refreshToken);
+            $this->getEntityManager()->persist($newRefreshToken);
             $this->getEntityManager()->flush();
 
             $result = array(
-                'access_token'  => $accessToken->getCode(),
+                'access_token'  => $newAccessToken->getCode(),
                 'expires_in'    => AccessToken::DEFAULT_EXPIRATION_TIME,
                 'token_type'    => 'Bearer',
-                'refresh_token' => $refreshToken->getCode(),
+                'refresh_token' => $newRefreshToken->getCode(),
             );
 
             return new ViewModel(

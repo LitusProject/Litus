@@ -17,6 +17,7 @@ use CommonBundle\Component\ServiceManager\ServiceLocatorAware\ViewRendererTrait;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareInterface;
 use CommonBundle\Component\ServiceManager\ServiceLocatorAwareTrait;
 use CommonBundle\Component\Util\AcademicYear;
+use CommonBundle\Entity\General\AcademicYear as AcademicYearEntity;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\General\Visit;
 use Laminas\Http\Header\HeaderInterface;
@@ -104,7 +105,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
                 return $error;
             }
         } else {
-            $error = $this->error(401, 'No key or OAuth token was provided');
+            $error = $this->error(401, 'No key or OAuth token was provided or the token was invalid');
             $error->setOptions($result->getOptions());
             $e->setResult($error);
 
@@ -365,7 +366,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
      * Get the current academic year.
      *
      * @param  boolean $organization
-     * @return AcademicYear
+     * @return AcademicYearEntity
      */
     protected function getCurrentAcademicYear($organization = false)
     {
@@ -406,9 +407,20 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
      */
     protected function getAccessToken($field = 'access_token')
     {
-        $code = $this->getRequest()->getQuery($field);
-        if ($code === null && $this->getRequest()->isPost()) {
-            $code = $this->getRequest()->getPost($field);
+        $headers = $this->getRequest()->getHeaders();
+        $authheader = $headers->get('Authorization');
+        $code = null;
+        if ($authheader) {
+            if (preg_match('/Bearer\s(\S+)/', $authheader->getFieldValue(), $matches)) {
+                $code = $matches[1];
+            }
+        }
+
+        if ($code === null) {
+            $code = $this->getRequest()->getQuery($field);
+            if ($code === null && $this->getRequest()->isPost()) {
+                $code = $this->getRequest()->getPost($field);
+            }
         }
 
         return $this->getEntityManager()

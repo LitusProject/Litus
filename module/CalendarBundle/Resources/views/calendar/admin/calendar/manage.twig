@@ -25,6 +25,7 @@
                     <th width="120px">Start Date</th>
                     <th width="120px">End Date</th>
                     <th width="230px">Location</th>
+                    <th width="80px">Has poster</th>
                     <th width="80px">Actions</th>
                 </tr>
             </thead>
@@ -36,6 +37,7 @@
                         <td>{{ event.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ event.getLocation(language) }}</td>
+                        <td>{% if event.getPoster() %}&times;{% endif %}</td>
                         <td class="actions">
                             {% if hasAccess('shift_admin_shift', 'pdf') %}
                                 <a href="{{ url('shift_admin_shift', {"action": "pdf", "id": event.getId()}) }}" class="printer">Shift List</a>

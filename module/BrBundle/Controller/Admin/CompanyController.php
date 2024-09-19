@@ -365,6 +365,32 @@ class CompanyController extends \CommonBundle\Component\Controller\ActionControl
         );
     }
 
+    public function typeaheadAction()
+    {
+        $this->initAjax();
+
+        $companies = $this->getEntityManager()
+            ->getRepository('BrBundle\Entity\Company')
+            ->findAllByNameQuery($this->getParam('string'))
+            ->setMaxResults(10)
+            ->getResult();
+
+        $result = array();
+        foreach ($companies as $company) {
+            $item = (object) array();
+            $item->id = $company->getId();
+            $item->name = $company->getName();
+            $item->value = $company->getName();
+            $result[] = $item;
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
+    }
+
     /**
      * @return \Doctrine\ORM\Query|null
      */

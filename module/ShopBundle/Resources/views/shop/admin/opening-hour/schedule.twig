@@ -1,0 +1,36 @@
+{% extends 'admin/base.twig' %}
+
+{% block content %}
+    {% include 'shop/admin/opening-hour/partials/navigation.twig' %}
+
+    {% include 'admin/partials/flashMessenger.twig' %}
+    <h1>Week: <b>{{ nextMonday.format('l d/m') }}</b> - <b>{{ nextMonday.modify('next friday').format('l d/m') }}</b></h1>
+    <div id="controller_action">
+        {% import 'admin/partials/form.twig' as forms %}
+        {{ forms.renderForm(form) }}
+    </div>
+{% endblock %}
+
+{% block content_script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.interval').click(hide);
+        });
+
+        function hide() {
+            const $this = $(this);
+
+            const selector =  $this[0].className.split(' ')[1]
+            let elements = Array.from(document.getElementsByClassName(selector));
+            elements.shift();                   // Remove first element (checkbox)
+            elements.forEach((element) => {
+                let row = $(element).parents('div').first();
+                if (row.hasClass('hide')) {
+                    row.removeClass('hide');
+                } else {
+                    row.addClass('hide');
+                }
+            });
+        }
+    </script>
+{% endblock %}

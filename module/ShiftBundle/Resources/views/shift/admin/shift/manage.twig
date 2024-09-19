@@ -58,7 +58,7 @@
                         <td>{{ shift.getStartDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.getEndDate().format('d/m/Y H:i') }}</td>
                         <td>{{ shift.countResponsibles() }} / {{ shift.getNbResponsibles() }}</td>
-                        <td>{{ shift.countVolunteers() }} / {{ shift.getNbVolunteers() }}</td>
+                        <td>{{ shift.countVolunteers() }} / {{ shift.getNbVolunteers() }} (min. {{ shift.getNbVolunteersMin() }})</td>
                         <td class="actions">
                             {% if shift.canBeEditedBy(authenticatedPerson) %}
                                 {% if hasAccess('shift_admin_shift', 'delete') %}

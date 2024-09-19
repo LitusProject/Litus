@@ -138,11 +138,11 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
         $form = $this->getForm(
             'form_specified-form_add',
             array(
-                'form'       => $formSpecification,
-                'person'     => $person,
-                'language'   => $this->getLanguage(),
-                'entry'      => $draftVersion,
-                'guest_info' => $guestInfo,
+                'form'             => $formSpecification,
+                'person'           => $person,
+                'language'         => $this->getLanguage(),
+                'entry'            => $draftVersion,
+                'guest_info'       => $guestInfo,
                 'ask_student_info' => $formSpecification->getStudentInfo(),
             )
         );

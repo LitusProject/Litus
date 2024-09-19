@@ -38,6 +38,7 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 'page'    => $page,
                 'submenu' => $submenu,
                 'faqs'    => $faqs,
+                'fathom'  => $this->getFathomInfo(),
             )
         );
     }
@@ -57,13 +58,42 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
             array(
                 'Content-Disposition' => 'inline; filename="' . $this->getParam('name') . '"',
                 'Content-Type'        => mime_content_type($filePath),
-                'Content-Length'      => filesize($filePath),
             )
         );
         $this->getResponse()->setHeaders($headers);
 
         $handle = fopen($filePath, 'r');
         $data = fread($handle, filesize($filePath));
+        fclose($handle);
+
+        return new ViewModel(
+            array(
+                'data' => $data,
+            )
+        );
+    }
+
+    public function posterAction()
+    {
+        $page = $this->getPageEntityByPoster();
+        if ($page === null) {
+            return $this->notFoundAction();
+        }
+
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('page.poster_path') . '/';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Type' => mime_content_type($filePath . $page->getPoster()),
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        $handle = fopen($filePath . $page->getPoster(), 'r');
+        $data = fread($handle, filesize($filePath . $page->getPoster()));
         fclose($handle);
 
         return new ViewModel(
@@ -109,6 +139,20 @@ class PageController extends \CommonBundle\Component\Controller\ActionController
                 $this->getParam('name', ''),
                 $this->getParam('parent')
             );
+
+        if (!($page instanceof Page)) {
+            return;
+        }
+
+        return $page;
+    }
+
+    /**
+     * @return Page|null
+     */
+    private function getPageEntityByPoster()
+    {
+        $page = $this->getEntityById('PageBundle\Entity\Page', 'id', 'poster');
 
         if (!($page instanceof Page)) {
             return;

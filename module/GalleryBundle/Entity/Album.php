@@ -2,7 +2,6 @@
 
 namespace GalleryBundle\Entity;
 
-use CalendarBundle\Entity\Node\Event;
 use CommonBundle\Component\Util\Url as UrlUtil;
 use CommonBundle\Entity\General\Language;
 use CommonBundle\Entity\User\Person;
@@ -294,5 +293,4 @@ class Album
 
         return $this;
     }
-
 }

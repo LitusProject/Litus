@@ -232,6 +232,12 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
                 break;
 
+            case 'cancelArticle':
+                $this->cancelBooking($command->bookingId);
+                $this->sendQueueItemToAll($command->id);
+
+                break;
+
             default:
                 $this->writeln('Received invalid action <comment>' . $command->action . '</comment>');
         }
@@ -543,5 +549,36 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         if ($lightVersion == '1') {
             $this->startSale($user, $id);
         }
+    }
+
+    /**
+     * @param integer $booking_id
+     * @return void
+     */
+    private function cancelBooking($booking_id)
+    {
+        $booking = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findOneById($booking_id);
+
+        if ($booking === null) {
+            // Happens when article is added by cudi, this is not saved in database so has no booking_id
+            // No problem here, line with article is just removed in UI
+            $this->writeln('No booking found');
+            return;
+        }
+
+        if (!$booking->getArticle()->isUnbookable()) {
+            // Should never occur, cancel button is only active when isUnbookable() == true
+            $this->writeln('Booking not cancellable: '. $booking_id);
+            return;
+        }
+
+        $booking->setStatus('canceled', $this->getEntityManager());
+        $this->getEntityManager()->flush();
+
+        $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->assignAllByArticle($booking->getArticle(), $this->getMailTransport());
     }
 }

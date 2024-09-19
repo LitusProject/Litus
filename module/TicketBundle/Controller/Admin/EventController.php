@@ -2,8 +2,13 @@
 
 namespace TicketBundle\Controller\Admin;
 
+use CommonBundle\Component\Util\File\TmpFile\Csv as CsvFile;
+use DateTime;
+use Laminas\Http\Headers;
 use Laminas\View\Model\ViewModel;
+use TicketBundle\Component\Document\Generator\Event\SalesgraphCsv as SalesgraphCsvGenerator;
 use TicketBundle\Entity\Event;
+use TicketBundle\Entity\Ticket;
 
 /**
  * EventController
@@ -116,10 +121,10 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
 
         return new ViewModel(
             array(
-                'form'  => $form,
-                'event' => $event,
-                'em'    => $this->getEntityManager(),
-                'info_form'  => $event->getForm(),
+                'form'      => $form,
+                'event'     => $event,
+                'em'        => $this->getEntityManager(),
+                'info_form' => $event->getForm(),
             )
         );
     }
@@ -147,6 +152,8 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
     {
         $event = $this->getEventEntity();
 
+        $payTime = $event->getDeadlineTime();
+
         $bookedNotSold = $this->getEntityManager()
             ->getRepository('TicketBundle\Entity\Ticket')
             ->findAllByStatusAndEvent('booked', $event);
@@ -155,9 +162,21 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
             $now = new \DateTime('now');
             $book_date = $expired->getBookDate();
             $time_diff = $now->getTimestamp() - $book_date->getTimeStamp();
-            $days = $time_diff/(24*60*60); // Set Time Difference in seconds to day
-            if ($days > 1) {
-                $this->getEntityManager()->remove($expired);
+
+            if ($event->getPayDeadline()) {
+                // In this case, people can pay their ticket longer than 24 hours.
+                // We clean all tickets older than an hour
+                $days = $time_diff / (24 * 60 * 60); // Set Time Difference in seconds to day
+                if ($days > 1) {
+                    $this->getEntityManager()->remove($expired);
+                }
+            } else {
+                // Here, we check how long the pay time is
+                // We clean all tickets that are older than the pay deadline
+                $time = $time_diff / (60); // Set Time Diff from seconds to minutes
+                if ($time > $payTime) {
+                    $this->getEntityManager()->remove($expired);
+                }
             }
         }
         $this->getEntityManager()->flush();
@@ -171,6 +190,243 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         );
 
         return new ViewModel();
+    }
+
+    /**
+     * Show a graph with sales data
+     */
+    public function salesgraphAction()
+    {
+        $sales = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('sold', $this->getEventEntity());
+
+        // $data exist of a key: UNIX timestamp and the amount of tickets sold at that moment
+        $data = array();
+        foreach ($sales as $sale) {
+            if (array_key_exists($sale->getSoldDate()->format('Uv'), $data)) {
+                $data[$sale->getSoldDate()->format('Uv')]++;
+            } else {
+                $data[$sale->getSoldDate()->format('Uv')] = 1;
+            }
+        }
+
+
+        $dates = array();
+        $sales_each_day = array();
+        foreach ($data as $date => $nb_of_sales) {
+            $dates[] = $date;
+            $sales_each_day[] = $nb_of_sales;
+        }
+
+        $sales_accumulated = array();
+        $length = count($sales_each_day);
+        for ($i = 0; $i < $length; $i++) {
+            $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
+        }
+
+        $salesGraphData = array();
+        $salesGraphData['labels'] = $dates;
+        $salesGraphData['dataset'] = $sales_accumulated;
+
+        return new ViewModel(
+            array(
+                'event'          => $this->getEventEntity(),
+                'salesGraphData' => $salesGraphData,
+            )
+        );
+    }
+
+    /**
+     * Export the data of the salesgraph
+     */
+    public function exportSalesgraphAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $sales = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Ticket')
+            ->findAllByStatusAndEvent('sold', $this->getEventEntity());
+
+        // $data exist of a key: UNIX timestamp and the amount of tickets sold at that moment
+        $data = array();
+        foreach ($sales as $sale) {
+            if (array_key_exists($sale->getSoldDate()->format('Uv'), $data)) {
+                $data[$sale->getSoldDate()->format('Uv')]++;
+            } else {
+                $data[$sale->getSoldDate()->format('Uv')] = 1;
+            }
+        }
+
+        $dates = array();
+        $sales_each_day = array();
+        foreach ($data as $date => $nb_of_sales) {
+            $dates[] = $date;
+            $sales_each_day[] = $nb_of_sales;
+        }
+
+        $sales_accumulated = array();
+        $length = count($sales_each_day);
+        for ($i = 0; $i < $length; $i++) {
+            $sales_accumulated[$i] = array_sum(array_slice($sales_each_day, 0, $i));
+        }
+
+        $salesGraphData = array();
+        $salesGraphData['labels'] = $dates;
+        $salesGraphData['dataset'] = $sales_accumulated;
+
+        $file = new CsvFile();
+        $document = new SalesgraphCsvGenerator($salesGraphData);
+        $document->generateDocument($file);
+
+        $now = new DateTime();
+        $filename = 'salesgraph_' . str_replace(' ', '_', $event->getActivity()->getTitle()) . '_'. $now->format('Y_m_d') . '.csv';
+
+        $headers = new Headers();
+        $headers->addHeaders(
+            array(
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                'Content-Type'        => 'text/csv',
+            )
+        );
+        $this->getResponse()->setHeaders($headers);
+
+        return new ViewModel(
+            array(
+                'data' => $file->getContent(),
+            )
+        );
+    }
+
+    /**
+     * Clear all visitors of this event. This will set the exit_time of every visitor to now.
+     */
+    public function clearVisitorsAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $visitors = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event\Visitor')
+            ->findAllByEventAndExitNull($event);
+
+        foreach ($visitors as $visitor) {
+            $visitor->setExitTimestamp(new DateTime());
+        }
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->success(
+            'Success',
+            'All the visitors of this event have been removed!'
+        );
+
+        $this->redirect()->toRoute(
+            'ticket_admin_event',
+            array(
+                'action' => 'edit',
+                'id'     => $event->getId(),
+            )
+        );
+        return new ViewModel();
+    }
+
+    public function showVisitorsAction()
+    {
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $visitors = $this->getEntityManager()
+            ->getRepository('TicketBundle\Entity\Event\Visitor')
+            ->findAllByEventAndExitNull($event);
+
+        $visitors = array_reverse($visitors);
+        $data = array();
+        foreach ($visitors as $visitor) {
+            assert($visitor instanceof Event\Visitor);
+            $qrCode = $visitor->getQrCode();
+            $entryTime = $visitor->getEntryTime();
+            $ticketArray = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findOneByQREvent($event, $qrCode);
+            if (!is_null($ticketArray) && count($ticketArray) > 0) {
+                $ticket = $ticketArray[0];
+                if (!is_null($ticket)) {
+                    $namePerson = $ticket->getFullname();
+                    $visitorData = array($namePerson,$entryTime,$qrCode);
+                    $data[] = $visitorData;
+                }
+            }
+        }
+
+        $paginator = $this->paginator()
+            ->createFromArray($data, $this->getParam('page'));
+
+        $amountSold = count(
+            $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Ticket')
+                ->findAllByStatusAndEvent('sold', $event)
+        );
+
+        return new ViewModel(
+            array(
+                'paginator' => $paginator,
+                'paginationControl' => $this->paginator()->createControl(true),
+                'event' => $event,
+                'amountVisitors' => count($visitors),
+                'amountSold' => $amountSold,
+            )
+        );
+    }
+
+    public function searchVisitorsAction()
+    {
+        $this->initAjax();
+
+        $event = $this->getEventEntity();
+        if ($event === null) {
+            return new ViewModel();
+        }
+
+        $tickets = $this->search($event);
+
+        $numResults = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('search_max_results');
+
+        array_splice($tickets, $numResults);
+
+        $result = array();
+        foreach ($tickets as $ticket) {
+            assert($ticket instanceof Ticket);
+            $qrCode = $ticket->getQrCode();
+            $visitorArray = $this->getEntityManager()
+                ->getRepository('TicketBundle\Entity\Event\Visitor')
+                ->findByEventAndQrAndExitNull($event, $qrCode);
+            if (!is_null($visitorArray) && count($visitorArray) > 0) {
+                $visitor = $visitorArray[0];
+                if (!is_null($visitor)) {
+                    assert($visitor instanceof Event\Visitor);
+                    $item = (object) array();
+                    $item->name = $ticket->getFullName();
+                    $item->entryTime = $visitor->getEntryTime()->format('d/m/Y H:i');
+                    $item->qrCode = $qrCode;
+                    $result[] = $item;
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'result' => $result,
+            )
+        );
     }
 
     /**
@@ -197,5 +453,15 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         return $event;
+    }
+
+    private function search(Event $event)
+    {
+        switch ($this->getParam('field')) {
+            case 'name':
+                return $this->getEntityManager()
+                    ->getRepository('TicketBundle\Entity\Ticket')
+                    ->findAllByEventAndPersonName($event, $this->getParam('string'));
+        }
     }
 }

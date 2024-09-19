@@ -13,8 +13,6 @@ class Edit extends \BrBundle\Form\Admin\Company\Job\Add
     {
         parent::init();
 
-        $this->remove('type');
-
         $this->remove('submit')
             ->addSubmit('Save', 'company_edit');
     }

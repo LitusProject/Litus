@@ -5,6 +5,22 @@
 
     {% include 'admin/partials/flashMessenger.twig' %}
 
+    {% if hasAccess('calendar_admin_calendar', 'template') %}
+        <aside>
+            <div class="sidebox" style="margin-top: 35px">
+                <div class="title">Cantus template</div>
+                <div class="content">
+                    <p>
+                        <i>Please hit the link below to add a Waaiberg cantus from the template! This ensures all shifts are made automatically.</i>
+                    </p>
+                    <p>
+                        <a href="{{ url('calendar_admin_calendar', {"action": "template"}) }}">&rarr; Template</a>
+                    </p>
+                </div>
+            </div>
+        </aside>
+    {% endif %}
+
     <div id="controller_action">
         {% import 'admin/partials/form.twig' as forms %}
         {{ forms.renderForm(form) }}

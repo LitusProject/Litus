@@ -1,10 +1,8 @@
 name: PHP
 
 on:
-  pull_request: {}
-  push:
-    branches:
-      - master
+  - pull_request
+  - push
 
 jobs:
   lint:
@@ -13,32 +11,71 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: cs2pr
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Restore PHP_CodeSniffer cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpcs-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-phpcs-
+
+      - name: Restore PHPStan cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-phpstan-
 
       - name: Install Composer dependencies
-        uses: litusproject/composer-install-action@main
+        run: >
+          composer install \
+            --no-interaction \
+            --no-progress \
+            --prefer-dist
 
       - name: Run PHP_CodeSniffer
-        if: ${{ always() }}
-        uses: litusproject/php-codesniffer-action@main
+        if: always()
+        run: >
+          ./vendor/bin/phpcs \
+            -q \
+            --cache=${{ runner.temp }}/phpcs \
+            --report=checkstyle \
+            | cs2pr --graceful-warnings
+
+      - name: Save PHP_CodeSniffer cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ runner.temp }}/phpcs
+          key: ${{ runner.os }}-phpcs-${{ hashFiles('**/composer.lock') }}
 
       - name: Run PHPStan
-        if: ${{ always() }}
-        uses: litusproject/phpstan-action@main
+        if: always()
+        env:
+          PHPSTAN_TMP_DIR: ${{ runner.temp }}/phpstan
+        run: ./vendor/bin/phpstan analyse --error-format=github --no-progress
 
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2.3.3
-
-      - name: Bring up containers
-        run: docker-compose up -d
-
-      - name: Initialise Litus
-        run: docker-compose run --rm php-cli init
-
-      - name: Test response
-        run: curl -fsSL -I --retry 5 --retry-delay 0 --retry-max-time 30 http://localhost:8080
+      - name: Save PHPStan cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ runner.temp }}/phpstan
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('**/composer.lock') }}

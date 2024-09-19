@@ -14,7 +14,7 @@ class NumberTicketsGuest extends AbstractValidator implements FormAwareInterface
 
     protected $options = array(
         'maximum' => '',
-        'event' => null,
+        'event'   => null,
     );
 
     /**
@@ -60,7 +60,7 @@ class NumberTicketsGuest extends AbstractValidator implements FormAwareInterface
     /**
      * Returns true if these do not exceed max
      *
-     * @param string $value The value of the field that will be validated
+     * @param string     $value   The value of the field that will be validated
      * @param array|null $context The context of the field that will be validated
      * @return boolean
      */
@@ -79,9 +79,11 @@ class NumberTicketsGuest extends AbstractValidator implements FormAwareInterface
         } else {
             $options = $this->options['event']->getOptions();
             foreach ($options as $option) {
-                $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
-                if (!$this->options['event']->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
-                    $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
+                if ($option->isVisible()) {
+                    $number += $optionsForm->get('option_' . $option->getId() . '_number_member')->getValue();
+                    if (!$this->options['event']->isOnlyMembers() && $option->getPriceNonMembers() != 0) {
+                        $number += $optionsForm->get('option_' . $option->getId() . '_number_non_member')->getValue();
+                    }
                 }
             }
         }

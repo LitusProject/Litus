@@ -27,6 +27,7 @@
         cancel: function (id) {},
         translateStatus: function (status) {return status;},
         addArticle: function (id, articleId) {},
+        cancelArticle: function (id, bookingId) {},
     };
 
     var methods = {

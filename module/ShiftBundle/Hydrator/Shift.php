@@ -10,6 +10,7 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
     private static $stdKeys = array(
         'nb_responsibles',
         'nb_volunteers',
+        'nb_volunteers_min',
         'name',
         'description',
         'reward',
@@ -69,9 +70,13 @@ class Shift extends \CommonBundle\Component\Hydrator\Hydrator
                 ->setEndDate(self::loadDateTime($data['end_date']));
         }
 
-        $manager = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\User\Person\Academic')
-            ->findOneById($data['manager']['id']);
+        if ($data['manager']) {
+            $manager = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                ->findOneById($data['manager']['id']);
+        } else {
+            $manager = $this->getPersonEntity();
+        }
 
         $editRoles = array();
         if (isset($data['edit_roles'])) {

@@ -31,11 +31,14 @@
         <table class="full_width manage">
             <tr>
                 <th>Name</th>
-                <th width="150px">University</th>
-                <th width="200px">Study</th>
-                <th width="180px">At network reception</th>
-                <th width="150px">QR</th>
-                <th width="100px">Action</th>
+                <th style="width: 170px;">Email</th>
+                <th style="width: 70px;">University</th>
+                <th style="width: 180px;">Study</th>
+                <th style="width: 140px;">Specialization</th>
+                <th style="width: 80px;">Study Year</th>
+                <th style="width: 120px;">Food</th>
+                <th style="width: 120px;">QR</th>
+                <th style="width: 80px;">Action</th>
             </tr>
         </table>
     </div>
@@ -44,18 +47,24 @@
         <table class="manage full_width">
             <tr>
                 <th>Name</th>
-                <th width="150px">University</th>
-                <th width="200px">Study</th>
-                <th width="180px">At network reception</th>
-                <th width="150px">QR</th>
-                <th width="100px">Action</th>
+                <th style="width: 170px;">Email</th>
+                <th style="width: 70px;">University</th>
+                <th style="width: 180px;">Study</th>
+                <th style="width: 140px;">Specialization</th>
+                <th style="width: 80px;">Study Year</th>
+                <th style="width: 120px;">Food</th>
+                <th style="width: 120px;">QR</th>
+                <th style="width: 80px;">Action</th>
             </tr>
             {% for subscription in paginator %}
                 <tr class="item item-{{ subscription.getId() }}">
                     <td>{{ subscription.getFirstName() }} {{ subscription.getLastName() }}</td>
+                    <td>{{ subscription.getEmail() }}</td>
                     <td>{{ subscription.getUniversityString() }}</td>
                     <td>{{ subscription.getStudyString() }}</td>
-                    <td>{% if subscription.isAtNetworkReception() %}X{% endif %}</td>
+                    <td>{{ subscription.getSpecialization() }}</td>
+                    <td>{{ subscription.getStudyYearString() }}</td>
+                    <td>{{ subscription.getFoodString() }}</td>
                     <td>{{subscription.getQrCode()}}</td>
                     <td class="actions">
                         {% if hasAccess('br_admin_event_subscription', 'edit') %}
@@ -120,9 +129,12 @@
                     $(data).each(function () {
                         $('#subscription_search table').append(row = $('<tr>', {class: 'item'}));
                         row.append('<td>' + this.name + '</td>')
+                            .append('<td>' + this.email + '</td>')
                             .append('<td>' + this.university + '</td>')
                             .append('<td>' + this.study + '</td>')
-                            .append('<td>' + this.reception + '</td>')
+                            .append('<td>' + this.specialization + '</td>')
+                            .append('<td>' + this.year + '</td>')
+                            .append('<td>' + this.food + '</td>')
                             .append('<td>' + this.qr + '</td>')
                             .append(
                                 actions = $('<td>', {'class': 'actions'})

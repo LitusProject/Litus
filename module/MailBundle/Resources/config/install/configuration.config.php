@@ -2,6 +2,16 @@
 
 return array(
     array(
+        'key'         => 'mail.enable_sib_api',
+        'value'       => '0',
+        'description' => '1: API is used, 0: API is skipped',
+    ),
+    array(
+        'key'         => 'mail.sib_api',
+        'value'       => 'API key comes here',
+        'description' => 'SendInBlue API key',
+    ),
+    array(
         'key'         => 'mail.bakske_mail',
         'value'       => 'bakske@vtk.be',
         'description' => 'The mail address from which Het Bakske is sent',

@@ -45,6 +45,26 @@ class IndexController extends \BrBundle\Component\Controller\CareerController
                     ->getRepository('CommonBundle\Entity\General\Config')
                     ->getConfigValue('common.profile_path'),
                 'texts'       => $texts,
+                'fathom'      => $this->getFathomInfo(),
+            )
+        );
+    }
+
+    public function calendarAction()
+    {
+        $events = $this->getEntityManager()
+            ->getRepository('CalendarBundle\Entity\Node\Event')
+            ->findAllCareerAndActiveAndNotHidden();
+
+        $calendarItems = array();
+        foreach ($events as $event) {
+            $calendarItems[$event->getId()] = $event;
+        }
+
+        return new ViewModel(
+            array(
+                'entityManager' => $this->getEntityManager(),
+                'calendarItems' => $calendarItems,
             )
         );
     }

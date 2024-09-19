@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class Token
 {
-    const DEFAULT_EXPIRATION_TIME = 604800;
+    const DEFAULT_EXPIRATION_TIME = 3600; // 1 hour
 
     /**
      * @var string The ID of this authorization code

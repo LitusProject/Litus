@@ -483,7 +483,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
 
         return new ViewModel(
             array(
-                'form' => $form
+                'form' => $form,
             ),
         );
     }
@@ -496,13 +496,7 @@ class ConsumptionsController extends \CommonBundle\Component\Controller\ActionCo
             'amount',
         );
 
-        $results = array();
-        $results[] = array(
-            'r0000000',
-            0,
-        );
-
-        $document = new CsvGenerator($heading, $results);
+        $document = new CsvGenerator($heading);
         $document->generateDocument($file);
 
         $headers = new Headers();

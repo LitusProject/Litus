@@ -30,7 +30,7 @@ class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessa
      * @var array
      */
     const REDIS_CHANNELS = array(
-        StudyParser::class => 'syllabus_parser_study'
+        StudyParser::class => 'syllabus_parser_study',
     );
 
     /**
@@ -207,7 +207,7 @@ class Update extends \CommonBundle\Component\Socket\Socket implements RedisMessa
                     $user->send(
                         json_encode(
                             (object) array(
-                                'status' => (object) $payload
+                                'status' => (object) $payload,
                             )
                         )
                     );

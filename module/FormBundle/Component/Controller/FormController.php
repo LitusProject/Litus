@@ -89,6 +89,10 @@ class FormController extends \CommonBundle\Component\Controller\ActionController
 
         $shibbolethUrl .= '?source=form';
 
+        if ($this->getParam('redirect') !== null) {
+            $shibbolethUrl .= '%26redirect=' . urlencode($this->getParam('redirect'));
+        }
+
         $server = $this->getRequest()->getServer();
         if (isset($server['X-Forwarded-Host']) && isset($server['REQUEST_URI'])) {
             $shibbolethUrl .= '%26redirect=' . urlencode('https://' . $server['X-Forwarded-Host'] . $server['REQUEST_URI']);
