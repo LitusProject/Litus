@@ -25,7 +25,8 @@
                     <th width="120px"># Shifts</th>
                 </tr>
 
-                {% for test, shift in shifts %}
+                {% set sorted_shifts = shifts|sort((a, b) => b['count'] <=> a['count']) %}
+                {% for test, shift in sorted_shifts %}
                     <tr>
                         <td>{{ shift['name'] }}</td>
                         <td>{{ shift['count'] }}</td>
