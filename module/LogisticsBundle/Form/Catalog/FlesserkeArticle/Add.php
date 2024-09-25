@@ -14,7 +14,7 @@ use LogisticsBundle\Entity\FlesserkeCategory;
  */
 class Add extends \CommonBundle\Component\Form\Bootstrap\Form
 {
-    protected $hydrator = \LogisticsBundle\Hydrator\FlesserkeCategory::class;
+    protected $hydrator = \LogisticsBundle\Hydrator\FlesserkeArticle::class;
 
     /**
      * @var Academic
