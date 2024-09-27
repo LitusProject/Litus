@@ -91,8 +91,8 @@ These reservations will expire after the first sale session after its expiration
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
-The opening hours of Cudi are:
-{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
+The opening hours of the Cudi can be found online on the homepage of the VTK website. These change weekly!
+Also, be sure to reserve a time slot: no time slot = no books. You can find these time slots at https://vtk.be/nl/registration-shift/.
 
 VTK Cudi
 
@@ -109,8 +109,8 @@ Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na d
 
 Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
 
-De openingsuren van cudi zijn:
-{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+De openingsuren van cudi zijn online te vinden op de voorpagina van de VTK-site. Deze veranderen wekelijks!
+Vergeet hierbij ook zeker geen tijdslot te reserveren: geen tijdslot = geen boeken. Deze tijdsloten kan je vinden op https://vtk.be/nl/registration-shift/
 
 VTK Cudi
 
@@ -135,8 +135,8 @@ These reservations will expire after the first sale session after its expiration
 
 Please cancel a reservation if you don\'t need the article, this way we can help other students.
 
-The opening hours of Cudi are:
-{{ openingHours }}#no_opening_hours#No opening hours known.#no_opening_hours#
+The opening hours of the Cudi can be found online on the homepage of the VTK website. These change weekly!
+Also, be sure to reserve a time slot: no time slot = no books. You can find these time slots at https://vtk.be/nl/registration-shift/.
 
 VTK Cudi
 
@@ -153,8 +153,8 @@ Deze reservaties zullen vervallen op het einde van de eerste verkoop sessie na d
 
 Gelieve een reservatie te annuleren als je het artikel niet meer nodig hebt, op deze manier kunnen we andere studenten helpen.
 
-De openingsuren van cudi zijn:
-{{ openingHours }}#no_opening_hours#Geen openingsuren gekend.#no_opening_hours#
+De openingsuren van cudi zijn online te vinden op de voorpagina van de VTK-site. Deze veranderen wekelijks!
+Vergeet hierbij ook zeker geen tijdslot te reserveren: geen tijdslot = geen boeken. Deze tijdsloten kan je vinden op https://vtk.be/nl/registration-shift/
 
 VTK Cudi
 
