@@ -384,6 +384,25 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        $article = $this->getInventoryArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($article);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function searchArticlesAction(): ViewModel
     {
         $this->initAjax();
