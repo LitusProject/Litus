@@ -910,7 +910,7 @@ return array(
                 ),
             ),
         ),
-        'cudi_printer' => array(
+        /*'cudi_printer' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
                 'route'       => '[/:language]/cudi/printer[/:action[/:id[/code/:code]]][/]',
@@ -925,7 +925,7 @@ return array(
                     'action'     => 'view',
                 ),
             ),
-        ),
+        ),*/
         'cudi_retail' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
