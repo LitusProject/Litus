@@ -142,7 +142,7 @@ class FlesserkeArticleController extends \LogisticsBundle\Component\Controller\L
             ),
         );
     }
-    
+
     public function deleteAction()
     {
         $this->initAjax();
