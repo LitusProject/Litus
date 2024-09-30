@@ -143,6 +143,25 @@ class FlesserkeArticleController extends \LogisticsBundle\Component\Controller\L
         );
     }
 
+    public function deleteAction()
+    {
+        $this->initAjax();
+
+        $article = $this->getFlesserkeArticleEntity();
+        if ($article === null) {
+            return new ViewModel();
+        }
+
+        $this->getEntityManager()->remove($article);
+        $this->getEntityManager()->flush();
+
+        return new ViewModel(
+            array(
+                'result' => (object) array('status' => 'success'),
+            )
+        );
+    }
+
     public function searchAction(): ViewModel
     {
         $this->initAjax();
