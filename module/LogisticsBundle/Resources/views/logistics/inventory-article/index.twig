@@ -126,6 +126,9 @@
                                                 <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
                                                     {{ translate('Edit') }}
                                                 </a>
+                                                <a href="{{ url('logistics_inventory_article', {"action" : 'delete', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
+                                                    {{ translate('Delete') }}
+                                                </a>
                                             </td>
                                         {% endif %}
                                     </tr>
@@ -160,6 +163,9 @@
                                             {#           TODO: add detail pop-up              #}
                                             <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
                                                 {{ translate('Edit') }}
+                                            </a>
+                                            <a href="{{ url('logistics_inventory_article', {"action" : 'delete', "article" : article.getId()}) }}" class="btn btn-warning btn-xs delete">
+                                                {{ translate('Delete') }}
                                             </a>
                                         </td>
                                     {% endif %}
@@ -249,6 +255,7 @@
                     }
                 });
             {% endif %}
+
         });
 
         function openSearchRequest(e) {

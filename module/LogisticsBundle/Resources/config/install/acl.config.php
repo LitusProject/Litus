@@ -51,10 +51,10 @@ return array(
             'index', 'view', 'add', 'edit', 'cancel', 'remove',
         ),
         'logistics_inventory_article' => array(
-            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+            'index', 'add', 'delete', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
         ),
         'logistics_flesserke_article' => array(
-            'index', 'add', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
+            'index', 'add', 'delete', 'edit', 'search', 'addArticles', 'editArticles', 'searchArticles',
         ),
     ),
 );
