@@ -244,7 +244,7 @@
                         <a href="{{ url('cudi_booking') }}" class="btn btn-sm btn-primary">{{ translate('Reservations') }}</a>
                     </p>
                 {% endif %} #}
-                <div class="col-md-6 fadeElement leftFade">
+                <div class="col-md-6">
                     <div class="opening_hour_message">
                         <h2>Cudi - {{ translate('Opening Hours') }}</h2>
                         {% for message in cudi.messages %}
@@ -292,7 +292,7 @@
 {#                        {% endfor %}#}
                     </div>
                 </div>
-                <div class="col-md-6 fadeElement rightFade">
+                <div class="col-md-6">
                     <div class="opening_hour_message">
                         <h2>Theokot - {{ translate('Opening Hours') }}</h2>
                         {% for message in shop.messages %}
