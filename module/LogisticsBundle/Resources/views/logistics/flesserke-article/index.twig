@@ -164,12 +164,10 @@
                         url: url,
                         type: 'DELETE',
                         success: function (result) {
-                            // Handle success (e.g., remove the article row from the table)
                             alert('{{ translate('Article deleted successfully.') }}');
-                            location.reload(); // Optionally reload the page or remove the row
+                            location.reload();
                         },
                         error: function (xhr, status, error) {
-                            // Handle error
                             alert('{{ translate('An error occurred while deleting the article.') }}');
                         }
                     });

@@ -164,7 +164,7 @@
                                             <a href="{{ url('logistics_inventory_article', {"action" : 'edit', "article" : article.getId()}) }}" class="btn btn-warning btn-xs">
                                                 {{ translate('Edit') }}
                                             </a>
-                                            <a href="{{ url('logistics_inventory_article', {"action" : 'delete', "article" : article.getId()}) }}" class="btn btn-warning btn-xs delete">
+                                            <a href="{{ url('logistics_inventory_article', {"action" : 'delete', "article" : article.getId()}) }}" class="btn btn-warning btn-xs delete-article">
                                                 {{ translate('Delete') }}
                                             </a>
                                         </td>
@@ -202,6 +202,25 @@
             $('.category-collapse').click(collapse);
 
             $('a[rel=popover], span[rel=popover]').popover({'trigger': 'hover', 'html': true});
+
+            $('.delete-article').click(function (e) {
+                e.preventDefault();
+                const url = $(this).attr('href');
+
+                if (confirm('{{ translate('Are you sure you want to delete this article?') }}')) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        success: function (result) {
+                            alert('{{ translate('Article deleted successfully.') }}');
+                            location.reload();
+                        },
+                        error: function (xhr, status, error) {
+                            alert('{{ translate('An error occurred while deleting the article.') }}');
+                        }
+                    });
+                }
+            });
 
             {% if hasAccess('logistics_inventory_article', 'search') %}
                 $.searchDatabase({

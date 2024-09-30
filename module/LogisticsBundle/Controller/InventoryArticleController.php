@@ -384,50 +384,23 @@ class InventoryArticleController extends \LogisticsBundle\Component\Controller\L
         );
     }
 
-    public function deleteAction(): ViewModel
+    public function deleteAction()
     {
-        $academic = $this->getAcademicEntity();
-        if ($academic === null) {
-            $this->redirect()->toRoute(
-                'logistics_inventory_article',
-                array(
-                    'action' => 'index',
-                )
-            );
-            return new ViewModel();
-        }
+        $this->initAjax();
 
         $article = $this->getInventoryArticleEntity();
         if ($article === null) {
-            $this->flashMessenger()->error(
-                'Error',
-                'No article was found!'
-            );
-            $this->redirect()->toRoute(
-                'logistics_inventory_article',
-                array(
-                    'action' => 'index',
-                )
-            );
             return new ViewModel();
         }
 
         $this->getEntityManager()->remove($article);
         $this->getEntityManager()->flush();
 
-        $this->flashMessenger()->success(
-            'Success',
-            'The article was successfully deleted!'
-        );
-
-        $this->redirect()->toRoute(
-            'logistics_inventory_article',
+        return new ViewModel(
             array(
-                'action' => 'index',
+                'result' => (object) array('status' => 'success'),
             )
         );
-
-        return new ViewModel();
     }
 
     public function searchArticlesAction(): ViewModel
