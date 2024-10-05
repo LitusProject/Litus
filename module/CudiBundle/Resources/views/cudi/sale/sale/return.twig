@@ -67,7 +67,9 @@
                 url: $url,
                 method: 'GET',
                 success: function (data) {
-                    console.log('Bought items:', data);
+                    const parsedData = JSON.parse(data.trim());
+                    const itemsArray = parsedData.items;
+                    console.log('Bought items:', itemsArray);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error fetching bought items:', error);

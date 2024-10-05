@@ -144,16 +144,14 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
     public function getBoughtItemsAction()
     {
-        $personId = $this->getParam('session'); // Assuming 'id' is the parameter name in the route
+        $personId = $this->params()->fromRoute('session'); // Retrieve 'session' parameter from the route
         error_log('PersonId: ' . $personId);
+        error_log('Request URI: ' . $_SERVER['REQUEST_URI']);
+        error_log('Referrer: ' . $_SERVER['HTTP_REFERER']);
 
         if (!$personId) {
             return $this->getResponse()->setStatusCode(400); // Bad Request
         }
-
-        /*$items = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findBy(['person' => $personId]);*/
 
         $subQuery = $this->getEntityManager()->createQueryBuilder();
         $subQuery->select('r.id')
@@ -161,8 +159,10 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             ->setMaxResults(10000);
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('b')
+        $queryBuilder->select('b', 'a.title AS articleName')
             ->from('CudiBundle\Entity\Sale\Booking', 'b')
+            ->innerJoin('CudiBundle\Entity\Sale\Article', 'sa', 'WITH', 'b.article = sa.id')
+            ->innerJoin('CudiBundle\Entity\Article', 'a', 'WITH', 'sa.mainArticle = a.id')
             ->where($queryBuilder->expr()->in('b.id', $subQuery->getDQL()))
             ->andWhere('b.person = :personId')
             ->andWhere('b.status = :status')
@@ -173,18 +173,23 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
         $query = $queryBuilder->getQuery();
         $items = $query->getResult();
 
-        /*foreach ($items as $item) {
-            error_log('Item: ' . print_r($item, true));
-        }*/
-        error_log('size of Items: ' . count($items));
-        error_log('Item 1 articleNr: ' . $items[0]->getArticle()->getId());
-        error_log('Item 1 date: ' . $items[0]->getBookDate()->format('Y-m-d H:i:s'));
 
+        $serializedItems = array_map(
+            function ($item) {
+                return array(
+                    'title'       => $item['articleName'],
+                    'articleId'   => $item[0]->getArticle()->getId(),
+                    'saleDate'    => $item[0]->getSaleDate()->format('Y-m-d H:i:s'),
+                    // Add other necessary properties here
+                );
+            },
+            $items
+        );
 
         return new ViewModel(
             array(
                 'result' => array(
-                    'items' => $items,
+                    'items' => $serializedItems,
                 ),
             )
         );
