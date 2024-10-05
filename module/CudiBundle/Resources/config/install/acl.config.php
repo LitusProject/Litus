@@ -135,7 +135,7 @@ return array(
             'overview', 'screen', 'signin',
         ),
         'cudi_sale_sale' => array(
-            'return', 'returnPrice', 'sale',
+            'return', 'returnPrice', 'sale', 'getBoughtItems',
         ),
         'cudi_sale_auth' => array(
             'login', 'logout', 'shibboleth',

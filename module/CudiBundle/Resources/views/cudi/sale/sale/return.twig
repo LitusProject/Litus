@@ -32,8 +32,10 @@
                 }
             ).change(function (e) {
                 if ($(this).data('value')) {
-                    $('[name="person[id]"]').val($(this).data('value').id);
+                    var personId = $(this).data('value').id;
+                    $('[name="person[id]"]').val(personId);
                     searchPrice();
+                    fetchBoughtItems(personId);
                 } else {
                     $('[name="person[id]"]').val('');
                     clearPrice();
@@ -56,6 +58,22 @@
                 }
             });
         });
+
+        function fetchBoughtItems(personId) {
+            console.log('Fetching bought items for person: ', personId);
+            let $url = '{{ url('cudi_sale_sale', {'action': 'getBoughtItems'}) }}' + personId;
+            console.log('URL: ', $url);
+            $.ajax({
+                url: $url,
+                method: 'GET',
+                success: function (data) {
+                    console.log('Bought items:', data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching bought items:', error);
+                }
+            });
+        }
 
         function searchPrice() {
             if (previousReturnRequest != $('[name="article[id]"]').val() + '_' + $('[name="person[id]"]')) {

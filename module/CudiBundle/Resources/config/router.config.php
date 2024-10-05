@@ -549,7 +549,7 @@ return array(
         'cudi_sale_sale' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/cudi/sale[/:action[/:session[/:id]]][/]',
+                'route'       => '/cudi/sale[/:action[/:session]][/]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session' => '[0-9]*',

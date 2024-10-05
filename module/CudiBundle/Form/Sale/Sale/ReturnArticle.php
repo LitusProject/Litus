@@ -52,6 +52,8 @@ class ReturnArticle extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
+        echo '<div id="recent-items-container" style="display: none;"></div>';
+
         $this->addSubmit(
             'Return',
             null,
