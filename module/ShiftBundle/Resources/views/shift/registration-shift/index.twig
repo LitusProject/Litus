@@ -300,6 +300,7 @@
                         panel.fadeIn();
                         $('#shifts-search ' + button.data('panel')).fadeOut(function () {$(this).remove()});
                     } else {
+                        console.log("error");
                         errorSave();
                     }
                 },
@@ -324,7 +325,7 @@
 
                 <div class="shiftHolder">
                     <div class="shiftHeader">
-                        <div class="shiftFlexCenter"> 
+                        <div class="shiftFlexCenter">
                             <h5 style="margin-bottom: 0px">{{ shift.getName() }}</h5>
                             <p style="font-size: 14px; margin-bottom: 0px">{{dateLocalized(shift.getStartDate(), 'd/M/y')}} | {{ dateLocalized(shift.getStartDate(), 'HH:mm') }}-{{ dateLocalized(shift.getEndDate(), 'HH:mm') }}</p> 
                         </div>
@@ -443,11 +444,15 @@
                 <button class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button">
                     {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
                 </button>
-            {% endif %}
-            {% if shift.countRegistered() == shift.getNbRegistered() %}
+            {% elseif shift.countRegistered() == shift.getNbRegistered() %}
                 <button disabled style="padding: 4px 8px; display: inline-block; margin-left: 10px;" class="btn btn-default btn-xs {{ self.buttonStyle(shift, 'registered') }} registered" data-id="{{ shift.getId() }}" data-count="{{ shift.countRegistered() }}" data-max="{{ shift.getNbRegistered() }}" data-panel="#group_{{ accordionName }}_shift-{{ shift.getId() }}" type="button" disabled>
                     {{ translate('Registered') }} (<span class="count">{{ shift.countRegistered() }}</span>/{{ shift.getNbRegistered() }})
                 </button>
+            {% elseif shift.hasShiftOnThisDay(entityManager, authenticatedPerson) %}
+                <button class="btn btn-xs btn-default">
+                    {{ translate('You already have a timeslot on this day') }}
+                </button>
+
             {% endif %}
 
     {% else %}
