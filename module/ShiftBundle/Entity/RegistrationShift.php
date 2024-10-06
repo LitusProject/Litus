@@ -405,6 +405,10 @@ class RegistrationShift
             if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate()) {
                 return false;
             }
+
+            if ($this->getStartDate()->format('Y-m-d') === $shift->getStartDate()->format('Y-m-d')) {
+                return false;
+            }
         }
 
         if ($this->getFinalSigninDate() !== null && $this->getFinalSigninDate() < new DateTime()) {
@@ -412,6 +416,26 @@ class RegistrationShift
         }
 
         return !($this->countRegistered() >= $this->getNbRegistered());
+    }
+
+    /**
+     * Checks whether or not the given person already has a registered shift on the same day as this shift
+     * shift.
+     *
+     * @param  EntityManager $entityManager The EntityManager instance
+     * @param  Person        $registered    The person that should be checked
+     * @return boolean
+     */
+    public function hasShiftOnThisDay(EntityManager $entityManager, Person $registered)
+    {
+        $shifts = $entityManager->getRepository('ShiftBundle\Entity\RegistrationShift')
+            ->findAllActiveByPerson($registered);//TODO: Create
+        foreach ($shifts as $shift) {
+            if ($this->getStartDate()->format('Y-m-d') === $shift->getStartDate()->format('Y-m-d')) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
