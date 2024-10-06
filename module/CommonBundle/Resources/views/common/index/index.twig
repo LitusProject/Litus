@@ -248,7 +248,10 @@
                     <div class="opening_hour_message">
                         <h2>Cudi - {{ translate('Opening Hours') }}</h2>
                         {% for message in cudi.messages %}
-                            <div style="white-space: pre-wrap;">{{ message.getContent(language) }}
+                            <div style="white-space: pre-wrap;">
+                                {% autoescape false %}
+                                    {{ message.getContent(language) }}
+                                {% endautoescape %}
                             </div>
                         {% endfor %}
 
