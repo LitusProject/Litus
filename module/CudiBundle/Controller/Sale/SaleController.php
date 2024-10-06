@@ -144,7 +144,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
 
     public function getBoughtItemsAction()
     {
-        $personId = $this->params()->fromRoute('session'); // Retrieve 'session' parameter from the route
+        $personId = $this->params()->fromRoute('session', null);
         error_log('PersonId: ' . $personId);
         error_log('Request URI: ' . $_SERVER['REQUEST_URI']);
         error_log('Referrer: ' . $_SERVER['HTTP_REFERER']);
@@ -185,6 +185,7 @@ class SaleController extends \CudiBundle\Component\Controller\SaleController
             },
             $items
         );
+        error_log('Items length: ' . count($serializedItems));
 
         return new ViewModel(
             array(

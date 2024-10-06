@@ -23,6 +23,7 @@ class SaleController extends \CommonBundle\Component\Controller\ActionController
      */
     public function onDispatch(MvcEvent $e)
     {
+        error_log('SaleController::onDispatch');
         $session = $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Session')
             ->findOneById($this->getParam('session'));

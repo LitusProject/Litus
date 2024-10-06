@@ -61,7 +61,7 @@
 
         function fetchBoughtItems(personId) {
             console.log('Fetching bought items for person: ', personId);
-            let $url = '{{ url('cudi_sale_sale', {'action': 'getBoughtItems'}) }}' + personId;
+            let $url =  '{{ url('cudi_sale_sale', {'action': 'getBoughtItems'}) }}' + "/" + personId;
             console.log('URL: ', $url);
             $.ajax({
                 url: $url,

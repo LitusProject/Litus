@@ -549,10 +549,11 @@ return array(
         'cudi_sale_sale' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
-                'route'       => '/cudi/sale[/:action[/:session]][/]',
+                'route'       => '/cudi/sale[/:action[/:session]][/:id]',
                 'constraints' => array(
                     'action'  => '[a-zA-Z][a-zA-Z0-9_-]*',
                     'session' => '[0-9]*',
+                    'id'      => '[0-9]*',
                 ),
                 'defaults'    => array(
                     'controller' => 'cudi_sale_sale',
@@ -560,6 +561,20 @@ return array(
                 ),
             ),
         ),
+        /*'cudi_sale_return' => array(
+            'type'    => 'Laminas\Router\Http\Segment',
+            'options' => array(
+                'route'       => '/cudi/return[/:action[/:id]]',
+                'constraints' => array(
+                    'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    'id'     => '[0-9]*',
+                ),
+                'defaults'    => array(
+                    'controller' => 'cudi_sale_return',
+                    'action'     => 'return',
+                ),
+            ),
+        ),*/
         'cudi_sale_auth' => array(
             'type'    => 'Laminas\Router\Http\Segment',
             'options' => array(
@@ -993,6 +1008,7 @@ return array(
 
 
         'cudi_sale_sale'                             => 'CudiBundle\Controller\Sale\SaleController',
+        //'cudi_sale_return'                           => 'CudiBundle\Controller\Sale\ReturnController',
         'cudi_sale_queue'                            => 'CudiBundle\Controller\Sale\QueueController',
         'cudi_sale_auth'                             => 'CudiBundle\Controller\Sale\AuthController',
 
