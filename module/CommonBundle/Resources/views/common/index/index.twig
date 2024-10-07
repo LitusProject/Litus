@@ -452,7 +452,7 @@
             {% for video in videos %}
                 <div style="margin: 0 50px 50px 0">
                     <h3>{{ video.getTitle() }}</h3>
-                    <iframe src="{{ video.getUrl() }}" width="464px" height="261px" style="border:0"
+                    <iframe data-src="{{ video.getUrl() }}" width="464px" height="261px" style="border:0"
                             allowfullscreen></iframe>
                 </div>
             {% endfor %}
@@ -718,5 +718,28 @@
         function rgbToHex(r, g, b) {
             return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const iframes = document.querySelectorAll('iframe[data-src]');
+
+            const lazyLoadIframe = (iframe) => {
+                iframe.setAttribute('src', iframe.getAttribute('data-src'));
+                iframe.removeAttribute('data-src');
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        lazyLoadIframe(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            iframes.forEach(iframe => {
+                observer.observe(iframe);
+            });
+        });
     </script>
 {% endblock %}
