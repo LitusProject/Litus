@@ -1111,6 +1111,13 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->findAllBookedByArticleAndPeriod($article, $period);
 
+        # Move bookings made by the cudisubsidies account to the front, prioritizing them
+        usort($bookings,
+            function($a, $b) {
+                return ($a->getPerson()->getId() == 24396) ? -1 : 1;
+            }
+        );
+
         foreach ($bookings as $booking) {
             if ($available <= 0) {
                 break;
