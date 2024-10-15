@@ -170,9 +170,19 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $article = $this->getArticleEntity();
-        if ($article === null) {
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
             return new ViewModel();
+        }
+        
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriodEntity());
+
+        $idsCancelled = array();
+        foreach ($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
         }
 
         $article->setIsHistory(true);
