@@ -170,19 +170,9 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
     {
         $this->initAjax();
 
-        $saleArticle = $this->getSaleArticleEntity();
-        if ($saleArticle === null) {
+        $article = $this->getArticleEntity();
+        if ($article === null) {
             return new ViewModel();
-        }
-        
-        $bookings = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Sale\Booking')
-            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriodEntity());
-
-        $idsCancelled = array();
-        foreach ($bookings as $booking) {
-            $booking->setStatus('canceled', $this->getEntityManager());
-            $idsCancelled[] = $booking->getId();
         }
 
         $article->setIsHistory(true);
@@ -195,24 +185,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function historyAction()
-    {
-        $article = $this->getArticleEntity();
-        if ($article === null) {
-            return new ViewModel();
-        }
-
-        $history = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\History')
-            ->findAllByArticle($article);
-
-        return new ViewModel(
-            array(
-                'history' => $history,
-                'current' => $article,
-            )
-        );
-    }
 
     public function searchAction()
     {
