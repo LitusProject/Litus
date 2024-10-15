@@ -282,6 +282,21 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         if ($saleArticle === null) {
             return new ViewModel();
         }
+        
+        $bookings = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Booking')
+            ->findAllActiveByArticleAndPeriod($saleArticle, $this->getActiveStockPeriodEntity());
+
+        $idsCancelled = array();
+        foreach ($bookings as $booking) {
+            $booking->setStatus('canceled', $this->getEntityManager());
+            $idsCancelled[] = $booking->getId();
+        }
+
+        $saleArticle = $this->getSaleArticleEntity();
+        if ($saleArticle === null) {
+            return new ViewModel();
+        }
 
         $saleArticle->setIsHistory(true);
         $this->getEntityManager()->flush();
@@ -291,6 +306,7 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
                 'result' => (object) array('status' => 'success'),
             )
         );
+        
     }
 
     public function assignAllAction()
