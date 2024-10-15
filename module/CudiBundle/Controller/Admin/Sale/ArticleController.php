@@ -293,11 +293,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
             $idsCancelled[] = $booking->getId();
         }
 
-        $saleArticle = $this->getSaleArticleEntity();
-        if ($saleArticle === null) {
-            return new ViewModel();
-        }
-
         $saleArticle->setIsHistory(true);
         $this->getEntityManager()->flush();
 
