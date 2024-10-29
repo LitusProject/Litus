@@ -1112,11 +1112,16 @@ class Booking extends \CommonBundle\Component\Doctrine\ORM\EntityRepository
             ->findAllBookedByArticleAndPeriod($article, $period);
 
         # Move bookings made by the cudisubsidies account to the front, prioritizing them
-        usort($bookings,
-            function($a, $b) {
-                return ($a->getPerson()->getId() == 24396) ? -1 : 1;
+        $prioritized = array();
+        $nonPrioritized = array();
+        foreach ($bookings as $booking) {
+            if ($booking->getPerson()->getId() === '24396') {
+                $prioritized[] = $booking;
+            } else {
+                $nonPrioritized[] = $booking;
             }
-        );
+        }
+        $bookings = array_merge($prioritized, $nonPrioritized);
 
         foreach ($bookings as $booking) {
             if ($available <= 0) {
