@@ -223,7 +223,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
 
-                if ($reservations[0] === null) {
+                if (count($reservations) === 0) {
                     return new ViewModel(
                         array(
                             'noEntity' => 'No consumptions were found',
