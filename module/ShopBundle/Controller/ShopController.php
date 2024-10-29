@@ -323,7 +323,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             return null;
         }
 
-        return $activeBans[-1]->getEndTimestamp();
+        return end($activeBans)->getEndTimestamp();
     }
 
     /**
