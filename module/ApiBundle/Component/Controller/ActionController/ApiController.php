@@ -85,7 +85,7 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
                 ->addHeaderLine('X-Served-By', getenv('SERVED_BY'));
         }
 
-        $result = parent::onDispatch($e);
+        $$result = parent::onDispatch($e);
         if ($result instanceof \Laminas\View\Model\ViewModel) {
             $result->setTerminal(true);
         }
@@ -98,17 +98,20 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
             if (!$this->hasAccess()->toResourceAction(
                 $this->getParam('controller'),
                 $this->getParam('action')
-            )
-            ) {
+            )) {
                 $error = $this->error(401, 'You do not have sufficient permissions to access this resource');
-                $error->setOptions($result->getOptions());
+                if ($result instanceof \Laminas\View\Model\ViewModel) {
+                    $error->setOptions($result->getOptions());
+                }
                 $e->setResult($error);
 
                 return $error;
             }
         } else {
             $error = $this->error(401, 'No key or OAuth token was provided or the token was invalid');
-            $error->setOptions($result->getOptions());
+            if ($result instanceof \Laminas\View\Model\ViewModel) {
+                $error->setOptions($result->getOptions());
+            }
             $e->setResult($error);
 
             return $error;
