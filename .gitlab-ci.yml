@@ -5,7 +5,7 @@ stages:
 variables:
     COMPOSER_HOME: $CI_PROJECT_DIR/.composer
     NO_PROXY: "gitlab.vtk.be"
-
+    SENTRY_LOG_LEVEL: debug
 
 build:
     stage: build
