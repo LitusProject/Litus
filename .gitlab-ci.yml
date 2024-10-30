@@ -5,7 +5,6 @@ stages:
 variables:
     COMPOSER_HOME: $CI_PROJECT_DIR/.composer
     NO_PROXY: "gitlab.vtk.be"
-    SENTRY_LOG_LEVEL: debug
 
 build:
     stage: build
@@ -46,6 +45,8 @@ deploy_leia:
     environment:
         name: leia
         url: https://liv.vtk.be
+    script:
+        - export SENTRY_LOG_LEVEL=debug
 
 deploy_liv:
     <<: *deploy
@@ -54,4 +55,6 @@ deploy_liv:
     environment:
         name: liv
         url: https://vtk.be
+    script:
+        - export SENTRY_LOG_LEVEL=debug
 
