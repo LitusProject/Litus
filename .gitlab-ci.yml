@@ -30,6 +30,7 @@ build:
         - eval $(ssh-agent -s)
         - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
     script:
+        - export SENTRY_LOG_LEVEL=debug
         - scp -o StrictHostKeyChecking=no litus.tar.gz root@$SSH_HOSTNAME:/tmp
         - ssh -o StrictHostKeyChecking=no root@$SSH_HOSTNAME /usr/local/sbin/deploy.sh
     only:
@@ -45,8 +46,6 @@ deploy_leia:
     environment:
         name: leia
         url: https://liv.vtk.be
-    script:
-        - export SENTRY_LOG_LEVEL=debug
 
 deploy_liv:
     <<: *deploy
@@ -55,6 +54,3 @@ deploy_liv:
     environment:
         name: liv
         url: https://vtk.be
-    script:
-        - export SENTRY_LOG_LEVEL=debug
-
