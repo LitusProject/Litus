@@ -3,15 +3,19 @@ stages:
     - deploy
 
 variables:
-    COMPOSER_HOME: $CI_PROJECT_DIR/.composer
+    COMPOSER_HOME: "$CI_PROJECT_DIR/.composer"
     NO_PROXY: "gitlab.vtk.be"
 
+# Build job
 build:
     stage: build
     script:
+        - echo "Starting Composer update and install..."
         - composer update --no-dev
         - composer install --no-dev
-        - echo $CI_COMMIT_SHA > COMMIT
+        - echo "Saving commit SHA to COMMIT file..."
+        - echo "$CI_COMMIT_SHA" > COMMIT
+        - echo "Creating tarball of project files..."
         - tar czf litus.tar.gz bin/ config/ data/ migrations/ module/ public/ shibboleth/ vendor/ COMMIT LICENSE.md NOTICE.md README.md
     only:
         - master
@@ -23,22 +27,27 @@ build:
         paths:
             - litus.tar.gz
 
-
+# Common deploy settings
 .deploy: &deploy
     stage: deploy
     before_script:
+        - echo "Setting up SSH agent and adding key..."
         - eval $(ssh-agent -s)
-        - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
+        - echo "$SSH_PRIVATE_KEY" | base64 -d | ssh-add -
     script:
+        - echo "Setting Sentry log level to debug..."
         - export SENTRY_LOG_LEVEL=debug
-        - scp -o StrictHostKeyChecking=no litus.tar.gz root@$SSH_HOSTNAME:/tmp
-        - ssh -o StrictHostKeyChecking=no root@$SSH_HOSTNAME /usr/local/sbin/deploy.sh
+        - echo "Copying tarball to remote host..."
+        - scp -o StrictHostKeyChecking=no litus.tar.gz root@"$SSH_HOSTNAME":/tmp
+        - echo "Running deployment script on remote host..."
+        - ssh -o StrictHostKeyChecking=no root@"$SSH_HOSTNAME" /usr/local/sbin/deploy.sh
     only:
         - master
     when: manual
     dependencies:
         - build
 
+# Deploy job for leia
 deploy_leia:
     <<: *deploy
     variables:
@@ -47,6 +56,7 @@ deploy_leia:
         name: leia
         url: https://liv.vtk.be
 
+# Deploy job for liv
 deploy_liv:
     <<: *deploy
     variables:
