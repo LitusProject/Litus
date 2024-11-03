@@ -8,6 +8,9 @@ variables:
 
 build:
     stage: build
+    before_script:
+        - sudo update-alternatives --set php /usr/bin/php7.4
+        - php -v
     script:
         - composer update --no-dev
         - composer install --no-dev
@@ -27,6 +30,8 @@ build:
 .deploy: &deploy
     stage: deploy
     before_script:
+        - sudo update-alternatives --set php /usr/bin/php7.4
+        - php -v
         - eval $(ssh-agent -s)
         - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
     script:
