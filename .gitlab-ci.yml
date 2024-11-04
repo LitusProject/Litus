@@ -6,9 +6,11 @@ variables:
     COMPOSER_HOME: $CI_PROJECT_DIR/.composer
     NO_PROXY: "gitlab.vtk.be"
 
-
 build:
     stage: build
+    before_script:
+        - export PATH="/usr/bin/php7.4:$PATH"
+        - php -v
     script:
         - composer update --no-dev
         - composer install --no-dev
@@ -28,9 +30,12 @@ build:
 .deploy: &deploy
     stage: deploy
     before_script:
+        - export PATH="/usr/bin/php7.4:$PATH"
+        - php -v
         - eval $(ssh-agent -s)
         - ssh-add <(echo $SSH_PRIVATE_KEY | base64 -d)
     script:
+        - export SENTRY_LOG_LEVEL=debug
         - scp -o StrictHostKeyChecking=no litus.tar.gz root@$SSH_HOSTNAME:/tmp
         - ssh -o StrictHostKeyChecking=no root@$SSH_HOSTNAME /usr/local/sbin/deploy.sh
     only:
@@ -54,4 +59,3 @@ deploy_liv:
     environment:
         name: liv
         url: https://vtk.be
-

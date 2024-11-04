@@ -31,7 +31,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        if(!$this->saleSessionIsOpen()){
+        if (!$this->saleSessionIsOpen()){
             $this->flashMessenger()->error(
                 'Error',
                 'No session was found!'
@@ -555,12 +555,16 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
     }
 
-    private function saleSessionIsOpen(){
+    private function saleSessionIsOpen()
+    {
         $salesSessionId = $this->getSalesSessionEntity()->getId();
         $openSaleSessions = $this->getSalesSessions();
-        $openSaleSessionsIds = array_map(function($session) {
-            return $session->getId();
-        }, $openSaleSessions);
+        $openSaleSessionsIds = array_map(
+            function ($session) {
+                return $session->getId();
+            },
+            $openSaleSessions
+        );
 
         return in_array($salesSessionId, $openSaleSessionsIds);
     }
