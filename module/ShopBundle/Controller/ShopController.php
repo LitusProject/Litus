@@ -232,10 +232,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                 }
 
                 if (count($reservations) === 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        $this->getTranslator()->translate('No reservations were found for the provided username.')
+                    );
                     return new ViewModel(
                         array(
-                            'noEntity' => 'No consumptions were found',
-                            'form'     => $this->getForm('shop_shop_consume'),
+                            'form' => $form,
+                            'session' => $salesSession,
                         )
                     );
                 } else {
@@ -243,14 +247,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     foreach ($reservations as $reservation) {
                         $reservation->setConsumed(true);
                     }
-                    $this->getEntityManager()->flush();     // Sends cache to database
+                    $this->getEntityManager()->flush(); // Sends cache to database
 
                     return new ViewModel(
                         array(
                             'reservations' => $reservations,
-                            'consumed'     => $consumed,
-                            'form'         => $form,
-                            'session'      => $salesSession,
+                            'consumed' => $consumed,
+                            'form' => $form,
+                            'session' => $salesSession,
                         )
                     );
                 }
@@ -259,7 +263,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'session' => $salesSession,
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
