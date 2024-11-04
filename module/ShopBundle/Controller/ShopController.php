@@ -31,6 +31,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        if(!$this->saleSessionIsOpen()){
+            $this->flashMessenger()->error(
+                'Error',
+                'No session was found!'
+            );
+            $this->redirect()->toRoute('shop');
+        }
+
         $salesSession = $this->getSalesSessionEntity();
         $stockEntries = $this->getStockEntries($salesSession);
 
@@ -545,5 +553,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     'salesSession' => $salesSession,
                 )
             );
+    }
+
+    private function saleSessionIsOpen(){
+        $salesSessionId = $this->getSalesSessionEntity()->getId();
+        $openSaleSessions = $this->getSalesSessions();
+        $openSaleSessionsIds = array_map(function($session) {
+            return $session->getId();
+        }, $openSaleSessions);
+
+        return in_array($salesSessionId, $openSaleSessionsIds);
     }
 }
