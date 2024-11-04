@@ -31,7 +31,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
-        if (!$this->saleSessionIsOpen()){
+        if (!$this->saleSessionIsOpen()) {
             $this->flashMessenger()->error(
                 'Error',
                 'No session was found!'
