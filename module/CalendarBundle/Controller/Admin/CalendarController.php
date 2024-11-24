@@ -555,6 +555,16 @@ class CalendarController extends \CommonBundle\Component\Controller\ActionContro
             $shiftForm->getHydrator()->hydrate($data)
         );
 
+        $data['name'] = 'Bijrijden';
+        $data['description'] = 'Chille in de kar. Locatie van de loods is: Tervuursevest 238. ';
+        $data['nb_volunteers_min'] = 1;
+        $data['start_date'] = $endDate . ' 1:00';
+        $data['end_date'] = $endDate . ' 2:00';
+
+        $this->getEntityManager()->persist(
+            $shiftForm->getHydrator()->hydrate($data)
+        );        
+
         $this->getEntityManager()->flush();
     }
 }
