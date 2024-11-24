@@ -185,24 +185,6 @@ class ArticleController extends \CudiBundle\Component\Controller\ActionControlle
         );
     }
 
-    public function historyAction()
-    {
-        $article = $this->getArticleEntity();
-        if ($article === null) {
-            return new ViewModel();
-        }
-
-        $history = $this->getEntityManager()
-            ->getRepository('CudiBundle\Entity\Article\History')
-            ->findAllByArticle($article);
-
-        return new ViewModel(
-            array(
-                'history' => $history,
-                'current' => $article,
-            )
-        );
-    }
 
     public function searchAction()
     {
