@@ -147,7 +147,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                         $startDate = $split[2] . ' ' . $startHour;
                         $endDate = $split[2] . ' ' . $endHour;
 
-                        $reward = $startHour == '12:30' ? 2 : 1;
+                        $reward = $startHour == '12:35' ? 2 : 1; // 1 of 2 shiftersbonnen adhv middag- of avondshift
                         $signoutDate = DateTime::createFromFormat('d/m/Y', $split[2])->modify('+1 day')->format('d/m/Y') . ' 00:00';
 
                         $data = array(
@@ -195,7 +195,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                         $count = 0;
                         $startHour_ = $startHour;       // creating dummy variable that is updated
                         while ($count != 5 && $startHour_ != $endHour) {
-                            $nextTime = $this->calculateNextTime($startHour_);
+                            $nextTime = $this->calculateNextTime($startHour_, $endHour);
                             $data['start_date'] = $split[2] . ' ' . $startHour_;
                             $data['end_date'] = $split[2] . ' ' . $nextTime;
 
@@ -283,10 +283,12 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     /**
      * @return string
      */
-    private function calculateNextTime($time)
+    private function calculateNextTime($time, $endTime)
     {
         $hour = explode(':', $time)[0];
         $minute = explode(':', $time)[1];
+        $endHour = explode(':', $endTime)[0];
+        $endMinute = explode(':', $endTime)[1];
         if ($minute == '00') {
             $minute = '30';
         } else {
@@ -294,6 +296,11 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $minute = '00';
         }
 
-        return $hour . ':' . $minute;
+        // als $hour : $minute groter is dan $endTime dan return $endTime
+        if ($hour > $endHour or ($hour == $endHour and $minute >= $endMinute)) {
+            return $endTime;
+        } else {
+            return $hour . ':' . $minute;
+        }
     }
 }

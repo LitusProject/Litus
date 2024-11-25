@@ -25,8 +25,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'checkbox',
-                    'name'       => 'interval_12:30-14:00_' . $day->format('d/m/Y'),
-                    'label'      => $day->format('l') . ' 12:30 - 14:00',
+                    'name'       => 'interval_12:35-13:55_' . $day->format('d/m/Y'),
+                    'label'      => $day->format('l') . ' 12:05 - 13:55',
                     'required'   => true,
                     'attributes' => array(
                         'class' => 'interval select1' . $day->format('d'),
@@ -38,7 +38,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'volunteers_12:30-14:00_' . $day->format('d/m/Y'),
+                    'name'       => 'volunteers_12:35-13:55_' . $day->format('d/m/Y'),
                     'label'      => 'Volunteers',
                     'attributes' => array(
                         'value' => '4',
@@ -60,7 +60,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'volunteers-min_12:30-14:00_' . $day->format('d/m/Y'),
+                    'name'       => 'volunteers-min_12:35-13:55_' . $day->format('d/m/Y'),
                     'label'      => 'Min. Volunteers',
                     'attributes' => array(
                         'value' => '3',
@@ -82,7 +82,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'nb-registered_12:30-14:00_' . $day->format('d/m/Y'),
+                    'name'       => 'nb-registered_12:35-13:55_' . $day->format('d/m/Y'),
                     'label'      => 'Registries',
                     'attributes' => array(
                         'value' => '60',
@@ -104,8 +104,8 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'checkbox',
-                    'name'       => 'interval_18:00-19:00_' . $day->format('d/m/Y'),
-                    'label'      => '18:00 - 19:00',
+                    'name'       => 'interval_18:05-19:00_' . $day->format('d/m/Y'),
+                    'label'      => '18:05 - 19:00',
                     'required'   => true,
                     'attributes' => array(
                         'class' => 'interval select2' . $day->format('d'),
@@ -117,7 +117,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'volunteers_18:00-19:00_' . $day->format('d/m/Y'),
+                    'name'       => 'volunteers_18:05-19:00_' . $day->format('d/m/Y'),
                     'label'      => 'Volunteers',
                     'attributes' => array(
                         'value' => '4',
@@ -139,7 +139,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'volunteers-min_18:00-19:00_' . $day->format('d/m/Y'),
+                    'name'       => 'volunteers-min_18:05-19:00_' . $day->format('d/m/Y'),
                     'label'      => 'Min. Volunteers',
                     'attributes' => array(
                         'value' => '3',
@@ -161,7 +161,7 @@ class Schedule extends \CommonBundle\Component\Form\Admin\Form
             $this->add(
                 array(
                     'type'       => 'text',
-                    'name'       => 'nb-registered_18:00-19:00_' . $day->format('d/m/Y'),
+                    'name'       => 'nb-registered_18:05-19:00_' . $day->format('d/m/Y'),
                     'label'      => 'Registries',
                     'attributes' => array(
                         'value' => '60',
