@@ -289,7 +289,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
         $minute = explode(':', $time)[1];
         $endHour = explode(':', $endTime)[0];
         $endMinute = explode(':', $endTime)[1];
-        if ($minute == '00') {
+        if ($minute == '00' or $minute == '05') {
             $minute = '30';
         } else {
             $hour = strval($hour + 1);
