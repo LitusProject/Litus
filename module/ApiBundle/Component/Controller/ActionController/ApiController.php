@@ -86,7 +86,9 @@ class ApiController extends \Laminas\Mvc\Controller\AbstractActionController imp
         }
 
         $result = parent::onDispatch($e);
-        $result->setTerminal(true);
+        if ($result instanceof \Laminas\View\Model\ViewModel) {
+            $result->setTerminal(true);
+        }
 
         if ($this->validateKey() || $this->validateOAuth()) {
             if (getenv('APPLICATION_ENV') != 'development') {

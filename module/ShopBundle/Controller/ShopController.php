@@ -31,6 +31,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             );
         }
 
+        if (!$this->saleSessionIsOpen()) {
+            $this->flashMessenger()->error(
+                'Error',
+                'No session was found!'
+            );
+            $this->redirect()->toRoute('shop');
+        }
+
         $salesSession = $this->getSalesSessionEntity();
         $stockEntries = $this->getStockEntries($salesSession);
 
@@ -223,11 +231,15 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                         ->getAllReservationsByUsernameAndSalesSessionQuery($username, $salesSession)->getResult();
                 }
 
-                if ($reservations[0] === null) {
+                if (count($reservations) === 0) {
+                    $this->flashMessenger()->error(
+                        'Error',
+                        $this->getTranslator()->translate('No reservations were found for the provided username.')
+                    );
                     return new ViewModel(
                         array(
-                            'noEntity' => 'No consumptions were found',
-                            'form'     => $this->getForm('shop_shop_consume'),
+                            'form' => $form,
+                            'session' => $salesSession,
                         )
                     );
                 } else {
@@ -235,14 +247,14 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     foreach ($reservations as $reservation) {
                         $reservation->setConsumed(true);
                     }
-                    $this->getEntityManager()->flush();     // Sends cache to database
+                    $this->getEntityManager()->flush(); // Sends cache to database
 
                     return new ViewModel(
                         array(
                             'reservations' => $reservations,
-                            'consumed'     => $consumed,
-                            'form'         => $form,
-                            'session'      => $salesSession,
+                            'consumed' => $consumed,
+                            'form' => $form,
+                            'session' => $salesSession,
                         )
                     );
                 }
@@ -251,7 +263,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
         return new ViewModel(
             array(
                 'session' => $salesSession,
-                'form'    => $form,
+                'form' => $form,
             )
         );
     }
@@ -323,7 +335,7 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
             return null;
         }
 
-        return $activeBans[-1]->getEndTimestamp();
+        return end($activeBans)->getEndTimestamp();
     }
 
     /**
@@ -545,5 +557,19 @@ class ShopController extends \CommonBundle\Component\Controller\ActionController
                     'salesSession' => $salesSession,
                 )
             );
+    }
+
+    private function saleSessionIsOpen()
+    {
+        $salesSessionId = $this->getSalesSessionEntity()->getId();
+        $openSaleSessions = $this->getSalesSessions();
+        $openSaleSessionsIds = array_map(
+            function ($session) {
+                return $session->getId();
+            },
+            $openSaleSessions
+        );
+
+        return in_array($salesSessionId, $openSaleSessionsIds);
     }
 }
