@@ -153,6 +153,19 @@
 
         <div style="height: 60px"></div>
             <div>
+
+                {# MY CURRENT SHIFTS #}
+                <div class="contentBlock">
+                    <div class="headingHolder">
+                        <h3 style="margin-bottom: 0px">{{ translate('My Timeslots') }}</h3>
+                    </div>
+
+                    {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myTimeslots') }}
+
+                </div>
+
+                <div style="height: 50px"></div>
+
                 {# SHIFTS FROM SEARCH #}
                 <div class="contentBlock">
                     <div class="headingHolder">
@@ -171,18 +184,6 @@
                 </div>  
             
                 <div class="spacer50"></div>
-
-                {# MY CURRENT SHIFTS #}  
-                <div class="contentBlock">
-                    <div class="headingHolder">
-                        <h3 style="margin-bottom: 0px">{{ translate('My Timeslots') }}</h3>
-                    </div>
-
-                    {{ self.displayShifts(entityManager, authenticatedPerson, myShifts, 'myTimeslots') }}
-
-                </div>            
-
-                <div style="height: 50px"></div>
 
             {# <div class="col-md-8">
                 <h2>
