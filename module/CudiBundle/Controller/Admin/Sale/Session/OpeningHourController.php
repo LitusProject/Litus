@@ -142,7 +142,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                 foreach ($formData as $formKey => $formValue) {
                     $split = explode('_', $formKey);
                     if ($split[0] == 'interval' && $formValue) {
-                        $openingTime = $split[1]; // 'noon' of 'evening'
+                        $openingTime = $split[1]; // 'noon' or 'evening'
                         if ($openingTime == 'noon') {
                             $startHour = '12:35';
                             $endHour = '13:55';
@@ -160,10 +160,10 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                         $shiftStartDate = $split[2] . ' ' . $shiftStartHour;
                         $shiftEndDate = $split[2] . ' ' . $shiftEndHour;
 
-                        $reward = $openingTime == 'noon' ? 2 : 1; // 1 of 2 shiftersbonnen adhv middag- of avondshift
+                        $reward = $openingTime == 'noon' ? 2 : 1;
                         $signoutDate = DateTime::createFromFormat('d/m/Y', $split[2])->modify('+1 day')->format('d/m/Y') . ' 00:00';
 
-                        $data = array( //opening uren en registratie shiften
+                        $data = array(
                             // OPENING HOURS
                             'start_date'        => $startDate,
                             'end_date'          => $endDate,
@@ -183,7 +183,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'event'             => '',
                             'location'          => 1,
                             'handled_on_event'  => false,
-                            'ticket_needed'     => false,
+                            'ticket_needed'     => true,
                             'points'            => 0,
                         );
 
@@ -204,17 +204,17 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'nb_volunteers_min' => $formData['volunteers-min_' . $openingTime . '_' . $split[2]],
                             'reward'            => $reward,
                             'handled_on_event'  => false,
-                            'ticket_needed'     => true,
+                            'ticket_needed'     => false,
                             'points'            => 0,
                         );
 
                         // OPENING HOURS
                         $this->getEntityManager()->persist(
-                            $form->getHydrator()->hydrate($data) //send opening hours data to database
+                            $form->getHydrator()->hydrate($data)
                         );
                         // SHIFTS
                         $this->getEntityManager()->persist(
-                            $shiftForm->getHydrator()->hydrate($shiftData) //send Shift DATA to database
+                            $shiftForm->getHydrator()->hydrate($shiftData)
                         );
 
                         // REGISTRATION SHIFTS
@@ -226,7 +226,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             $data['end_date'] = $split[2] . ' ' . $nextTime;
 
                             $this->getEntityManager()->persist(
-                                $registrationForm->getHydrator()->hydrate($data) // send registration shift data to database
+                                $registrationForm->getHydrator()->hydrate($data)
                             );
 
                             $startHour_ = $nextTime;
@@ -309,7 +309,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
     /**
      * @return string
      */
-    private function calculateNextTime($time, $endTime) //TODO generalize this function to work in all cases
+    private function calculateNextTime($time, $endTime)
     {
         $hour = explode(':', $time)[0];
         $minute = explode(':', $time)[1];
@@ -322,7 +322,6 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
             $minute = '00';
         }
 
-        // als $hour : $minute groter is dan $endTime dan return $endTime
         if ($hour > $endHour or ($hour == $endHour and $minute >= $endMinute)) {
             return $endTime;
         } else {
