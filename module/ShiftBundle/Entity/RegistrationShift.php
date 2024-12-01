@@ -402,7 +402,7 @@ class RegistrationShift
                 return false;
             }
 
-            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate()) {
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate() || $this->getStartDate() === $shift->getStartDate()) {
                 return false;
             }
 
