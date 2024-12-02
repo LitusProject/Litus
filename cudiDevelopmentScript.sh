@@ -28,6 +28,8 @@ PermissionsStartOnly=true
 WantedBy=multi-user.target
 EOL"
 
+sleep 5
+
 # Reload systemd to recognize the new service
 sudo systemctl daemon-reload
 
