@@ -407,8 +407,6 @@
     }
 
     function _addArticle($this, id) {
-        console.log("_addArticle");
-
         var settings = $this.data('saleInterfaceSettings');
         $this.find('#article-' + id + ':not(.inactive)').each(function () {
             if ($(this).data('info').currentNumber < $(this).data('info').number) {
@@ -533,8 +531,6 @@
     }
 
     function _gotBarcode($this, barcode) {
-        console.log("_gotBarcode");
-
         var settings = $this.data('saleInterfaceSettings');
 
         var found = false;
