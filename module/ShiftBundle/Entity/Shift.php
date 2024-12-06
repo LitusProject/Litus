@@ -493,7 +493,7 @@ class Shift
                 return false;
             }
 
-            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate()) {
+            if ($this->getStartDate() < $shift->getEndDate() && $shift->getStartDate() < $this->getEndDate() || $shift->getStartDate() === $this->getStartDate()) {
                 return false;
             }
         }
