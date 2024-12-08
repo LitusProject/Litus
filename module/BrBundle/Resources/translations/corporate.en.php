@@ -73,4 +73,6 @@ return array(
     'Reset password'                                                                                                                                                                       => 'Reset password',
     'Request username'                                                                                                                                                                     => 'Request username',
     'Our team'                                                                                                                                                                             => 'Our team',
+    'Homepage'                                                                                                                                                                             => 'Homepage',
+    'Your contactperson will notify you when the VTK Jobfair 2025 Matching Software is available.'                                                                                         => 'Your contactperson will notify you when the VTK Jobfair 2025 Matching Software is available.',
 );

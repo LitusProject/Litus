@@ -90,7 +90,7 @@
                         {% if hasAccess('br_corporate_index', 'events') %}
                             <div class="vtk-menuitem-holder br">
                                 <a {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle"  {% endif %}
-                                        href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                                        href="https://www.career.vtk.be/evenementen">
                                     {{ translate('Events') }}
                                 </a>
                             </div>
@@ -98,8 +98,8 @@
                         {% if hasAccess('br_corporate_jobfair', 'overview') %}
                             <div class="vtk-menuitem-holder br">
                                 <a {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %}
-                                        href="{{ url("br_corporate_jobfair", {"action": 'overview', "language": language.getAbbrev()}) }}">
-                                    {{ translate('Jobfair Information') }}
+                                        href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                                    {{ translate('Jobfair Scans') }}
                                 </a>
                             </div>
                         {% endif %}
@@ -276,7 +276,7 @@
         </div>
     </div>
 
-    <footer style="margin-bottom: 0px; margin-top:50px; position: relative">
+    <footer style="margin-bottom: 0px; position: relative">
         <div style="text-align: left; background-color: #1a1f4a; padding: 100px 0px; color: white">
             <div class="container">
                 <div class="row">
