@@ -73,4 +73,6 @@ return array(
     'Reset password'                                                                                                                                                                       => 'Wachtwoord opnieuw instellen',
     'Request username'                                                                                                                                                                     => 'Gebruikersnaam opvragen',
     'Our team'                                                                                                                                                                             => 'Ons team',
+    'Homepage'                                                                                                                                                                            => 'Homepage',
+    'Your contactperson will notify you when the VTK Jobfair 2025 Matching Software is available.'                                                                                         => 'Uw contactpersoon zal u op de hoogte brengen wanneer de VTK Jobfair 2025 Matching Software beschikbaar is.',
 );
