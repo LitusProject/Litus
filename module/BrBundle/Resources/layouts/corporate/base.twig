@@ -89,7 +89,7 @@
                         {% endif %}
                         {% if hasAccess('br_corporate_index', 'events') %}
                             <div class="vtk-menuitem-holder br">
-                                <a {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle"  {% endif %}
+                                <a class="br-menuUnderlineStyle"
                                         href="https://www.career.vtk.be/evenementen">
                                     {{ translate('Events') }}
                                 </a>
@@ -97,7 +97,7 @@
                         {% endif %}
                         {% if hasAccess('br_corporate_jobfair', 'overview') %}
                             <div class="vtk-menuitem-holder br">
-                                <a {% if 'overview' == getParam('action') and 'br_corporate_jobfair' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle" {% endif %}
+                                <a {% if 'events' == getParam('action') and 'br_corporate_index' == getParam('controller') %} class="br-menuUnderlineStyle active" {% else %} class="br-menuUnderlineStyle"  {% endif %}
                                         href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
                                     {{ translate('Jobfair Scans') }}
                                 </a>
@@ -235,14 +235,14 @@
                 {% endif %}
                 {% if hasAccess('br_corporate_index', 'events') %}
                     <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center"
-                       href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                       href="https://www.career.vtk.be/evenementen">
                         {{ translate('Events') }}
                     </a>
                 {% endif %}
                 {% if hasAccess('br_corporate_jobfair', 'overview') %}
                     <a class="vtk-mobile-primary-menuitem" style="width: 100%; text-align: center"
-                       href="{{ url("br_corporate_jobfair", {"action": 'overview', "language": language.getAbbrev()}) }}">
-                        {{ translate('Jobfair Information') }}
+                       href="{{ url("br_corporate_index", {"action": 'events', "language": language.getAbbrev()}) }}">
+                        {{ translate('Jobfair Scans') }}
                     </a>
                 {% endif %}
                 {% if (hasAccess('br_corporate_cv', 'grouped') or hasAccess('br_corporate_cv', 'list')) and authenticatedPerson != null and (authenticatedPerson.getCompany().getCvBookYears()|length > 0 or authenticatedPerson.getCompany().getCvBookArchiveYears()|length > 0) %}
