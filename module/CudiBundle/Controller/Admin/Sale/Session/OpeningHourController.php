@@ -169,7 +169,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'end_date'          => $endDate,
                             // REGISTRATION SHIFTS
                             'name'              => 'Boekenverkoop',
-                            'description'       => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
+                            'description'       => 'Kom je boeken ophalen ;)',
                             'visible_date'      => $now,
                             'signout_date'      => $signoutDate,
                             'nb_registered'     => $formData['nb-registered_' . $openingTime . '_' . $split[2]],
@@ -193,7 +193,7 @@ class OpeningHourController extends \CudiBundle\Component\Controller\ActionContr
                             'end_date'          => $shiftEndDate,
                             // SHIFTS
                             'name'              => 'Boeken verkopen',
-                            'description'       => 'Kom je boeken ophalen ;)',
+                            'description'       => 'Kom samen met ons de cursusdienst openhouden en leer ondertussen veel nieuwe mensen kennen! Er is altijd begeleiding aanwezig dus geen enkel probleem als je voor de eerste keer komt ;))',
                             'manager'           => false,
                             'unit'              => 1,
                             'edit_roles'        => array('cursusdienst',),
