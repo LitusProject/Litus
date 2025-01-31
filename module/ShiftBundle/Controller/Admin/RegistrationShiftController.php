@@ -63,9 +63,10 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
             if ($form->isValid()) {
                 $startDate = self::loadDate($formData['start_date']);
                 $endDate = self::loadDate($formData['end_date']);
+                $signoutDate = self::loadDate($formData['signout_date']);
+                $finalSigninDate = self::loadDate($formData['final_signin_date']);
 
                 $formData = $form->getData();
-                // print(json_encode($formData));die();
                 $interval = $startDate->diff($endDate);
 
                 for ($i = 0; $i < $formData['duplicate_days']; $i++) {
@@ -77,6 +78,12 @@ class RegistrationShiftController extends \CommonBundle\Component\Controller\Act
                         );
                         $shift->setEndDate(
                             $this->addInterval(clone $startDate, $interval, $j + 1)
+                        );
+                        $shift->setSignoutDate(
+                            $this->addInterval(clone $signoutDate, $interval, $j)
+                        );
+                        $shift->setFinalSigninDate(
+                            $this->addInterval(clone $finalSigninDate, $interval, $j)
                         );
 
                         $this->getEntityManager()->persist($shift);
