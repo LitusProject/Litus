@@ -130,17 +130,20 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
      */
     private function receivePreview(array $file, Publication $publication)
     {
-        // Get your destination path (this might come from a config value)
-        $destination = '/path/to/your/uploads/directory/';
-        if (!is_dir($destination)) {
-            mkdir($destination, 0755, true);
+        // Retrieve the destination path from configuration
+        $filePath = $this->getEntityManager()
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('publication.previeuw_path') . '/';
+        
+        // Ensure the directory exists
+        if (!is_dir($filePath)) {
+            mkdir($filePath, 0755, true);
         }
     
-        // Optionally, you can process the image (resize, etc.) with Imagick or GD.
-        // Here we simply generate a unique filename and move the file.
+        // Generate a unique filename and move the file
         $filename = uniqid() . '-' . basename($file['name']);
         
-        if (move_uploaded_file($file['tmp_name'], $destination . $filename)) {
+        if (move_uploaded_file($file['tmp_name'], $filePath . $filename)) {
             $publication->setPreviewImage($filename);
         }
     }
