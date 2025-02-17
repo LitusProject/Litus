@@ -1,7 +1,6 @@
 name: Github CI
 
 on:
-  push:
   workflow_dispatch:
 
 env:
@@ -87,6 +86,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ matrix.target.hostname }} >> ~/.ssh/known_hosts
+          
       - name: Deploy to ${{ matrix.target.name }}
         env:
           SSH_HOSTNAME: ${{ matrix.target.hostname }}
