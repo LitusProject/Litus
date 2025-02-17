@@ -34,17 +34,14 @@ jobs:
           key: ${{ runner.os }}-php74-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-php74-
-
       - name: Install dependencies
         run: |
           composer update --no-dev
           composer install --no-dev
-
       - name: Create build artifact
         run: |
           echo ${{ github.sha }} > COMMIT
           tar czf litus.tar.gz bin/ config/ data/ migrations/ module/ public/ shibboleth/ vendor/ COMMIT LICENSE.md NOTICE.md README.md
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -87,7 +84,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ matrix.target.hostname }} >> ~/.ssh/known_hosts
-
       - name: Deploy to ${{ matrix.target.name }}
         env:
           SSH_HOSTNAME: ${{ matrix.target.hostname }}
