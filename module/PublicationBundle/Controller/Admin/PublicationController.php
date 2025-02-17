@@ -122,6 +122,93 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             )
         );
     }
+    /**
+     * Processes the uploaded preview image.
+     *
+     * @param array       $file        The uploaded file info.
+     * @param Publication $publication The publication entity.
+     */
+    private function receivePreview(array $file, Publication $publication)
+    {
+        // Get your destination path (this might come from a config value)
+        $destination = '/path/to/your/uploads/directory/';
+        if (!is_dir($destination)) {
+            mkdir($destination, 0755, true);
+        }
+    
+        // Optionally, you can process the image (resize, etc.) with Imagick or GD.
+        // Here we simply generate a unique filename and move the file.
+        $filename = uniqid() . '-' . basename($file['name']);
+        
+        if (move_uploaded_file($file['tmp_name'], $destination . $filename)) {
+            $publication->setPreviewImage($filename);
+        }
+    }
+
+
+    public function uploadPreviewAction()
+    {
+        // Retrieve the publication entity (similar to getEventEntity)
+        $publication = $this->getPublicationEntity();
+        if ($publication === null) {
+            return new ViewModel();
+        }
+    
+        // Get the form used for uploading the preview image
+        $form = $this->getForm('publication_publication_upload');
+        // Set the form action if needed
+        $form->setAttribute(
+            'action',
+            $this->url()->fromRoute(
+                'publication_admin_publication',
+                array(
+                    'action' => 'uploadPreview',
+                    'id'     => $publication->getId(),
+                )
+            )
+        );
+    
+        if ($this->getRequest()->isPost()) {
+            // Merge POST and FILE data
+            $form->setData(
+                array_merge_recursive(
+                    $this->getRequest()->getPost()->toArray(),
+                    $this->getRequest()->getFiles()->toArray()
+                )
+            );
+    
+            if ($form->isValid()) {
+                $data = $form->getData();
+    
+                // Process the uploaded file (see helper method below)
+                $this->receivePreview($data['previewImage'], $publication);
+    
+                $this->getEntityManager()->flush();
+    
+                $this->flashMessenger()->success(
+                    'Success',
+                    'The publication preview image has been updated!'
+                );
+    
+                return new ViewModel(
+                    array(
+                        'status' => 'success',
+                        'info'   => array('name' => $publication->getPreviewImage()),
+                    )
+                );
+            } else {
+                return new ViewModel(
+                    array(
+                        'status' => 'error',
+                        'form'   => array('errors' => $form->getMessages()),
+                    )
+                );
+            }
+        }
+    
+        return new ViewModel(array('status' => 'error'));
+    }
+
 
     /**
      * @return Publication|null
