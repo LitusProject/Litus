@@ -122,6 +122,7 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             )
         );
     }
+    
     /**
      * Processes the uploaded preview image.
      *
@@ -147,7 +148,6 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
             $publication->setPreviewImage($filename);
         }
     }
-
 
     public function uploadPreviewAction()
     {
@@ -211,7 +211,6 @@ class PublicationController extends \CommonBundle\Component\Controller\ActionCon
     
         return new ViewModel(array('status' => 'error'));
     }
-
 
     /**
      * @return Publication|null
