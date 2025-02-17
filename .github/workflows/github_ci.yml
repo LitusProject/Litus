@@ -2,8 +2,6 @@ name: Github CI
 
 on:
   push:
-    branches:
-      - master
   workflow_dispatch:
 
 env:
@@ -52,6 +50,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         target: 
           - { name: leia, url: "https://liv.vtk.be", hostname: "leia.vtk.be" }
