@@ -1,0 +1,97 @@
+name: Github CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  COMPOSER_HOME: ${{ github.workspace }}/.composer
+  NO_PROXY: "gitlab.vtk.be"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Show PHP version
+        run: php -v
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            .composer/
+            vendor/
+          key: ${{ runner.os }}-php74-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php74-
+
+      - name: Install dependencies
+        run: |
+          composer update --no-dev
+          composer install --no-dev
+
+      - name: Create build artifact
+        run: |
+          echo ${{ github.sha }} > COMMIT
+          tar czf litus.tar.gz bin/ config/ data/ migrations/ module/ public/ shibboleth/ vendor/ COMMIT LICENSE.md NOTICE.md README.md
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: litus-artifact
+          path: litus.tar.gz
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: 
+          - { name: leia, url: "https://liv.vtk.be", hostname: "leia.vtk.be" }
+          - { name: liv, url: "https://vtk.be", hostname: "liv.vtk.be" }
+
+    environment:
+      name: ${{ matrix.target.name }}
+      url: ${{ matrix.target.url }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: litus-artifact
+
+      - name: Set up PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Show PHP version
+        run: php -v
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ matrix.target.hostname }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to ${{ matrix.target.name }}
+        env:
+          SSH_HOSTNAME: ${{ matrix.target.hostname }}
+          SENTRY_LOG_LEVEL: debug
+        run: |
+          scp litus.tar.gz root@${{ matrix.target.hostname }}:/tmp
+          ssh root@${{ matrix.target.hostname }} /usr/local/sbin/deploy.sh
