@@ -7,10 +7,13 @@ use PublicationBundle\Entity\Publication;
 /**
  * The form used to add a new Publication
  *
- * @author Niels Avonds <niels.avonds@litus.cc>
+ * @author Niels Avonds
  */
 class Add extends \CommonBundle\Component\Form\Admin\Form
 {
+    // Define a file size limit similar to the Event poster form
+    const FILE_SIZE = '20MB';
+
     protected $hydrator = 'PublicationBundle\Hydrator\Publication';
 
     /**
@@ -22,6 +25,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     {
         parent::init();
 
+        // Add the title field
         $this->add(
             array(
                 'type'     => 'text',
@@ -38,6 +42,34 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
                                 'name'    => 'TitlePublication',
                                 'options' => array(
                                     'exclude' => $this->publication !== null ? $this->publication->getId() : null,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            )
+        );
+
+        // Add a file field for the preview image 
+        $this->add(
+            array(
+                'type'       => 'file',
+                'name'       => 'previewImage',
+                'label'      => 'Preview Image',
+                'required'   => false,
+                'attributes' => array(
+                    'data-help' => 'Upload an image for the preview. The file must be an image and should not exceed ' . self::FILE_SIZE . '.',
+                ),
+                'options'    => array(
+                    'input' => array(
+                        'validators' => array(
+                            array(
+                                'name' => 'FileIsImage',
+                            ),
+                            array(
+                                'name'    => 'FileSize',
+                                'options' => array(
+                                    'max' => self::FILE_SIZE,
                                 ),
                             ),
                         ),
