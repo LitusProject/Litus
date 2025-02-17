@@ -24,6 +24,7 @@ class Add extends \CommonBundle\Component\Form\Admin\Form
     public function init()
     {
         parent::init();
+        $this->setAttribute('enctype', 'multipart/form-data');
 
         // Add the title field
         $this->add(
