@@ -6,7 +6,7 @@ use PublicationBundle\Entity\Publication as PublicationEntity;
 
 class Publication extends \CommonBundle\Component\Hydrator\Hydrator
 {
-    private static $stdKeys = array('title');
+    private static $stdKeys = array('title', 'previewImage');
 
     protected function doHydrate(array $data, $object = null)
     {
