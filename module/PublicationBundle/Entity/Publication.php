@@ -22,6 +22,13 @@ class Publication
     private $id;
 
     /**
+     * @var string|null The filename or path for the preview image
+     *
+     * @ORM\Column(name="preview_image", type="string", length=255, nullable=true)
+     */
+    private $previewImage;
+
+    /**
      * @var string The title of this publication
      *
      * @ORM\Column(type="string", nullable=false)
@@ -70,6 +77,17 @@ class Publication
     {
         $this->title = $title;
 
+        return $this;
+    }
+
+    // Getter & Setter for the image
+    public function getPreviewImage()
+    {
+        return $this->previewImage;
+    }
+    public function setPreviewImage($previewImage)
+    {
+        $this->previewImage = $previewImage;
         return $this;
     }
 
