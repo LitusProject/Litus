@@ -85,6 +85,7 @@ class Publication
     {
         return $this->previewImage;
     }
+    
     public function setPreviewImage($previewImage)
     {
         $this->previewImage = $previewImage;
