@@ -189,6 +189,6 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         $result = $queryBuilder->getQuery()->getResult();
 
-        return !empty($result);
+        return (count($result) != 0);
     }
 }
