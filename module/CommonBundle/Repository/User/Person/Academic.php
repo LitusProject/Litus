@@ -166,4 +166,29 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         return $persons;
     }
+
+    /**
+     * Checks if the academic is in the last year of a Master's program.
+     *
+     * @param int $academicId
+     * @return bool
+     */
+    public function isLastYear($academicId)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('es')
+            ->from('SecretaryBundle\Entity\Syllabus\Enrollment\Study', 'es')
+            ->innerJoin('es.study', 's')
+            ->innerJoin('s.combination', 'sc')
+            ->where('es.academic = :academicId')
+            ->andWhere('sc.title LIKE :title')
+            ->andWhere('sc.phase = :phase')
+            ->setParameter('academicId', $academicId)
+            ->setParameter('title', '%Master%')
+            ->setParameter('phase', 2);
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return !empty($result);
+    }
 }

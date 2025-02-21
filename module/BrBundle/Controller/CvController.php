@@ -42,6 +42,20 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
             );
         }
 
+        $academicRepository = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person\Academic');
+        $isLastYear = $academicRepository->isLastYear($person->getId());
+
+        if (!$isLastYear) {
+            return new ViewModel(
+                array(
+                    'messages' => array(
+                        new FlashMessage('danger', 'Error', 'You must be a last year student to edit your CV.'),
+                    ),
+                )
+            );
+        }
+
+
         $message = $this->getBadAccountMessage($person);
         if ($message !== null) {
             return new ViewModel(
