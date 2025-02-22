@@ -52,6 +52,9 @@ class Group extends \CommonBundle\Component\Document\Generator\Csv
 
             foreach ($enrollments as $enrollment) {
                 $ac = $enrollment->getAcademic();
+                if ($ac->getNoMail()) {
+                    continue;
+                }
 
                 $primaryAddress = $ac->getPrimaryAddress();
                 $secondaryAddress = $ac->getSecondaryAddress();
