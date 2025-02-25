@@ -34,7 +34,7 @@ class MatchController extends CareerController
                 'bannerText' => $bannerText,
                 'em'         => $this->getEntityManager(),
                 'ay'         => $this->getCurrentAcademicYear(),
-                'linkToMatchingSoftware' => 'https://www.vtkjobfair.be/matching-software-students',
+                'linkToMatchingSoftware' => 'https://jobfairvtk.be/matching-software-students',
             )
         );
     }
