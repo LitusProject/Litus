@@ -44,8 +44,11 @@ class CvController extends \CommonBundle\Component\Controller\ActionController\S
 
         $academicRepository = $this->getEntityManager()->getRepository('CommonBundle\Entity\User\Person\Academic');
         $isLastYear = $academicRepository->isLastYear($person->getId());
+        $isManama = $academicRepository->isManama($person->getId());
+        $isOtherLastYear = $academicRepository->isOtherLastYear($person->getId());
+        $isEITKIC = $academicRepository->isEITKIC($person->getId());
 
-        if (!$isLastYear) {
+        if (!$isLastYear && !$isManama && !$isOtherLastYear && !$isEITKIC) {
             return new ViewModel(
                 array(
                     'messages' => array(

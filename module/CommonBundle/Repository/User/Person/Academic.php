@@ -191,4 +191,91 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         return (count($result) != 0);
     }
+
+    public function isEITKIC($academicId)
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('es')
+            ->from('SecretaryBundle\Entity\Syllabus\Enrollment\Study', 'es')
+            ->innerJoin('es.study', 's')
+            ->innerJoin('s.combination', 'sc')
+            ->where('es.academic = :academicId')
+            ->andWhere('sc.title LIKE :title')
+            ->andWhere('sc.phase = :phase')
+            ->setParameter('academicId', $academicId)
+            ->setParameter('title', '%EIT-KIC%')
+            ->setParameter('phase', 2);
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return (count($result) != 0);
+    }
+
+    public function isManama($academicId)
+    {
+        $titles = [
+            'Master of Artificial Intelligence',
+            'Master of Conservation of Monuments and Sites',
+            'Master of Cybersecurity',
+            'Master of Digital Humanities',
+            'Master of Human Settlements',
+            'Master of Nuclear Engineering',
+            'Master of Safety Engineering',
+            'Master of Urbanism, Landscape and Planning',
+            'Master in de medische stralingsfysica',
+            'Master of Space Studies'
+        ];
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('es')
+            ->from('SecretaryBundle\Entity\Syllabus\Enrollment\Study', 'es')
+            ->innerJoin('es.study', 's')
+            ->innerJoin('s.combination', 'sc')
+            ->where('es.academic = :academicId')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    ...array_map(
+                        fn($title) => $queryBuilder->expr()->like('sc.title', $queryBuilder->expr()->literal('%' . $title . '%')),
+                        $titles
+                    )
+                )
+            )
+            ->andWhere('sc.phase = :phase')
+            ->setParameter('academicId', $academicId)
+            ->setParameter('phase', 1);
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return !empty($result);
+    }
+
+    public function isOtherLastYear($academicId)
+    {
+        $titles = [
+            'Postgraduate',
+            'Micro-credential',
+            'Doctor',
+            'Doctoral'
+        ];
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('es')
+            ->from('SecretaryBundle\Entity\Syllabus\Enrollment\Study', 'es')
+            ->innerJoin('es.study', 's')
+            ->innerJoin('s.combination', 'sc')
+            ->where('es.academic = :academicId')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    ...array_map(
+                        fn($title) => $queryBuilder->expr()->like('sc.title', $queryBuilder->expr()->literal('%' . $title . '%')),
+                        $titles
+                    )
+                )
+            )
+            ->setParameter('academicId', $academicId);
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return !empty($result);
+    }
 }
