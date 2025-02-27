@@ -8,6 +8,16 @@
   url("../_site/fonts/164a60c2e090248befbcf32fdd5af386.svg#Lulo Clean One Bold")format("svg");
 }
 
+@font-face {
+  font-family: "Fieldwork Hum Fat";
+  src: url("https://use.typekit.net/af/21aed5/00000000000000007735ce87/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),
+  url("https://use.typekit.net/af/21aed5/00000000000000007735ce87/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),
+  url("https://use.typekit.net/af/21aed5/00000000000000007735ce87/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font-stretch: expanded;
+}
+
 .vtk-home-header {
   width: 100%;
   height: ~"calc(100vh - 135px)";
@@ -318,184 +328,101 @@
   border-radius: 10px;
 }
 
-@media (max-width: 575.98px) {
-  .banner_event {
-    //margin-bottom: 150px;
-    background-image: url(../img/2324_jobfair_mobile.jpg);
-    background-position: center;
-    background-size: cover;
-    //padding: 10px;
-    // margin: 30px 0 0;
-    //margin: 0 0.4%;                   // banner 24ul
-    width: 100%;
-    color: whitesmoke;
-  }
+.banner_event {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_pc.png);
+  background-position: center;
+  background-size: cover;
+  color: whitesmoke;
+  opacity: 0.95;
 }
-
-@media (min-width: 575.98px) {
-  .banner_event {
-    //margin-bottom: 150px;
-    background-image: url(../img/2324_jobfair_pc.jpg);
-    background-position: center;
-    background-size: cover;
-    //padding: 10px;
-    // margin: 30px 0 10px;
-    //margin: 0 0.2%;                   // banner 24ul
-    color: whitesmoke;
-  }
-}
-
 
 .container_event {
-  @media (min-width: 768px) {
-    width: auto;
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   height: 580px;
-  margin: 0;
   padding: 0;
-}
-
-@media (min-width: 768px) {
-  .grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    grid-gap: 10px;
-  }
-
-  .left_up_event {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    height: 90px;
-  }
-
-  .right_up_event {
-    grid-column: 6 / span 2;
-    grid-row: 1;
-
-    text-align: end;
-    height: 90px;
-    padding-right: 30px;
-    padding-top: 20px;
-  }
-
-  .left_mid_event {
-    grid-column: 1 / span 3;
-    grid-row: 1 / span 2;
-    height: 320px;
-  }
-
-  .right_mid_event {
-    grid-column: 4 / span 4;
-    grid-row: 2;
-
-    .top-font {
-      font-size: 65px
-    }
-
-    .mid-font {
-      font-size: 80px
-    }
-
-    .down-font {
-      font-size: 26px
-    }
-  }
-
-  .right_mid_button_event {
-    grid-column: 6 / span 2;
-    grid-row: 3;
-
-    height: 50px;
-    margin-left: 30%;
-  }
-
-  .left_under_event {
-    grid-column: 1 / span 5;
-    grid-row: 4;
-
-    text-align: end;
-    height: 90px;
-  }
-
-  .right_under_event {
-    grid-column: 6 / span 2;
-    grid-row: 4;
-
-    padding-right: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .right_up_event {
-    height: 90px;
-    padding-left: 20px;
-    padding-top: 20px;
-  }
-
-  .right_mid_event {
-    padding-left: 20px;
-    padding-top: 20px;
-    height: 320px;
-
-    .top-font {
-      font-size: 46px;
-      padding-top: 70px;
-    }
-
-    .mid-font {
-      font-size: 52px
-    }
-
-    .down-font {
-      font-size: 18px
-    }
-  }
-
-  .right_mid_button_event {
-    height: 50px;
-    margin-left: 30%;
-  }
-
-  .left_under_event {
-    text-align: end;
-    height: 40px;
-  }
-
-  .right_under_event {
-    height: 40px;
-  }
-
-  .link_icon {
-    margin-right: 20px;
-    margin-top: 20px;
-    float: right;
-    width: 30px;
-    height: 30px;
-    background-image: url(../img/link-icon.svg);
-  }
-}
-
-.button_event {
-  padding: 12px;
-  border-radius: 10px;
-  height: 50px;
+  font-family: "Fieldwork Hum Fat";
+  color: #143156;
+  font-stretch: 200%;
+  text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2); /* Add text shadow */
   text-transform: uppercase;
-  font-size: 18px;
-  font-family: 'Lulo Clean One Bold';
 }
 
-.button_event:hover {
-  color: #9da8b2;
+.left_column {
+  /* Empty left column */
 }
 
-.buttons_event {
-  @media (max-width: 575.98px) {
-    margin-top: 53.5%;
-  }
-  @media (min-width: 575.98px) {
-    margin-top: 35.2%;
-  }
+.right_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 80px; /* Increased spacing between right_bottom and bottom_bottom */
+  padding: -70px 100px 100px;
+  transform: translateX(80px); /* Move the column 100px to the right */
+}
+
+.right_top {
+  align-self: flex-start; /* Ensure it aligns to the top */
+  font-size: 90px;
+  text-align: left;
+  margin-top: 0; /* Remove any default margin at the top */
+  padding-top: 0; /* Remove any default padding at the top */
+  padding-left: 12px;
+  -webkit-text-stroke: 3px #143156; /* Add stroke to the pseudo-element */
+}
+
+.top-font {
+  margin-bottom: -20px; /* Adjust this value to reduce the gap */
+}
+
+.mid-font {
+  font-size: 130px;
+  line-height: 80px; /* Reduce vertical spacing between VTK and JOBFAIR */
+  margin-top: -20px; /* Adjust this value to reduce the gap */
+}
+
+.right_bottom {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 20px; /* Increased spacing between right_bottom and bottom_bottom */
+}
+
+.bottom_top {
+  font-size: 40px;
+  line-height: 1.2; /* Adjust line-height to reduce vertical spacing */
+  -webkit-text-stroke: 1.75px #143156; /* Add stroke to the pseudo-element */
+}
+
+.bottom_top .info,
+.bottom_top .date_info {
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+  padding-left: 12px;
+}
+
+.bottom_bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #143156; /* Ensure text color in bottom_bottom */
+}
+
+a.button_event {
+  text-decoration: none; /* Remove underline from the link */
+  padding: 12px 12px 0;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 24px;
+  color: #143156; /* Ensure the text color matches */
+  font-family: "Fieldwork Hum Fat" !important; /* Set the font to Fieldwork Hum Fat */
+  margin-bottom: 0; /* Remove any default margin below the button */
+}
+
+.date_info {
+  -webkit-text-stroke: 1.75px #48a0c0; /* Add stroke to the pseudo-element */
+  color: #48a0c0;
+}
 
   //.button_event {
   //  display: inline-block;
@@ -524,9 +451,11 @@
   //  background-color: @color-blue;
   //  color: #9da8b2;
   //}
-}
+
 
 .countdown_container {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15) !important; /* Add text shadow */
+  margin-top: 0; /* Remove any default margin above the countdown */
   width: 210px;
 
   @media (min-width: 575.98px) {
@@ -541,7 +470,7 @@
 
 ul#countdown {
   margin: 0;
-  padding: 5px 0;
+  padding-inline-start: 0;
   //box-shadow: 0 0 2px 1px #9da8b2;
   //border-radius: 10px;
   //background: #1a1f4a;
@@ -558,14 +487,12 @@ ul#countdown {
     min-height: 36px;
 
     .label-c {
-      color: #9da8b2;
-      font-size: 10px;
+      font-size: 18px;
       text-transform: uppercase;
     }
 
     .number {
-      color: whitesmoke;
-      font-size: 13px;
+      font-size: 20px;
     }
   }
 }
