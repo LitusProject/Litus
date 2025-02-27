@@ -149,6 +149,10 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneByUsername($rNumber);
 
+        if ($person === null) {
+            return $this->error(404, 'Person not found');
+        }
+
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
             ->findOneById($person->getId());
