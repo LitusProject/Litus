@@ -141,13 +141,21 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             $seperatedString = explode(';', $userData);
             $rNumber = (new ActionController())->getRNumberAPI($seperatedString[0], $seperatedString[1], $this->getEntityManager());
         } else {
-            $rNumber = $userData;
+            if (preg_match('/^[rus]\d{7}$/', $userData)) {
+                $rNumber = $userData;
+            } else {
+                return $this->error(422, 'Invalid input, please provide a valid R number');
+            }
         }
 
 
         $person = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person')
             ->findOneByUsername($rNumber);
+
+        if ($person === null) {
+            return $this->error(400, 'Person not found');
+        }
 
         $academic = $this->getEntityManager()
             ->getRepository('CommonBundle\Entity\User\Person\Academic')
