@@ -213,7 +213,7 @@ class Academic extends \CommonBundle\Repository\User\Person
 
     public function isManama($academicId)
     {
-        $titles = [
+        $titles = array(
             'Master of Artificial Intelligence',
             'Master of Conservation of Monuments and Sites',
             'Master of Cybersecurity',
@@ -223,8 +223,8 @@ class Academic extends \CommonBundle\Repository\User\Person
             'Master of Safety Engineering',
             'Master of Urbanism, Landscape and Planning',
             'Master in de medische stralingsfysica',
-            'Master of Space Studies'
-        ];
+            'Master of Space Studies',
+        );
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('es')
@@ -246,17 +246,17 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         $result = $queryBuilder->getQuery()->getResult();
 
-        return !empty($result);
+        return (count($result) != 0);
     }
 
     public function isOtherLastYear($academicId)
     {
-        $titles = [
+        $titles = array(
             'Postgraduate',
             'Micro-credential',
             'Doctor',
-            'Doctoral'
-        ];
+            'Doctoral',
+        );
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('es')
@@ -276,6 +276,6 @@ class Academic extends \CommonBundle\Repository\User\Person
 
         $result = $queryBuilder->getQuery()->getResult();
 
-        return !empty($result);
+        return (count($result) != 0);
     }
 }
