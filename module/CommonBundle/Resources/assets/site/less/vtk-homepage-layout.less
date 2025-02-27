@@ -329,7 +329,12 @@
 }
 
 .banner_event {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_pc.png);
+  @media (min-width: 575.98px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_pc.png);
+  }
+  @media (max-width: 575.98px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_mobile.webp);
+  }
   background-position: center;
   background-size: cover;
   color: whitesmoke;
@@ -338,7 +343,9 @@
 
 .container_event {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  @media (min-width: 575.98px) {
+    grid-template-columns: 1fr 1fr;
+  }
   height: 580px;
   padding: 0;
   font-family: "Fieldwork Hum Fat";
@@ -357,13 +364,18 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 80px; /* Increased spacing between right_bottom and bottom_bottom */
-  padding: -70px 100px 100px;
-  transform: translateX(80px); /* Move the column 100px to the right */
+  @media (min-width: 575.98px) {
+    padding: -70px 100px 100px;
+    transform: translateX(80px); /* Move the column 80px to the right */
+  }
 }
 
 .right_top {
   align-self: flex-start; /* Ensure it aligns to the top */
-  font-size: 90px;
+  font-size: 60px;
+  @media (min-width: 575.98px) {
+    font-size: 90px;
+  }
   text-align: left;
   margin-top: 0; /* Remove any default margin at the top */
   padding-top: 0; /* Remove any default padding at the top */
@@ -376,7 +388,10 @@
 }
 
 .mid-font {
-  font-size: 130px;
+  font-size: 90px;
+  @media (min-width: 575.98px) {
+    font-size: 130px;
+  }
   line-height: 80px; /* Reduce vertical spacing between VTK and JOBFAIR */
   margin-top: -20px; /* Adjust this value to reduce the gap */
 }
@@ -457,15 +472,14 @@ a.button_event {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15) !important; /* Add text shadow */
   margin-top: 0; /* Remove any default margin above the countdown */
   width: 210px;
+  float: right;
 
-  @media (min-width: 575.98px) {
-    float: right;
+  /*@media (min-width: 575.98px) {
   }
   @media (max-width: 575.98px) {
-    padding-left: 28vw;
     width: 80%;
     text-align: right;
-  }
+  }*/
 }
 
 ul#countdown {
