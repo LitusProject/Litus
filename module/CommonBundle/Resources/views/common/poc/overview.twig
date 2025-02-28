@@ -28,9 +28,11 @@
     {% for pocStuff in pocItem%}
         <div class="container" style="background: whitesmoke; padding: 15px 0; border-radius: 10px; margin-bottom: 50px">
             <h3 style="padding-left: 15px">{{ pocStuff['groupId'].getName() }}
-{#                {% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}#}
-{#                    <small>&mdash;<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a></small>#}
-{#                {% endif %}#}
+                {% if activeAcademicYear.getCode() == currentAcademicYear.getCode()%}
+                    {% if  pocStuff['pocExample'].getEmailAdress() != "" %}
+                        <small style="padding-left: 5px">(<a href="mailto:{{ pocStuff['pocExample'].getEmailAdress()}}">{{ pocStuff['pocExample'].getEmailAdress() }}</a>)</small>
+                    {% endif %}
+                {% endif %}
             </h3>
 {#            <h3 class="container">{{ pocStuff['groupId'].getName() }}{% if activeAcademicYear.getCode() == currentAcademicYear.getCode() %}<small>&mdash;#}
 {#    #}
