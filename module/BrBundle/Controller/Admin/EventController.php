@@ -101,7 +101,7 @@ class EventController extends \CommonBundle\Component\Controller\ActionControlle
         }
 
         $propertiesForm = $this->getForm('br_event_edit', array('event' => $event));
-        $companyMapForm = $this->getForm('br_event_companyMap');
+        $companyMapForm = $this->getForm('br_event_companyMap', array('event' => $event));
 
         if ($this->getRequest()->isPost()) {
             $formData = $this->getRequest()->getPost();
