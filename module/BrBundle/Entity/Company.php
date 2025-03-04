@@ -164,6 +164,7 @@ class Company
      */
     const POSSIBLE_MASTERS = array(
         'architectural engineering'    => 'Architectural Engineering',
+        'articificial intelligence'    => 'Artificial Intelligence',
         'biomedical engineering'       => 'Biomedical Engineering',
         'chemical engineering'         => 'Chemical Engineering',
         'civil engineering'            => 'Civil Engineering',
@@ -175,7 +176,6 @@ class Company
         'mathematical engineering'     => 'Mathematical Engineering',
         'mechanical engineering'       => 'Mechanical Engineering',
         'nanoengineering'              => 'Nanoengineering',
-        'articificial intelligence'    => 'Artificial Intelligence',
     );
 
     /**
