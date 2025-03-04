@@ -142,7 +142,7 @@ class Subscription
         'ma2'    => '2nd Master',
         'manama' => 'ManaMa',
         'phd'    => 'PhD',
-        'Other'  => 'Other',
+        'other'  => 'Other',
     );
 
     /**
