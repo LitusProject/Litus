@@ -20,7 +20,7 @@ class Subscription
      * @var integer The ID of the mapping
      *
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="bigint")
      */
     private $id;
