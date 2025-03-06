@@ -20,7 +20,7 @@ class Subscription
      * @var integer The ID of the mapping
      *
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="bigint")
      */
     private $id;
@@ -114,7 +114,7 @@ class Subscription
         'faculty of bio engineering'        => 'Faculty of Bio Engineering',
         'faculty of business and economics' => 'Faculty of Business and Economics',
         'faculty of engineering technology' => 'Faculty of Engineering Technology',
-        'other'                             => 'Other',
+        'other'                             => 'other', //changed to lowercase to avoid translation
     );
 
     /**
@@ -142,7 +142,7 @@ class Subscription
         'ma2'    => '2nd Master',
         'manama' => 'ManaMa',
         'phd'    => 'PhD',
-        'Other'  => 'Other',
+        'other'  => 'Other',
     );
 
     /**

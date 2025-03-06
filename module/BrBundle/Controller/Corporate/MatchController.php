@@ -67,8 +67,6 @@ class MatchController extends CorporateController
                 $entry = $match->getStudentCV($this->getEntityManager(), $this->getCurrentAcademicYear());
                 if ($entry) {
                     $entries[] = array('id' => $match->getId(), 'cv' => $entry);
-                } else {
-                    unset($matches[$key]);
                 }
             }
         }
