@@ -330,23 +330,37 @@
 
 .banner_event {
   @media (min-width: 575.98px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_pc.png);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425.png);
+    height: 85vh;
   }
   @media (max-width: 575.98px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/2425_jobfair_mobile.webp);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile.png);
+    background-size: contain; /* Ensure the entire image is visible */
+    background-position: center; /* Center the image */
+    margin-top: 0;
+    margin-bottom: 0;
   }
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
   color: whitesmoke;
-  opacity: 0.95;
+}
+
+.container_event::before,
+.container_event::after {
+  content: none;
 }
 
 .container_event {
   display: grid;
   @media (min-width: 575.98px) {
     grid-template-columns: 1fr 1fr;
+    height: 580px;
   }
-  height: 580px;
+  @media (max-width: 575.98px) {
+    grid-template-columns: 1fr 1fr;
+    height: 500px;
+  }
   padding: 0;
   font-family: "Fieldwork Hum Fat";
   color: #143156;
