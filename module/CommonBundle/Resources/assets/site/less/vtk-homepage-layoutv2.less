@@ -329,22 +329,31 @@
 }
 
 .banner_event_galabal {
-  @media (min-width: 1000px) {
+  /* Large screens (desktops) */
+  @media (min-width: 1200px) {
     background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
     height: 85vh;
-    width: 100%;
-    margin: 0 auto;
+    max-height: 800px; /* Prevent excessive height on very tall screens */
   }
-  @media (max-width: 999.9px) {
+
+  /* Medium screens (laptops) */
+  @media (min-width: 756px) and (max-width: 1199px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
+    height: 70vh;
+    background-size: cover;
+  }
+
+  /* Small screens (mobile) */
+  @media (max-width: 755px) {
     background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile_v2.jpg);
     background-size: contain;
-    background-position: center;
-    height: 60vh; /* Fixed height for consistency */
-    min-height: 300px; /* Ensures minimum height on smaller screens */
-    width: 100%;
-    margin: 0 auto;
+    height: 60vh;
+    min-height: 300px;
   }
+
   /* Common properties for all screen sizes */
+  width: 100%;
+  margin: 0 auto;
   background-position: center;
   background-repeat: no-repeat;
   color: whitesmoke;
