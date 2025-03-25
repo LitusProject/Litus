@@ -329,21 +329,24 @@
 }
 
 .banner_event_galabal {
-  @media (min-width: 575.98px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.png);
+  @media (min-width: 1000px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
     height: 85vh;
   }
-  @media (max-width: 575.98px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile_v2.png);
-    background-size: contain; /* Ensure the entire image is visible */
-    background-position: center; /* Center the image */
-    margin-top: 0;
-    margin-bottom: 0;
+  @media (max-width: 999.9px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile_v2.jpg);
+    background-size: contain;
+    background-position: center;
+    height: 60vh; /* Fixed height for consistency */
+    min-height: 300px; /* Ensures minimum height on smaller screens */
+    width: 100%;
+    margin: 0 auto;
   }
+  /* Common properties for all screen sizes */
   background-position: center;
-  background-size: cover;
   background-repeat: no-repeat;
   color: whitesmoke;
+  display: block;
 }
 
 .container_event_galabal::before,
