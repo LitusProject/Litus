@@ -428,11 +428,18 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
             $date = clone $booking->getExpirationDate();
             $booking->setExpirationDate($date->add(new DateInterval($extendTime)));
             $this->getEntityManager()->flush();
+            // Send an email notification indicating the assignment was extended
+            BookingMail::sendAssignmentExtendedMail(
+                $this->getEntityManager(),
+                $this->getMailTransport(),
+                [$booking],
+                $booking->getPerson()
+            );
         }
 
         $this->flashMessenger()->success(
             'SUCCESS',
-            'The booking was successfully extended!'
+            'The booking was successfully extended and a notification email has been sent!'
         );
 
         $this->redirect()->toRoute(
