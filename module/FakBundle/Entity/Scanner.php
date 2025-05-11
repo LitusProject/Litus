@@ -43,6 +43,11 @@ class Scanner
     private $lastCheckin;
 
     /**
+     * @var \Doctrine\ORM\EntityManagerInterface|null
+     */
+    private $entityManager = null;
+
+    /**
      * Scanner constructor
      */
     public function __construct($username)
@@ -75,6 +80,25 @@ class Scanner
     {
         $this->username = $username;
         return $this;
+    }
+
+    public function getFullName()
+    {
+        if (!property_exists($this, 'entityManager') || !$this->entityManager) {
+            return '';
+        }
+        $person = $this->entityManager
+            ->getRepository('CommonBundle\Entity\User\Person')
+            ->findOneByUsername($this->getUserName());
+        if ($person) {
+            return $person->getFirstName() . ' ' . $person->getLastName();
+        }
+        return '';
+    }
+
+    public function setEntityManager($entityManager)
+    {
+        $this->entityManager = $entityManager;
     }
 
     /**

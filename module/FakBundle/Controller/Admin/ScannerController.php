@@ -6,11 +6,18 @@ use Laminas\View\Model\ViewModel;
 
 class ScannerController extends \CommonBundle\Component\Controller\ActionController\AdminController
 {
+    // module/FakBundle/Controller/Admin/ScannerController.php
+
     public function manageAction()
     {
         $allCheckins = $this->getEntityManager()
             ->getRepository('FakBundle\Entity\Scanner')
-            ->findAll();
+            ->findBy(array(), array('amount' => 'DESC'));
+
+        // Set EntityManager for each checkin so getFullName() works
+        foreach ($allCheckins as $checkin) {
+            $checkin->setEntityManager($this->getEntityManager());
+        }
 
         $paginator = $this->paginator()->createFromArray(
             $allCheckins,
@@ -18,16 +25,18 @@ class ScannerController extends \CommonBundle\Component\Controller\ActionControl
         );
 
         $totalAmount = 0;
-
         foreach ($allCheckins as $checkin) {
             $totalAmount += $checkin->getAmount();
         }
+
+        $offset = ($paginator->getCurrentPageNumber() - 1) * $paginator->getItemCountPerPage();
 
         return new ViewModel(
             array(
                 'paginator'         => $paginator,
                 'paginationControl' => $this->paginator()->createControl(true),
                 'totalAmount'       => $totalAmount,
+                'offset'            => $offset,
             )
         );
     }

@@ -57,15 +57,20 @@
             <table class="full_width manage">
                 <thead>
                 <tr>
+                    <th width="50px">Rank</th>
+                    <th>Name</th>
                     <th>Username</th>
                     <th>Amount</th>
                     <th width="70px">Action</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {% for checkin in paginator %}
                     <tr class="item item-{{ checkin.getId() }}">
+                        <td width="50px">
+                            {{ offset + loop.index }}
+                        </td>
+                        <td>{{ checkin.getFullName() }}</td>
                         <td>{{ checkin.getUserName() }}</td>
                         <td>{{ checkin.getAmount() }}</td>
                         <td class="actions">
