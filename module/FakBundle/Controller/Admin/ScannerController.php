@@ -14,18 +14,32 @@ class ScannerController extends \CommonBundle\Component\Controller\ActionControl
             ->getRepository('FakBundle\Entity\Scanner')
             ->findBy(array(), array('amount' => 'DESC'));
 
-        // Set EntityManager for each checkin so getFullName() works
+        $filteredCheckins = array();
+        $currentAcademicYear = $this->getCurrentAcademicYear();
+
         foreach ($allCheckins as $checkin) {
             $checkin->setEntityManager($this->getEntityManager());
+            $person = $this->getEntityManager()
+                ->getRepository('CommonBundle\Entity\User\Person')
+                ->findOneByUsername($checkin->getUserName());
+
+            // Only filter if person is an Academic
+            if ($person instanceof \CommonBundle\Entity\User\Person\Academic) {
+                $unit = $person->getUnit($currentAcademicYear);
+                if ($unit && strtolower($unit->getName()) === 'fakbar') {
+                    continue; // Skip this checkin
+                }
+            }
+            $filteredCheckins[] = $checkin;
         }
 
         $paginator = $this->paginator()->createFromArray(
-            $allCheckins,
+            $filteredCheckins,
             $this->getParam('page')
         );
 
         $totalAmount = 0;
-        foreach ($allCheckins as $checkin) {
+        foreach ($filteredCheckins as $checkin) {
             $totalAmount += $checkin->getAmount();
         }
 
