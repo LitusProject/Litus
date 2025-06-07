@@ -43,15 +43,15 @@
                 <fo:flow flow-name="xsl-region-body">
 
                     <fo:block-container position="absolute" top="180mm" left="0mm" width="170mm" height="100mm">
-                        <fo:block font-family="sans-serif" font-size="24pt" font-weight="bold" text-align="center" space-after="20mm">
+                        <fo:block font-family="sans-serif" font-size="24pt" font-weight="bold" text-align="center" space-after="10mm">
                             <xsl:apply-templates select="title"/>
                         </fo:block>
-                        <fo:block font-family="sans-serif" font-size="15pt" text-align="center" space-after="40mm">
+                        <fo:block font-family="sans-serif" font-size="15pt" text-align="center" space-after="50mm">
                             <xsl:apply-templates select="authors"/>
                         </fo:block>
                     </fo:block-container>
 
-                    <fo:block-container position="absolute" top="237mm" left="90mm" width="80mm" height="20mm">
+                    <fo:block-container position="absolute" top="237mm" left="95mm" width="80mm" height="20mm">
                         <fo:block font-family="sans-serif" font-size="12pt">
                             <fo:table table-layout="fixed" width="100%">
                                 <fo:table-column column-number="1" column-width="20mm"/>
