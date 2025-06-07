@@ -42,58 +42,40 @@
 
                 <fo:flow flow-name="xsl-region-body">
 
-                    <fo:table table-layout="fixed" width="100%">
-                        <fo:table-column column-number="1" column-width="16mm"/>
-                        <fo:table-column column-number="2" column-width="0.1mm" />
-                        <fo:table-column column-number="3" column-width="140mm"/>
-
-                        <fo:table-body>
-                            <fo:table-row>
-                                <fo:table-cell display-align="center" padding-right="3mm">
-                                    <fo:block>
-                                        <fo:external-graphic content-width="16mm" scaling="uniform">
-                                            <xsl:attribute name="src"><xsl:text>url('file:data/images/logo/sedes.svg')</xsl:text></xsl:attribute>
-                                        </fo:external-graphic>
-                                    </fo:block>
-                                </fo:table-cell>
-                                <fo:table-cell background-color="black">
-                                    <fo:block />
-                                </fo:table-cell>
-                                <fo:table-cell display-align="center" padding-left="3mm">
-                                    <fo:block font-family="sans-serif" font-size="10pt" text-align="left" space-after="5mm">
-                                        <xsl:apply-templates select="university"/>
-                                    </fo:block>
-                                    <fo:block font-family="sans-serif" font-size="10pt" text-align="left">
-                                        <xsl:apply-templates select="faculty"/>
-                                    </fo:block>
-                                </fo:table-cell>
-                            </fo:table-row>
-                        </fo:table-body>
-                    </fo:table>
-
-                    <fo:block-container position="absolute" top="80mm" left="0mm" width="170mm" height="100mm">
+                    <fo:block-container position="absolute" top="180mm" left="0mm" width="170mm" height="100mm">
                         <fo:block font-family="sans-serif" font-size="24pt" font-weight="bold" text-align="center" space-after="20mm">
                             <xsl:apply-templates select="title"/>
                         </fo:block>
-                        <fo:block font-family="sans-serif" font-size="18pt" text-align="center" space-after="40mm">
+                        <fo:block font-family="sans-serif" font-size="15pt" text-align="center" space-after="40mm">
                             <xsl:apply-templates select="authors"/>
                         </fo:block>
                     </fo:block-container>
 
-                    <fo:block-container position="absolute" top="210mm" left="0mm" width="170mm" height="20mm">
+                    <fo:block-container position="absolute" top="237mm" left="90mm" width="80mm" height="20mm">
                         <fo:block font-family="sans-serif" font-size="12pt">
                             <fo:table table-layout="fixed" width="100%">
                                 <fo:table-column column-number="1" column-width="20mm"/>
-                                <fo:table-column column-number="2" column-width="150mm"/>
+                                <fo:table-column column-number="2" column-width="60mm"/>
 
                                 <fo:table-body>
                                     <xsl:for-each select="subjects/subject">
                                         <fo:table-row>
-                                            <fo:table-cell display-align="after">
-                                                <fo:block font-weight="bold"><xsl:value-of select="code"/></fo:block>
+                                            <fo:table-cell display-align="baseline">
+                                                <fo:block font-weight="bold">
+                                                    <xsl:value-of select="code"/>
+                                                </fo:block>
                                             </fo:table-cell>
-                                            <fo:table-cell>
-                                                <fo:block><xsl:value-of select="name"/></fo:block>
+                                            <fo:table-cell display-align="baseline">
+                                                <fo:block
+                                                        font-family="sans-serif"
+                                                        font-size="12pt"
+                                                        wrap-option="wrap"
+                                                        white-space-collapse="true"
+                                                        white-space-treatment="preserve"
+                                                        linefeed-treatment="preserve"
+                                                        hyphenate="true">
+                                                    <xsl:value-of select="name"/>
+                                                </fo:block>
                                             </fo:table-cell>
                                         </fo:table-row>
                                     </xsl:for-each>
@@ -125,14 +107,6 @@
                                                 </xsl:call-template>
                                             </fo:instream-foreign-object>
                                         </fo:block>
-                    </fo:block-container>
-
-                    <fo:block-container position="absolute" top="228mm" left="117mm" width="63mm" height="49mm">
-                        <fo:block>
-                            <fo:external-graphic content-width="63mm" content-height="49mm" scaling="uniform">
-                                <xsl:attribute name="src"><xsl:text>url('file:data/images/logo/hoekje.svg')</xsl:text></xsl:attribute>
-                            </fo:external-graphic>
-                        </fo:block>
                     </fo:block-container>
 
                 </fo:flow>
