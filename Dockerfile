@@ -1,5 +1,5 @@
 # dependencies
-FROM caddy:2.8.4 AS caddy
+FROM caddy:2.9.1 AS caddy
 
 # development
 FROM composer:2.8.3 AS composer
