@@ -199,4 +199,6 @@ return array(
     'There is no QR code for this event.' => 'Er is geen QR code voor dit evenement.',
     'Your ticket is only reserved. You will receive the QR code after you pay the ticket.' => 'Je ticket is enkel gereserveerd. Je zal de QR code ontvangen als je het ticket betaald hebt.',
     'More events' => 'Meer evenementen',
+    'Coporate Inquiries' => 'Contact voor Bedrijven',
+    'You can contact VTK Corporate Relations by email at corporaterelations@vtk.be, or reach the Head of Corporate Relations directly by phone at +32 483 64 23 10.' => 'Je kunt contact opnemen met VTK Corporate Relations via e-mail op bedrijvenrelaties@vtk.be, of rechtstreeks de Head of Corporate Relations telefonisch bereiken via +32 483 64 23 10.',
 );
