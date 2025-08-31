@@ -324,14 +324,14 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function precalculateSellPrice(EntityManager $entityManager)
     {
-        // First get the purchase price in euros
+        // Get purchase price in euros
         $purchasePrice = $this->precalculatePurchasePrice($entityManager);
 
         // Apply 3% markup
         $sellPrice = $purchasePrice * 1.03;
 
-        // Round UP to 2 decimals
-        return ceil($sellPrice * 100) / 100;
+        // Round UP to the next 10 cents
+        return ceil($sellPrice * 10) / 10;
     }
 
     /**
