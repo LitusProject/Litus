@@ -324,42 +324,14 @@ class Internal extends \CudiBundle\Entity\Article
      */
     public function precalculateSellPrice(EntityManager $entityManager)
     {
-        $prices = unserialize(
-            $entityManager->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('cudi.sell_prices')
-        );
+        // First get the purchase price in euros
+        $purchasePrice = $this->precalculatePurchasePrice($entityManager);
 
-        $total = 0;
-        switch ($this->binding->getCode()) {
-            case 'glued':
-                $total += $prices['binding_glued'];
-                break;
-            case 'stapled':
-                $total += $prices['binding_stapled'];
-                break;
-            default:
-                $total += $prices['binding_none'];
-                break;
-        }
-        if ($this->rectoVerso) {
-            if ($this->nbColored > 0) {
-                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            } else {
-                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
-            }
-        } else {
-            if ($this->nbColored > 0) {
-                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            } else {
-                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
-            }
-        }
+        // Apply 3% markup
+        $sellPrice = $purchasePrice * 1.03;
 
-        if ($this->hardcovered) {
-            $total += $prices['hardcover'];
-        }
-
-        return $total / 1000;
+        // Round UP to 2 decimals
+        return ceil($sellPrice * 100) / 100;
     }
 
     /**
