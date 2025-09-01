@@ -330,9 +330,7 @@ class Internal extends \CudiBundle\Entity\Article
         $rawSellPrice = $purchasePrice * 1.03;
 
         // round up to the next 10
-        $sellPrice = ceil($rawSellPrice / 10) * 10;
-
-        return $sellPrice;
+        return ceil($rawSellPrice / 10) * 10;
     }
 
     /**
@@ -360,17 +358,9 @@ class Internal extends \CudiBundle\Entity\Article
                 break;
         }
         if ($this->rectoVerso) {
-            if ($this->nbColored > 0) {
-                $total += $prices['recto_verso_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            } else {
-                $total += $prices['recto_verso_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
-            }
+            $total += $prices['recto_verso_color']*$this->nbColored + $prices['recto_verso_bw']*$this->nbBlackAndWhite;
         } else {
-            if ($this->nbColored > 0) {
-                $total += $prices['recto_color'] * ($this->nbColored + $this->nbBlackAndWhite);
-            } else {
-                $total += $prices['recto_bw'] * ($this->nbColored + $this->nbBlackAndWhite);
-            }
+            $total += $prices['recto_color']*$this->nbColored + $prices['recto_bw']*$this->nbBlackAndWhite;
         }
 
         if ($this->hardcovered) {
