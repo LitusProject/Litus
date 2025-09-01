@@ -358,9 +358,9 @@ class Internal extends \CudiBundle\Entity\Article
                 break;
         }
         if ($this->rectoVerso) {
-            $total += $prices['recto_verso_color']*$this->nbColored + $prices['recto_verso_bw']*$this->nbBlackAndWhite;
+            $total += $prices['recto_verso_color'] * $this->nbColored + $prices['recto_verso_bw'] * $this->nbBlackAndWhite;
         } else {
-            $total += $prices['recto_color']*$this->nbColored + $prices['recto_bw']*$this->nbBlackAndWhite;
+            $total += $prices['recto_color'] * $this->nbColored + $prices['recto_bw'] * $this->nbBlackAndWhite;
         }
 
         if ($this->hardcovered) {
