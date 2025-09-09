@@ -30,6 +30,7 @@
             </div>
             <div class="memberHolder">
                 {% for member in unit['members'] %}
+                    {% if member.getId() != 22530 %} {# Temporary code to remove Renske Verpoorten from the site for onthaaldagen #}
                         <div class="member">
                             {% if member.getPhotoPath() %}
                                 <div class="memberPhoto" style="background-image: url({{ profilePath }}/{{ member.getPhotoPath() }})"></div>
@@ -47,6 +48,7 @@
                                 <p style="text-align: center;">{{ hideEmail('<a href="mailto:' ~ extraUnit.getMail() ~ '">' ~ extraUnit.getName() ~ '</a>') }}</p>
                             {% endfor %}
                         </div>
+                    {% endif %}
                 {% endfor %}
             </div> 
         {% endfor %}
