@@ -111,7 +111,7 @@ class Study
 
             $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-            $xml = loadXmlFromUrl($url);
+            $xml = $this->loadXmlFromUrl($url);
 
             $this->subjectCache = array();
             $this->profCache = array();
@@ -609,7 +609,7 @@ class Study
 
         $studies = array();
 
-        $root = loadXmlFromUrl($url);
+        $root = $this->loadXmlFromUrl($url);
         foreach ($root->data->children() as $organization) {
             foreach ($organization->children() as $department) {
                 if (in_array($department->attributes()->id, $departments)) {
@@ -659,7 +659,7 @@ class Study
 
             $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-            $xml = loadXmlFromUrl($url);
+            $xml = $this->loadXmlFromUrl($url);
             foreach ($xml->data->opleiding->programmas->children() as $study) {
                 $urls[] = str_replace(
                     array(
