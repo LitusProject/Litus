@@ -195,7 +195,11 @@
 
                                     {% for map in subjectArticle['articles'] %}
                                         <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
-                                            <td>{{ map['article'].getMainArticle().getTitle() }}</td>
+                                            <td>
+                                                {{ map['article'].getMainArticle().getTitle()
+                                                |replace({'\\aa ': ''})
+                                                |raw }}
+                                            </td>
                                             <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
                                             <td>
                                                 {% if map['article'].getDiscounts()|length > 0 %}
