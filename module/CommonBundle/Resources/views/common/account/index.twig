@@ -136,7 +136,11 @@
 
                     {% for booking in bookings %}
                         <div class="itemHolder hideOnMobile  item-{{ booking.getId() }}">
-                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="article-column" >{{
+                                booking.getArticle().getMainArticle().getTitle()
+                                | replace({'\\11 Haal de cudi verantwoordelijke': 'Ik heb subsidies bij Stuvo aangevraagd (meer info op <a href="https://vtk.be/nl/page/financiele-ondersteuning/">https://vtk.be/nl/page/financiele-ondersteuning</a>)'})
+                                | raw
+                                }}</div>
                             <div class="amount-column" >{{ booking.getNumber() }}</div>
                             <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
                             <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>
@@ -151,7 +155,11 @@
 
                         {# View on mobile #}
                         <div class="itemHolderMobile item-{{ booking.getId() }}">
-                            <h5 style="margin-bottom: 5px">{{ booking.getArticle().getMainArticle().getTitle() }}</h5>
+                            <h5 style="margin-bottom: 5px">{{
+                                booking.getArticle().getMainArticle().getTitle()
+                                | replace({'\\11 Haal de cudi verantwoordelijke': 'Ik heb subsidies bij Stuvo aangevraagd (meer info op <a href="https://vtk.be/nl/page/financiele-ondersteuning/">https://vtk.be/nl/page/financiele-ondersteuning</a>)'})
+                                | raw
+                                }}</h5>
                             {% if booking.getExpirationDate %}<div>{{ translate('Expiration Date') }}: {{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>{% endif %}
                             <div>{{ booking.getNumber() }} {{ translate('Pieces') }} | {{ translate('Total') }}: €{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
                             <div style="height: 10px"></div>
@@ -187,7 +195,13 @@
 
                     {% for booking in futureBookings %}
                         <div class="itemHolder item-{{ booking.getId() }}">
-                            <div class="article-column" >{{ booking.getArticle().getMainArticle().getTitle() }}</div>
+                            <div class="article-column" >
+                                {{
+                                booking.getArticle().getMainArticle().getTitle()
+                                | replace({'\\11 Haal de cudi verantwoordelijke': 'Ik heb subsidies bij Stuvo aangevraagd (meer info op <a href="https://vtk.be/nl/page/financiele-ondersteuning/">https://vtk.be/nl/page/financiele-ondersteuning</a>)'})
+                                | raw
+                                }}
+                            </div>
                             <div class="amount-column" >{{ booking.getNumber() }}</div>
                             <div class="price-column" >€{{ (booking.getNumber() * booking.getArticle().getSellPrice()/100)|number_format(2) }}</div>
                             <div class="date-column" >{{ dateLocalized(booking.getExpirationDate(), 'dd/MM/y') }}</div>

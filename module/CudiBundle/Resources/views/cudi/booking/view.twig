@@ -32,7 +32,9 @@
                 </tr>
                 {% for booking in bookings %}
                     <tr class="item item-{{ booking.getId() }} {% if 'assigned' == booking.getStatus() %}success{% endif %}" data-price="{{ booking.getArticle().getSellPrice() * booking.getNumber() }}">
-                        <td>{{ booking.getArticle().getMainArticle().getTitle() }}</td>
+                        <td>{{ booking.getArticle().getMainArticle().getTitle()
+                            | replace({'\\11 Haal de cudi verantwoordelijke': 'Ik heb subsidies bij Stuvo aangevraagd (meer info op <a href="https://vtk.be/nl/page/financiele-ondersteuning/">https://vtk.be/nl/page/financiele-ondersteuning</a>)'})
+                            | raw}}</td>
                         <td class="hidden-xs">{{ booking.getArticle().getMainArticle().getAuthors() }}</td>
                         <td>
                             {% if booking.getArticle().getDiscounts()|length > 0 %}
