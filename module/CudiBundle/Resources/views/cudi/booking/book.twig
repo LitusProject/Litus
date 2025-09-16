@@ -197,7 +197,7 @@
                                         <tr class="{% if map['booked'] > 0 %}warning{% endif %} {% if map['sold'] > 0 %}success{% endif %}">
                                             <td>
                                                 {{ map['article'].getMainArticle().getTitle()
-                                                |replace({'\\aa ': ''})
+                                                |replace({'\\aa Haal de cudi verantwoordelijke': 'Ik heb subsidies bij Stuvo aangevraagd (meer info op <a href="https://vtk.be/nl/page/financiele-ondersteuning/">https://vtk.be/nl/page/financiele-ondersteuning</a>)'})
                                                 |raw }}
                                             </td>
                                             <td class="hidden-xs">{{ map['article'].getMainArticle().getAuthors() }}</td>
