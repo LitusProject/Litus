@@ -111,7 +111,7 @@ class Study
 
             $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-            $xml = simplexml_load_file($url);
+            $xml = loadXmlFromUrl($url);
 
             $this->subjectCache = array();
             $this->profCache = array();
@@ -609,7 +609,7 @@ class Study
 
         $studies = array();
 
-        $root = simplexml_load_file($url);
+        $root = loadXmlFromUrl($url);
         foreach ($root->data->children() as $organization) {
             foreach ($organization->children() as $department) {
                 if (in_array($department->attributes()->id, $departments)) {
@@ -659,7 +659,7 @@ class Study
 
             $this->callback('load_xml', substr($url, strrpos($url, '/') + 1));
 
-            $xml = simplexml_load_file($url);
+            $xml = loadXmlFromUrl($url);
             foreach ($xml->data->opleiding->programmas->children() as $study) {
                 $urls[] = str_replace(
                     array(
@@ -676,6 +676,21 @@ class Study
         }
 
         return $urls;
+    }
+
+    function loadXmlFromUrl($url) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0");
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        $xmlString = curl_exec($ch);
+        if ($xmlString === false) {
+            throw new Exception("cURL error: " . curl_error($ch));
+        }
+        curl_close($ch);
+
+        return simplexml_load_string($xmlString);
     }
 
     /**
