@@ -6,6 +6,8 @@ use CommonBundle\Component\Console\Command;
 use CommonBundle\Component\Socket\User;
 use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Component\Socket\Sale\Queue;
+use Laminas\Mail\Message;
+use Laminas\Mail\Transport\Sendmail;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
@@ -135,6 +137,43 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         $this->sendQueue($user);
     }
 
+
+    protected function sendMail(string $toEmail, string $subject, string $body, ?string $toName = null): void
+    {
+        $em = $this->getEntityManager();
+
+        $fromEmail = $em
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail');
+
+        $fromName = $em
+            ->getRepository('CommonBundle\Entity\General\Config')
+            ->getConfigValue('cudi.mail_name');
+
+        $message = new Message();
+        $message->setEncoding('UTF-8')
+            ->setFrom($fromEmail, $fromName)
+            ->addTo($toEmail, $toName ?: $toEmail)
+            ->setSubject($subject)
+            ->setBody($body);
+
+        if ($em->getRepository('CommonBundle\Entity\General\Config')->getConfigValue('cudi.booking_mails_to_sysadmin')) {
+            $sysadminEmail = $em
+                ->getRepository('CommonBundle\Entity\General\Config')
+                ->getConfigValue('system_administrator_mail');
+            if ($sysadminEmail) {
+                $message->addBcc($sysadminEmail, 'System Administrator');
+            }
+        }
+
+        if (getenv('APPLICATION_ENV') !== 'development') {
+            $this->getMailTransport()->send($message);
+        } else {
+            error_log(sprintf('[DEV] sendMail suppressed. To: %s | Subject: %s', $toEmail, $subject));
+        }
+    }
+
+
     /**
      * Handle action specified by client
      *
@@ -197,8 +236,50 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                 break;
 
             case 'concludeSale':
-                $this->concludeSale($user, $command->id, $command->articles, $command->discounts, $command->payMethod);
-                $this->sendQueueItemToAll($command->id);
+                $id = $command->id;
+                $articles = $command->articles;
+                $discounts = $command->discounts;
+                $payMethod = $command->payMethod;
+
+                // Check if any article has ID 9044 (Aanvraag subsidies)
+                $hasSubsidyArticle = false;
+                foreach ($articles as $article) {
+                    if ($article->id == 9044) {
+                        $hasSubsidyArticle = true;
+                        break;
+                    }
+                }
+
+                // If article 9044 is found (Aanvraag subsidies), send the email
+                if ($hasSubsidyArticle) {
+                    try {
+                        $queueItem = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\QueueItem')
+                            ->findOneById($id);
+
+                        if ($queueItem && ($person = $queueItem->getPerson())) {
+                            $academic = $this->getEntityManager()
+                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                                ->findOneById($person->getId());
+
+                            $universityIdentification = $academic
+                                ? $academic->getUniversityIdentification()
+                                : 'unknown';
+
+                            $comment = (string)$queueItem->getComment();
+                            $subject = "[Subsidie aanvraag - r{$universityIdentification}]";
+                            $body    = "Articles: " . json_encode($articles) . "\nComment: {$comment}";
+
+                            $this->sendMail('subsidies@vtk.be', $subject, $body);
+                        }
+                    } catch (\Throwable $e) {
+                        // Fail silently, but log the error for debugging
+                        error_log("Subsidy mail not sent for queueItem {$id}: " . $e->getMessage());
+                    }
+                }
+
+                $this->concludeSale($user, $id, $articles, $discounts, $payMethod);
+                $this->sendQueueItemToAll($id);
 
                 break;
 
