@@ -241,9 +241,9 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
                 // Check if any article has ID 9044 (Aanvraag subsidies)
                 $hasSubsidyArticle = false;
-                foreach ($articles as $article) {
-                    if ($article == 9044) {
-                        error_log('Subsidy article found in queueItem $id');
+                foreach ($articles as $articleId => $qty) {
+                    if ((int) $articleId === 9044 && (int) $qty > 0) {
+                        error_log('Subsidy article found in queueItem ' . $id);
                         $hasSubsidyArticle = true;
                         break;
                     }
