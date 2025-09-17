@@ -296,8 +296,28 @@
             )
         );
 
+        // Temporarily disable global key handlers (shortcuts/barcode) while editing
+        $(document).off('keydown.sale');
+
+        // Ensure keystrokes inside the modal do not bubble to document handlers
+        modal.on('keydown', function (e) {
+            e.stopPropagation();
+        });
+
+        // Re-enable global handlers after the modal is closed (via any method)
+        modal.one('hidden.bs.modal hidden', function () {
+            $(document).on('keydown.sale', function (e) {
+                _keyControls($this, e);
+            });
+            $(this).remove();
+        });
+
+        modal.on('shown.bs.modal', function () {
+            $(this).find('textarea').focus();
+        });
         modal.modal();
     }
+
 
     function _addArticles($this, articles) {
         var settings = $this.data('saleInterfaceSettings');
