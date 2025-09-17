@@ -234,33 +234,43 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
             case 'concludeSale':
                 $id        = $command->id;
-                $articles  = $command->articles;
+                $articles  = $command->articles;   // map: articleId => quantity
                 $discounts = $command->discounts;
                 $payMethod = $command->payMethod;
 
-                // Check if any article has ID 9044 (Aanvraag subsidies)
                 $hasSubsidyArticle = false;
-                $articleDetails = [];
-                foreach ($articles as $articleId => $qty) {
-                    if ((int) $qty > 0) {
-                        // Fetch the Sale\Article entity
-                        $saleArticle = $this->getEntityManager()
-                            ->getRepository('CudiBundle\Entity\Sale\Article')
-                            ->findOneById($articleId);
+                $articleDetails    = array();
+                $totalAmount       = 0.0;
 
-                        if ($saleArticle) {
-                            // Fetch the main Article entity
-                            $mainArticle = $saleArticle->getMainArticle();
-                            $articleDetails[] = [
-                                'name' => $mainArticle ? $mainArticle->getTitle() : 'Unknown',
-                                'sell_price' => $saleArticle->getSellPrice(),
-                                'quantity' => $qty,
-                            ];
-                        }
+                foreach ($articles as $articleId => $qty) {
+                    $qtyInt = (int) $qty;
+                    if ($qtyInt <= 0) {
+                        continue;
                     }
 
-                    if ((int) $articleId === 9044 && (int) $qty > 0) {
+                    // detect subsidy article (9044) but exclude it from details/total
+                    if ((int) $articleId === 9044) {
                         $hasSubsidyArticle = true;
+                        continue; // filter it out
+                    }
+
+                    // Fetch the Sale\Article entity
+                    $saleArticle = $this->getEntityManager()
+                        ->getRepository('CudiBundle\Entity\Sale\Article')
+                        ->findOneById($articleId);
+
+                    if ($saleArticle) {
+                        $mainArticle = $saleArticle->getMainArticle();
+                        $name        = $mainArticle ? $mainArticle->getTitle() : 'Unknown';
+                        $sellPrice   = (float) $saleArticle->getSellPrice();
+
+                        $articleDetails[] = array(
+                            'name'       => $name,
+                            'sell_price' => $sellPrice,
+                            'quantity'   => $qtyInt,
+                        );
+
+                        $totalAmount += $sellPrice * $qtyInt;
                     }
                 }
 
@@ -283,21 +293,26 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                                     $universityIdentification = $academic->getUniversityIdentification();
                                 }
 
-                                $comment = (string) $queueItem->getComment();
-                                $subject = '[Subsidie aanvraag - r' . $universityIdentification . ']';
-
-                                // Format the article details for the email body
+                                // Format details
                                 $articleDetailsString = '';
                                 foreach ($articleDetails as $detail) {
                                     $articleDetailsString .= sprintf(
-                                        "Name: %s, Sell Price: %.2f, Quantity: %d\n",
-                                        $detail['name'],
-                                        $detail['sell_price'],
-                                        $detail['quantity']
-                                    );
+                                            'Name: %s, Sell Price: %.2f, Quantity: %d',
+                                            $detail['name'],
+                                            $detail['sell_price'],
+                                            $detail['quantity']
+                                        ) . PHP_EOL;
                                 }
 
-                                $body = 'Articles: ' . PHP_EOL . $articleDetailsString . 'Comment: ' . $comment;
+                                $totalLine = 'Total: ' . number_format($totalAmount, 2, '.', '');
+
+                                $comment = (string) $queueItem->getComment();
+                                $subject = '[Subsidie aanvraag - r' . $universityIdentification . ']';
+                                $body    = 'Articles:' . PHP_EOL
+                                    . $articleDetailsString
+                                    . $totalLine . PHP_EOL
+                                    . PHP_EOL  // empty line before comment
+                                    . 'Comment: ' . $comment;
 
                                 $this->sendMail('subsidies@vtk.be', $subject, $body);
                             }
@@ -307,6 +322,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                         error_log('Subsidy mail not sent for queueItem ' . $id . ': ' . $e->getMessage());
                     }
                 }
+
                 $this->concludeSale($user, $id, $articles, $discounts, $payMethod);
                 $this->sendQueueItemToAll($id);
 
