@@ -233,7 +233,6 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                 break;
 
             case 'concludeSale':
-                error_log('Processing concludeSale for queueItem ' . $command->id);
                 $id        = $command->id;
                 $articles  = $command->articles;
                 $discounts = $command->discounts;
@@ -241,18 +240,33 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
                 // Check if any article has ID 9044 (Aanvraag subsidies)
                 $hasSubsidyArticle = false;
+                $articleDetails = [];
                 foreach ($articles as $articleId => $qty) {
+                    if ((int) $qty > 0) {
+                        // Fetch the Sale\Article entity
+                        $saleArticle = $this->getEntityManager()
+                            ->getRepository('CudiBundle\Entity\Sale\Article')
+                            ->findOneById($articleId);
+
+                        if ($saleArticle) {
+                            // Fetch the main Article entity
+                            $mainArticle = $saleArticle->getMainArticle();
+                            $articleDetails[] = [
+                                'name' => $mainArticle ? $mainArticle->getTitle() : 'Unknown',
+                                'sell_price' => $saleArticle->getSellPrice(),
+                                'quantity' => $qty,
+                            ];
+                        }
+                    }
+
                     if ((int) $articleId === 9044 && (int) $qty > 0) {
-                        error_log('Subsidy article found in queueItem ' . $id);
                         $hasSubsidyArticle = true;
-                        break;
                     }
                 }
 
                 // If article 9044 is found (Aanvraag subsidies), send the email
                 if ($hasSubsidyArticle) {
                     try {
-                        error_log('Sending subsidy mail for queueItem ' . $id);
                         $queueItem = $this->getEntityManager()
                             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                             ->findOneById($id);
@@ -260,7 +274,6 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                         if ($queueItem) {
                             $person = $queueItem->getPerson();
                             if ($person) {
-                                error_log('Found person ' . $person->getId() . ' for queueItem ' . $id);
                                 $academic = $this->getEntityManager()
                                     ->getRepository('CommonBundle\Entity\User\Person\Academic')
                                     ->findOneById($person->getId());
@@ -272,10 +285,21 @@ class Sale extends \CommonBundle\Component\Socket\Socket
 
                                 $comment = (string) $queueItem->getComment();
                                 $subject = '[Subsidie aanvraag - r' . $universityIdentification . ']';
-                                $body    = 'Articles: ' . json_encode($articles) . PHP_EOL . 'Comment: ' . $comment;
+
+                                // Format the article details for the email body
+                                $articleDetailsString = '';
+                                foreach ($articleDetails as $detail) {
+                                    $articleDetailsString .= sprintf(
+                                        "Name: %s, Sell Price: %.2f, Quantity: %d\n",
+                                        $detail['name'],
+                                        $detail['sell_price'],
+                                        $detail['quantity']
+                                    );
+                                }
+
+                                $body = 'Articles: ' . PHP_EOL . $articleDetailsString . 'Comment: ' . $comment;
 
                                 $this->sendMail('subsidies@vtk.be', $subject, $body);
-                                error_log('Subsidy mail sent for queueItem ' . $id);
                             }
                         }
                     } catch (\Throwable $e) {
@@ -283,7 +307,6 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                         error_log('Subsidy mail not sent for queueItem ' . $id . ': ' . $e->getMessage());
                     }
                 }
-                error_log('Concluding sale for queueItem ' . $id);
                 $this->concludeSale($user, $id, $articles, $discounts, $payMethod);
                 $this->sendQueueItemToAll($id);
 
