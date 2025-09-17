@@ -307,7 +307,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                                 $totalLine = 'Total: ' . number_format($totalAmount, 2, '.', '');
 
                                 $comment = (string) $queueItem->getComment();
-                                $subject = '[Subsidie aanvraag - r' . $universityIdentification . ']';
+                                $subject = '[Subsidie aanvraag - ' . $universityIdentification . ']';
                                 $body    = 'Articles:' . PHP_EOL
                                     . $articleDetailsString
                                     . $totalLine . PHP_EOL
