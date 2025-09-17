@@ -375,6 +375,16 @@
     }
 
     function _keyControls($this, e) {
+
+        var $target = $(e.target);
+        if (
+            $target.is('input, textarea, select, button') ||
+            $target.is('[contenteditable=true]') ||
+            $target.closest('.modal').length
+        ) {
+            return;
+        }
+
         var activeRow = $this.find('tbody tr.article.info:first');
 
         if (e.which == 40) { // arrow up
