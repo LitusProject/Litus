@@ -305,10 +305,12 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                                 }
 
                                 $totalLine = 'Total: ' . number_format($totalAmount, 2, '.', '');
-
+                                $name = $person ? $person->getFullName() : ($academic ? $academic->getFullName() : 'unknown');
                                 $comment = (string) $queueItem->getComment();
                                 $subject = '[Subsidie aanvraag - ' . $universityIdentification . ']';
-                                $body    = 'Articles:' . PHP_EOL
+                                $body    =
+                                    'Name: ' . $name . PHP_EOL .
+                                    'Articles:' . PHP_EOL
                                     . $articleDetailsString
                                     . $totalLine . PHP_EOL
                                     . PHP_EOL  // empty line before comment
