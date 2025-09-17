@@ -7,7 +7,6 @@ use CommonBundle\Component\Socket\User;
 use CudiBundle\Component\Socket\Sale\Printer;
 use CudiBundle\Component\Socket\Sale\Queue;
 use Laminas\Mail\Message;
-use Laminas\Mail\Transport\Sendmail;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Ratchet\ConnectionInterface;
 use React\EventLoop\LoopInterface;
@@ -137,7 +136,6 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         $this->sendQueue($user);
     }
 
-
     protected function sendMail(string $toEmail, string $subject, string $body, ?string $toName = null): void
     {
         $em = $this->getEntityManager();
@@ -172,7 +170,6 @@ class Sale extends \CommonBundle\Component\Socket\Socket
             error_log(sprintf('[DEV] sendMail suppressed. To: %s | Subject: %s', $toEmail, $subject));
         }
     }
-
 
     /**
      * Handle action specified by client
@@ -236,8 +233,8 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                 break;
 
             case 'concludeSale':
-                $id = $command->id;
-                $articles = $command->articles;
+                $id        = $command->id;
+                $articles  = $command->articles;
                 $discounts = $command->discounts;
                 $payMethod = $command->payMethod;
 
@@ -257,24 +254,28 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                             ->getRepository('CudiBundle\Entity\Sale\QueueItem')
                             ->findOneById($id);
 
-                        if ($queueItem && ($person = $queueItem->getPerson())) {
-                            $academic = $this->getEntityManager()
-                                ->getRepository('CommonBundle\Entity\User\Person\Academic')
-                                ->findOneById($person->getId());
+                        if ($queueItem) {
+                            $person = $queueItem->getPerson();
+                            if ($person) {
+                                $academic = $this->getEntityManager()
+                                    ->getRepository('CommonBundle\Entity\User\Person\Academic')
+                                    ->findOneById($person->getId());
 
-                            $universityIdentification = $academic
-                                ? $academic->getUniversityIdentification()
-                                : 'unknown';
+                                $universityIdentification = 'unknown';
+                                if ($academic && $academic->getUniversityIdentification()) {
+                                    $universityIdentification = $academic->getUniversityIdentification();
+                                }
 
-                            $comment = (string)$queueItem->getComment();
-                            $subject = "[Subsidie aanvraag - r{$universityIdentification}]";
-                            $body    = "Articles: " . json_encode($articles) . "\nComment: {$comment}";
+                                $comment = (string) $queueItem->getComment();
+                                $subject = '[Subsidie aanvraag - r' . $universityIdentification . ']';
+                                $body    = 'Articles: ' . json_encode($articles) . PHP_EOL . 'Comment: ' . $comment;
 
-                            $this->sendMail('subsidies@vtk.be', $subject, $body);
+                                $this->sendMail('subsidies@vtk.be', $subject, $body);
+                            }
                         }
                     } catch (\Throwable $e) {
                         // Fail silently, but log the error for debugging
-                        error_log("Subsidy mail not sent for queueItem {$id}: " . $e->getMessage());
+                        error_log('Subsidy mail not sent for queueItem ' . $id . ': ' . $e->getMessage());
                     }
                 }
 

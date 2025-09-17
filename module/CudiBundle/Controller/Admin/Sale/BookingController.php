@@ -330,7 +330,10 @@ class BookingController extends \CudiBundle\Component\Controller\ActionControlle
         $booking->setStatus('assigned', $this->getEntityManager());
         $this->getEntityManager()->flush();
 
-        BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
+        // Only send the mail if the article ID is not 9044
+        if ($booking->getArticle()->getId() != 9044) {
+            BookingMail::sendAssignMail($this->getEntityManager(), $this->getMailTransport(), array($booking), $booking->getPerson());
+        }
 
         $this->flashMessenger()->success(
             'SUCCESS',
