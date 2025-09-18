@@ -262,8 +262,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                     if ($saleArticle) {
                         $mainArticle = $saleArticle->getMainArticle();
                         $name        = $mainArticle ? $mainArticle->getTitle() : 'Unknown';
-                        $sellPrice   = (float) $saleArticle->getSellPrice();
-
+                        $sellPrice   = (float) $saleArticle->getSellPrice() / 100.0;
                         $articleDetails[] = array(
                             'name'       => $name,
                             'sell_price' => $sellPrice,
