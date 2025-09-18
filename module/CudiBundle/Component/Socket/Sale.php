@@ -324,8 +324,8 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                     }
                 }
 
-                $this->concludeSale($user, $id, $articles, $discounts, $payMethod);
-                $this->sendQueueItemToAll($id);
+                $this->concludeSale($user, $command->$id, $command->$articles, $command->$discounts, $command->$payMethod);
+                $this->sendQueueItemToAll($command->$id);
 
                 break;
 
