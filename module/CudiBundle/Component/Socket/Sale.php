@@ -378,32 +378,27 @@ class Sale extends \CommonBundle\Component\Socket\Socket
      */
     private function sendQueue(User $user)
     {
-        if ($user->queueType === 'queue') {
-            if (!isset($user->session) || !$this->isValidId($user->session)) {
-                return;
-            }
-        } else {
-            // For non-queue types, fall through; some views may not need a session
-            if (!isset($user->session)) {
-                // If your getJsonQueueList requires a session, keep the original early return here.
-                // return;
-            }
+        if (!isset($user->session)) {
+            return;
         }
 
-        $session = null;
-        if ($user->queueType === 'queue') {
-            $session = $this->getEntityManager()
-                ->getRepository('CudiBundle\Entity\Sale\Session')
-                ->findOneById((int) $user->session);
-        }
+        $session = $this->getEntityManager()
+            ->getRepository('CudiBundle\Entity\Sale\Session')
+            ->findOneById($user->session);
 
         switch ($user->queueType) {
             case 'queue':
-                $user->send($this->queue->getJsonQueue($session));
+                $user->send(
+                    $this->queue->getJsonQueue($session)
+                );
+
                 break;
 
             case 'queueList':
-                $user->send($this->queue->getJsonQueueList($session));
+                $user->send(
+                    $this->queue->getJsonQueueList($session)
+                );
+
                 break;
         }
     }
@@ -430,22 +425,27 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         }
 
         foreach ($this->getUsers() as $user) {
+            if (!isset($user->session)) {
+                continue;
+            }
+
+            $session = $this->getEntityManager()
+                ->getRepository('CudiBundle\Entity\Sale\Session')
+                ->findOneById($user->session);
+
             switch ($user->queueType) {
                 case 'queue':
-                    if (!isset($user->session) || !$this->isValidId($user->session)) {
-                        continue;
-                    }
+                    $user->send(
+                        $this->queue->getJsonQueue($session)
+                    );
 
-                    $session = $this->getEntityManager()
-                        ->getRepository('CudiBundle\Entity\Sale\Session')
-                        ->findOneById((int) $user->session);
-
-                    $user->send($this->queue->getJsonQueue($session));
                     break;
 
                 case 'queueList':
-                    // No session lookup needed here
-                    $user->send($this->queue->getJsonQueueItem($id));
+                    $user->send(
+                        $this->queue->getJsonQueueItem($id)
+                    );
+
                     break;
             }
         }
@@ -707,16 +707,5 @@ class Sale extends \CommonBundle\Component\Socket\Socket
         $this->getEntityManager()
             ->getRepository('CudiBundle\Entity\Sale\Booking')
             ->assignAllByArticle($booking->getArticle(), $this->getMailTransport());
-    }
-
-    private function isValidId($value): bool
-    {
-        if (is_int($value)) {
-            return $value > 0;
-        }
-        if (is_string($value)) {
-            return $value !== '' && ctype_digit($value) && (int) $value > 0;
-        }
-        return false;
     }
 }
