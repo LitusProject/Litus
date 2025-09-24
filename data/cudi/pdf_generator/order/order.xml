@@ -9,7 +9,7 @@
 	</our_union>
 	<cudi name="CURSUSDIENST">
 		<mail>cursusdienst@vtk.be</mail>
-		<phone>0472/ 24 97 08</phone>
+		<phone>0468/ 32 84 40</phone>
 		<delivery_address>
 			<name>VTK Cursusdienst</name>
 			<street>Kasteelpark Arenberg 41</street>
@@ -18,7 +18,7 @@
 		</delivery_address>
 		<billing_address>
 			<name>VTK vzw</name>
-			<person>Ruben Dilissen</person>
+			<person>Bram Verbelen</person>
 			<street>Studentenwijk Arenberg 6/0</street>
 			<city>3001 Heverlee</city>
 			<extra></extra>
