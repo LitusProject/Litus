@@ -136,12 +136,13 @@
                     </div>
                 </div>
 
-                <div>
+                {# <div>
                     <div class="accountInfo" style="display: inline-block">{{ translate('Membership') }}</div>
                     <div style="display: inline-block">
                         {% if authenticatedPerson.isMember(currentAcademicYear) or metaData.becomeMember() %}{{ translate('Yes') }}{% else %}{{ translate('No') }}{% endif %}
                     </div>
-                </div>
+                </div> #}
+
 
             </div>
 

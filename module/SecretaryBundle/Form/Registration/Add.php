@@ -241,19 +241,19 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
             )
         );
 
-        $registrationEnabled = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.enable_registration');
+//        $registrationEnabled = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('secretary.enable_registration');
 
-        $memberShipArticles = unserialize(
-            $this->getEntityManager()
-                ->getRepository('CommonBundle\Entity\General\Config')
-                ->getConfigValue('secretary.membership_article')
-        );
+//        $memberShipArticles = unserialize(
+//            $this->getEntityManager()
+//                ->getRepository('CommonBundle\Entity\General\Config')
+//                ->getConfigValue('secretary.membership_article')
+//        );
 
-        $isicMembership = $this->getEntityManager()
-            ->getRepository('CommonBundle\Entity\General\Config')
-            ->getConfigValue('secretary.isic_membership');
+//        $isicMembership = $this->getEntityManager()
+//            ->getRepository('CommonBundle\Entity\General\Config')
+//            ->getConfigValue('secretary.isic_membership');
 
         $this->add(
             array(
@@ -281,17 +281,16 @@ class Add extends \CommonBundle\Component\Form\Bootstrap\Form
                             ),
                         ),
                     ),
-                    array(
-                        'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
-                        'name'       => 'become_member',
-                        'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
-            //                        'value'      => count($memberShipArticles) != 0 || $isicMembership != '0',
-                        'value'      => 1,
-                        'attributes' => array(
-                            'id'       => 'become_member',
-                            'disabled' => $registrationEnabled != 1,
-                        ),
-                    ),
+//                    array(
+//                        'type'       => count($memberShipArticles) == 0 && $isicMembership == '0' ? 'hidden' : 'checkbox',
+//                        'name'       => 'become_member',
+//                        'label'      => 'I want to become a member of the student association in academic year { year } (&euro; { price })',
+//                        'value'      => 1,
+//                        'attributes' => array(
+//                            'id'       => 'become_member',
+//                            'disabled' => $registrationEnabled != 1,
+//                        ),
+//                    ),
                     array(
                         'type'       => 'checkbox',
                         'name'       => 'conditions',

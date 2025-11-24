@@ -168,16 +168,16 @@
                 });
 
                 $('#register').click(function (e) {
-                    if (!$form.find('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
+                    /*if (!$form.find('#become_member').is(':checked') && $form.find('#organization').val() != 0) {
                         $('#modalMemberWarning')
                             .modal()
                             .find('.confirm')
                                 .one('click', function () {
                                     $form.submit();
                             });
-                    } else {
+                    } else {*/
                         $form.submit();
-                    }
+                    //}
 
                     return false;
                 });
