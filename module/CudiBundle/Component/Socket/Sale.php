@@ -303,7 +303,7 @@ class Sale extends \CommonBundle\Component\Socket\Socket
                                         ) . PHP_EOL;
                                 }
 
-                                $totalLine = 'Total: ' . number_format($totalAmount, 2, '.', '');
+                                $totalLine = 'Total: ' . number_format($totalAmount, 2, ',', '');
                                 $name = $person ? $person->getFullName() : ($academic ? $academic->getFullName() : 'unknown');
                                 $comment = (string) $queueItem->getComment();
                                 $subject = '[Subsidie aanvraag - ' . $universityIdentification . ']';
