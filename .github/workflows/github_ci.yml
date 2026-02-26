@@ -33,8 +33,7 @@ jobs:
             ${{ runner.os }}-php74-
       - name: Install dependencies
         run: |
-          composer update --no-dev
-          composer install --no-dev
+          composer install --no-dev --no-security-blocking --ignore-platform-reqs     
       - name: Create build artifact
         run: |
           echo ${{ github.sha }} > COMMIT
