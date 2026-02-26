@@ -196,7 +196,7 @@
 }
 
 .container.calendarHolder {
-  position: relative; 
+  position: relative;
   padding: 20px 15px;
   margin-top: -75px;
   margin-bottom: 50px
@@ -212,7 +212,7 @@
 
 .frame-item,
 .calendar-item {
-  background-color: whitesmoke; 
+  background-color: whitesmoke;
   height: 100%;
   display: -ms-flexbox;
   display: -webkit-flex;
@@ -240,8 +240,8 @@
 }
 
 .calendar-item-tekst {
-  padding: 30px 20px 40px 20px; 
-  flex-grow: 1; 
+  padding: 30px 20px 40px 20px;
+  flex-grow: 1;
 }
 
 .frame-emptyfill,
@@ -258,38 +258,38 @@
 }
 
 .vtk-hometitle {
-  color: white; 
+  color: white;
   font-size: 95px;
   margin-bottom: 0px;
-  font-weight: 700; 
+  font-weight: 700;
   font-family: 'Open Sans';
-  text-transform: uppercase; 
-  position: relative; 
-  z-index: 10; 
+  text-transform: uppercase;
+  position: relative;
+  z-index: 10;
 }
 
 .vtk-home-titleDecoration {
-  width: 80%; 
-  border-bottom: 25px solid @color-yellow; 
-  margin: auto; 
-  margin-top: -30px; 
-  opacity: 0.8; 
+  width: 80%;
+  border-bottom: 25px solid @color-yellow;
+  margin: auto;
+  margin-top: -30px;
+  opacity: 0.8;
 }
 
 
 .vtk-home-tekstholder {
   // background-color: rgba(26, 31, 74, 0.5); 
-  background-color: rgba(255, 255, 255, 0.6); 
-  border-left: 8px solid @color-yellow; 
+  background-color: rgba(255, 255, 255, 0.6);
+  border-left: 8px solid @color-yellow;
   padding: 20px;
-  margin-bottom: -30px; 
-  padding-bottom: 150px; 
-  display: inline-block; 
+  margin-bottom: -30px;
+  padding-bottom: 150px;
+  display: inline-block;
 }
 
 .home-menu-category {
   width: 200px;
-  margin-right: 40px; 
+  margin-right: 40px;
   margin-bottom: 50px;
 }
 
@@ -313,7 +313,7 @@
   }
 
   .container.calendarHolder {
-    margin-top: 15px; 
+    margin-top: 15px;
   }
 }
 
@@ -328,24 +328,21 @@
   border-radius: 10px;
 }
 
-.banner_event_galabal {
+.banner_event {
   /* Large screens (desktops) */
   @media (min-width: 1200px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
     height: 85vh;
     max-height: 800px; /* Prevent excessive height on very tall screens */
   }
 
   /* Medium screens (laptops) */
   @media (min-width: 756px) and (max-width: 1199px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
     height: 70vh;
     background-size: cover;
   }
 
   /* Small screens (mobile) */
   @media (max-width: 755px) {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile_v2.jpg);
     background-size: contain;
     height: 60vh;
     min-height: 300px;
@@ -359,6 +356,24 @@
   background-size: cover;
   color: whitesmoke;
   display: block;
+}
+
+/* Specific image for Galabal */
+.banner_event_galabal {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_v2.jpg);
+
+  @media (max-width: 755px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_galabal_2425_mobile_v2.jpg);
+  }
+}
+
+/* Specific image for Jobfair */
+.banner_event_jobfair {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_jobfair_2526.png);
+
+  @media (max-width: 755px) {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)), url(../img/promo_jobfair_2526_mobile.png);
+  }
 }
 
 .container_event_galabal::before,
@@ -554,8 +569,8 @@ ul#countdown {
   }
 
   .vtk-home-titleDecoration {
-    border-bottom: 15px solid @color-yellow; 
-    margin-top: -15px; 
+    border-bottom: 15px solid @color-yellow;
+    margin-top: -15px;
   }
 
   .frame-item,
@@ -565,12 +580,12 @@ ul#countdown {
   }
 
   .vtk-home-subtitle {
-    font-size: 20px; 
-    font-weight: 500; 
+    font-size: 20px;
+    font-weight: 500;
   }
 
   .home-menu-category {
-    width: 100%; 
-    margin-right: 0px; 
+    width: 100%;
+    margin-right: 0px;
   }
 }
