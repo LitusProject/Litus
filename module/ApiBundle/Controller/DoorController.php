@@ -162,7 +162,8 @@ class DoorController extends \ApiBundle\Component\Controller\ActionController\Ap
             ->findOneById($person->getId());
 
         //Academic is praesidium
-        if ($academic->getOrganizationStatus($this->getCurrentAcademicYear(true))->getStatus() == 'praesidium') {
+        $organizationStatus = $academic->getOrganizationStatus($this->getCurrentAcademicYear(true));
+        if ($organizationStatus !== null && $organizationStatus->getStatus() == 'praesidium') {
             return new ViewModel(
                 array(
                     'result' => (object)array(
